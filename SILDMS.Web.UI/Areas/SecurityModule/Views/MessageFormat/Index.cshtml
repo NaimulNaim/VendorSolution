@@ -1,0 +1,370 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+}
+<div class="box box-primary box-body" ng-controller="MessageFormatCtrl">
+    <div class="box-header with-border">
+        <i class="fa  fa-table"></i>
+        <h3 class="box-title">Message Format</h3>
+        <div class="box-tools pull-right">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <button type="button" data-ng-click="toggleRefreshTable()" class="btn btn-default btn-flat pull-right" ng-disabled="loading"><i class="fa fa-refresh"></i> Refresh</button>                            
+                        </div>
+                        <div class="col-lg-6">                            
+                            <button type="button" id="btnAdd" data-ng-click="NewMessageForm()" class="btn btn-flat btn-success pull-right btnSave" ng-disabled="loading"> <i class="fa fa-plus"></i> Add New</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="box-body">   
+        <div class="table-responsive" data-ng-disabled="" ng-cloak>
+            <table class="table table-condensed table-bordered table-striped table-hover pnlView">
+                <thead>
+                    <tr>
+                        <th class="col-lg-3 col-md-3 col-sm-3" data-ng-click="sort('OwnerName')">Owner Name</th>
+                        <th class="col-lg-3 col-md-3 col-sm-3" data-ng-click="sort('EmailSubject')">Email Subject</th>
+                        <th class="col-lg-1 col-md-1 col-sm-1" data-ng-click="sort('MessageFor')">Message For</th>
+                        <th class="col-lg-2 col-md-2 col-sm-2">Action</th>
+                    </tr>
+                    <tr>
+                        <th>
+                            <input placeholder="Company Code" class="input-sm form-control" data-ng-model="search" data-ng-keyup="GetMessageFormat($event)" />
+                        </th>
+                        <th>
+
+                        </th>
+                        <th>
+                            <input placeholder="Message For" class="input-sm form-control" data-ng-model="searchGroup" data-ng-keyup="GetMessageFormat($event)" />
+                        </th>
+                    </tr>
+                </thead>
+                <!--#endregion Table Head -->
+                <!--#region Table Body -->
+                <tbody>
+                    <tr ng-repeat="row in messageDisplayedCollection">
+                        <td class="">{{row.OwnerName}}</td>
+                        <td class="">{{row.EmailSubject}}</td>
+                        <td class="">{{row.MessageFor}}</td>                   
+                        <td>
+                            <button type="button" class="btn btn-sm btn-primary btn-flat btnEdit" data-ng-click="Edit(row)"><i class="fa fa-edit"></i> Edit</button> |
+                            <button type="button" class="btn btn-sm btn-danger btn-flat" data-ng-click="toggleDelete(row)"><i class="fa fa-close"></i> Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+                <!--#endregion Table Body-->
+                <!--#region Table Footer -->
+                <tfoot>
+                    <tr>
+                        <td colspan="7" class="text-center">
+                            <ul uib-pagination total-items="pagingInfo.totalItems" ng-model="pagingInfo.page" items-per-page="{{pagingInfo.itemsPerPage}}"
+                                max-size="7" boundary-links="true" rotate="true" force-ellipses="true" data-ng-change="GetMessageFormat()"></ul>
+                        </td>
+                    </tr>
+                </tfoot>
+                <!--#endregion Table Footer -->
+            </table>
+        </div>
+    </div>
+
+    <form name="newMessageFrm" id="newMessageFrm" ng-submit="">
+        <div id="NewMessageModal" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Add New Message</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" data-ng-model="MessageFormatID" style="display: none" />
+                        <div class="row">
+                            <div class="col-sm-2 col-md-2 col-lg-2">
+                                <div class="form-group">
+                                    <label style="font-size:smaller">Company</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 col-md-4 col-lg-4">
+                                <div class="form-group">
+                                    <select id="dispOwner" name="owner" class="form-control" data-ng-model="selectedOwner" 
+                                            data-ng-options="owner.OwnerID as owner.OwnerLevelID for owner in ownerList" ng-disabled="loading" required style="height: 27px; font-size: smaller">
+                                        <option value="" style="display: none"> -- Select --</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-2 col-md-2 col-lg-2">
+                                <div class="form-group">
+                                    <label style="font-size:smaller">Automatic</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 col-md-4 col-lg-4">
+                                <div class="form-group">
+                                    <input id="lifecheck" type="checkbox" class="checkbox checked" ng-checked="ChkValue"
+                                           style="height: 30px;width:30px;" ng-model="ischecked" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-2 col-md-2 col-lg-2">
+                                <div class="form-group">
+                                    <label style="font-size:smaller">SMS Text</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 col-md-4 col-lg-4">
+                                <div class="form-group">
+                                    <textarea data-ng-model="SMSText" style="height: 100px;width:388px; font-size: smaller"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-sm-2 col-md-2 col-lg-2">
+                                <div class="form-group">
+                                    <label style="font-size:smaller">Email Body</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 col-md-4 col-lg-4">
+                                <div class="form-group">
+                                    <textarea data-ng-model="EmailBody" style="height: 100px; width: 388px; font-size: smaller; "></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-2 col-md-2 col-lg-2">
+                                <div class="form-group">
+                                    <label style="font-size:smaller">Email Subject</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 col-md-4 col-lg-4">
+                                <div class="form-group">
+                                    <input data-ng-model="EmailSubject" type="text" class="form-control" ng-disabled="loading" style="height: 27px; font-size: smaller" />
+                                </div>
+                            </div>
+                            <div class="col-sm-2 col-md-2 col-lg-2">
+                                <div class="form-group">
+                                    <label style="font-size:smaller">Message For</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 col-md-4 col-lg-4">
+                                <div class="form-group">
+                                    <input data-ng-model="MessageFor" type="text" class="form-control" ng-disabled="loading" style="height: 27px; font-size: smaller" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" data-ng-click="SaveUpdateMessage()">Save changes</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div id="ConfirmDelete" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Are You Sure?</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <h4>Do you want to delete this Message?</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="yes" class="btn btn-danger" ng-disabled="loading" data-ng-click="Delete()">Yes</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    app.controller('MessageFormatCtrl', function ($scope, $http) {
+        $(function () {
+            GetOwners();
+            $scope.GetMessageFormat();
+        });
+
+        function GetOwners() {
+            $http.post('/CBPSModule/BillParkingAssmnt/GetOwners')
+                .success(function (response) {
+                    $scope.ownerList = response.owner;
+                    $scope.loading = false;
+                }).error(function () {
+                    $scope.loading = false;
+                    toastr.error('Data Loading Failed.');
+                });
+
+        };
+
+        $scope.NewMessageForm = function () {
+            $("#dispOwner").val('');
+            $scope.MessageFormatID = "";
+            $scope.SMSText = "";
+            $scope.EmailBody = "";
+            $scope.EmailSubject = "";
+            $scope.MessageFor = "";
+            document.getElementById("lifecheck").checked = false;
+            $('#NewMessageModal').modal('show');
+        }
+        $scope.toggleRefreshTable = function () {
+            location.reload();
+        }
+
+        $scope.GetMessageFormat = function () {
+            $http.get("/SecurityModule/MessageFormat/GetMessages", {
+                params: {
+                    search: $scope.search,
+                    searchGroup: $scope.searchGroup
+                }
+            })
+            .success(function (response) {
+                $scope.MessageList = response.messages;
+                $scope.messageDisplayedCollection = [].concat($scope.MessageList);
+                applySecurity();
+            })
+            .error(function () { });
+        }
+
+        $scope.Edit = function (row) {
+
+            $scope.MessageFormatID = row.MessageFormatID;
+            $scope.EmailBody = row.EmailBody;
+            $scope.EmailSubject = row.EmailSubject;
+            $scope.SMSText = row.SMSText;
+            $scope.MessageFor = row.MessageFor;
+            $scope.selectedOwner = row.OwnerId;
+            $scope.ChkValue = row.IsAuto;
+            $scope.ischecked = row.IsAuto;
+
+            $("#NewMessageModal").modal("show");
+        };
+
+        $scope.toggleSelection = function toggleSelection(event) {
+            var test = event.target.checked;
+            if (test == true) {
+                $scope.ischecked = 1;
+            }
+            else {
+                $scope.ischecked = 0;
+            }
+        }
+
+        $scope.SaveUpdateMessage = function () {
+
+            if (!$scope.selectedOwner) {
+                $scope.loading = false;
+                toastr.error("Company is Required");
+                return;
+            }
+          
+
+            var lfckv = document.getElementById("lifecheck").checked;
+            if (lfckv == true) {
+                $scope.ischecked = 1;
+            }
+            else {
+                $scope.ischecked = 0;
+            }
+
+            $scope.messageSaveData = {
+                SMSText: $scope.SMSText,
+                EmailBody: $scope.EmailBody,
+                EmailSubject: $scope.EmailSubject,                
+                IsAuto: $scope.ischecked,
+                MessageFormatID: $scope.MessageFormatID,
+                MessageFor: $scope.MessageFor,
+                OwnerId: $scope.selectedOwner
+            }
+
+            if ($scope.MessageFormatID) {
+                $http.post("/SecurityModule/MessageFormat/EditMessage/", JSON.stringify(convArrToObj($scope.messageSaveData)))
+                    .success(function (respStatus) {
+                        if (respStatus._respStatus.Status === "1") {
+                            $scope.loading = false;
+                            $("#NewMessageModal").modal("hide");
+                            toastr.success(respStatus._respStatus.Message);
+                            $scope.GetMessageFormat();
+                        } else {
+                            $scope.loading = false;
+                            toastr.error(respStatus._respStatus.Message);
+                        }
+                    })
+                    .error(function () {
+                        $scope.loading = false;
+                        toastr.error("Update Failed.");
+                    });
+            } else {
+                // Save
+                $http.post("/SecurityModule/MessageFormat/AddNewMessage/", JSON.stringify(convArrToObj($scope.messageSaveData)))
+                    .success(function (respStatus) {
+                        if (respStatus._respStatus.Status === "1") {
+                            $scope.loading = false;
+                            $("#NewMessageModal").modal("hide");
+                            toastr.success(respStatus._respStatus.Message);
+                            $scope.GetMessageFormat();
+                        } else {
+                            $scope.loading = false;
+                            toastr.error(respStatus._respStatus.Message);
+                        }
+                    })
+                    .error(function () {
+                        $scope.loading = false;
+                        toastr.error("Saved Failed.");
+                    });
+            }
+        };
+
+        $scope.toggleDelete = function (row) {
+            $scope.MessageFormatID = row.MessageFormatID;
+            $scope.EmailBody = row.EmailBody;
+            $scope.EmailSubject = row.EmailSubject;
+            $scope.SMSText = row.SMSText;
+            $scope.MessageFor = row.MessageFor;
+            $scope.selectedOwner = row.OwnerId;
+            $scope.ChkValue = row.IsAuto;
+            $scope.ischecked = row.IsAuto;
+            $("#ConfirmDelete").modal("show");
+        }
+
+        $scope.Delete = function () {
+
+            $scope.messageSaveData = {
+                SMSText: $scope.SMSText,
+                EmailBody: $scope.EmailBody,
+                EmailSubject: $scope.EmailSubject,
+                IsAuto: $scope.ischecked,
+                MessageFormatID: $scope.MessageFormatID,
+                MessageFor: $scope.MessageFor,
+                OwnerId: $scope.selectedOwner
+            }
+            $http.post("/SecurityModule/MessageFormat/DeleteMessage/", JSON.stringify(convArrToObj($scope.messageSaveData)))
+                    .success(function (respStatus) {
+                        if (respStatus._respStatus.Status === "1") {
+                            $scope.loading = false;
+                            $("#ConfirmDelete").modal("hide");
+                            toastr.success(respStatus._respStatus.Message);
+                            $scope.GetMessageFormat();
+                        } else {
+                            $scope.loading = false;
+                            toastr.error(respStatus._respStatus.Message);
+                        }
+                    })
+                    .error(function () {
+                        $scope.loading = false;
+                        toastr.error("delete Failed.");
+                    });
+        }
+    });
+</script>

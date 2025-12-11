@@ -1,0 +1,303 @@
+﻿@{
+    Layout = "";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>CBPS | Log in</title>
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <!-- Bootstrap 3.3.4 -->
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- Font Awesome Icons -->
+    <!-- Theme style -->
+    <link href="~/Content/AdminLTE/AdminLTE.min.css" rel="stylesheet" />
+    <!-- iCheck -->
+    <script src="~/Scripts/jquery-2.1.4.min.js"></script>
+    <script src="~/Scripts/angular.min.js"></script>
+    <script src="~/Content/plugin/toaster/toastr.js"></script>
+    <link href="~/Content/plugin/toaster/toastr.css" rel="stylesheet" />
+    <style>
+        .login-page {
+            background-image: url("/Content/AdminLTE/img/login.jpg");
+            background-size: cover;
+        }
+
+        .loder {
+            position: absolute;
+            top: -340%;
+            left: -150%;
+            color: #000;
+            font-size: 30px;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            background-color: rgba(0, 0, 0, 0.5); /*dim the background*/
+        }
+    </style>
+    <link href="~/Content/css/animate.css" rel="stylesheet" />
+</head>
+<body class="login-page" data-ng-app="myApp" data-ng-controller="myCtrl">
+    <div class="login-box">
+        <form name="name" id="name" data-ng-submit="sendPost()">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title text-center">Vendor LOGIN</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    <div class="login-box-body">
+                        <p class="login-box-msg">@*Please input your email and password to start your session*@</p>
+                        <div class="form-group has-feedback">
+                            <input id="username" type="text" class="form-control" placeholder="User Name" data-ng-model="userName" required />
+                            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <input id="password" type="password" class="form-control" placeholder="Password" data-ng-model="password" required />
+                            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-xs-8">
+
+                                <div class="checkbox">
+                                    @*<label>
+                                            <input type="checkbox" data-ng-model="$scope.remember"> Remember Me
+                                        </label>*@
+
+                                </div>
+                            </div><!-- /.col -->
+                            <div class="col-xs-4">
+                                <button type="submit" class="btn btn-primary btn-block btn-flat" data-ng-disabled="loading" ng-click="Login()">Sign In</button>
+
+                                <div id="mydiv" data-ng-show="loading">
+                                    <div class="overlay">
+                                        <div class="loder">
+                                            <img src="~/Content/AdminLTE/img/cube.gif" /> <span class="text-bold">Loading...</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!-- /.col -->
+                        </div>
+
+                        <br />
+                        <div class="row form-group">
+                            <div class="col-xs-6">
+                                <a href="/SecurityModule/ForgotPassword">Forgot Password</a>
+
+                                @*<div class="checkbox">*@
+                                @*<label>
+                                        <input type="checkbox" data-ng-model="$scope.remember"> Remember Me
+                                    </label>*@
+
+                                @*</div>*@
+                                @*<div id="mydiv" data-ng-show="loading">
+                                        <div class="overlay">
+                                            <div class="loder">
+                                                <img src="~/Content/AdminLTE/img/cube.gif" /> <span class="text-bold">Loading...</span>
+                                            </div>
+                                        </div>
+                                    </div>*@
+
+
+
+                            </div>
+                            <div class="col-xs-3">
+                            </div>
+                            <div class="col-xs-3">
+                                @*<a href="/VendorSelectionModule/VendorRegistration">Register</a>*@
+                                @*<a href="/VendorSelectionModule/VendorRegistration/Temporary">Temp Register</a>*@
+                                <a id="tempRegisterLink" href="#">Temp Register</a>
+
+                                @*<div id="mydiv" data-ng-show="loading">
+                                        <div class="overlay">
+                                            <div class="loder">
+                                                <img src="~/Content/AdminLTE/img/cube.gif" /> <span class="text-bold">Loading...</span>
+                                            </div>
+                                        </div>
+                                    </div>*@
+
+                                @*<div id="mydiv" data-ng-show="loading">
+                                        <div class="overlay">
+                                            <div class="loder">
+                                                <img src="~/Content/AdminLTE/img/cube.gif" /> <span class="text-bold">Loading...</span>
+                                            </div>
+                                        </div>
+                                    </div>*@
+                            </div><!-- /.col -->
+                        </div>
+
+
+
+
+
+
+
+
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <span class="center-block bg-red" id="conf"></span>
+                            </div>
+                        </div>
+                        @*<a href="#">I forgot my password</a><br>*@
+                        @*<a href="register.html" class="text-center">Register a new membership</a>*@
+                    </div><!-- /.row -->
+                </div><!-- ./box-body -->
+                <div class="box-footer">
+                    <div class="row">
+                        <div class="col-sm-12 col-xs-12">
+                            <img class="responsive-md pull-right" src="~/Content/AdminLTE/img/sil_logo.png" />
+
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.box-footer -->
+            </div>
+        </form>
+        <!-- /.login-box-body -->
+    </div><!-- /.login-box -->
+    <!-- jQuery 2.1.4 -->
+    <script>
+
+
+        // create an object
+        var myObject = {};
+
+        // create a method on our object
+        myObject.someMethod = function () {
+            console.log(this);
+        };
+
+        // call our method
+        myObject.someMethod();
+
+
+
+        $('#name').addClass('animated slideInRight');
+        $('input:text, input:password').addClass('animated bounceInLeft');
+        //$('#yourElement').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', $('input:text, input:password').animateCss('bounce'));
+
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function ($scope, $http) {
+
+            sayHelloAsync('deepak');
+            function sayHelloAsync(name) {
+                //debugger;
+                return function () {
+                    var defer = $q.defer()
+                    setTimeout(function () {
+                        //Greet when your name is 'deepak'
+                        if (name == 'deepak') {
+                            defer.resolve('Hello, ' + name + '!');
+                        }
+                        else {
+                            defer.reject('Greeting ' + name + ' is not allowed.');
+                        }
+                    }, 1000);
+
+                    return defer.promise
+                }
+            }
+
+
+
+
+            $scope.userName = "";
+            $scope.password = "";
+            $scope.remember = "";
+
+            $scope.Login = function () {
+                if ($scope.userName !== "" && $scope.password !== "") {
+                    $scope.loading = true;
+                    $http.post('/SecurityModule/Account/SetAuthorization', { user: $scope.userName, password: $scope.password, isRemeber: $scope.remember })
+                        .success(function (data) {
+                            if (data === 'E401') {
+                                $("#conf").text("  Please input valid UserID or Password.");
+                                $("#password").val("");
+                                $scope.loading = false;
+                                return;
+                            }
+                            if (data !== "" || data != null) {
+                                window.location = data;
+                            }
+                            else {
+                                window.location = "/SecurityModule/Account/Login";
+                            }
+                        }).error(function () {
+                            $scope.loading = false;
+                        });
+                }
+            }
+            //var qrStr = window.location.search.substring(1);
+            //var qrStrone = qrStr.split('=');
+            //var info1 = qrStrone[1];
+            //var tempRegisterLink = document.getElementById("tempRegisterLink");
+            //tempRegisterLink.href = "/VendorSelectionModule/TemporaryRegistration?Vendor=" + info1;
+
+            //$scope.Register = function () {
+
+
+            //    window.location = "/VendorSelectionModule/VendorRegistration/?Vendor=" + info1;
+
+
+
+            //    }
+
+            var qrStr = window.location.search.substring(1); // Remove the "?" at the start
+            var queryParams = new URLSearchParams(qrStr);
+
+
+
+            // Get the encrypted values for VendorId and Email
+            //var encryptedVendorId = queryParams.get('VendorId');
+            //var encryptedEmail = queryParams.get('Email');
+            var vendorId = decodeURIComponent(queryParams.get('VendorId'));
+            var email = decodeURIComponent(queryParams.get('Email'));
+
+
+
+
+
+
+
+            // Ensure parameters are present and encoded before using them
+            if (vendorId && email) {
+                // Set the "tempRegisterLink" href with both parameters
+                var tempRegisterLink = document.getElementById("tempRegisterLink");
+                if (tempRegisterLink) {
+                    /*   tempRegisterLink.href = "/VendorSelectionModule/TemporaryRegistration?VendorId=" + vendorId + "&Email=" + email;*/
+                    console.log(`/VendorSelectionModule/VendorRegistration/?VendorId=${vendorId}&Email=${email}`);
+                    tempRegisterLink.href = `/VendorSelectionModule/TemporaryRegistration?VendorId=${vendorId}&Email=${email}`;
+                }
+
+                // Define the Register function
+                $scope.Register = function () {
+
+                    /*window.location = "/VendorSelectionModule/VendorRegistration/?VendorId=" + vendorId + "&Email=" + email;*/
+
+                    window.location = `/VendorSelectionModule/VendorRegistration/?VendorId=${vendorId}&Email=${email}`;
+
+                };
+            } else {
+                console.error("VendorId or Email parameter is missing in the query string.");
+            }
+
+
+
+
+
+
+
+
+        });
+
+    </script>
+</body>
+
+</html>

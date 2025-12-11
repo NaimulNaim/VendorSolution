@@ -1,0 +1,22 @@
+﻿
+@{
+	ViewBag.Title = "UnAuthorized";
+	Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+}
+
+<section class="content">
+
+	<div class="error-page">
+		<h2 class="headline text-yellow"> </h2>
+		<div class="error-content">
+			<h3><i class="fa fa-warning text-yellow"></i> Oops!!! Access Denied</h3>
+			<p>
+				You may not have permission to access that page.
+				Meanwhile, you may 
+                <a class="btn btn-sm btn-info" href="/SecurityModule/Account/Login"> Login as valid user</a> @*or try using the <a class="btn btn-sm btn-success" href=""> Back</a> button.*@
+			</p>
+
+		</div>
+	</div>
+</section>
+

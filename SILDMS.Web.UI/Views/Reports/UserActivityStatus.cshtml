@@ -1,0 +1,326 @@
+﻿@{
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+}
+<title>User Activity Status</title>
+<div class="box box-primary box-body" ng-controller="UserActivityStatusCtrl" data-ng-init="init()">
+
+    @using (Html.BeginForm("UserActivityStatus", "../Reports", System.Web.Mvc.FormMethod.Post, new { target = "_blank", name = "H1Form", id = "H1Form" }))
+    {
+        <!-- box-header -->
+        <div class="box-header with-border">
+            <i class="fa fa-user"></i>
+            <h3 class="box-title">User Activity Status</h3>
+            <div class="box-tools pull-right">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <button type="submit" id="btnSubmitPreview" name="ButtonType" value="Preview" class="btn btn-flat btn-success pull-right">
+                            <i class="fa fa-print"></i> Preview
+                        </button>
+                    </div>
+                    <div class="col-lg-4">
+                        <button type="submit" id="btnSubmitDownload" onclick="return displayReport();" name="ButtonType" value="Download" class="btn btn-flat btn-success pull-Left">
+                            <i class="fa fa-download"></i> Download
+                        </button>
+                    </div>
+                    <div class="col-lg-4">
+                        <button type="button" id="btnRefresh" data-ng-click="toggleRefreshTable()" class="btn btn-warning btn-flat pull-right" ng-disabled="loading"><i class="fa fa-refresh"></i> Refresh</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <div class="row">
+                <div class="col-sm-2 col-md-2 col-lg-2">
+                    <label style="padding-left:30px;">Bill Receive Date</label>
+                </div>
+                <div class="col-sm-2 col-md-2 col-lg-2">
+                    <div class="form-group">
+                        <input id="txtBillReceiveFromDate" required name="BillReceiveFromDate" type="text" autocomplete="off" class="DatePicker form-control" placeholder="DD/MM/YYYY"
+                               data-ng-model="UserActivityStatusModel.BillReceiveFromDate" style="background:#fff;" />
+                    </div>
+                </div>
+                <div class="col-sm-1 col-md-1 col-lg-1">
+                    <label style="padding-left:25px;">to</label>
+                </div>
+                <div class="col-sm-2 col-md-2 col-lg-2">
+                    <input id="txtBillReceiveToDate" name="BillReceiveToDate" type="text" autocomplete="off" class="DatePicker form-control" placeholder="DD/MM/YYYY"
+                           data-ng-model="UserActivityStatusModel.BillReceiveToDate" style="background:#fff" />
+                </div>
+                <div class="col-sm-2 col-md-2 col-lg-2">
+                    <label style="padding-left: 30px;">Download Type</label>
+                </div>
+                <div class="col-sm-3 col-md-3 col-lg-3">
+                    <input type="radio" name="ReportType" value="PDF" checked="checked" /> <label>PDF</label>
+                    <input type="radio" name="ReportType" value="EXCEL" /> <label>EXCEL</label>
+                    <input type="radio" name="ReportType" value="WORD" /> <label>WORD</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-2 col-md-2 col-lg-2">
+                    <label style="padding-left:62px;">Process By</label>
+                </div>
+                <div class="col-sm-4 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <input type="text" id="UserRptID" name="UserRptID" class="form-control" data-ng-model="UserActivityStatusModel.UserRptID" required ng-show="false" />
+                        <input type="text" id="UserFullName" required name="UserFullName" class="form-control" data-ng-model="UserActivityStatusModel.UserFullName" readonly placeholder="" />
+                        <div id="lbllevel"></div>
+                    </div>
+                </div>
+                <div class="col-sm-2 col-md-2 col-lg-2">
+                    @*<button type="button" id="btnRefresh" data-ng-click="toggleRefreshTable()" class="btn btn-warning btn-flat pull-right" ng-disabled="loading"><i class="fa fa-refresh"></i> Refresh</button>*@
+                    <input class="btn btn-flat btn-default" ng-click="ShowUserInformationList()" value="Search" style="width:80px;">
+                </div>
+            </div>
+        </div>
+
+        <div id="UserModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" ng-click="ResetModel()" aria-hidden="true">x</button>
+                        <h3 class="modal-title">User Information</h3>
+                    </div>
+                    <div class="modal-body table-responsive">
+                        <table st-table="displayedUserCollection" st-safe-src="UserGridData" class="table table-condensed table-bordered table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="hidden" st-sort="UserID"></th>
+                                    @*<th st-sort="LevelName">Level Name</th>
+                                        <th st-sort="OwnerName">Owner Name</th>*@
+                                    <th st-sort="UserName">User Name</th>
+                                    <th st-sort="UserFullName">User Full Name</th>
+                                    <th st-sort="EmployeeID">Employee ID</th>
+                                    @*<th st-sort="UserDesignation">Designation</th>*@
+                                    <th st-sort="JobLocation">Job Location</th>
+                                    @*<th st-sort="UserNo">User No</th>*@
+
+                                    <th>Action</th>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <input st-search="UserName" placeholder="User Name" class="input-sm form-control" type="search" />
+                                    </th>
+                                    <th>
+                                        <input st-search="UserFullName" placeholder="User Full Name" class="input-sm form-control" type="search" />
+                                    </th>
+                                    <th>
+                                        <input st-search="EmployeeID" placeholder="Employee ID" class="input-sm form-control" type="search" />
+                                    </th>
+                                    <th>
+                                        <input st-search="JobLocation" placeholder="Job Location" class="input-sm form-control" type="search" />
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="row in displayedUserCollection">
+                                    <td class="hidden">{{row.UserID}}</td>
+                                    @*<td>{{row.LevelName}}</td>
+                                        <td>{{row.OwnerName}}</td>*@
+                                    <td>{{row.UserName}}</td>
+                                    <td>{{row.UserFullName}}</td>
+                                    <td>{{row.EmployeeID}}</td>
+                                    @*<td>{{row.UserDesignation}}</td>*@
+                                    <td>{{row.JobLocation}}</td>
+                                    @*<td>{{row.UserNo}}</td>*@
+
+                                    <td>
+                                        <a class="btn col-center btn-sm btn-flat btn-success" ng-href="#" ng-rel="" data-ng-click="toggleSelect(row)">Select</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="6" class="text-center">
+                                        <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="10"></div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="ResetModel()">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+</div>
+<script type="text/javascript" src="~/Areas/CBPSModule/Scripts/JSServices/SAPBAPIService.js"></script>
+<script type="text/javascript">
+
+    $('.DatePicker').datepicker({
+        format: "dd/mm/yyyy",
+        autoclose: true
+    });
+
+    $('#txtBillReceiveFromDate').datepicker()
+        .on('changeDate', function (ev) {
+            $('.datepicker').hide();
+        });
+
+    $('#txtBillReceiveFromDate').datepicker().on('changeDate', function (ev) {
+        var EnteredDate = $('#txtBillReceiveFromDate').val(); // For JQuery
+        var date = EnteredDate.substring(0, 2);
+        var month = EnteredDate.substring(3, 5);
+        var year = EnteredDate.substring(6, 10);
+        var myDate = new Date(year, month - 1, date);
+
+        var today = new Date();
+        if (myDate > today) {
+            $('#txtBillReceiveFromDate').val('');
+            toastr.error("Date should not grater than system date.");
+        }
+        ////////////
+        if ($('#txtBillReceiveToDate').val() != '') {
+            var EnteredToDate = $('#txtBillReceiveToDate').val(); // For JQuery
+            var date = EnteredToDate.substring(0, 2);
+            var month = EnteredToDate.substring(3, 5);
+            var year = EnteredToDate.substring(6, 10);
+            var myToDate = new Date(year, month - 1, date);
+            if (myToDate < myDate) {
+                $('#txtBillReceiveFromDate').val('');
+                toastr.error("From Date should Smaller than To Date.");
+            }
+        }
+        ///////
+
+        $('.datepicker').hide();
+    });
+
+    $('#txtBillReceiveToDate').datepicker().on('changeDate', function (ev) {
+        var EnteredDate = $('#txtBillReceiveToDate').val(); // For JQuery
+        var date = EnteredDate.substring(0, 2);
+        var month = EnteredDate.substring(3, 5);
+        var year = EnteredDate.substring(6, 10);
+        var myDate = new Date(year, month - 1, date);
+
+        /////////////
+
+        var EnteredDate = $('#txtBillReceiveFromDate').val(); // For JQuery
+        var date = EnteredDate.substring(0, 2);
+        var month = EnteredDate.substring(3, 5);
+        var year = EnteredDate.substring(6, 10);
+        var myPrevDate = new Date(year, month - 1, date);
+
+        ////
+
+        var today = new Date();
+        if (myDate > today) {
+            $('#txtBillReceiveToDate').val('');
+            toastr.error("Date should not grater than system date.");
+        }
+
+        if (myPrevDate > myDate) {
+            $('#txtBillReceiveToDate').val('');
+            toastr.error("To Date should grater than From Date.");
+        }
+
+        $('.datepicker').hide();
+    });
+
+    //function displayReport() {
+    //    alert("");
+    //    $http.post(BAPILink.bapiLink() + 'api/apiBillClearingV2', JSON.stringify({ BPS_BillList: response.data, UserId: userID, TokenNo: "~Ice321" }))
+    //                .then(function (response) {
+    //                    if (response.data == "1") {
+    //                        toastr.success("Bill Clearing Done Successfully");
+    //                        loadBillForReceive();
+    //                        $scope.loading = false;
+    //                    }
+    //                    else if (response.data == "3") {
+    //                        toastr.error("Bill Clearing not done in SAP");
+    //                        $scope.loading = false;
+    //                    }
+    //                    else {
+    //                        toastr.error('Bill Transfer to SAP failed');
+    //                        $scope.loading = false;
+    //                    }
+
+    //                }, function (error) {
+    //                    toastr.error('Invalid SAP Url for clearing');
+    //                    $scope.loading = false;
+    //                });
+
+    //    if ($("#UserRptID").val() != "") {
+    //        return true;
+    //    }
+    //    else {
+    //        $("#lbllevel").text('Please Select Process By');
+    //        $("#lbllevel").css({ 'color': 'red', 'font-size': 'smaller', 'font-weight': 'bold', 'text-align': 'left' });
+    //        return false;
+    //    }
+    //}
+
+    app.controller('UserActivityStatusCtrl', ['$scope', '$http', 'BAPILink', function ($scope, $http, BAPILink) {
+        //app.controller('UserActivityStatusCtrl', function ($scope, $http) {
+        $scope.displayReport = function () {
+            alert("call");
+            $http.post(BAPILink.bapiLink() + 'api/apiSMS/GetAssignSession', JSON.stringify({ MobileNo: "+8801730376226", Text: "Hello", TokenNo: "~Ice321" }))
+                .then(function (response) {
+                    alert("adass");
+                }, function (error) {
+                    toastr.error('Invalid SAP Url for clearing');
+                    $scope.loading = false;
+                });
+
+            //if ($("#UserRptID").val() != "") {
+            //    return true;
+            //}
+            //else {
+            //    $("#lbllevel").text('Please Select Process By');
+            //    $("#lbllevel").css({ 'color': 'red', 'font-size': 'smaller', 'font-weight': 'bold', 'text-align': 'left' });
+            //    return false;
+            //}
+        }
+        // user start //
+        $scope.ShowUserInformationList = function (model) {
+            $scope.UserActivityStatusModel.UserRptID = "";
+            $http.get('/SecurityModule/User/GetUser?userId=' + $scope.UserActivityStatusModel.UserRptID + '&&ownerID=' + $scope.UserActivityStatusModel.Owner.OwnerID)
+                //$http.get('/SecurityModule/User/GetUser')
+                .success(function (response) {
+                    $scope.UserGridData = response.result;
+                    $scope.displayedUserCollection = [].concat($scope.UserGridData);
+                    $scope.loading = false;
+                })
+                .error(function () {
+                    $scope.loading = false;
+                });
+
+            $('#UserModal').modal('show');
+        };
+
+        $scope.toggleSelect = function (tableRow) {
+            $scope.UserActivityStatusModel.UserRptID = tableRow.UserID;
+            $scope.UserActivityStatusModel.UserFullName = tableRow.UserFullName;
+
+            //alert($scope.UserActivityStatusModel.UserID);
+            $('#UserModal').modal('hide');
+            $("#lbllevel").text('');
+        };
+        //////User End//////////
+        $scope.showPrint = false;
+        $scope.itemsByPage = 10;
+        $scope.UserActivityStatusModel = {
+            Owner: { OwnerID: "", OwnerName: "" },
+            BillReceiveFromDate: "",
+            BillReceiveToDate: "",
+            UserRptID: "",
+            UserFullName: ""
+        };
+
+        $scope.toggleRefreshTable = function () {
+            $scope.UserActivityStatusModel.UserRptID = "";
+            $scope.UserActivityStatusModel.BillReceiveFromDate = "";
+            $scope.UserActivityStatusModel.BillReceiveToDate = "";
+            window.location.reload();
+        };
+        //});
+    }]);
+</script>

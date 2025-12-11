@@ -1,0 +1,150 @@
+﻿@{
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+}
+<title>Bill Receive Status in Booth</title>
+<div class="box box-primary box-body" ng-controller="BankAccountDetailsCtrl" data-ng-init="init()">
+    @using (Html.BeginForm("OwnerList", "../Reports", System.Web.Mvc.FormMethod.Post, new { target = "_blank", name = "H1Form", id = "H1Form" }))
+    {
+    <!-- box-header -->
+        <div class="box-header with-border">
+            <i class="fa fa-user"></i>
+            <h3 class="box-title">Owner List</h3>
+            <div class="box-tools pull-right">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <button ng-disabled="showPrint" type="submit" id="btnSubmit" name="ButtonType" value="Preview" class="btn btn-flat btn-success pull-right">
+                            <i class="fa fa-print"></i> Preview
+                        </button>
+                    </div>
+                    <div class="col-lg-4">
+                        <button ng-disabled="showPrint" type="submit" id="btnSubmit" name="ButtonType" value="Download" class="btn btn-flat btn-success pull-Left">
+                            <i class="fa fa-download"></i> Download
+                        </button>
+                    </div>
+                    <div class="col-lg-4">
+                        <button type="button" id="btnRefresh" data-ng-click="toggleRefreshTable()" class="btn btn-warning btn-flat pull-right" ng-disabled="loading"><i class="fa fa-refresh"></i> Refresh</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- /.box-header -->
+        <div class="box-body">
+            <div class="row">
+                <div class="col-sm-2 col-md-2 col-lg-2">
+                    <div class="form-group">
+                        <label style="padding-left:60px;">Owner Level</label>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <select id="OwnerLevel" name="OwnerLevelID" class="form-control" ng-model="ownerModel.OwnerLevel" ng-change="ownerLevelChange()"
+                                ng-options="ownerLevel as ownerLevel.LevelName for ownerLevel in ownerLevels track by ownerLevel.OwnerLevelID">
+                            <option value="" style="display: none">-- Select Owner's Level --</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-2 col-md-2 col-lg-2">
+                    <label style="padding-left:30px;">Download Type</label>
+                </div>
+                <div class="col-sm-4 col-md-4 col-lg-4">
+                    <input type="radio" name="ReportType" value="PDF" checked="checked" /> <label>PDF</label>
+                    <input type="radio" name="ReportType" value="EXCEL" /> <label>EXCEL</label>
+                    <input type="radio" name="ReportType" value="WORD" /> <label>WORD</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-2 col-md-2 col-lg-2">
+                    <div class="form-group">
+                        <label style="padding-left:100px;">Owner</label>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <select class="form-control" name="OwnerID" ng-model="ownerModel.Owner" ng-change="ddOwnerChange()"
+                                data-ng-options="owner as owner.OwnerName for owner in ownersForSpecificOwnerLevel track by owner.OwnerID">
+                            <option value="">-- Select One --</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-2 col-md-2 col-lg-2">
+                    <div class="form-group">
+                        <label style="padding-left:55px;">Parent Owner</label>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <select id="ParentOwner" name="ParentOwnerID" class="form-control" ng-model="ownerModel.Parent"
+                                ng-options="ownerParent as ownerParent.ParentName for ownerParent in ownerParents track by ownerParent.ParentOwner">
+                            <option value="">-- Select Owner's Parent --</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2 col-md-2 col-lg-2">
+                    <div class="form-group">
+                        <label style="padding-left:100px;">Status</label>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <select id="txtStatus" data-ng-model="AccountInfoModel.Status" name="Status" class="form-control">
+                            <option value="">--Select--</option>
+                            <option value="1">Active</option>
+                            <option value="0">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    app.controller('BankAccountDetailsCtrl', function ($scope, $http) {
+        applySecurity();
+        $scope.itemsByPage = 10;
+        $scope.loading = true;
+        $scope.ownerModel = {
+            Owner: { OwnerID: "", OwnerName: "" },
+            OwnerID: "",
+            UDOwnerCode: "",
+            OwnerLevel: { OwnerLevelID: "", LevelName: "" },
+            OwnerName: "",
+            OwnerShortName: "",
+            Parent: { ParentOwner: "", ParentName: "" },
+            Status: ""
+        };
+        $http.get('/DocScanningModule/Owner/GetOwnerLevel?id=')
+            .success(function (response) {
+                $scope.loading = false;
+                $scope.ownerLevels = response.result;
+            }).error(function () { });
+
+        $scope.ownerLevelChange = function () {
+            $http.post('/DocScanningModule/OwnerProperIdentity/GetOwnerForSpecificOwnerLevel', { _OwnerLevelID: $scope.ownerModel.OwnerLevel.OwnerLevelID })
+                    .success(function (response) {
+                        $scope.ownersForSpecificOwnerLevel = response.result;
+                        $scope.loading = false;
+                    }).error(function () {
+                        $scope.loading = false;
+                    });
+        };
+        $scope.ddOwnerChange = function () {
+            $http.get('/DocScanningModule/Owner/GetOwners?ownerId=' + $scope.ownerModel.Owner.OwnerID)
+                .success(function (response) {
+                    $scope.ownerParents = response.result;
+                }).error(function () { });
+        };
+
+        //#################### Set Dropdown ################
+        $scope.toggleRefreshTable = function () {
+            $scope.loading = true;
+            window.location.reload();
+        };
+    });
+</script>

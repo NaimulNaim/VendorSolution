@@ -1,0 +1,63 @@
+﻿@{
+    ViewBag.Title = "AttendanceGeoData";
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+}
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2> Attendance <small>geo-presentation</small></h2>
+            <div class="btn-group pull-right" style="margin: 3px">
+                <button type="button" data-ng-click="Post()" ng-disabled="btnPost" class="btn btn-success pull-right  btn-sm btn-flat"><i class="fa fa-save"></i>Save</button>
+            </div>
+            <div id="map" style="width:100%;height:320px;background:green"></div>
+            <script>
+                function myMap() {
+                    //function myMap(long, lat) {
+                    // var myCenter = new google.maps.LatLng(long,lat);
+                    var myCenter = new google.maps.LatLng(23.780625718476724, 90.40713613182373);
+                    //console.log(long,lat);
+                    var mapCanvas = document.getElementById("map");
+                    var mapOptions = { center: myCenter, zoom: 15 };
+                    var map = new google.maps.Map(mapCanvas, mapOptions);
+                    var marker = new google.maps.Marker({ position: myCenter });
+                    marker.setMap(map);
+
+                    google.maps.event.addListener(map, 'click', function (event) {
+                        alert('Lat: ' + event.latLng.lat() + ' and Longitude is: ' + event.latLng.lng());
+                        var pos = new google.maps.LatLng(event.latLng.lat(), event.latLng.lng());
+                        var marker = new google.maps.Marker({ position: pos });
+                        marker.setMap(map);
+                        //// var pos = map.getZoom();
+                        //// console.log(pos);
+                        //// map.setZoom(9);
+                        //// map.setCenter(marker.getPosition());
+                        //window.setInterval(function () { map.setZoom(pos); }, 13000);
+
+                        $http.post('/Home/SaveAttendanceGeoData', { latitude: event.latLng.lat(), longitude: event.latLng.lng() })
+                            .success(function (response) {
+                                if (response.ResponseCode == "1") {
+                                    toastr.success(response.message);
+                                }
+                            })
+                            .error(function () {
+                                $('#ConfirmMultipleSave').modal('hide');
+                                toastr.error("Data Save Failed");
+                                return;
+                            });
+                    });
+                }
+            </script>
+
+            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAR-3Yi4EBPfbtP6KocUIkkUSu9dSQsr0I&callback=myMap"></script>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    app.controller('LCRequestCtrl', function ($scope, $http, $timeout, BAPILink) {
+        $scope.Post = function () {
+            alert('asdf');
+        }
+    });
+</script>

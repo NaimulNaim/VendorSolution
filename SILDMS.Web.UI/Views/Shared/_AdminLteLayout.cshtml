@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title SPL-PMS</title>
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    @Styles.Render("~/bundles/css")
+    <link href="~/Content/css/font-awesome.min.css" rel="stylesheet" />
+    @Scripts.Render("~/bundles/preScript")
+</head>
+<body style="background: linear-gradient(to right, #035a68 0%, #4fa97f 50%, #035a68 100%) " ng-app="dmsApp">
+    <div class="wrapper">
+        @Html.Partial("_AdminLteTopMenu")
+        @Html.Partial("_AdminLteLeftMenu")
+        <div class="content-wrapper">
+            @*<section class="content-header">
+                    <ol class="breadcrumb">
+                        <li><a href="#"><i class="fa fa-dashboard"></i> <small> @Html.MvcSiteMap().SiteMapPath() </small> </a></li>
+                    </ol>
+                </section>*@
+            <section class="content">
+                @RenderBody()
+            </section>
+        </div>
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <a target="_blank" href="http://www.e-home2u.com/">
+                    <img class="image" src="~/Content/AdminLTE/img/sil_logo.png" />
+                </a>
+            </div>
+            <div class="hidden-xs">
+                <a target="_blank" href="http://www.squarepharma.com.bd/">
+                    <img src="../../Content/AdminLTE/img/SPL-logo.jpg" />
+                </a>
+            </div>
+            @*<strong>Copyright &copy; 2016</strong> All Rights Reserved By - <i>Square Informatix Ltd.</i>*@
+        </footer>
+    </div>
+    @Scripts.Render("~/bundles/postScript")
+    @RenderSection("scripts", required: false)
+
+    <script>
+        $(document).ready(function () {
+            $("input[type=number]").on("focus", function () {
+                $(this).on("keydown", function (event) {
+                    if (event.keyCode === 38 || event.keyCode === 40 || event.keyCode === 189 || event.keyCode === 109 || event.keyCode === 107 || event.keyCode === 69) {
+                        event.preventDefault();
+                    }
+                });
+            });
+
+        });
+        $(document).on("wheel", "input[type=number]", function (e) {
+            $(this).blur();
+        });
+        var classes = ["animated fadeIn", "animated fadeInDown", "animated fadeInLeft", "animated fadeInUp", "animated fadeInRight"];
+        var randomnumber = Math.floor(Math.random() * classes.length);
+        $('table').addClass(classes[randomnumber]);
+        $('.form-control').addClass(classes[randomnumber]);
+    </script>
+
+</body>
+
+</html>

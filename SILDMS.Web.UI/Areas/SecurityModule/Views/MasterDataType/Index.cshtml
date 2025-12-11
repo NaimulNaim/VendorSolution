@@ -1,0 +1,427 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+}
+<div class="box box-primary box-body" ng-controller="MasterDataTypeSetupCtrl">
+    <div class="box-header with-border">
+        <i class="fa fa-user"></i>
+        <h3 class="box-title">Master Data Type List</h3>
+        <div class="box-tools pull-right">
+            <button type="button" id="btnRefresh" data-ng-click="toggleRefreshTable(row)" class="btn btn-flat pull-right" ng-disabled="loading"><i class="fa fa-refresh"></i> Refresh</button>
+            <button type="button" id="btnAdd" data-ng-click="toggleAdd(row)" class="btn btn-flat btn-primary pull-right" ng-disabled="loading"> <i class="fa fa-plus"></i> Add New</button>
+        </div>
+    </div>
+
+    <div class="box-body">
+        <div class="row">
+            <div class="col-lg-2">
+                <label for="OwnerLevel">Owner Level</label>
+
+            </div>
+            <div class="col-lg-4">
+                <select class="form-control" ng-model="MasterDataType.OwnerLevel"
+                        ng-options="ownerLevel as ownerLevel.LevelName for ownerLevel in ownerLevels
+                        track by ownerLevel.OwnerLevelID">
+                    <option value="" style="display: none;">--Select--</option>
+                </select>
+            </div>
+
+            <div class="col-lg-2">
+                <label>Owner</label>
+            </div>
+            <div class="col-lg-4">
+                <select class="form-control" ng-model="MasterDataType.Owner"
+                        data-ng-options="owner as owner.OwnerName for owner in ownersForSpecificOwnerLevel track by owner.OwnerID"
+                        data-ng-disabled="!MasterDataType.OwnerLevel">
+                    <option value="" style="display: none;">--Select--</option>
+                </select>
+            </div>
+
+        </div>
+        <div class="row">
+            <table st-table="displayedCollection" st-safe-src="getAllMasterDataType" class="table table-condensed table-bordered table-striped table-hover pnlView">
+                <thead>
+                    <tr>
+                        <th st-sort="">SL#</th>
+                        <th st-sort="">Owner</th>
+                        <th st-sort="">Type Name</th>
+                        <th st-sort="">Purpose</th>
+                        <th st-sort="">Code</th>
+                        <th>Action</th>
+                    </tr>
+                    <tr>
+                        <th colspan="6">
+                            <input st-search=""
+                                   placeholder="Search" class="input-sm form-control" type="search" />
+                        </th>
+                        @*<th>
+                            <input st-search="OwnerID" placeholder="Owner" class="input-sm form-control" type="search" />
+                        </th>
+                        <th>
+                            <input st-search="TypeName"
+                                   placeholder="Type Name" class="input-sm form-control" type="search" />
+                        </th>
+                        <th>
+                            <input st-search="TypePurpose" placeholder="Purpose" class="input-sm form-control" type="search" />
+                        </th>
+                        <th>
+                            <input st-search="TypeCode" placeholder="Code" class="input-sm form-control" type="search" />
+                        </th>*@
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="row in displayedCollection">
+
+                        <td class="hidden">{{row.MasterDataTypeID}}</td>
+                        <td>{{$index + 1}}</td>
+                        <td>{{row.OwnerID}}</td>
+                        <td>{{row.TypeName}}</td>
+                        <td>{{row.TypePurpose}}</td>
+                        <td>{{row.TypeCode}}</td>
+                        <td class="col-lg-1 col-md-1 col-sm-1 text-center">
+                            <button type="button" class="btn btnEdit btn-sm btn-primary btn-flat btnEdit" data-ng-click="toggleEdit(row)"><i class="fa fa-edit"></i> Edit</button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="6" class="text-center">
+                            <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="10"></div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+    <form id="masterFrm" name="masterFrm">
+
+        <div id="addModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" ng-click="ResetModel()" aria-hidden="true">x</button>
+                        <h3 class="modal-title">Master Data Type Entry Form</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="box-body">
+
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <label>Owner Level</label>
+                                        <select name="ownerLevel" class="form-control" ng-model="MasterDataType.OwnerLevel"
+                                                ng-options="ownerLevel as ownerLevel.LevelName for ownerLevel in ownerLevels
+                                                    track by ownerLevel.OwnerLevelID" required>
+                                            <option value="" style="display: none;">--Select--</option>
+                                        </select>
+                                        <div ng-show="masterFrm.$submitted || masterFrm.ownerLevel.$touched">
+                                            <span ng-show="!masterFrm.ownerLevel.$dirty && masterFrm.ownerLevel.$pristine"
+                                                  class="label label-danger">Please select an owner level.</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <label>Owner</label>
+                                        <select name="owner" class="form-control" ng-model="MasterDataType.Owner"
+                                                data-ng-options="owner as owner.OwnerName for owner in ownersForSpecificOwnerLevel track by owner.OwnerID"
+                                                data-ng-disabled="!MasterDataType.OwnerLevel" required>
+                                            <option value="" style="display: none;">--Select--</option>
+                                        </select>
+                                        <div ng-show="masterFrm.$submitted || masterFrm.owner.$touched">
+                                            <span ng-show="!masterFrm.owner.$dirty && masterFrm.owner.$pristine"
+                                                  class="label label-danger">Please select an owner.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <div class="form-group">
+                                        <label for="ParentID">Parent</label>
+                                        <select name="ParentID" class="form-control" ng-model="MasterDataType.ParentTypeID"
+                                                ng-options="parentDatas as parentDatas.TypeName for parentDatas in ParentDataList
+                                                    track by parentDatas.MasterDataTypeID">
+                                            <option value="" style="display: none;">--Select--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <label>Type Name</label>
+                                        <input name="TypeName" type="text" data-ng-model="MasterDataType.TypeName"
+                                               class="form-control" placeholder="Type Name" ng-maxlength="128" required />
+                                        <div ng-show="masterFrm.$submitted || masterFrm.TypeName.$touched">
+                                            <span ng-show="!masterFrm.TypeName.$dirty && masterFrm.TypeName.$pristine"
+                                                  class="label label-danger">Please select an Type Name.</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <label>Type Purpose</label>
+                                        <input name="TypePurpose" type="text" data-ng-model="MasterDataType.TypePurpose"
+                                               class="form-control" placeholder="Type Purpose" ng-maxlength="128" />
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6 col-lg-6">
+
+                                    <div class="form-group">
+                                        <label>Type Code</label>
+                                        <input name="TypeCode" type="text" data-ng-model="MasterDataType.TypeCode"
+                                               class="form-control" placeholder="Type Code" ng-maxlength="128" />
+                                        <div ng-show="masterFrm.$submitted || masterFrm.TypeCode.$touched">
+                                            <span ng-show="!masterFrm.TypeCode.$dirty && masterFrm.TypeCode.$pristine"
+                                                  class="label label-danger">Please select an Type Code.</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-sm-6 col-md-6 col-lg-6">
+
+                                    <div class="form-group">
+                                        <label>Active Status</label>
+                                        <select data-ng-model="MasterDataType.Status"
+                                                class="form-control">
+                                            <option value="" style="display: none;">--Select--</option>
+                                            <option value="1">Active</option>
+                                            <option value="0">Inactive</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div><!-- /.box-body -->
+                    </div>
+                    <div class="modal-footer">
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            <div class="form-group">
+                                <button type="button" data-ng-click="masterFrm.$setSubmitted();masterFrm.$valid && checkDrop() && Save(masterFrm)"
+                                        class="btn btn-primary" ng-disabled="loading">
+                                    Save
+                                </button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="ResetModel()">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+    <div id="mydiv" data-ng-show="loading">
+        <div class="overlay">
+            <div class="loder">
+                <img src="~/Content/AdminLTE/img/cube.gif" /> <span class="text-bold">Loading...</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    app.controller('MasterDataTypeSetupCtrl', function ($scope, $http) {
+        applySecurity();
+        $scope.MasterDataType = {
+            OwnerLevel: { OwnerLevelID: "", LevelName: "" },
+            Owner: { OwnerID: "", OwnerName: "" },
+            MasterDataTypeID: "",
+            TypeName: "",
+            TypePurpose: "",
+            TypeCode: "",
+            Remarks: "",
+            ParentTypeID: { MasterDataTypeID: "", TypeName: "" },
+            Status: ""
+        };
+
+
+        $scope.getAllMasterDataType = [];  // base collection
+        $scope.displayedCollection = [].concat($scope.getAllMasterDataType);  // displayed collection
+
+        $scope.itemsByPage = 10;
+        $scope.loading = true;
+       
+
+        $http.get('/DocScanningModule/OwnerProperIdentity/GetOwnerLevel?_OwnerLevelID=')
+           .success(function (response) {
+               $scope.loading = false;
+               $scope.ownerLevels = response.result;
+               $scope.MasterDataType.OwnerLevel.OwnerLevelID = "";
+               $scope.MasterDataType.OwnerLevel.LevelName = "";
+               $scope.loading = false;
+           })
+           .error(function () {
+               $scope.loading = false;
+           });
+
+        $scope.$watch('MasterDataType.OwnerLevel', function (newVal) {
+            if (newVal) {
+                $scope.MasterDataType.Owner.OwnerID = "";
+                $scope.MasterDataType.Owner.OwnerName = "";
+                $http.post('/DocScanningModule/OwnerProperIdentity/GetOwnerForSpecificOwnerLevel',
+                    { _OwnerLevelID: $scope.MasterDataType.OwnerLevel.OwnerLevelID })
+                    .success(function (response) {
+                        $scope.ownersForSpecificOwnerLevel = response.result;
+                        $scope.loading = false;
+                    }).error(function () {
+                        $scope.loading = false;
+                    });
+            }
+        });
+
+        $scope.$watch('MasterDataType.Owner', function (newVal) {
+            if (newVal) {
+
+                $http.post('/SecurityModule/MasterDataType/LoadMasterDataTypeList',
+                   { _OwnerID: $scope.MasterDataType.Owner.OwnerID })
+                    .success(function (response) {
+                       $scope.getAllMasterDataType = response.result;
+                       $scope.displayedCollection = [].concat($scope.getAllMasterDataType);
+                       $scope.loading = false;
+                   }).error(function () {
+                       $scope.loading = false;
+                       toastr.error('Data Loading Faild.');
+                   });
+            }
+        });
+
+        $scope.LoadMasterDataTypeList = function () {
+            $http.post('/SecurityModule/MasterDataType/LoadMasterDataTypeList',
+                   { _OwnerID: $scope.MasterDataType.Owner.OwnerID })
+                    .success(function (response) {
+                        $scope.getAllMasterDataType = response.result;
+                        $scope.displayedCollection = [].concat($scope.getAllMasterDataType);
+                        $scope.loading = false;
+                    }).error(function () {
+                        $scope.loading = false;
+                        toastr.error('Data Loading Faild.');
+                    });
+        }
+
+        $http.get('/SecurityModule/MasterDataType/LoadParentDataListForType?id=')
+           .success(function (response) {
+               $scope.loading = false;
+               $scope.ParentDataList = response.result;
+           }).error(function () { });
+
+        $scope.checkDrop = function () {
+            if ($scope.MasterDataType.OwnerLevel.OwnerLevelID === "") {
+                return false;
+            }
+            return true;
+        }
+
+        
+        $scope.toggleAdd = function (model) {
+            $scope.ResetModel();
+            $scope.MasterDataType.Status = "1";
+            $scope.masterFrm.$setPristine();
+            $scope.masterFrm.$setUntouched();
+            if ($scope.MasterDataType.Owner.OwnerID !== "") {
+                $scope.masterFrm.owner.$setDirty();
+                $scope.masterFrm.owner.$setValidity("", true);
+            }
+            if ($scope.MasterDataType.OwnerLevel.OwnerLevelID !== "") {
+                $scope.masterFrm.ownerLevel.$setDirty();
+                $scope.masterFrm.ownerLevel.$setValidity("", true);
+            }
+            $('#addModal').modal('show');
+        };
+
+        $scope.toggleEdit = function (row) {
+            $scope.MasterDataType.MasterDataTypeID = row.MasterDataTypeID;
+            $scope.MasterDataType.TypeName = row.TypeName;
+            $scope.MasterDataType.TypePurpose = row.TypePurpose;
+            $scope.MasterDataType.ParentTypeID.MasterDataTypeID = row.ParentID
+            $scope.MasterDataType.TypeCode = row.TypeCode;
+            $scope.MasterDataType.Status = (row.Status).toString();
+            $scope.MasterDataType.Owner.OwnerID = row.OwnerID;
+            //$scope.MasterDataType.OwnerLevel.LevelName = row.LevelName;
+
+            $scope.masterFrm.$setUntouched();
+            if ($scope.MasterDataType.Owner.OwnerID !== "") {
+                $scope.masterFrm.owner.$setDirty();
+                $scope.masterFrm.owner.$setValidity("", true);
+            }
+            else {
+
+            }
+            if ($scope.MasterDataType.OwnerLevel.OwnerLevelID !== "") {
+                $scope.masterFrm.ownerLevel.$setDirty();
+                $scope.masterFrm.ownerLevel.$setValidity("", true);
+            }
+            else {
+
+            }
+            $('#addModal').modal('show');
+        };
+
+        $scope.toggleRefreshTable = function (row) {
+            location.reload();
+        };
+
+        $scope.Save = function () {
+            $scope.loading = true;
+
+            if ($scope.MasterDataType.MasterDataTypeID === "") {
+                //Save
+                $scope.loading = true;
+                $http.post('/SecurityModule/MasterDataType/AddMasterDataType', JSON.stringify($scope.MasterDataType))
+                    .success(function (response) {
+
+                        $scope.loading = false;
+                        $('#addModal').modal('hide');
+                        $scope.LoadMasterDataTypeList();
+                        toastr.success(response.Message);
+                    }).error(function (response) {
+                        $scope.loading = false;
+                        toastr.error('Fail to Save.');
+                    });
+
+            }
+            else {
+                $http.post('/SecurityModule/MasterDataType/EditMasterDataType',
+                    JSON.stringify(convArrToObj($scope.MasterDataType)))
+                    .success(function (response) {
+                        $('#addModal').modal('hide');
+                        $scope.loading = false;
+                        toastr.success(response.Message);
+                        $scope.LoadMasterDataTypeList();
+                    })
+                    .error(function (data) {
+                        $scope.loading = false;
+                        toastr.error('Failed to Update.');
+                    });
+
+            }
+        }
+
+        $scope.ResetModel = function () {
+            $scope.MasterDataType.MasterDataTypeID = "";
+            $scope.MasterDataType.TypeName = "";
+            $scope.MasterDataType.TypePurpose = "";
+            $scope.MasterDataType.TypeCode = "";
+            $scope.MasterDataType.Remarks = "";
+            $scope.MasterDataType.ParentTypeID = { MasterDataTypeID: "", TypeName: "" };
+        };
+
+    });
+
+</script>

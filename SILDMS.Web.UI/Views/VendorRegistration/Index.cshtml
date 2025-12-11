@@ -1,0 +1,423 @@
+﻿
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+}
+
+<div class="box box-primary box-body" ng-controller="VendorRegistrationCtrl">
+    @* Header *@
+    <div class="box-header with-border" style="font-family: Verdana; background: #E4E9E3; color: black; ">
+        <i class="fa fa-user"></i>
+        <h3 style="font-family: Verdana" class="box-title" ng-if="fromMenu">Vendor Registration From</h3>
+        <h3 style="font-family: Verdana" class="box-title" ng-if="!fromMenu">Vendor Registration From</h3>
+        <div class="box-tools pull-right">
+
+            <button type="button" id="btnRefresh" data-ng-click="toggleRefreshTable(row)" class="btn btn-warning btn-flat pull-right" ng-disabled="loading"><i class="fa fa-refresh"></i> Refresh</button>
+            <button type="button" id="btnRefresh" class="btn btn-flat btn-primary pull-right" ng-disabled="loading">
+                <i class="fa fa-backward"></i>
+                <a style="none; color: white" href="/VendorSelectionModule/VendorRegistration/Temporary">Register as a Temporary Vendor</a>
+            </button>
+        </div>
+
+    </div>
+
+    @*Vendor Registration Details Table Modal*@
+    <div class="col-sm-12 col-md-12 col-lg-12" id="EntryHolderDiv">
+        <div style="margin: 1%; background-color: #F0F0F0; box-shadow: 2px 2px 5px #888888; padding: 10px 10px 10px 10px;">
+            <div style="height: 30px; margin-bottom:1%">
+                <p style="font-family: Verdana; position: center;  bottom: 5px;">Register your business and please provide all required details to register your business with us</p>
+            </div>
+
+            <!-- Bussiness Name -->
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-2">
+                    <div class="form-group" style="font-size: smaller;">
+                        <label for="BusinessName">Business Name :<span style="color: red;"> *</span></label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <input id="BusinessName" type="text" autocomplete="off" name="BusinessName" class="form-control" ng-model="PurreqDtl.Vendor.BusinessName" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
+                </div>
+                <div class="col-md-3">
+                    <span class="center-block text-red" id="errorMessageBusinessName" style="display: none;">Please input valid Business Name.</span>
+                </div>
+
+
+            </div>
+
+
+            <!-- Contact Person -->
+            <div class="row" style="margin-top: 5px;">
+
+                <div class="col-lg-2 col-md-2 col-sm-2" style="font-size: smaller;">
+                    <label for="ContactPerson">Contact Person :<span style="color: red;"> *</span></label>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                    <input id="FirstName" type="text" name="FirstName" autocomplete="off" class="form-control" ng-model="PurreqDtl.Vendor.ContactPersonFirstName" placeholder="First Name" style="font-size: smaller; padding: 3px 6px 3px;" required />
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                    <input id="LastName" type="text" name="LastName" autocomplete="off" class="form-control" ng-model="PurreqDtl.Vendor.ContactPersonLastName" placeholder="Last Name" style="font-size: smaller; padding: 3px 6px 3px;" required />
+                </div>
+                <div class="col-md-3">
+                    <span class="center-block text-red" id="errorMessageContactPerson" style="display: none;">Please input valid ContactPerson.</span>
+                </div>
+            </div>
+
+            <!-- Contact Number -->
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-2" style="font-size: smaller;">
+                    <label for="VendorPhoneNumber">Contact Number :<span style="color: red;"> *</span></label>
+                </div>
+                <div class="col-lg-2">
+                    <input id="VendorPhoneNumber" type="text" autocomplete="off" name="VendorPhoneNumber" class="form-control" ng-model="PurreqDtl.Vendor.VendorPhoneNumber" placeholder="(+880) 00 0000 0000" style="font-size: smaller; padding: 3px 6px 3px;" required />
+                </div>
+                <div class="col-md-3">
+                    <span class="center-block text-red" id="errorMessageVendorPhoneNumber" style="display: none;">Please input valid Contact Number.</span>
+                </div>
+            </div>
+
+            <!-- Email -->
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-2" style="font-size: smaller;">
+                    <label for="Email">Email :<span style="color: red;"> *</span></label>
+                </div>
+                <div class="col-lg-2">
+                    <input id="Email" type="text" name="Email" autocomplete="off" class="form-control" ng-model="PurreqDtl.Vendor.Email" placeholder="yourname@gmail.com" style="font-size: smaller; padding: 3px 6px 3px;" required />
+                </div>
+                <div class="col-md-3">
+                    <span class="center-block text-red" id="errorMessageEmail" style="display: none;">Please input valid Email.</span>
+                </div>
+            </div>
+
+            <!-- Company Address -->
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-2" style="font-size: smaller;">
+                    <label for="CompanyAddress">Company Address :</label>
+                </div>
+                <div class="col-lg-4">
+                    <input id="CompanyAddress" autocomplete="off" type="text" name="CompanyAddress" class="form-control" ng-model="PurreqDtl.Vendor.CompanyAddress" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
+                </div>
+            </div>
+
+            <!-- TIN -->
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-2" style="font-size: smaller;">
+                    <label for="TIN">TIN :<span style="color: red;"> *</span></label>
+                </div>
+                <div class="col-lg-4">
+                    <input id="TIN" type="text" autocomplete="off" name="TIN" class="form-control" ng-model="PurreqDtl.Vendor.TIN" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
+                </div>
+                <div class="col-md-3">
+                    <span class="center-block text-red" id="errorMessageTIN" style="display: none;">Please input valid TIN</span>
+                </div>
+            </div>
+
+            <!-- Country -->
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-2" style="font-size: smaller;">
+                    <label for="Country">Country :</label>
+                </div>
+                <div class="col-lg-4">
+                    <input id="Country" autocomplete="off" type="text" name="Country" class="form-control" ng-model="PurreqDtl.Vendor.Country" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
+                </div>
+            </div>
+
+            <!-- Business Type -->
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-2" style="font-size: smaller;">
+                    <label for="BusinessType">Business Type :</label>
+                </div>
+                <div class="col-lg-4">
+                    <input id="BusinessType" autocomplete="off" type="text" name="BusinessType" class="form-control" ng-model="PurreqDtl.Vendor.BusinessType" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
+                </div>
+            </div>
+
+            <!-- Type of Material Sale -->
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-2" style="font-size: smaller;">
+                    <label for="TypeOfMaterial">Type of Material Sale :</label>
+                </div>
+                <div class="col-lg-4">
+                    <input id="TypeOfMaterial" autocomplete="off" type="text" name="TypeOfMaterial" class="form-control" ng-model="PurreqDtl.Vendor.TypeOfMaterial" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
+                </div>
+            </div>
+
+            <!-- BIN -->
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-2" style="font-size: smaller;">
+                    <label for="BIN">BIN :<span style="color: red;"> *</span></label>
+                </div>
+                <div class="col-lg-4">
+                    <input id="BIN" type="text" autocomplete="off" name="BIN" class="form-control" ng-model="PurreqDtl.Vendor.BIN" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
+                </div>
+                <div class="col-md-3">
+                    <span class="center-block text-red" id="errorMessageBIN" style="display: none;">Please input valid BIN</span>
+                </div>
+            </div>
+
+            <!-- General Details of Services/ Goods -->
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-2" style="font-size: smaller;">
+                    <label for="GeneralDetails">General Details of Services/ Goods :</label>
+                </div>
+                <div class="col-lg-4">
+                    <input id="GeneralDetails" type="text" autocomplete="off" name="GeneralDetails" class="form-control" ng-model="PurreqDtl.Vendor.GeneralDetailsServices" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
+                </div>
+            </div>
+
+            @*User Name*@
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-2" style="font-size: smaller;">
+                    <label for="UserName">User Name :<span style="color: red;"> *</span></label>
+                </div>
+                <div class="col-lg-4">
+                    <input id="UserName" type="text" autocomplete="off" name="UserName" class="form-control" ng-model="PurreqDtl.Vendor.UserName" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
+                </div>
+                <div class="col-md-3">
+                    <span class="center-block text-red" id="errorMessageUserName" style="display: none;">Please input valid User Name</span>
+                </div>
+            </div>
+
+            @*Password*@
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-2" style="font-size: smaller;">
+                    <label for="Password">Password :<span style="color: red;"> *</span></label>
+                </div>
+                <div class="col-lg-4">
+                    <input id="Password" type="text" autocomplete="off" name="Password" class="form-control" ng-model="PurreqDtl.Vendor.Password" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
+                </div>
+                <div class="col-md-3">
+                    <span class="center-block text-red" id="errorMessagePassword" style="display: none;">Please input valid Password</span>
+                </div>
+            </div>
+
+            @*Confirm Password*@
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-2" style="font-size: smaller;">
+                    <label for="ConfirmPassword">Confirm Password :<span style="color: red;"> *</span></label>
+                </div>
+                <div class="col-lg-4">
+                    <input id="ConfirmPassword" type="text" autocomplete="off" name="ConfirmPassword" class="form-control" ng-model="PurreqDtl.Vendor.ConfirmPassword" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
+                </div>
+
+                <div class="col-lg-4" style="margin-top: 10px;">
+                </div>
+
+                @* button save*@
+                <div class="col-lg-1">
+                    <button id="btnSaveMasterInitial" type="button" class="btn btn-success saveBtn pull-left" data-dismiss="modal" title="Submit" ng-click="ValidationCheck()">
+                        <i class="fa fa-save"></i> Submit Registration
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    @*Save / Delete Modal*@
+    <div class="modal fade" id="ConfirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="position: fixed; top: 38%; left: 50%; transform: translate(-38%, -50%); background: rgba(0,0,0,0) !important ">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="border-radius: 5px; width: 456px; height: 185px;">
+                <div class="modal-header" style="height: 46px;">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" style="height:30px;" id="myModalLabel">Confirm your Action</h4>
+                </div>
+                <div class="modal-body" style="height:80px;">
+                    <h5 class="modal-title" style="height:30px;" id="myModalLabel">Are you sure to Save</h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btnSaveMaster" class="btn button-custom" style="color: white; background-color: darkgreen;" data-dismiss="modal" ng-click="RegistrationVendor()">Confirm</button>
+                    <button type="button" class="btn button-custom" data-dismiss="modal" style="color: white; background-color: darkred;">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="mydiv" ng-show="loading">
+        <div class="overlay">
+            <i class="fa fa-refresh fa-spin"></i>Loading...
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript" src="~/Resources/dynamsoft.webtwain.intellisense.js"></script>
+<script type="text/javascript" src="~/Resources/dynamsoft.webtwain.initiate.js"></script>
+<script type="text/javascript" src="~/Resources/dynamsoft.webtwain.config.js"></script>
+<script type="text/javascript" src="~/Resources/addon/dynamsoft.webtwain.addon.pdf.js"></script>
+<script type="text/javascript">
+
+    app.controller('VendorRegistrationCtrl', function ($scope, $http) {
+
+        $scope.itemsByPage = 8;
+        $scope.fromMenu = 1;
+        $scope.showAssignmentArea = false;
+
+        $('.DatePicker').datepicker({
+            format: "dd/mm/yyyy",
+            autoclose: true
+        });
+
+        $('.DatePicker')
+            .on('changeDate', function (ev) {
+                $('.datepicker').hide();
+            });
+
+        //------------- Model ----------------//
+
+        $scope.PurreqDtl = {
+            /* Material: {
+                 Material_Code: "",
+                 ItemNo: "",
+                 Material_Name: "",
+             },*/
+            Vendor: {
+                BusinessName: "",
+                ContactPerson: "",
+                ContactPersonFirstName: "",
+                ContactPersonLastName: "",
+                VendorPhoneNumber: "",
+                Email: "",
+                CompanyAddress: "",
+                Country: "",
+                BusinessType: "",
+                TypeOfMaterial: "",
+                TIN: "",
+                BIN: "",
+                GenaralDetailsServices: "",
+                UserName: "",
+                Password: "",
+                ConfirmPassword: ""
+            }
+        }
+
+        function checkField(fieldId, errorMessageId) {
+            var field = document.getElementById(fieldId);
+            var errorMessage = document.getElementById(errorMessageId);
+            field.addEventListener("blur", function () {
+                var value = this.value.trim();
+                if (value === "") {
+                    errorMessage.style.display = "block";
+                } else {
+                    errorMessage.style.display = "none";
+                }
+            });
+        }
+        checkField("BusinessName", "errorMessageBusinessName");
+        checkField("FirstName", "errorMessageContactPerson");
+        checkField("VendorPhoneNumber", "errorMessageVendorPhoneNumber");
+        checkField("Email", "errorMessageEmail");
+        checkField("TIN", "errorMessageTIN");
+        checkField("BIN", "errorMessageBIN");
+        checkField("UserName", "errorMessageUserName");
+        checkField("Password", "errorMessagePassword");
+
+
+        $scope.ValidationCheck = function () {
+            if ($("#BusinessName").val() == "") {
+                toastr.error("Please your Business Name.");
+                return;
+            }
+            if ($("#FirstName").val() == "" && $("#LastName").val() == "") {
+                toastr.error("Please Contact Person Name.");
+                return;
+            }
+            if ($("#VendorPhoneNumber").val() == "") {
+                toastr.error("Please your VendorPhoneNumber.");
+                return;
+            }
+            if ($("#Email").val() == "") {
+                toastr.error("Please your Email.");
+                return;
+            }
+            if ($("#TIN").val() == "") {
+                toastr.error("Please enter your TIN");
+                return;
+            }
+            if ($("#BIN").val() == "") {
+                toastr.error("Please enter your BIN");
+                return;
+            }
+            if ($("#UserName").val() == "") {
+                toastr.error("Please enter User Name");
+                return;
+            }
+            if ($("#Password").val() == "") {
+                toastr.error("Please enter Password");
+                return;
+            }
+            if ($("#ConfirmPassword").val() == "") {
+                toastr.error("Please enter Confirm Password");
+                return;
+            }
+            $scope.openConfirmModal();
+            // $scope.RegistrationVendor();
+        }
+
+        $scope.openConfirmModal = function () {
+            if ($scope.PurreqDtl.Vendor.BusinessName && $scope.PurreqDtl.Vendor.ContactPersonFirstName
+                && $scope.PurreqDtl.Vendor.VendorPhoneNumber && $scope.PurreqDtl.Vendor.Email
+                && $scope.PurreqDtl.Vendor.TIN && $scope.PurreqDtl.Vendor.BIN && $scope.PurreqDtl.Vendor.UserName
+                && $scope.PurreqDtl.Vendor.Password != null) {
+                $('#ConfirmModal').modal('show');
+            }
+            else {
+                toastr.error("Please insert the required datas");
+            }
+        }
+
+        $scope.RegistrationVendor = function () {
+            if ($scope.PurreqDtl.Vendor.Password === $scope.PurreqDtl.Vendor.ConfirmPassword) {
+                $http.post('/VendorSelectionModule/VendorRegistration/VendorRegistrationDetails', {
+                    BusinessName: $scope.PurreqDtl.Vendor.BusinessName,
+                    ContactPersonFirstName: $scope.PurreqDtl.Vendor.ContactPersonFirstName,
+                    ContactPersonLastName: $scope.PurreqDtl.Vendor.ContactPersonLastName,
+                    VendorPhoneNumber: $scope.PurreqDtl.Vendor.VendorPhoneNumber,
+                    CompanyAddress: $scope.PurreqDtl.Vendor.CompanyAddress,
+                    Email: $scope.PurreqDtl.Vendor.Email,
+                    Country: $scope.PurreqDtl.Vendor.Country,
+                    BusinessType: $scope.PurreqDtl.Vendor.BusinessType,
+                    TypeOfMaterial: $scope.PurreqDtl.Vendor.TypeOfMaterial,
+                    TIN: $scope.PurreqDtl.Vendor.TIN,
+                    BIN: $scope.PurreqDtl.Vendor.BIN,
+                    GenaralDetailsServices: $scope.PurreqDtl.Vendor.GenaralDetailsServices,
+                    UserName: $scope.PurreqDtl.Vendor.UserName,
+                    Password: $scope.PurreqDtl.Vendor.Password,
+                    Status: 'Permanent'
+                })
+                    .success(function (response) {
+                        const stsmsg = response.message;
+                        toastr.success(stsmsg);
+                        $scope.refreshPage();
+                    })
+                    .catch(function () {
+                        toastr.error("Data Save Failed");
+                        $scope.loading = false;
+                        return;
+                    });
+
+            } else {
+                toastr.error("Passwords do not match");
+            }
+        }
+
+        //--------------Utilities
+
+        $scope.refreshPage = function () {
+            setTimeout(function () {
+                window.location = "/SecurityModule/Account/Login";// Reload the current page
+            }, 2000); // 2000 milliseconds = 3 seconds
+        }
+
+    });
+</script>
+
+
+
+
+
+
+
+
+
+

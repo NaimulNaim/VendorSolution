@@ -1,0 +1,83 @@
+﻿@*
+    This partial controls the top menu of the AdminLTE Template, being called automatically by _AdminLteLayout
+       TODO: All of the content in here is stand-in that must be replaced by the real behavior of your app
+*@
+
+@{
+    ViewBag.Layout = null;
+}
+
+<header class="main-header">
+    <!-- Logo -->
+    <a href="/VendorSelectionModule/VendorDashboard" class="logo"><b>VMS</b></a>
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top" role="navigation">
+        <!-- Sidebar toggle button-->
+        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">Toggle navigation</span>
+        </a>
+        @*<div style="color: red; font-size: xx-large; font-family: Brush Script MT;">Performance Management System</div>*@
+        <span style="color: white; font-size: 25px; position: relative; left: 25%; top: 7px;" class="box-sizing"></span>
+        <!-- Navbar Right Menu -->
+        <div class="navbar-custom-menu">
+            @*<div style="color: red; font-size: xx-large; font-family: Brush Script MT;">Performance Management System</div>*@
+            <ul class="nav navbar-nav">
+
+                <li class="dropdown user user-menu">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="background: inherit;" title="User Account">
+                            <img src="/Content/AdminLTE/img/userunique.png" style="margin-top: -17px; width: 35px; height: 35px;" class="user-image" alt="User Image" />
+                            <span class="hidden-xs">@User.Identity.Name</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header" style="background-color: #035A68;">
+                                <img src="/Content/AdminLTE/img/userunique.png" class="img-circle" alt="User Image" />
+
+                                <label style="color: white;">
+                                    Hi, @if (Session["User"] != null)
+                                    {
+                                        @Session["User"].ToString()
+                                    }  !!
+                                </label>
+
+                                <p>
+                                    <label style="color: white;">
+                                        Welcome to - VMS
+                                    </label>
+                                </p>
+                            </li>
+
+
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <div class="pull-left">
+                                    <a href="/SecurityModule/User/ChangePassword" class="button-custom">Change Password</a>
+                                    @*<a href="#" class="btn btn-default btn-flat">Profile</a>*@
+                                </div>
+                                <div class="pull-right">
+                                    <a href="/SecurityModule/Account/Logout" class="button-custom">Sign out</a>
+                                </div>
+                            </li>
+                        </ul>
+                    }
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<style>
+    .user-image {
+        transition: transform 0.3s; /* Add a smooth transition effect */
+    }
+
+        .user-image:hover {
+            transform: scale(1.2); /* Enlarge the image by 20% on hover */
+            background-color: #328B77;
+        }
+</style>
+
+

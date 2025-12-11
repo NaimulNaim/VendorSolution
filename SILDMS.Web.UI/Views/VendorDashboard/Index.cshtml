@@ -1,0 +1,680 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+}
+@*<link href="~/Content/AdminLTE/plugins/css/adminlte.min.css" rel="stylesheet" />*@
+@*<link href="~/Content/AdminLTE/plugins/css/all.min.css" rel="stylesheet" />*@
+<style>
+    .link_total_bm {
+        color: black;
+        font-weight: bold;
+    }
+
+        .link_total_bm :hover {
+            color: #0091EA !important;
+            font-weight: bold;
+        }
+
+    .link_within_bm {
+        color: green;
+        font-weight: bold;
+    }
+
+        .link_within_bm :hover {
+            color: #0091EA;
+            font-weight: bold;
+        }
+
+    .link_out_bm {
+        color: firebrick;
+        font-weight: bold;
+    }
+
+        .link_out_bm :hover {
+            color: #0091EA;
+            font-weight: bold;
+        }
+
+    .global-search {
+        height: 34px;
+    }
+
+    .btn-round {
+        border-radius: 17px;
+    }
+
+    .box.box-solid.box-primary > .box-header {
+        text-align: center;
+    }
+
+    .box.box-solid.box-primary > .box-headerVCMS {
+        color: #fff;
+        background: #9fc17b;
+        background-color: #689b6d;
+    }
+
+    .divBox {
+        background-color: #c4e7f3;
+        height: 110px;
+        width: 100%;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        border-radius: 10px;
+    }
+
+    .divPU {
+        background-color: lightslategray;
+        height: 80px;
+        width: 100%;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        border-radius: 10px;
+    }
+
+    .divDU {
+        background-color: skyblue;
+        height: 80px;
+        width: 100%;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        border-radius: 10px;
+    }
+
+    .divCHQ {
+        background-color: rosybrown;
+        height: 80px;
+        width: 100%;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        border-radius: 10px;
+    }
+
+    .divAgg {
+        background-color: lightgreen;
+        height: 80px;
+        width: 480px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        border-radius: 10px;
+    }
+</style>
+<div class="box box-primary box-body" ng-controller="VendorSideDashboardVCMSCtrl">
+
+    <div class="box box-primary box-solid">
+        <div class="box-header with-border" style="padding-top:5px;padding-bottom:5px">
+            <i class="fa fa-user"></i>
+            <h3 class="box-title text-center">Vendor Invitations</h3>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="divBox">
+                        <div class="box-body">
+                            <div class="row">
+                                <a class="link_within_bm">
+                                    <div class="col-sm-4 border-right">
+                                        <div class="divCHQ">
+                                            <div class="description-block">
+                                                <h5 class="description-header">{{TechInvToRespTotal === "" ? 0 : TechInvToRespTotal}}</h5>
+                                                <span><b>Technical Invitation to Response </b></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="link_within_bm">
+                                    <div class="col-sm-4 border-right">
+                                        <div class="divDU">
+                                            <div class="description-block">
+                                                <h5 class="description-header">{{FinanInvToRespTotal === "" ? 0 : FinanInvToRespTotal}}</h5>
+                                                <span>Financial Invitations to Response</span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </a>
+                                <a class="link_out_bm">
+                                    <div class="col-sm-4">
+                                        <div class="divPU">
+                                            <div class="description-block">
+                                                <h5 class="description-header">{{RunInvTotal === "" ? 0 : RunInvTotal}}</h5>
+                                                <span>Running Invitations</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <br /><br /><br /><br /><br />
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    @*TQ DETAILS*@
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="box box-primary box-solid">
+                <div class="box-header with-border" style="padding-top:5px;padding-bottom:5px">
+                    <h3 class="box-title text-center">Technical Quotation to Response</h3>
+                </div>
+                <div class="box-body">
+                    <table st-table="displayedCollection" st-safe-src="" class="table table-condensed table-bordered table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Invitation No</th>
+                                <th>Invitation Date</th>
+                                <th>Quot. Last Dt</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr ng-repeat="item in invitationTecnicalList">
+                                <td ng-style="item.TotalItem == 0 ? {'cursor': 'not-allowed'} : {'cursor': 'pointer'}">
+                                    <a ng-if="item.TotalItem != 0" href="/VendorSelectionModule/TechnicalQuotation?InnvitationNumber={{item.InnvitationNumber}}" style="color: #3c8dbc !important;">
+
+                                        {{item.InnvitationNumber}}
+                                    </a>
+                                </td>
+
+
+                                <td>{{formatDatetest(item.InnvitationDt)}}</td>
+                                <td>{{formatDatetest(item.QuotationlastDt)}}</td>
+                                <td>
+                                    <button type="button" ng-click="selectPR(item)" data-dismiss="modal" title="Select">
+                                        <i class="fa fa-info"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                        <tfoot>
+                            <tr>
+                                <td colspan="4" class="text-center">
+                                    <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="10"></div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+
+        @*FQ DETAILS*@
+        <div class="col-sm-4">
+            <div class="box box-primary box-solid">
+                <div class="box-header with-border" style="padding-top:5px;padding-bottom:5px">
+                    <h3 class="box-title text-center">Financial Quotation to Response</h3>
+                </div>
+                <div class="box-body">
+                    <table st-table="displayedCollection" st-safe-src="" class="table table-condensed table-bordered table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Invitation No</th>
+                                <th>Invitation Date</th>
+                                <th>Quot. Last Dt</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr ng-repeat="item in invitationFinanList">
+                                <td ng-style="item.TotalItem == 0 ? {'cursor': 'not-allowed'} : {'cursor': 'pointer'}">
+                                    <a ng-if="item.TotalItem != 0" href="/VendorSelectionModule/FinancialQuotation?InnvitationNumber={{item.InnvitationNumber}}"  style="color: #3c8dbc !important;">
+
+                                        {{item.InnvitationNumber}}
+                                    </a>
+                                </td>
+                                <td>{{formatDatetest(item.InnvitationDt)}}</td>
+                                <td>{{formatDatetest(item.QuotationlastDt)}}</td>
+                                <td>
+                                    <button type="button" ng-click="selectPR(item)" data-dismiss="modal" title="Select">
+                                        <i class="fa fa-info"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                        <tfoot>
+                            <tr>
+                                <td colspan="4" class="text-center">
+                                    <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="10"></div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        @*running*@
+
+        <div class="col-md-4">
+            <div class="box box-primary box-solid">
+                <div class="box-header with-border" style="padding-top:5px;padding-bottom:5px">
+                    <h3 class="box-title text-center">Running Quotation to Response</h3>
+                </div>
+                <div class="box-body">
+                    <table st-table="displayedCollection" st-safe-src="" class="table table-condensed table-bordered table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Invitation No</th>
+                                <th>Invitation Date</th>
+                                <th>Quot. Last Dt</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr ng-repeat="item in invitationRunninglList">
+                                <td>{{item.InnvitationNumber}}</td>
+                                <td>{{formatDatetest(item.InnvitationDt)}}</td>
+                                <td>{{formatDatetest(item.QuotationlastDt)}}</td>
+                                <td>
+                                    <button type="button" ng-click="selectPR(item)" data-dismiss="modal" title="Select">
+                                        <i class="fa fa-info"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                        <tfoot>
+                            <tr>
+                                <td colspan="4" class="text-center">
+                                    <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="10"></div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="QuotedInvits" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" ng-click="ResetSearchModel()" aria-hidden="true">x</button>
+                    <h3 class="modal-title">Invitations for Vendor Selection</h3>
+                </div>
+
+                <!-- Modal Body -->
+                <div id="PndRecomAndApprovalTable" class="table-responsive">
+                    <table id="tableId" style="width:100%;" st-table="GridDisplayCollection" st-safe-src="MaterialList" class="table table-condensed table-bordered table-striped table-hover pnlView">
+                        <thead>
+                            <tr>
+                                <th class="col-lg-1 col-md-1 col-sm-1">Material Code</th>
+                                <th class="col-lg-1 col-md-1 col-sm-1">Material Name</th>
+                                <th class="col-lg-1 col-md-1 col-sm-1" style="text-align:right">Quantity</th>
+                                <th class="col-lg-1 col-md-1 col-sm-1">Unit</th>
+                                <th class="col-lg-1 col-md-1 col-sm-1">Type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="row in GridDisplayCollection | orderBy:'IsBack':true">
+                                <td class="text-right">{{formatMaterialCode(row.materialCode)}}</td>
+                                <td class="text-left">{{row.materialName}}</td>
+                                <td class="text-right">{{row.MaterialQuantity | number:3}}</td>
+                                <td class="text-right">{{row.Unit}}</td>
+                                <!-- Removed Button for Documents -->
+                                <td class="text-left">{{row.MatInvType}}</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div id="mydiv" data-ng-show="ParkingLoading || PostingLoading || ClearingLoading || countLoading || tableLoading">
+        <div class="overlay">
+            <div class="loder">
+                <img src="~/Content/AdminLTE/img/cube.gif" /> <span class="text-bold">Loading...</span>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+
+<script type="text/javascript">
+
+
+
+
+
+    app.controller('VendorSideDashboardVCMSCtrl', ['$scope', '$http', function ($scope, $http) {
+        //Start Region for personal data Declaration
+        $scope.InvitationList = {};
+
+        $scope.postingResult = {};
+        $scope.clearingResult = {};
+        $scope.isSupervisor = false;
+        $scope.assignmentDivShowHide = false;
+        $scope.buttonChecked = false;
+        $scope.showAssignmentArea = false;
+        $scope.invitationTecnicalList = {};
+
+        var LoadParkingData = function () {
+            $scope.ParkingLoading = true;
+            $http.get('/VendorSelectionModule/VendorDashboard/GetUserWiseInvList')
+                .then(
+                    function (response) {
+                        $scope.InvitationList = response.data.totalList;
+
+                        $scope.TechInvToRespTotal = $scope.InvitationList.TechInvToRespTotal;
+                        $scope.FinanInvToRespTotal = $scope.InvitationList.FinanInvToRespTotal;
+                        $scope.RunInvTotal = $scope.InvitationList.RunInvTotal;
+                        $scope.invitationTecnicalList = $scope.InvitationList.InvitationTecnicalList;
+                        $scope.invitationFinanList = $scope.InvitationList.InvitationFinanList;
+                        $scope.invitationRunninglList = $scope.InvitationList.InvitationRunninglList;
+
+                        console.log($scope.invitationTecnicalList);
+
+                        //$scope.TotalSCMCHQ = $scope.parkingResult[0].TotalSCMCHQ === "" ? 0 : parseInt($scope.parkingResult[0].TotalSCMCHQ);
+                        //$scope.TotalSCMDU = $scope.parkingResult[0].TotalSCMDU === "" ? 0 : parseInt($scope.parkingResult[0].TotalSCMDU);
+                        //$scope.TotalSCMPU = $scope.parkingResult[0].TotalSCMPU === "" ? 0 : parseInt($scope.parkingResult[0].TotalSCMPU);
+                        //$scope.TotalTSDCHQ = $scope.parkingResult[0].TotalTSDCHQ === "" ? 0 : parseInt($scope.parkingResult[0].TotalTSDCHQ);
+                        //$scope.TotalTSDDU = $scope.parkingResult[0].TotalTSDDU === "" ? 0 : parseInt($scope.parkingResult[0].TotalTSDDU);
+                        //$scope.TotalTSDPU = $scope.parkingResult[0].TotalTSDPU === "" ? 0 : parseInt($scope.parkingResult[0].TotalTSDPU);
+                        //$scope.TotalTSD = $scope.parkingResult[0].TotalTSD;
+                        //$scope.TotASSNSCMCHQ = $scope.parkingResult[0].TotASSNSCMCHQ;
+                        //$scope.TotASSNSCMDU = $scope.parkingResult[0].TotASSNSCMDU;
+                        //$scope.TotASSNSCMPU = $scope.parkingResult[0].TotASSNSCMPU;
+                        //$scope.TotASSNTSDCHQ = $scope.parkingResult[0].TotASSNTSDCHQ;
+                        //$scope.TotASSNTSDDU = $scope.parkingResult[0].TotASSNTSDDU;
+                        //$scope.TotASSNTSDPU = $scope.parkingResult[0].TotASSNTSDPU;
+                        //$scope.TotSCM = $scope.parkingResult[0].TotSCM;
+                        //$scope.TotTSD = $scope.parkingResult[0].TotTSD;
+                        //console.log($scope.parkingResult[0].TotASSNSCMDU);
+                        //console.log($scope.TotASSNSCMDU);
+
+                        $scope.SumOfSCM = (parseInt($scope.TotalSCMCHQ) + parseInt($scope.TotalSCMDU) + parseInt($scope.TotalSCMPU))
+                        $scope.SumOfTSD = (parseInt($scope.TotalTSDCHQ) + parseInt($scope.TotalTSDDU) + parseInt($scope.TotalTSDPU))
+
+                        if (!$scope.TotASSNSCMCHQ && !$scope.TotASSNSCMDU && !$scope.TotASSNSCMPU) {
+                            $scope.isSCMValuNull = true;
+                        }
+                        else {
+                            $scope.isSCMValuNull = false;
+                        }
+                        if (!$scope.TotASSNTSDCHQ && !$scope.TotASSNTSDDU && !$scope.TotASSNTSDPU) {
+                            $scope.isTSDValuNull = true;
+                        }
+                        else {
+                            $scope.isTSDValuNull = false;
+                        }
+
+
+                        $scope.ParkingLoading = false;
+                    },
+                    function () {
+                        $scope.ParkingLoading = false;
+                    });
+
+        }
+        LoadParkingData();
+
+
+
+        setTimeout(myFunction, 1000);
+
+
+
+
+
+        function myFunction() {
+
+            //-----SCM------
+            var aSCM = $scope.TotASSNSCMCHQ;
+            var bSCM = $scope.TotASSNSCMDU;
+            var cSCM = $scope.TotASSNSCMPU;
+
+            var donutDataSCM = {
+                labels: [
+                    'CHQ',
+                    'DU',
+                    'PU',
+                ],
+                datasets: [
+                    {
+                        data: [aSCM, bSCM, cSCM],
+                        backgroundColor: ['#f56954', '#00a65a', '#f39c12'],
+                    }
+                ]
+            }
+            //var pieChartCanvasScm = $('#pieChartScm').get(0).getContext('2d')
+            //var pieDataSCM = donutDataSCM;
+            //var pieOptionsSCM = {
+            //    maintainAspectRatio: false,
+            //    responsive: true,
+            //}
+            //new Chart(pieChartCanvasScm, {
+            //    type: 'pie',
+            //    data: pieDataSCM,
+            //    options: pieOptionsSCM
+            //})
+
+
+
+            //-----TSD------
+            var aTSD = $scope.TotASSNTSDCHQ;
+            var bTSD = $scope.TotASSNTSDDU;
+            var cTSD = $scope.TotASSNTSDPU;
+
+            var donutDataTSD = {
+                labels: [
+                    'CHQ',
+                    'DU',
+                    'PU',
+                ],
+                datasets: [
+                    {
+                        data: [aTSD, bTSD, cTSD],
+                        backgroundColor: ['#f56954', '#00a65a', '#f39c12'],
+                    }
+                ]
+            }
+            //var pieChartCanvasTsd = $('#pieChartTsd').get(0).getContext('2d')
+            //var pieDataTSD = donutDataTSD;
+            //var pieOptionsTSD = {
+            //    maintainAspectRatio: false,
+            //    responsive: true,
+            //}
+            //new Chart(pieChartCanvasTsd, {
+            //    type: 'pie',
+            //    data: pieDataTSD,
+            //    options: pieOptionsTSD
+            //})
+
+
+
+            var donutData = {
+                labels: [
+                    'CHQ',
+                    'DU',
+                    'PU',
+                ],
+                datasets: [
+                    {
+                        data: [10, 10, 10],
+                        backgroundColor: ['#BFC9CA', '#BFC9CA', '#BFC9CA'],
+                    }
+                ]
+            }
+            //var pieChartCanvas = $('#pieChartScmNull').get(0).getContext('2d')
+            //var pieData = donutData;
+            //var pieOptions = {
+            //    maintainAspectRatio: false,
+            //    responsive: true,
+            //}
+            //new Chart(pieChartCanvas, {
+            //    type: 'pie',
+            //    data: pieData,
+            //    options: pieOptions
+            //})
+
+
+
+            var donutDataNullTSD = {
+                labels: [
+                    'CHQ',
+                    'DU',
+                    'PU',
+                ],
+                datasets: [
+                    {
+                        data: [10, 10, 10],
+                        backgroundColor: ['#BFC9CA', '#BFC9CA', '#BFC9CA'],
+                    }
+                ]
+            }
+            //var pieChartCanvasNullTSD = $('#pieChartTsdNull').get(0).getContext('2d')
+            //var pieDataNullTSD = donutDataNullTSD;
+            //var pieOptionsNullTSD = {
+            //    maintainAspectRatio: false,
+            //    responsive: true,
+            //}
+            //new Chart(pieChartCanvasNullTSD, {
+            //    type: 'pie',
+            //    data: pieDataNullTSD,
+            //    options: pieOptionsNullTSD
+            //})
+        }
+
+
+
+
+
+
+        //Start Region for Supervisor Data-----------
+        $scope.supervisorAsgnment = {};
+
+        var LoadSuperDataAsgn = function () {
+            $scope.tableLoading = true;
+            $http.get('/CBPSModule/DashboardV2/GetParkingResultAsgn')
+                .then(
+                    function (response) {
+                        $scope.supervisorAsgnment = response.data;
+                        $scope.tableLoading = false;
+                    },
+                    function () {
+                        $scope.tableLoading = false;
+                    });
+        };
+
+        //End Region for Supervisor Data -------------
+
+
+
+
+
+        $scope.pendingResult = {};
+
+        var GetPendingBillCount = function () {
+            $scope.countLoading = true;
+            $http.get('/CBPSModule/DashboardV2/GetPendingBillCount')
+                .then(
+                    function (response) {
+                        $scope.pendingResult = response.data;
+                        $scope.countLoading = false;
+                    },
+                    function () {
+                        $scope.countLoading = false;
+                    });
+        };
+
+
+
+
+        var ShowAllocation = function () {
+            $http.get('/CBPSModule/DashboardV2/IsASuperVisor')
+                .then(
+                    function (response) {
+                        if (response.data) {
+                            $scope.isSupervisor = true;
+                            GetPendingBillCount();
+                            LoadSuperDataAsgn();
+                        }
+                    },
+                    function () {
+
+                    });
+        };
+
+        ShowAllocation();
+
+
+
+        $scope.hideAll = function (list) {
+            return list.UDDocCategoryCode != 'All';
+        };
+
+        $scope.selectPR = function (row) {
+            $scope.InvitationNumber = row.InnvitationNumber;
+            $scope.p = 0;
+            $scope.InvWiseMaterial($scope.InvitationNumber);
+        }
+
+
+        $scope.InvWiseMaterial = function (detail) {
+            $http.post('/VendorSelectionModule/TechnicalQuotation/InvWiseMaterial',
+                { InvNumber: detail })
+                .success(function (response) {
+                    //$scope.flagToShow = false;
+                    //$scope.flagToShowMasterTbl = true;
+                    $scope.MaterialList = response.InvMaterialList;
+                    $scope.GridDisplayCollection = [].concat($scope.MaterialList);
+                    $scope.loading = false;
+                }).error(function () {
+                    $scope.loading = false;
+                    toastr.error('Data Loading Failed.');
+                });
+
+            $('#QuotedInvits').modal('show');
+        }
+
+
+
+        $scope.formatDatetest = function (dateString) {
+            var date = new Date(dateString); // Parse the input date string
+            var day = String(date.getDate()).padStart(2, '0'); // Ensure 2-digit day
+            var month = String(date.getMonth() + 1).padStart(2, '0'); // Ensure 2-digit month (months are 0-based)
+            var year = date.getFullYear(); // Get full year
+            return `${day}/${month}/${year}`; // Format as DD/MM/YYYY
+        };
+        $scope.formatMaterialCode = function (materialCode) {
+            return materialCode.replace(/^0+/, '');
+        };
+
+
+
+
+    }]);
+
+</script>
+

@@ -1,0 +1,333 @@
+﻿@import url('../Scripts/AdminLTE/plugins/datepicker/datepicker/css/datepicker.css');
+
+/*/////////Page Button CSS//////////*/
+.button-detail {
+    background-color: #166e19;
+    border-radius: 4px;
+    box-shadow: 0px 0.5px 1px rgba(0, 0, 0, 0.1), inset 0px 0.5px 0.5px rgba(255, 255, 255, 0.5), 0px 0px 0px 0.5px rgba(0, 0, 0, 0.12);
+    color: white;
+    display: inline-block;
+    font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+    padding: 2px 5px 0px 5px;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    font-size: 13px;
+    height: 25px;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+    .button-detail:hover,
+    .button-detail:active {
+        background-color: #a3934e;
+        background-position: 0 0;
+        color: white;
+    }
+
+    .button-detail:active {
+        opacity: .5;
+    }
+
+.button-custom {
+    background-color: #085c7c;
+    border-radius: 100px;
+    box-shadow: rgba(45, 35, 66, .4) 0 2px 4px,rgba(45, 35, 66, .3) 0 7px 10px -3px,rgba(58, 65, 111, .5) 0 -3px 0 inset;
+    color: #fffdfd;
+    cursor: pointer;
+    display: inline-block;
+    font-family: CerebriSans-Regular,-apple-system,system-ui,Roboto,sans-serif;
+    padding: 4px 14px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 250ms;
+    border: 0;
+    font-size: 13px;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+    .button-custom:focus {
+        box-shadow: #d3e3e3 0 0 0 1.5px inset, rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -2px, #3c4fe0 0 -2px 0 inset;
+    }
+
+    .button-custom:hover {
+        box-shadow: 1px 1px 1px 1px #d3e3e3;
+        transform: translateY(-1px);
+    }
+
+    .button-custom:active {
+        box-shadow: #d3e3e3 0 3px 7px inset;
+        transform: translateY(1px);
+    }
+/*///////////////////*/
+.form-control {
+    height: 32px;
+}
+.table-bordered > thead > tr > th {
+    padding-top: 10px;
+    
+}
+
+.table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td {
+    border: 2px solid #eee;
+}
+
+.table > caption + thead > tr:first-child > th, .table > colgroup + thead > tr:first-child > th, .table > thead:first-child > tr:first-child > th, .table > caption + thead > tr:first-child > td, .table > colgroup + thead > tr:first-child > td, .table > thead:first-child > tr:first-child > td {
+    border-top: 0;
+    background: #cbd4d9;
+    color: darkblue;
+    text-align: center;
+}
+
+.content-header {
+    padding: 10px 15px 10px 30px;
+}
+
+    .content-header > .breadcrumb {
+        top: 10px;
+        right: 30px;
+    }
+
+.modal.in .modal-dialog {
+    width: 85%;
+}
+
+span.dynatree-node a {
+    font-size: 11pt !important;
+    font-family: 'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif;
+}
+
+.datepicker {
+    z-index: 1151 !important;
+}
+
+.skin-blue .sidebar-menu > li > a:hover, .skin-blue .sidebar-menu > li.active > a {
+    color: #fff;
+    background: #1e282c !important;
+    border-left-color: #e4ecef;
+}
+
+.box-header.with-border {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 18px;
+}
+
+.box-footer {
+    border-top: 1px solid #eee;
+}
+
+.form-group {
+    margin-bottom: 8px;
+}
+
+/*.form-control {
+    height: 32px;
+}*/
+
+.nav > li > a {
+    padding: 25px 15px;
+}
+
+/*.main-sidebar, .left-side {
+  width: 235px; 
+}*/
+
+/*Makes the Color of Sidebar options to White -Nihad 5/9/2023*/
+a {
+    color: white;
+}
+
+.skin-blue .treeview-menu > li > a {
+    color: white;
+}
+
+    .skin-blue .treeview-menu > li > a:hover, a:active, a:focus {
+        /*outline: none;
+    text-decoration: none;*/
+        color: #e4ecef;
+    }
+/*#8aa4af*/
+/*.content-wrapper, .right-side, .main-footer {
+    margin-left: 234px;
+}*/
+.ds-dwt-container-box {
+    position: absolute;
+    width: 100%;
+}
+
+.btnc1 {
+    background-color: rgb(202, 220, 236); /*lightgoldenrodyellow;*/
+}
+
+.btnc2 {
+    background-color: lightcyan;
+}
+
+.btnc3 {
+    background-color: #FAE6EF;
+}
+
+.loder {
+    position: absolute;
+    top: 50%;
+    left: 40%;
+    color: #000;
+    font-size: 30px;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    background-color: rgba(0,0,0,0.5); /*dim the background*/
+}
+
+.pagination {
+    margin: 5px 0 0px 0px;
+}
+
+.table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+    line-height: 1.5;
+}
+
+.skin-blue .sidebar-menu > li.header {
+    color: #e4ecef;
+    font-weight: bold;
+}
+
+.tooltip {
+    z-index: 9000 !important;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: rgb(165 175 181 / 26%);
+}
+
+.modal-sm {
+    width: 500px !important;
+}
+
+.customFont {
+    font-size: 12px;
+}
+
+.testClass {
+    background-color: inherit;
+}
+
+#btnGetCheque {
+    font-size: 10px;
+    background: #3c8dbc;
+    color: #fff;
+    cursor: pointer;
+}
+
+
+    #btnGetCheque :hover {
+        color: #FFFF00;
+    }
+
+#btnGetVendor {
+    font-size: 10px;
+    background: #3c8dbc;
+    color: #fff;
+    cursor: pointer;
+}
+
+    #btnGetVendor:hover {
+        color: #FFFF00;
+    }
+
+
+
+#btnGetDocNo {
+    font-size: 10px;
+    background: #3c8dbc;
+    color: #fff;
+    cursor: pointer;
+}
+
+
+#btnGetDateFrm {
+    font-size: 10px;
+    background: #3c8dbc;
+    color: #fff;
+    cursor: pointer;
+}
+
+
+
+
+#btnGetDateTo {
+    font-size: 10px;
+    background: #3c8dbc;
+    color: #fff;
+    cursor: pointer;
+}
+
+
+.cstmBtn {
+    font-size: 10px;
+    background: #3c8dbc;
+    color: #fff;
+    cursor: pointer;
+}
+
+    .cstmBtn:hover {
+        border-color: #66afe9;
+        box-shadow: 0 0 8px rgba(60,141,188, 0.6);
+        color: #FFFF00;
+    }
+    .btn.btn-flat {
+    margin: 1px;
+}
+.help-block {
+    color:red;
+}
+
+
+#btnGetBooth {
+    font-size: 10px;
+    background: #3c8dbc;
+    color: #fff;
+    cursor: pointer;
+}
+
+    #btnGetBooth:hover {
+        color: #FFFF00;
+    }
+
+#btnGetBox {
+    font-size: 10px;
+    background: #3c8dbc;
+    color: #fff;
+    cursor: pointer;
+}
+
+    #btnGetBox:hover {
+        color: #FFFF00;
+    }
+.buttoncss {
+    background-color: #085c7c;
+    border-radius: 100px;
+    box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset, rgba(44, 187, 99, .15) 0 1px 2px, rgba(44, 187, 99, .15) 0 2px 4px, rgba(44, 187, 99, .15) 0 4px 8px, rgba(44, 187, 99, .15) 0 8px 16px, rgba(44, 187, 99, .15) 0 16px 32px;
+    color: #fffdfd;
+    cursor: pointer;
+    display: inline-block;
+    font-family: CerebriSans-Regular,-apple-system,system-ui,Roboto,sans-serif;
+    padding: 7px 20px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 250ms;
+    border: 0;
+    font-size: 16px;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}

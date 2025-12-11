@@ -1,0 +1,306 @@
+﻿@{
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+}
+
+<div class="box box-primary box-body" ng-controller="RoleCtrl">
+    @using (Html.BeginForm("RoleList", "../Reports", System.Web.Mvc.FormMethod.Post, new { target = "_blank", name = "H1Form", id = "H1Form" }))
+    {
+    <!-- box-header -->
+        <div class="box-header with-border">
+            <i class="fa fa-list-alt"></i>
+            <h3 class="box-title">Role List</h3>
+            <div class="box-tools pull-right">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <button ng-disabled="showPrint" type="submit" id="btnSubmit" name="ButtonType" value="Preview" class="btn btn-flat btn-success pull-right">
+                            <i class="fa fa-print"></i> Preview
+                        </button>
+                    </div>
+                    <div class="col-lg-4">
+                        <button ng-disabled="showPrint" type="submit" id="btnSubmit" name="ButtonType" value="Download" class="btn btn-flat btn-success pull-Left">
+                            <i class="fa fa-download"></i> Download
+                        </button>
+                    </div>
+                    <div class="col-lg-4">
+                        <button type="button" id="btnRefresh" data-ng-click="toggleRefreshTable()" class="btn btn-warning btn-flat pull-right" ng-disabled="loading"><i class="fa fa-refresh"></i> Refresh</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-sm-2 col-md-2 col-lg-2">
+                    <div class="form-group">
+                        <label style="padding-left:60px;">Owner Level</label>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <select class="form-control" name="OwnerLevelID" ng-model="RoleModel.OwnerLevel" ng-options="ownerLevel as ownerLevel.LevelName for ownerLevel in ownerLevels track by ownerLevel.OwnerLevelID" ng-change="ddOwnerLevelChange()">
+                            <option value="">-- Select One --</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-2 col-md-2 col-lg-2">
+                    <label style="padding-left:30px;">Download Type</label>
+                </div>
+                <div class="col-sm-4 col-md-4 col-lg-4">
+                    <input type="radio" name="ReportType" value="PDF" checked="checked" /> <label>PDF</label>
+                    <input type="radio" name="ReportType" value="EXCEL" /> <label>EXCEL</label>
+                    <input type="radio" name="ReportType" value="WORD" /> <label>WORD</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2 col-md-2 col-lg-2">
+                    <label style="padding-left:105px;">Owner</label>
+                </div>
+                <div class="col-sm-4 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <input type="text" id="OwnerID" name="OwnerID" class="form-control" data-ng-model="RoleModel.OwnerID" ng-show="false" />
+                        <input type="text" id="OwnerName" name="OwnerName" class="form-control" data-ng-model="RoleModel.OwnerName" readonly placeholder="" />
+                    </div>
+                </div>
+                <div class="col-sm-2 col-md-2 col-lg-2">
+                    <input class="btn btn-flat btn-default" ng-click="ShowOwnerInformationList()" value="Search" style="width:80px;">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-2 col-md-2 col-lg-2">
+                    <label style="padding-left:130px;">Role</label>
+                </div>
+                <div class="col-sm-4 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <input type="text" id="RoleID" name="RoleID" class="form-control" data-ng-model="RoleModel.RoleID" ng-show="false" />
+                        <input type="text" id="RoleTitle" name="RoleTitle" class="form-control" data-ng-model="RoleModel.RoleTitle" readonly placeholder="" />
+                    </div>
+                </div>
+                <div class="col-sm-2 col-md-2 col-lg-2">
+                    @*<button type="button" id="btnRefresh" data-ng-click="toggleRefreshTable()" class="btn btn-warning btn-flat pull-right" ng-disabled="loading"><i class="fa fa-refresh"></i> Refresh</button>*@
+                    <input class="btn btn-flat btn-default" ng-click="ShowRoleInformationList()" value="Search" style="width:80px;">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-2 col-md-2 col-lg-2">
+                    <div class="form-group">
+                        <label style="padding-left:100px;">Status</label>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <select id="txtStatus" data-ng-model="vmBeneficiaryDetails.Status" name="Status" class="form-control">
+                            <option value="">--Select--</option>
+                            <option value="1">Active</option>
+                            <option value="0">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*<div id="mydiv" data-ng-show="loading">
+                <div class="overlay">
+                    <i class="fa fa-refresh fa-spin"></i>Loading...
+                </div>
+            </div>*@
+
+        <div id="OwnerModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" ng-click="ResetModel()" aria-hidden="true">x</button>
+                        <h3 class="modal-title">Owner Information</h3>
+                    </div>
+                    <div class="modal-body table-responsive">
+                        <table st-table="displayedOwnerCollection" st-safe-src="OwnerGridData" class="table table-condensed table-bordered table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="hidden" st-sort="OwnerID"></th>
+                                    <th st-sort="OwnerName">Owner Name</th>
+                                    <th>Action</th>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <input st-search="OwnerName" placeholder="Owner Name" class="input-sm form-control" type="search" />
+                                    </th>
+
+                                    @*<th>
+                                            <input st-search="OwnerFullName" placeholder="Owner Full Name" class="input-sm form-control" type="search" />
+                                        </th>
+                                        <th>
+                                            <input st-search="EmployeeID" placeholder="Employee ID" class="input-sm form-control" type="search" />
+                                        </th>
+
+                                        <th>
+                                            <input st-search="JobLocation" placeholder="Job Location" class="input-sm form-control" type="search" />
+                                        </th>*@
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="row in displayedOwnerCollection">
+                                    <td class="hidden">{{row.OwnerID}}</td>
+                                    <td>{{row.OwnerName}}</td>
+                                    <td>
+                                        <a class="btn col-center btn-sm btn-flat btn-success" ng-href="#" ng-rel="" data-ng-click="toggleOwnerSelect(row)">Select</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="6" class="text-center">
+                                        <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="10"></div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="ResetModel()">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="RoleModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" ng-click="ResetModel()" aria-hidden="true">x</button>
+                        <h3 class="modal-title">Role Information</h3>
+                    </div>
+                    <div class="modal-body table-responsive">
+                        <table st-table="displayedRoleCollection" st-safe-src="RoleGridData" class="table table-condensed table-bordered table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="hidden" st-sort="RoleID"></th>
+                                    <th st-sort="RoleTitle">Role Title</th>
+                                    <th st-sort="RoleType">Role Type</th>
+                                    <th>Action</th>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <input st-search="RoleTitle" placeholder="Role Title" class="input-sm form-control" type="search" />
+                                    </th>
+                                    <th>
+                                        <input st-search="RoleType" placeholder="Role Type" class="input-sm form-control" type="search" />
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="row in displayedRoleCollection">
+                                    <td class="hidden">{{row.RoleID}}</td>
+                                    <td>{{row.RoleTitle}}</td>
+                                    <td>{{row.RoleType}}</td>
+                                    <td>
+                                        <a class="btn col-center btn-sm btn-flat btn-success" ng-href="#" ng-rel="" data-ng-click="toggleRoleSelect(row)">Select</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="6" class="text-center">
+                                        <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="10"></div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="ResetModel()">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script type="text/javascript">
+    app.controller('RoleCtrl', function ($scope, $http) {
+        applySecurity();
+
+        $scope.loading = true;
+        $scope.itemsByPage = 10;
+
+        $scope.RoleModel =
+        {
+            OwnerLevelID: "",
+            OwnerID: "",
+            RoleID: "",
+            Role: { RoleID: "", RoleTitle: "" },
+            OwnerLevel: { OwnerLevelID: "", LevelName: "" },
+            Owner: { OwnerID: "", OwnerName: "" },
+            Status: ""
+        };
+
+        //################ Bind Dropdown ###################
+        // To get all the active owner level to bind to the dropdown
+        $http.get('/DocScanningModule/OwnerProperIdentity/GetOwnerLevel?_OwnerLevelID=')
+            .success(function (response) {
+                $scope.ownerLevels = response.result;
+                $scope.loading = false;
+            })
+            .error(function () {
+                $scope.loading = false;
+            });
+
+        $scope.ShowOwnerInformationList = function (model) {
+            $http.post('/DocScanningModule/OwnerProperIdentity/GetOwnerForSpecificOwnerLevel', { _OwnerLevelID: $scope.RoleModel.OwnerLevel.OwnerLevelID })
+            .success(function (response) {
+                $scope.OwnerGridData = response.result;
+                $scope.displayedOwnerCollection = [].concat($scope.OwnerGridData);
+                $scope.loading = false;
+            })
+            .error(function () {
+                $scope.loading = false;
+            });
+
+            $('#OwnerModal').modal('show');
+        };
+
+        $scope.toggleOwnerSelect = function (tableRow) {
+            $scope.RoleModel.OwnerID = tableRow.OwnerID;
+            $scope.RoleModel.OwnerName = tableRow.OwnerName;
+
+            $('#OwnerModal').modal('hide');
+        };
+
+        $scope.ShowRoleInformationList = function (model) {
+            //$http.get('/DocScanningModule/Role/GetRoleForOwner?id=' + $scope.RoleModel.OwnerID)
+            $http.post('/SecurityModule/RoleSetup/GetRole', { _OwnerID: $scope.RoleModel.OwnerID })
+                .success(function (response) {
+                    $scope.RoleGridData = [];
+                    $scope.RoleGridData = response.result;
+                    $scope.displayedRoleCollection = [].concat($scope.RoleGridData);
+                    $scope.loading = false;
+                })
+                .error(function () { });
+
+            $('#RoleModal').modal('show');
+        };
+
+        $scope.toggleRoleSelect = function (tableRow) {
+            $scope.RoleModel.RoleID = tableRow.RoleID;
+            $scope.RoleModel.RoleTitle = tableRow.RoleTitle;
+
+            $('#RoleModal').modal('hide');
+        };
+
+        //Refresh
+        $scope.toggleRefreshTable = function () {
+            $scope.loading = true;
+            window.location.reload();
+        };
+
+    });
+
+</script>
