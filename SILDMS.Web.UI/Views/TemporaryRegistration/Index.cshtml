@@ -16,11 +16,11 @@
         </div>
     </div>
 
-    @*Vendor Registration Details Table Modal*@
-
   
-<div class="col-sm-12 col-md-12 col-lg-12" id="EntryHolderDiv" ng-show="p==1">
-    <div style="margin: 1%; background-color: #F0F0F0; box-shadow: 2px 2px 5px #888888; padding: 10px 10px 10px 10px;" ng-show="q === 1">
+<div class="col-sm-12 col-md-12 col-lg-12" id="EntryHolderDiv" @*ng-show="p==1"*@
+     >
+    <div style="margin: 1%; background-color: #F0F0F0; box-shadow: 2px 2px 5px #888888; padding: 10px 10px 10px 10px;" @*ng-show="q === 1"*@
+         >
         <div style="height: 30px; margin-bottom:1%">
             <p style="font-family: Verdana; position: center;  bottom: 5px;">Register your business and please provide all required details to register your business with us</p>
         </div>
@@ -35,9 +35,30 @@
             <div class="col-lg-4">
                 <input id="BusinessName" autocomplete="off" type="text" name="BusinessName" class="form-control" ng-model="PurreqDtl.Vendor.BusinessName" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
             </div>
-            <div class="col-md-3">
+            @*<div class="col-md-3">
                 <span class="center-block text-red" id="errorMessageBusinessName" style="display: none;">Please input valid Business Name.</span>
+            </div>*@
+
+            <!-- Business Type -->
+            <div class="col-lg-2">
+                <div class="form-group" style="font-size: smaller;">
+                    <label for="BusinessType">Business Type :</label>
+                </div>
             </div>
+
+            <div class="col-lg-4">
+                <select id="BusinessType"
+                        name="BusinessType"
+                        class="form-control"
+                        ng-model="PurreqDtl.Vendor.BusinessType"
+                        style="font-size: smaller; padding: 3px 6px;"
+                        required>
+
+                    <option value="" disabled selected>Select Business Type</option>
+                    <option value="Not given from ERP Team">Not given from ERP Team</option>
+                </select>
+            </div>
+
 
 
         </div>
@@ -93,12 +114,21 @@
             <div class="col-lg-2" style="font-size: smaller;">
                 <label for="TIN">TIN :</label>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-2">
                 <input id="TIN" type="text" autocomplete="off" name="TIN" class="form-control" ng-model="PurreqDtl.Vendor.TIN" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
             </div>
-            <div class="col-md-3">
-                <span class="center-block text-red" id="errorMessageTIN" style="display: none;">Please input valid TIN</span>
+            @*<div class="col-md-3">
+            <span class="center-block text-red" id="errorMessageTIN" style="display: none;">Please input valid TIN</span>
+        </div>*@
+
+            <div class="col-lg-4">
+                <input type="file"
+                       id="TINFile"
+                       accept=".pdf"
+                       onchange="angular.element(this).scope().fileSelected(this, 'TIN')" />
+
             </div>
+
         </div>
 
 
@@ -107,86 +137,114 @@
             <div class="col-lg-2" style="font-size: smaller;">
                 <label for="BIN">BIN :</label>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-2">
                 <input id="BIN" autocomplete="off" type="text" name="BIN" class="form-control" ng-model="PurreqDtl.Vendor.BIN" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
             </div>
-            <div class="col-md-3">
-                <span class="center-block text-red" id="errorMessageBIN" style="display: none;">Please input valid BIN</span>
-            </div>
-        </div>
-
-        @*  Company Address *@
-        <div class="row" style="margin-top: 5px;">
-            <div class="col-lg-2" style="font-size: smaller;">
-                <label for="CompanyAddress">Company Address :</label>
-            </div>
+            @*<div class="col-md-3">
+            <span class="center-block text-red" id="errorMessageBIN" style="display: none;">Please input valid BIN</span>
+        </div>*@
             <div class="col-lg-4">
-                <input id="CompanyAddress" autocomplete="off" type="text" name="CompanyAddress" class="form-control" ng-model="PurreqDtl.Vendor.CompanyAddress" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
+                <input type="file"
+                       id="BINFile"
+                       accept=".pdf"
+                       onchange="angular.element(this).scope().fileSelected(this, 'BIN')" />
+            </div>
+          </div>
+
+            @*  Company Address *@
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-2" style="font-size: smaller;">
+                    <label for="CompanyAddress">Company Address :</label>
+                </div>
+                <div class="col-lg-4">
+                    <input id="CompanyAddress" autocomplete="off" type="text" name="CompanyAddress" class="form-control" ng-model="PurreqDtl.Vendor.CompanyAddress" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
+                </div>
+
+                <!-- Country -->
+                <div class="col-lg-2">
+                    <div class="form-group" style="font-size: smaller;">
+                        <label for="Country">Country :</label>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <select id="Country"
+                            name="Country"
+                            class="form-control"
+                            ng-model="PurreqDtl.Vendor.Country"
+                            ng-options="country for country in countries"
+                            style="font-size: smaller; padding: 3px 6px;"
+                            required>
+
+                        <option value="">Select Country</option>
+                    </select>
+                </div>
+
+
+            </div>
+            <!-- General Details of Services/ Goods -->
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-2" style="font-size: smaller;">
+                    <label for="GeneralDetails">General Details of Services/ Goods :</label>
+                </div>
+                <div class="col-lg-4">
+                    <input id="GeneralDetails" autocomplete="off" type="text" name="GeneralDetails" class="form-control" ng-model="PurreqDtl.Vendor.GenaralDetailsServices" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
+                </div>
+            </div>
+
+            @*User Name*@
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-2" style="font-size: smaller;">
+                    <label for="UserName">User Name :<span style="color: red;"> *</span></label>
+                </div>
+                <div class="col-lg-4">
+                    <input id="UserName" autocomplete="off" type="text" name="UserName" class="form-control" ng-model="PurreqDtl.Vendor.UserName" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
+                </div>
+                <div class="col-md-3">
+                    <span class="center-block text-red" id="errorMessageUserName" style="display: none;">Please input valid User Name</span>
+                </div>
+            </div>
+
+            @*Password*@
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-2" style="font-size: smaller;">
+                    <label for="Password">Password :<span style="color: red;"> *</span></label>
+                </div>
+                <div class="col-lg-4">
+                    <input id="Password" autocomplete="off" type="text" name="Password" class="form-control" ng-model="PurreqDtl.Vendor.Password" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
+                </div>
+                <div class="col-md-3">
+                    <span class="center-block text-red" id="errorMessagePassword" style="display: none;">Please input valid Password</span>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-2" style="font-size: smaller;">
+                    <label for="ConfirmPassword">Confirm Password :<span style="color: red;"> *</span></label>
+                </div>
+                <div class="col-lg-4">
+                    <input id="ConfirmPassword" autocomplete="off" type="text" name="ConfirmPassword" class="form-control" ng-model="PurreqDtl.Vendor.ConfirmPassword" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
+                </div>
+
+                <div class="col-lg-4" style="margin-top: 10px;">
+                </div>
+            </div>
+            <br />
+
+
+
+
+
+
+            @* button save*@
+            <div class="row">
+                <div class="col-lg-1">
+                    <button id="btnSaveMasterInitial" type="button" class="btn btn-success saveBtn pull-left" data-dismiss="modal" title="Submit" ng-click="ValidationCheck()">
+                        <i class="fa fa-save"></i> Submit Registration
+                    </button>
+                </div>
+
             </div>
         </div>
-        <!-- General Details of Services/ Goods -->
-        <div class="row" style="margin-top: 5px;">
-            <div class="col-lg-2" style="font-size: smaller;">
-                <label for="GeneralDetails">General Details of Services/ Goods :</label>
-            </div>
-            <div class="col-lg-4">
-                <input id="GeneralDetails" autocomplete="off" type="text" name="GeneralDetails" class="form-control" ng-model="PurreqDtl.Vendor.GenaralDetailsServices" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
-            </div>
-        </div>
-
-        @*User Name*@
-        <div class="row" style="margin-top: 5px;">
-            <div class="col-lg-2" style="font-size: smaller;">
-                <label for="UserName">User Name :<span style="color: red;"> *</span></label>
-            </div>
-            <div class="col-lg-4">
-                <input id="UserName" autocomplete="off" type="text" name="UserName" class="form-control" ng-model="PurreqDtl.Vendor.UserName" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
-            </div>
-            <div class="col-md-3">
-                <span class="center-block text-red" id="errorMessageUserName" style="display: none;">Please input valid User Name</span>
-            </div>
-        </div>
-
-        @*Password*@
-        <div class="row" style="margin-top: 5px;">
-            <div class="col-lg-2" style="font-size: smaller;">
-                <label for="Password">Password :<span style="color: red;"> *</span></label>
-            </div>
-            <div class="col-lg-4">
-                <input id="Password" autocomplete="off" type="text" name="Password" class="form-control" ng-model="PurreqDtl.Vendor.Password" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
-            </div>
-            <div class="col-md-3">
-                <span class="center-block text-red" id="errorMessagePassword" style="display: none;">Please input valid Password</span>
-            </div>
-        </div>
-        <div class="row" style="margin-top: 5px;">
-            <div class="col-lg-2" style="font-size: smaller;">
-                <label for="ConfirmPassword">Confirm Password :<span style="color: red;"> *</span></label>
-            </div>
-            <div class="col-lg-4">
-                <input id="ConfirmPassword" autocomplete="off" type="text" name="ConfirmPassword" class="form-control" ng-model="PurreqDtl.Vendor.ConfirmPassword" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
-            </div>
-
-            <div class="col-lg-4" style="margin-top: 10px;">
-            </div>
-        </div>
-        <br />
-
-
-
-
-
-
-        @* button save*@
-        <div class="row">
-            <div class="col-lg-1">
-                <button id="btnSaveMasterInitial" type="button" class="btn btn-success saveBtn pull-left" data-dismiss="modal" title="Submit" ng-click="ValidationCheck()">
-                    <i class="fa fa-save"></i> Submit Registration
-                </button>
-            </div>
-
-        </div>
-    </div>
 
     <div style="margin: 1%; background-color: #F0F0F0; box-shadow: 2px 2px 5px #888888; padding: 10px 10px 10px 10px;" ng-show="q==2">
         <div style="height: 30px; margin-bottom:1%">
@@ -195,105 +253,6 @@
     </div>
 
 
-        <!--<div style="margin: 1%; background-color: #F0F0F0; box-shadow: 2px 2px 5px #888888; padding: 10px 10px 10px 10px;" ng-show="q==2">
-            <div style="height: 30px; margin-bottom:1%">
-                <p style="font-family: Verdana; position: center;  bottom: 5px;">Update your Information</p>
-            </div>
-
-            <!-- Bussiness Name -->
-        <!--<div class="row" style="margin-top: 5px;">
-            <div class="col-lg-2">
-                <div class="form-group" style="font-size: smaller;">
-                    <label for="BusinessName">Business Name :</label>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <input id="BusinessName" autocomplete="off" type="text" name="BusinessName" class="form-control" ng-model="PurreqDtl.Vendor.BusinessName" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
-            </div>
-            <div class="col-md-3">
-                <span class="center-block text-red" id="errorMessageBusinessName" style="display: none;">Please input valid Business Name.</span>
-            </div>
-
-
-        </div>-->
-        <!-- Contact Person -->
-        <!--<div class="row" style="margin-top: 5px;">
-
-            <div class="col-lg-2 col-md-2 col-sm-2" style="font-size: smaller;">
-                <label for="ContactPerson">Contact Person :<span style="color: red;"> *</span></label>
-            </div>
-            <div class="col-lg-2 col-md-2 col-sm-2">
-                <input id="FirstName" autocomplete="off" type="text" name="FirstName" class="form-control" ng-model="PurreqDtl.Vendor.ContactPersonFirstName" placeholder="First Name" style="font-size: smaller; padding: 3px 6px 3px;" required />
-            </div>
-            <div class="col-lg-2 col-md-2 col-sm-2">
-                <input id="LastName" autocomplete="off" type="text" name="LastName" class="form-control" ng-model="PurreqDtl.Vendor.ContactPersonLastName" placeholder="Last Name" style="font-size: smaller; padding: 3px 6px 3px;" required />
-            </div>
-            <div class="col-md-3">
-                <span class="center-block text-red" id="errorMessageContactPerson" style="display: none;">Please input valid ContactPerson.</span>
-            </div>
-        </div>-->
-        <!-- Contact Number -->
-        <!--<div class="row" style="margin-top: 5px;">
-            <div class="col-lg-2" style="font-size: smaller;">
-                <label for="VendorPhoneNumber">Contact Number :<span style="color: red;"> *</span></label>
-            </div>
-            <div class="col-lg-2">
-                <input id="VendorPhoneNumber" autocomplete="off" type="text" name="VendorPhoneNumber" class="form-control" ng-model="PurreqDtl.Vendor.VendorPhoneNumber" placeholder="(+880) 00 0000 0000" style="font-size: smaller; padding: 3px 6px 3px;" required />
-            </div>
-            <div class="col-md-3">
-                <span class="center-block text-red" id="errorMessageVendorPhoneNumber" style="display: none;">Please input valid Contact Number.</span>
-            </div>
-        </div>-->
-        <!-- TIN -->
-        <!--<div class="row" style="margin-top: 5px;">
-            <div class="col-lg-2" style="font-size: smaller;">
-                <label for="TIN">TIN :</label>
-            </div>
-            <div class="col-lg-4">
-                <input id="TIN" type="text" autocomplete="off" name="TIN" class="form-control" ng-model="PurreqDtl.Vendor.TIN" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
-            </div>
-            <div class="col-md-3">
-                <span class="center-block text-red" id="errorMessageTIN" style="display: none;">Please input valid TIN</span>
-            </div>
-        </div>-->
-        <!-- BIN -->
-        <!--<div class="row" style="margin-top: 5px;">
-            <div class="col-lg-2" style="font-size: smaller;">
-                <label for="BIN">BIN :</label>
-            </div>
-            <div class="col-lg-4">
-                <input id="BIN" autocomplete="off" type="text" name="BIN" class="form-control" ng-model="PurreqDtl.Vendor.BIN" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
-            </div>
-            <div class="col-md-3">
-                <span class="center-block text-red" id="errorMessageBIN" style="display: none;">Please input valid BIN</span>
-            </div>
-        </div>-->
-        @*  Company Address *@
-        <!--<div class="row" style="margin-top: 5px;">
-            <div class="col-lg-2" style="font-size: smaller;">
-                <label for="CompanyAddress">Company Address :</label>
-            </div>
-            <div class="col-lg-4">
-                <input id="CompanyAddress" autocomplete="off" type="text" name="CompanyAddress" class="form-control" ng-model="PurreqDtl.Vendor.CompanyAddress" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
-            </div>
-        </div>-->
-        <!-- General Details of Services/ Goods -->
-        <!--<div class="row" style="margin-top: 5px;">
-            <div class="col-lg-2" style="font-size: smaller;">
-                <label for="GeneralDetails">Details of Services/ Goods :</label>
-            </div>
-            <div class="col-lg-4">
-                <input id="GeneralDetails" autocomplete="off" type="text" name="GeneralDetails" class="form-control" ng-model="PurreqDtl.Vendor.GenaralDetailsServices" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
-            </div>
-        </div>
-        <br />-->
-        @*User Name*@
-
-
-        @*Password*@
-
-
-        @*Confirm Password*@
 
 
 
@@ -304,26 +263,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-        <!--<div class="row" style="margin-top: 5px;">-->
-        @* button save*@
-        @*<div class="col-lg-1">
-                        <button id="btnSaveMasterupdate" type="button" class="btn btn-success saveBtn pull-left" data-dismiss="modal" title="Submit" ng-click="updateRegistration()">
-                            <i class="fa fa-save"></i> Update Registration
-                        </button>
-                    </div>
-
-                </div>
-
-            </div>-->*@
 
         <div style="margin: 1%; background-color: #F0F0F0; box-shadow: 2px 2px 5px #888888; padding: 10px 10px 10px 10px;" ng-show="q === 3">
             <div style="height: 30px; margin-bottom:1%">
@@ -340,8 +279,28 @@
                 <div class="col-lg-4">
                     <input id="BusinessName" autocomplete="off" type="text" name="BusinessName" class="form-control" ng-model="PurreqDtl.Vendor.BusinessName" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
                 </div>
-                <div class="col-md-3">
+                @*<div class="col-md-3">
                     <span class="center-block text-red" id="errorMessageBusinessName" style="display: none;">Please input valid Business Name.</span>
+                </div>*@
+
+
+                <div class="col-lg-2">
+                    <div class="form-group" style="font-size: smaller;">
+                        <label for="BusinessType">Business Type :</label>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <select id="BusinessType"
+                            name="BusinessType"
+                            class="form-control"
+                            ng-model="PurreqDtl.Vendor.BusinessType"
+                            style="font-size: smaller; padding: 3px 6px;"
+                            required>
+
+                        <option value="" disabled selected>Select Business Type</option>
+                        <option value="Not given from ERP Team">Not given from ERP Team</option>
+                    </select>
                 </div>
 
 
@@ -386,350 +345,119 @@
                 <div class="col-lg-2" style="font-size: smaller;">
                     <label for="TIN">TIN :</label>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-2">
                     <input id="TIN" type="text" autocomplete="off" name="TIN" class="form-control" ng-model="PurreqDtl.Vendor.TIN" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
                 </div>
-                <div class="col-md-3">
-                    <span class="center-block text-red" id="errorMessageTIN" style="display: none;">Please input valid TIN</span>
+                @*<div class="col-md-3">
+            <span class="center-block text-red" id="errorMessageTIN" style="display: none;">Please input valid TIN</span>
+        </div>*@
+                <div class="col-lg-4">
+                    <input type="file"
+                           id="TINFile"
+                           accept=".pdf"
+                           onchange="angular.element(this).scope().fileSelected(this, 'TIN')" />
+
                 </div>
-            </div>
+                </div>
 
 
-            <!-- BIN -->
+                <!-- BIN -->
             <div class="row" style="margin-top: 5px;">
                 <div class="col-lg-2" style="font-size: smaller;">
                     <label for="BIN">BIN :</label>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-2">
                     <input id="BIN" autocomplete="off" type="text" name="BIN" class="form-control" ng-model="PurreqDtl.Vendor.BIN" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
                 </div>
-                <div class="col-md-3">
-                    <span class="center-block text-red" id="errorMessageBIN" style="display: none;">Please input valid BIN</span>
-                </div>
-            </div>
+                @*<div class="col-md-3">
+            <span class="center-block text-red" id="errorMessageBIN" style="display: none;">Please input valid BIN</span>
+        </div>*@
 
-            @*  Company Address *@
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2" style="font-size: smaller;">
-                    <label for="CompanyAddress">Company Address :</label>
-                </div>
                 <div class="col-lg-4">
-                    <input id="CompanyAddress" autocomplete="off" type="text" name="CompanyAddress" class="form-control" ng-model="PurreqDtl.Vendor.CompanyAddress" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
-                </div>
-            </div>
-            <!-- General Details of Services/ Goods -->
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2" style="font-size: smaller;">
-                    <label for="GeneralDetails">Details of Services/ Goods :</label>
-                </div>
-                <div class="col-lg-4">
-                    <input id="GeneralDetails" autocomplete="off" type="text" name="GeneralDetails" class="form-control" ng-model="PurreqDtl.Vendor.GenaralDetailsServices" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
+                    <input type="file"
+                           id="BINFile"
+                           accept=".pdf"
+                           onchange="angular.element(this).scope().fileSelected(this, 'BIN')" />
                 </div>
             </div>
 
-            @*User Name*@
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2" style="font-size: smaller;">
-                    <label for="UserName">User Name :<span style="color: red;"> *</span></label>
-                </div>
-                <div class="col-lg-4">
-                    <input id="UserName" autocomplete="off" type="text" name="UserName" class="form-control" ng-model="PurreqDtl.Vendor.UserName" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
-                </div>
-                <div class="col-md-3">
-                    <span class="center-block text-red" id="errorMessageUserName" style="display: none;">Please input valid User Name</span>
-                </div>
-            </div>
-
-            @*Password*@
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2" style="font-size: smaller;">
-                    <label for="Password">Password :<span style="color: red;"> *</span></label>
-                </div>
-                <div class="col-lg-4">
-                    <input id="Password" autocomplete="off" type="text" name="Password" class="form-control" ng-model="PurreqDtl.Vendor.Password" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
-                </div>
-                <div class="col-md-3">
-                    <span class="center-block text-red" id="errorMessagePassword" style="display: none;">Please input valid Password</span>
-                </div>
-            </div>
-
-            @*Confirm Password*@
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2" style="font-size: smaller;">
-                    <label for="ConfirmPassword">Confirm Password :<span style="color: red;"> *</span></label>
-                </div>
-                <div class="col-lg-4">
-                    <input id="ConfirmPassword" autocomplete="off" type="text" name="ConfirmPassword" class="form-control" ng-model="PurreqDtl.Vendor.ConfirmPassword" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
-                </div>
-            </div>
-
-            @*Password*@
-
-
-            @*Confirm Password*@
-
-
-
-            @*<div class="row" style="position:relative;top:-12px">
-                    <div class="col-md-12">
-                        <div class="box box-info">
-                            <div class="box-header">
-                                <h3 class="box-title">SUPPORTING DOCUMENTS</h3>
-                                <input type="button" class="btn btn-flat btn-default btn-xs pull-right" value="Select All" ng-click="SelectAll()" />
-                                <input type="button" class="btn btn-flat btn-default btn-xs pull-right" value="Unselect All" ng-click="UnSelectAll()" />
-                            </div>
-                            <div class="box-body">
-                                <div id="Documents">
-                                    <div class="row">
-                                        <div class="col-sm-6 col-md-6 col-lg-6">
-                                            <div ng-repeat="docProperty in docPropertyForSpecificDocType.slice(0, 3)">
-                                                <input type="checkbox" name="DocProperty" ng-model="docProperty.IsSelected" data-ng-disabled="docProperty.DocClassification === 'Required'" ng-change="BindDataToGrid()" /> {{docProperty.DocPropertyName}}
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6 col-md-6 col-lg-6">
-                                            <div ng-repeat="docProperty in docPropertyForSpecificDocType.slice(3, 10)">
-                                                <input type="checkbox" name="DocProperty" ng-model="docProperty.IsSelected" data-ng-disabled="docProperty.DocClassification === 'Required'" ng-change="BindDataToGrid()" /> {{docProperty.DocPropertyName}}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                @*  Company Address *@
+                <div class="row" style="margin-top: 5px;">
+                    <div class="col-lg-2" style="font-size: smaller;">
+                        <label for="CompanyAddress">Company Address :</label>
                     </div>
-
+                    <div class="col-lg-4">
+                        <input id="CompanyAddress" autocomplete="off" type="text" name="CompanyAddress" class="form-control" ng-model="PurreqDtl.Vendor.CompanyAddress" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
+                    </div>
                 </div>
-
-
-                <div class="row" style="position:relative;top:-24px">
-                    <div class="col-md-12">
-                        <div class="box box-success">
-                            <div class="box-header">
-                                <h3 class="box-title">DOCUMENTS SCANNING</h3>
-                                <a class="btn  btn-flat btnRemove btn-sm btn-default pull-right" ng-click="RemoveAllSelectedImages()">
-                                    <i class="fa fa-remove"></i> Remove
-                                </a>
-                                <a class="btn  btn-flat btnRotate btn-sm btn-default pull-right" ng-click="RotateRight()">
-                                    <i class="fa fa-rotate-right"></i> Rotate
-                                </a>
-                                <a class="btn btn-flat btnMoveImage btn-sm btn-default pull-right" ng-click="ShowMoveImageDiv()">
-                                    <i class="fa fa-reorder"></i> Move
-                                </a>
-                                <a class="btn  btn-flat btnLoad btn-sm btn-info pull-right" ng-click="Load()">
-
-                                    <i class="fa fa-inbox"></i> Load Another PDF
-                                </a>
-
-
-                                <a class="btn  btn-flat btnLoad btn-sm btn-info pull-right" ng-click="LoadImageWithoutBlank()">
-                                    <i class="fa fa-inbox"></i> Load Blank PDF
-                                </a>
-                                <a class="btn  btn-flat btnLoad btn-sm btn-info pull-right" ng-click="LoadImage()">
-                                    <i class="fa fa-inbox"></i> Load
-                                </a>
-                                <a class="btn  btn-flat btnScan btn-sm btn-primary pull-right" ng-click="AcquireImage();">
-                                    <i class="fa fa-print"></i> Scan
-                                </a>
-
-
-                            </div>
-                            <div class="box-body">
-                                <div class="row">
-                                    <div id="MoveImage" class="row hidden">
-                                        <div class="col-lg-2"></div>
-                                        <div class="col-lg-10">
-                                            <label>Which Image</label><input type="text" id="WhichImage" />
-                                            <label>Where</label><input type="text" id="Where" />
-                                            <a class="btn btn-primary btn-flat btn-sm" ng-click="MoveImage()">Move</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div id="dwtHorizontalThumbnil"></div>
-                                    </div>
-                                    <div class="col-lg-5 pull-right">
-                                        <select id="source" class="form-control"></select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <!-- General Details of Services/ Goods -->
+                <div class="row" style="margin-top: 5px;">
+                    <div class="col-lg-2" style="font-size: smaller;">
+                        <label for="GeneralDetails">Details of Services/ Goods :</label>
+                    </div>
+                    <div class="col-lg-4">
+                        <input id="GeneralDetails" autocomplete="off" type="text" name="GeneralDetails" class="form-control" ng-model="PurreqDtl.Vendor.GenaralDetailsServices" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
                     </div>
                 </div>
 
-
-
-
-
-                <div id="viewerModal" class="modal fade">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-                                <h3 class="modal-title">Image Viewer</h3>
-                            </div>
-
-                            <div class="modal-body">
-                                <div class="box-body">
-                                    <button class="btn btn-flat btn-sm btn-default" data-ng-click="ZoomIn()"> Zoom In</button>
-                                    <button class="btn btn-flat btn-sm btn-default" data-ng-click="ZoomOut()"> Zoom Out</button>
-
-                                    <div id="dwtLargeViewer" class="box-body"></div>
-                                </div>
-                            </div>
-
-                            <div class="modal-footer">
-                                <div class="col-sm-12 col-md-12 col-lg-12">
-                                    <div class="form-group">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                @*User Name*@
+                <div class="row" style="margin-top: 5px;">
+                    <div class="col-lg-2" style="font-size: smaller;">
+                        <label for="UserName">User Name :<span style="color: red;"> *</span></label>
                     </div>
-                </div>*@
+                    <div class="col-lg-4">
+                        <input id="UserName" autocomplete="off" type="text" name="UserName" class="form-control" ng-model="PurreqDtl.Vendor.UserName" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
+                    </div>
+                    <div class="col-md-3">
+                        <span class="center-block text-red" id="errorMessageUserName" style="display: none;">Please input valid User Name</span>
+                    </div>
+                </div>
+
+                @*Password*@
+                <div class="row" style="margin-top: 5px;">
+                    <div class="col-lg-2" style="font-size: smaller;">
+                        <label for="Password">Password :<span style="color: red;"> *</span></label>
+                    </div>
+                    <div class="col-lg-4">
+                        <input id="Password" autocomplete="off" type="text" name="Password" class="form-control" ng-model="PurreqDtl.Vendor.Password" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
+                    </div>
+                    <div class="col-md-3">
+                        <span class="center-block text-red" id="errorMessagePassword" style="display: none;">Please input valid Password</span>
+                    </div>
+                </div>
+
+                @*Confirm Password*@
+                <div class="row" style="margin-top: 5px;">
+                    <div class="col-lg-2" style="font-size: smaller;">
+                        <label for="ConfirmPassword">Confirm Password :<span style="color: red;"> *</span></label>
+                    </div>
+                    <div class="col-lg-4">
+                        <input id="ConfirmPassword" autocomplete="off" type="text" name="ConfirmPassword" class="form-control" ng-model="PurreqDtl.Vendor.ConfirmPassword" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
+                    </div>
+                </div>
+
+                @*Password*@
+
+
+                @*Confirm Password*@
 
 
 
 
+                <div class="row" style="margin-top: 5px;">
 
 
+                    @* button save*@
+                    <div class="col-lg-1">
+                        <button id="btnSaveMasterupdate" type="button" class="btn btn-success saveBtn pull-left" data-dismiss="modal" title="Submit" ng-click="updateRegistration()">
+                            <i class="fa fa-save"></i> User Creation
+                        </button>
+                    </div>
 
-
-
-
-
-
-
-            <div class="row" style="margin-top: 5px;">
-
-
-                @* button save*@
-                <div class="col-lg-1">
-                    <button id="btnSaveMasterupdate" type="button" class="btn btn-success saveBtn pull-left" data-dismiss="modal" title="Submit" ng-click="updateRegistration()">
-                        <i class="fa fa-save"></i> User Creation
-                    </button>
                 </div>
 
             </div>
 
-        </div>
-
-
-        <div class="row" style="position:relative;top:-12px" ng-show="q!=2">
-            <div class="col-md-12">
-                <div class="box box-info">
-                    <div class="box-header">
-                        <h3 class="box-title">SUPPORTING DOCUMENTS</h3>
-                        <input type="button" class="btn btn-flat btn-default btn-xs pull-right" value="Select All" ng-click="SelectAll()" />
-                        <input type="button" class="btn btn-flat btn-default btn-xs pull-right" value="Unselect All" ng-click="UnSelectAll()" />
-                    </div>
-                    <div class="box-body">
-                        <div id="Documents">
-                            <div class="row">
-                                <div class="col-sm-6 col-md-6 col-lg-6">
-                                    <div ng-repeat="docProperty in docPropertyForSpecificDocType.slice(0, 3)">
-                                        <input type="checkbox" name="DocProperty" ng-model="docProperty.IsSelected" data-ng-disabled="docProperty.DocClassification === 'Required'" ng-change="BindDataToGrid()" /> {{docProperty.DocPropertyName}}
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-6 col-lg-6">
-                                    <div ng-repeat="docProperty in docPropertyForSpecificDocType.slice(3, 10)">
-                                        <input type="checkbox" name="DocProperty" ng-model="docProperty.IsSelected" data-ng-disabled="docProperty.DocClassification === 'Required'" ng-change="BindDataToGrid()" /> {{docProperty.DocPropertyName}}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-
-        <div class="row" style="position:relative;top:-24px" ng-show="q!=2">
-            <div class="col-md-12">
-                <div class="box box-success">
-                    <div class="box-header">
-                        <h3 class="box-title">DOCUMENTS SCANNING</h3>
-                        <a class="btn  btn-flat btnRemove btn-sm btn-default pull-right" ng-click="RemoveAllSelectedImages()">
-                            <i class="fa fa-remove"></i> Remove
-                        </a>
-                        <a class="btn  btn-flat btnRotate btn-sm btn-default pull-right" ng-click="RotateRight()">
-                            <i class="fa fa-rotate-right"></i> Rotate
-                        </a>
-                        <a class="btn btn-flat btnMoveImage btn-sm btn-default pull-right" ng-click="ShowMoveImageDiv()">
-                            <i class="fa fa-reorder"></i> Move
-                        </a>
-                        <a class="btn  btn-flat btnLoad btn-sm btn-info pull-right" ng-click="Load()">
-
-                            <i class="fa fa-inbox"></i> Load Another PDF
-                        </a>
-
-
-                        <a class="btn  btn-flat btnLoad btn-sm btn-info pull-right" ng-click="LoadImageWithoutBlank()">
-                            <i class="fa fa-inbox"></i> Load Blank PDF
-                        </a>
-                        <a class="btn  btn-flat btnLoad btn-sm btn-info pull-right" ng-click="LoadImage()">
-                            <i class="fa fa-inbox"></i> Load
-                        </a>
-                        <a class="btn  btn-flat btnScan btn-sm btn-primary pull-right" ng-click="AcquireImage();">
-                            <i class="fa fa-print"></i> Scan
-                        </a>
-
-
-                    </div>
-                    <div class="box-body">
-                        <div class="row">
-                            <div id="MoveImage" class="row hidden">
-                                <div class="col-lg-2"></div>
-                                <div class="col-lg-10">
-                                    <label>Which Image</label><input type="text" id="WhichImage" />
-                                    <label>Where</label><input type="text" id="Where" />
-                                    <a class="btn btn-primary btn-flat btn-sm" ng-click="MoveImage()">Move</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div id="dwtHorizontalThumbnil"></div>
-                            </div>
-                            <div class="col-lg-5 pull-right">
-                                <select id="source" class="form-control"></select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-
-
-
-        <div id="viewerModal" class="modal fade" ng-show="q!=2">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-                        <h3 class="modal-title">Image Viewer</h3>
-                    </div>
-
-                    <div class="modal-body">
-                        <div class="box-body">
-                            <button class="btn btn-flat btn-sm btn-default" data-ng-click="ZoomIn()"> Zoom In</button>
-                            <button class="btn btn-flat btn-sm btn-default" data-ng-click="ZoomOut()"> Zoom Out</button>
-
-                            <div id="dwtLargeViewer" class="box-body"></div>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <div class="col-sm-12 col-md-12 col-lg-12">
-                            <div class="form-group">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
     </div>
 
@@ -786,10 +514,6 @@
 
 </div>
 
-<script type="text/javascript" src="~/Resources/dynamsoft.webtwain.intellisense.js"></script>
-<script type="text/javascript" src="~/Resources/dynamsoft.webtwain.initiate.js"></script>
-<script type="text/javascript" src="~/Resources/dynamsoft.webtwain.config.js"></script>
-<script type="text/javascript" src="~/Resources/addon/dynamsoft.webtwain.addon.pdf.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
 
 
@@ -831,62 +555,21 @@
             }
         }
 
+        $scope.countries = [
+            "Afghanistan", "Albania", "Algeria", "Argentina", "Australia",
+            "Austria", "Bangladesh", "Belgium", "Brazil", "Canada",
+            "China", "Denmark", "Egypt", "Finland", "France",
+            "Germany", "India", "Indonesia", "Italy", "Japan",
+            "Malaysia", "Netherlands", "New Zealand", "Norway",
+            "Pakistan", "Saudi Arabia", "Singapore", "South Africa",
+            "South Korea", "Spain", "Sri Lanka", "Sweden",
+            "Switzerland", "Thailand", "Turkey",
+            "United Arab Emirates", "United Kingdom", "United States", "Vietnam"
+        ];
 
-        Dynamsoft.WebTwainEnv.RegisterEvent('OnWebTwainReady', Dynamsoft_OnReady);
 
-        var DWObject;
-        var DWObjectLargeViewer;
-        var zoomFactor = .5;
 
-        function Dynamsoft_OnReady() {
-            DWObject = Dynamsoft.WebTwainEnv.GetWebTwain('dwtHorizontalThumbnil');
-
-            DWObjectLargeViewer = Dynamsoft.WebTwainEnv.GetWebTwain('dwtLargeViewer');
-
-            DWObjectLargeViewer.SetViewMode(-1, -1);
-            DWObjectLargeViewer.MaxImagesInBuffer = 1;
-
-            DWObject.SetViewMode(4, -1);
-            // DWObject.PDFCompressionType = EnumDWT_PDFCompressionType.PDF_JPEG;
-            DWObject.JPEGQuality = 20;
-            DWObject.FitWindowType = 0;
-            DWObject.SelectionImageBorderColor = 0x691254;
-            DWObject.ShowPageNumber = true;
-            DWObject.IfAppendImage = true;
-            DWObject.RegisterEvent('OnMouseDoubleClick', $scope.updateLargeViewer);
-            DWObject.RegisterEvent('OnImageAreaSelected', function (sImageIndex, left, top, right, bottom) {
-                DWObject.Erase(sImageIndex, left, top, right, bottom);
-            });
-            DWObject.Addon.PDF.Download("../Resources/addon/Pdf.zip",  // specify the url of the add-on resource
-                function () { console.log('Successfully Downloaded PDF add-on'); }, // successful callback
-                function (errorCode, errorString) { alert(errorString); }  // failure callback and show error message
-            );
-        };
-
-        $scope.AcquireImage = function () {
-            if (DWObject) {
-                DWObject.IfShowUI = false;
-                DWObject.IfAutomaticDeskew = true;
-                //DWObject.IfAutoDiscardBlankpages = false;
-                DWObject.IfAutoDiscardBlankpages = false;
-                DWObject.AcquireImage();
-            }
-
-            DWObject.SelectSourceByIndex(document.getElementById("source").selectedIndex); //Use method SelectSourceByIndex to avoid the 'Select Source' dialog
-            DWObject.OpenSource();
-            DWObject.IfDisableSourceAfterAcquire = true;	// Scanner source will be disabled/closed automatically after the scan.
-            DWObject.AcquireImage(OnAcquireImageSuccess, OnAcquireImageFailure);
-        };
-
-        $scope.ZoomIn = function () {
-            DWObjectLargeViewer.Zoom = zoomFactor * 1.2;
-            zoomFactor = zoomFactor * 1.2;
-        };
-        $scope.ZoomOut = function () {
-            DWObjectLargeViewer.Zoom = zoomFactor / 1.2;
-            zoomFactor = zoomFactor / 1.2;
-        };
-
+     
         var selectedPropID = new Array();
 
         $http.get('/VendorSelectionModule/VendorRegistration/GetSupportDoc')
@@ -1182,166 +865,116 @@
 
         }
 
-        $scope.RegistrationVendor = function () {
-            var selectedPropID = new Array();
+        $scope.tinFile = null;
+        $scope.binFile = null;
 
-            $scope.imgChk = 0;
-
-            for (var i = 0; i <= DWObject.HowManyImagesInBuffer - 1; i++) {
-                var x = DWObject.IsBlankImageExpress(i);
-                if (x) {
-                    $scope.imgChk++;
+        $scope.fileSelected = function (input, type) {
+            if (input.files && input.files[0]) {
+                if (type === 'TIN') {
+                    $scope.tinFile = input.files[0];
+                } else if (type === 'BIN') {
+                    $scope.binFile = input.files[0];
                 }
             }
+        };
 
 
-            //#region Check if the last image is blank
-            if (!DWObject.IsBlankImageExpress(DWObject.HowManyImagesInBuffer - 1)) {
-
-                toastr.error("Please provide a blank page at the end of the document.");
-                $scope.loading = false;
-                return;
-            }
-            //#endregion Check if the last image is blank
-
-            //#region check if the number of selected document is equal to number of document scanned
-            if ($scope.imgChk !== 2) {
-
-                toastr.error("There is a mismatch between the number of documents selected and the number of documents scaned.");
-                $scope.loading = false;
-                return;
-            }
-            //#endregion check if the number of selected document is equal to number of document scanned
-
-            //var k = 0;
-            //angular.forEach($scope.docPropertyForSpecificDocType, function (item) {
-            //    if (item.DocClassification === "Required" && !item.IsSelected) {
-            //        k = 1;
-            //    };
-            //});
-
-            //if (k === 1) {
-            //    toastr.error("Please upload the required documents.");
-            //    if (val.length > 0) {
-            //        $scope.BillReceiveModel.InvoiceDate = (val[0] + '/' + val[1] + '/' + val[2]);
-            //        $scope.BillReceiveModel.MushakDate = (val[0] + '/' + val[1] + '/' + val[2]);
-            //    }
-            //    $scope.loading = false;
-            //    return;
-            //}
-
-            if (DWObject.IsBlankImageExpress(0)) {
-                toastr.error("Invalid document preparation");
-
-                $scope.loading = false;
-                return;
-            }
-
-            var DocIDsCounter = 0;
+        $scope.RegistrationVendor = function () {
+            var selectedPropID = [];
 
             angular.forEach($scope.docPropertyForSpecificDocType, function (item) {
-                if (item.DocClassification == "Required") {
+                if (item.DocClassification === "Required") {
                     item.IsSelected = true;
                     selectedPropID.push(item.DocPropertyID);
                 }
-            })
+            });
 
-
-
-
-
-
-            if ($scope.PurreqDtl.Vendor.Password === $scope.PurreqDtl.Vendor.ConfirmPassword) {
-                $http.post('/VendorSelectionModule/VendorRegistration/VendorRegistrationDetails', {
-                    BusinessName: $scope.PurreqDtl.Vendor.BusinessName,
-                    ContactPersonFirstName: $scope.PurreqDtl.Vendor.ContactPersonFirstName,
-                    ContactPersonLastName: $scope.PurreqDtl.Vendor.ContactPersonLastName,
-                    VendorPhoneNumber: $scope.PurreqDtl.Vendor.VendorPhoneNumber,
-                    CompanyAddress: $scope.PurreqDtl.Vendor.CompanyAddress,
-                    Email: $scope.PurreqDtl.Vendor.Email,
-                    Country: $scope.PurreqDtl.Vendor.Country,
-                    BusinessType: $scope.PurreqDtl.Vendor.BusinessType,
-                    TypeOfMaterial: $scope.PurreqDtl.Vendor.TypeOfMaterial,
-                    TIN: $scope.PurreqDtl.Vendor.TIN,
-                    BIN: $scope.PurreqDtl.Vendor.BIN,
-                    GenaralDetailsServices: $scope.PurreqDtl.Vendor.GenaralDetailsServices,
-                    UserName: $scope.PurreqDtl.Vendor.UserName,
-                    Password: $scope.PurreqDtl.Vendor.Password,
-                    Status: 'Temporary',
-                    Vendor: $scope.info1
-                })
-                    .success(function (response) {
-                        console.log(response);
-
-                        $http.post('/VendorSelectionModule/VendorRegistration/AddDocument', {
-                            UserId: response.user.UserID,
-                            VendorId: response.user.VendorId,
-                            _selectedPropID: selectedPropID.join(),
-                            _docMetaValues: $scope.docPropIdentityGridData
-                        })
-                            .success(function (response) {
-                                if (response.ResponseCode === "S201") {
-                                    var uploadStatus = 0;
-                                    for (var i = 0; i <= DWObject.HowManyImagesInBuffer - 1; i++) {
-                                        if (DWObject.IsBlankImageExpress(i)) {
-                                            DWObject.IfShowFileDialog = false;
-                                            var strFTPServer = response.DistinctID[0].ServerIP;
-
-                                            if (strFTPServer == "" || strFTPServer == null) {
-                                                toastr.error("Ftp Server is not assigned");
-                                                $scope.loading = false;
-                                                return;
-                                            }
-
-                                            if (DWObject.CurrentImageIndexInBuffer == "-1") {
-                                                toastr.error("No document found for upload");
-                                                $scope.loading = false;
-                                                return;
-                                            }
-
-                                            DWObject.FTPPort = response.DistinctID[0].ServerPort;
-                                            DWObject.FTPUserName = response.DistinctID[0].FtpUserName;
-                                            DWObject.FTPPassword = response.DistinctID[0].FtpPassword;
-
-                                            var isSave = DWObject.FTPUploadAsMultiPagePDF(
-                                                strFTPServer,
-                                                response.DistinctID[DocIDsCounter].FileServerUrl + "//" +
-                                                response.DistinctID[DocIDsCounter].DocumentID + ".pdf"
-                                            );
-
-                                            if (isSave) {
-                                                DocIDsCounter++;
-                                                DWObject.RemoveAllSelectedImages();
-                                                DWObject.RemoveImage(0);
-                                                i = -1;
-                                                uploadStatus = 1;
-                                            } else {
-                                                break;
-                                            }
-                                        } else {
-                                            DWObject.SelectedImagesCount = i + 1;
-                                            DWObject.SetSelectedImageIndex(i, i);
-                                        }
-                                    }
-                                    if (uploadStatus === 1) {
-                                        toastr.success("Data saved successfully");
-                                        $scope.refreshPage();
-                                    }
-                                }
-                            })
-                            .catch(function () {
-                                toastr.error("Data Save Failed");
-                                $scope.loading = false;
-                            });
-                    })
-                    .catch(function () {
-                        toastr.error("Data Save Failed");
-                        $scope.loading = false;
-                    });
-            } else {
+            if ($scope.PurreqDtl.Vendor.Password !== $scope.PurreqDtl.Vendor.ConfirmPassword) {
                 toastr.error("Passwords do not match");
+                return;
             }
-        }
+
+            //if (!$scope.tinFile && !$scope.binFile) {
+            //    toastr.error("Please upload at least one PDF document (TIN or BIN)");
+            //    return;
+            //}
+
+            // 1️⃣ Save Vendor
+            $http.post('/VendorSelectionModule/VendorRegistration/VendorRegistrationDetails', {
+                BusinessName: $scope.PurreqDtl.Vendor.BusinessName,
+                ContactPersonFirstName: $scope.PurreqDtl.Vendor.ContactPersonFirstName,
+                ContactPersonLastName: $scope.PurreqDtl.Vendor.ContactPersonLastName,
+                VendorPhoneNumber: $scope.PurreqDtl.Vendor.VendorPhoneNumber,
+                CompanyAddress: $scope.PurreqDtl.Vendor.CompanyAddress,
+                Country: $scope.PurreqDtl.Vendor.Country,
+                BusinessType: $scope.PurreqDtl.Vendor.BusinessType,
+                TIN: $scope.PurreqDtl.Vendor.TIN,
+                BIN: $scope.PurreqDtl.Vendor.BIN,
+                GenaralDetailsServices: $scope.PurreqDtl.Vendor.GenaralDetailsServices,
+                UserName: $scope.PurreqDtl.Vendor.UserName,
+                Password: $scope.PurreqDtl.Vendor.Password,
+                Status: 'Temporary',
+                Vendor: $scope.info1
+            }).success(function (vendorResp) {
+
+                // 2️⃣ Save Document Metadata
+                $http.post('/VendorSelectionModule/VendorRegistration/AddDocument', {
+                    UserId: vendorResp.user.UserID,
+                    VendorId: vendorResp.user.VendorId,
+                    _selectedPropID: selectedPropID.join(),
+                    _docMetaValues: $scope.docPropIdentityGridData
+                }).success(function (docResp) {
+
+                    if (docResp.ResponseCode === "S201") {
+                        var docInfo = docResp.DistinctID[0];
+
+                        // Helper function to upload a file to the backend
+                        function uploadFile(file, docType) {
+                            var fileData = new FormData();
+                            fileData.append('serverIP', docInfo.ServerIP);
+                            fileData.append('ftpPort', docInfo.ServerPort);
+                            fileData.append('ftpUserName', docInfo.FtpUserName);
+                            fileData.append('ftpPassword', docInfo.FtpPassword);
+                            fileData.append('vendorId', vendorResp.user.VendorId);
+                            fileData.append('docType', docType); // "TIN" or "BIN"
+                            fileData.append('file', file);
+
+                            return $.ajax({
+                                url: '/VendorSelectionModule/VendorRegistration/UploadOtherFiles',
+                                type: 'POST',
+                                data: fileData,
+                                contentType: false,
+                                processData: false
+                            });
+                        }
+
+                        // Array of upload promises
+                        var uploads = [];
+                        if ($scope.tinFile) uploads.push(uploadFile($scope.tinFile, 'TIN'));
+                        if ($scope.binFile) uploads.push(uploadFile($scope.binFile, 'BIN'));
+
+                        // Upload all files simultaneously
+                        $.when.apply($, uploads).done(function () {
+                            toastr.success("TIN & BIN documents uploaded successfully");
+                            $scope.tinFile = null;
+                            $scope.binFile = null;
+                            $('#TINFile').val('');
+                            $('#BINFile').val('');
+                            $scope.$apply(() => $scope.refreshPage());
+                        }).fail(function () {
+                            toastr.error("One or more file uploads failed");
+                        });
+                    }
+
+                }).error(function () {
+                    toastr.error("Document metadata save failed");
+                });
+
+            }).error(function () {
+                toastr.error("Vendor registration failed");
+            });
+        };
+
 
 
         $scope.AutoCompleteVendorInfo = function (vendorData) {
@@ -1379,162 +1012,113 @@
 
 
 
-
         $scope.updateRegistration = function () {
 
+            var selectedPropID = [];
 
-
-            $scope.imgChk = 0;
-
-            for (var i = 0; i <= DWObject.HowManyImagesInBuffer - 1; i++) {
-                var x = DWObject.IsBlankImageExpress(i);
-                if (x) {
-                    $scope.imgChk++;
+            angular.forEach($scope.docPropertyForSpecificDocType, function (item) {
+                if (item.DocClassification === "Required") {
+                    item.IsSelected = true;
+                    selectedPropID.push(item.DocPropertyID);
                 }
-            }
+            });
 
-
-            //#region Check if the last image is blank
-            if (!DWObject.IsBlankImageExpress(DWObject.HowManyImagesInBuffer - 1)) {
-
-                toastr.error("Please provide a blank page at the end of the document.");
-                $scope.loading = false;
-                return;
-            }
-            //#endregion Check if the last image is blank
-
-            //#region check if the number of selected document is equal to number of document scanned
-            if ($scope.imgChk !== 2) {
-
-                toastr.error("There is a mismatch between the number of documents selected and the number of documents scaned.");
-                $scope.loading = false;
-                return;
-            }
-            //#endregion check if the number of selected document is equal to number of document scanned
-
-            //var k = 0;
-            //angular.forEach($scope.docPropertyForSpecificDocType, function (item) {
-            //    if (item.DocClassification === "Required" && !item.IsSelected) {
-            //        k = 1;
-            //    };
-            //});
-
-            //if (k === 1) {
-            //    toastr.error("Please upload the required documents.");
-            //    if (val.length > 0) {
-            //        $scope.BillReceiveModel.InvoiceDate = (val[0] + '/' + val[1] + '/' + val[2]);
-            //        $scope.BillReceiveModel.MushakDate = (val[0] + '/' + val[1] + '/' + val[2]);
-            //    }
-            //    $scope.loading = false;
-            //    return;
-            //}
-
-            if (DWObject.IsBlankImageExpress(0)) {
-                toastr.error("Invalid document preparation");
-
-                $scope.loading = false;
+            if ($scope.PurreqDtl.Vendor.Password !== $scope.PurreqDtl.Vendor.ConfirmPassword) {
+                toastr.error("Passwords do not match");
                 return;
             }
 
-            var DocIDsCounter = 0;
+            if (!$scope.tinFile && !$scope.binFile) {
+                toastr.error("Please upload at least one document (TIN or BIN)");
+                return;
+            }
 
-
-
-
-
-
-
+            // 1️⃣ Update Vendor Info
             $http.post('/VendorSelectionModule/VendorRegistration/VendorupdateRegistrationDetails', {
                 BusinessName: $scope.PurreqDtl.Vendor.BusinessName,
                 ContactPersonFirstName: $scope.PurreqDtl.Vendor.ContactPersonFirstName,
                 ContactPersonLastName: $scope.PurreqDtl.Vendor.ContactPersonLastName,
                 VendorPhoneNumber: $scope.PurreqDtl.Vendor.VendorPhoneNumber,
                 CompanyAddress: $scope.PurreqDtl.Vendor.CompanyAddress,
-
                 Country: $scope.PurreqDtl.Vendor.Country,
                 BusinessType: $scope.PurreqDtl.Vendor.BusinessType,
-
                 TIN: $scope.PurreqDtl.Vendor.TIN,
                 BIN: $scope.PurreqDtl.Vendor.BIN,
                 GenaralDetailsServices: $scope.PurreqDtl.Vendor.GenaralDetailsServices,
                 Status: 'Temporary',
                 Vendor: $scope.Vendor,
                 UserName: $scope.PurreqDtl.Vendor.UserName,
-                Password: $scope.PurreqDtl.Vendor.Password,
-
-
+                Password: $scope.PurreqDtl.Vendor.Password
             })
-                .success(function (response) {
-                    console.log(response);
+                .success(function (vendorResp) {
 
+                    // 2️⃣ Save Document Metadata
                     $http.post('/VendorSelectionModule/VendorRegistration/AddDocument', {
-                        UserId: response.user.UserID,
-                        VendorId: response.user.VendorId,
+                        UserId: vendorResp.user.UserID,
+                        VendorId: vendorResp.user.VendorId,
                         _selectedPropID: selectedPropID.join(),
                         _docMetaValues: $scope.docPropIdentityGridData
                     })
-                        .success(function (response) {
-                            if (response.ResponseCode === "S201") {
-                                var uploadStatus = 0;
-                                for (var i = 0; i <= DWObject.HowManyImagesInBuffer - 1; i++) {
-                                    if (DWObject.IsBlankImageExpress(i)) {
-                                        DWObject.IfShowFileDialog = false;
-                                        var strFTPServer = response.DistinctID[0].ServerIP;
+                        .success(function (docResp) {
 
-                                        if (strFTPServer == "" || strFTPServer == null) {
-                                            toastr.error("Ftp Server is not assigned");
-                                            $scope.loading = false;
-                                            return;
-                                        }
+                            if (docResp.ResponseCode === "S201") {
 
-                                        if (DWObject.CurrentImageIndexInBuffer == "-1") {
-                                            toastr.error("No document found for upload");
-                                            $scope.loading = false;
-                                            return;
-                                        }
+                                var docInfo = docResp.DistinctID[0];
 
-                                        DWObject.FTPPort = response.DistinctID[0].ServerPort;
-                                        DWObject.FTPUserName = response.DistinctID[0].FtpUserName;
-                                        DWObject.FTPPassword = response.DistinctID[0].FtpPassword;
+                                // 🔁 Reusable upload function
+                                function uploadFile(file, docType) {
+                                    var fileData = new FormData();
+                                    fileData.append('serverIP', docInfo.ServerIP);
+                                    fileData.append('ftpPort', docInfo.ServerPort);
+                                    fileData.append('ftpUserName', docInfo.FtpUserName);
+                                    fileData.append('ftpPassword', docInfo.FtpPassword);
+                                    fileData.append('vendorId', vendorResp.user.VendorId);
+                                    fileData.append('docType', docType); // BIN / TIN
+                                    fileData.append('file', file);
 
-                                        var isSave = DWObject.FTPUploadAsMultiPagePDF(
-                                            strFTPServer,
-                                            response.DistinctID[DocIDsCounter].FileServerUrl + "//" +
-                                            response.DistinctID[DocIDsCounter].DocumentID + ".pdf"
-                                        );
-
-                                        if (isSave) {
-                                            DocIDsCounter++;
-                                            DWObject.RemoveAllSelectedImages();
-                                            DWObject.RemoveImage(0);
-                                            i = -1;
-                                            uploadStatus = 1;
-                                        } else {
-                                            break;
-                                        }
-                                    } else {
-                                        DWObject.SelectedImagesCount = i + 1;
-                                        DWObject.SetSelectedImageIndex(i, i);
-                                    }
+                                    return $.ajax({
+                                        url: '/VendorSelectionModule/VendorRegistration/UploadOtherFiles',
+                                        type: 'POST',
+                                        data: fileData,
+                                        contentType: false,
+                                        processData: false
+                                    });
                                 }
-                                if (uploadStatus === 1) {
-                                    toastr.success("Data saved successfully");
-                                    $scope.refreshPage();
-                                }
+
+                                var uploads = [];
+
+                                if ($scope.tinFile)
+                                    uploads.push(uploadFile($scope.tinFile, 'TIN'));
+
+                                if ($scope.binFile)
+                                    uploads.push(uploadFile($scope.binFile, 'BIN'));
+
+                                // 3️⃣ Upload both files simultaneously
+                                $.when.apply($, uploads)
+                                    .done(function () {
+                                        toastr.success("Vendor updated and documents uploaded successfully");
+
+                                        $scope.tinFile = null;
+                                        $scope.binFile = null;
+                                        $('#TINFile').val('');
+                                        $('#BINFile').val('');
+
+                                        $scope.$apply(() => $scope.refreshPage());
+                                    })
+                                    .fail(function () {
+                                        toastr.error("One or more document uploads failed");
+                                    });
                             }
                         })
-                        .catch(function () {
-                            toastr.error("Data Save Failed");
-                            $scope.loading = false;
+                        .error(function () {
+                            toastr.error("Document metadata save failed");
                         });
-                })
-                .catch(function () {
-                    toastr.error("Data Save Failed");
-                    $scope.loading = false;
-                });
-        } 
-   
 
+                })
+                .error(function () {
+                    toastr.error("Vendor update failed");
+                });
+        };
 
 
 
@@ -1545,53 +1129,6 @@
                 window.location = "/SecurityModule/Account/Login";// Reload the current page
             }, 2000); // 2000 milliseconds = 3 seconds
         }
-
-
-        $scope.LoadImage = function () {
-            DWObject.IfShowFileDialog = true;
-            DWObject.RemoveAllImages();
-            DWObject.LoadImageEx("", EnumDWT_ImageType.IT_ALL);
-        };
-        $scope.LoadImageWithoutBlank = function () {
-            console.log(window.location.origin);
-
-            DWObject.Addon.PDF.SetResolution(200);
-            DWObject.Addon.PDF.SetConvertMode(EnumDWT_ConverMode.CM_RENDERALL);
-            DWObject.IfShowFileDialog = true;
-            DWObject.HTTPDownloadEx(window.location.origin, '/Buffer/BlankPDF/blank.pdf', 3);
-            $scope.ShowUploadImageDivVar = false;
-        };
-
-        $scope.Load = function () {
-            DWObject.IfShowFileDialog = true;
-            DWObject.LoadImageEx("", EnumDWT_ImageType.IT_PDF);
-            $scope.ShowUploadImageDivVar = false;
-        };
-
-
-        $scope.RemoveAllSelectedImages = function () {
-            DWObject.RemoveAllSelectedImages();
-        }
-
-        $scope.RotateRight = function () {
-            DWObject.RotateRight(DWObject.GetSelectedImageIndex(0));
-        }
-
-        $scope.ShowMoveImageDiv = function () {
-            $("#MoveImage").toggleClass("hidden");
-        }
-
-        $scope.MoveImage = function () {
-            DWObject.MoveImage(($("#WhichImage").val() - 1), ($("#Where").val() - 1));
-            $("#MoveImage").toggleClass("hidden");
-        };
-
-        $scope.updateLargeViewer = function () {
-            DWObject.CopyToClipboard(DWObject.CurrentImageIndexInBuffer);
-            DWObjectLargeViewer.LoadDibFromClipboard();
-            $('#viewerModal').modal('show');
-        };
-
 
 
     });
