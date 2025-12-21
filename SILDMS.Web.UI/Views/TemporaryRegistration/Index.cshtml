@@ -17,10 +17,8 @@
     </div>
 
   
-<div class="col-sm-12 col-md-12 col-lg-12" id="EntryHolderDiv" @*ng-show="p==1"*@
-     >
-    <div style="margin: 1%; background-color: #F0F0F0; box-shadow: 2px 2px 5px #888888; padding: 10px 10px 10px 10px;" @*ng-show="q === 1"*@
-         >
+<div class="col-sm-12 col-md-12 col-lg-12" id="EntryHolderDiv" ng-show="p==1">
+    <div style="margin: 1%; background-color: #F0F0F0; box-shadow: 2px 2px 5px #888888; padding: 10px 10px 10px 10px;" ng-show="q === 1">
         <div style="height: 30px; margin-bottom:1%">
             <p style="font-family: Verdana; position: center;  bottom: 5px;">Register your business and please provide all required details to register your business with us</p>
         </div>
@@ -236,14 +234,20 @@
 
 
             @* button save*@
-            <div class="row">
-                <div class="col-lg-1">
-                    <button id="btnSaveMasterInitial" type="button" class="btn btn-success saveBtn pull-left" data-dismiss="modal" title="Submit" ng-click="ValidationCheck()">
-                        <i class="fa fa-save"></i> Submit Registration
-                    </button>
-                </div>
+    <div class="row">
 
-            </div>
+        <div class="col-lg-11">
+           
+        </div>
+
+
+        <div class="col-lg-1">
+            <button id="btnSaveMasterInitial" type="button" class="btn btn-success saveBtn pull-left" data-dismiss="modal" title="Submit" ng-click="ValidationCheck()">
+                <i class="fa fa-save"></i> Submit Registration
+            </button>
+        </div>
+
+    </div>
         </div>
 
     <div style="margin: 1%; background-color: #F0F0F0; box-shadow: 2px 2px 5px #888888; padding: 10px 10px 10px 10px;" ng-show="q==2">
