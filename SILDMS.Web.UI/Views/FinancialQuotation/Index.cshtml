@@ -131,22 +131,22 @@
                                 <th colspan="7" style="text-align: left;font-weight: bold">Material List</th>
                             </tr>
                             <tr style="background-color: #84abc1; color: darkblue; font-size: 13px;">
-                                <th>Material Code</th>
-                                <th>Material Name</th>
-                                <th>Quantity</th>
-                                <th>Unit</th>
-                                <th>Documents</th>
-                                <th>Type</th>
-                                <th>Action</th>
+                                <th style="text-align:center">Material Code</th>
+                                <th style="text-align:center">Material Name</th>
+                                <th style="text-align:center">Quantity</th>
+                                <th style="text-align:center">Unit</th>
+                                <th style="text-align:center">Documents</th>
+                                <th style="text-align:center">Type</th>
+                                <th style="text-align:center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr id="rowID" ng-repeat="row in GridDisplayCollection" style="height:20px; font-size:13px;" ng-class="{'selected-row': row.selected}">
-                                <td class="col-lg-1 col-md-1 col-sm-1">{{formatMaterialCode(row.materialCode)}}</td>
-                                <td class="col-lg-6 col-md-6 col-sm-6">{{row.materialName}}</td>
+                                <td class="col-lg-1 col-md-1 col-sm-1" style="text-align:center">{{formatMaterialCode(row.materialCode)}}</td>
+                                <td class="col-lg-4 col-md-4 col-sm-4">{{row.materialName}}</td>
                                 <td class="col-lg-1 col-md-1 col-sm-1" style="text-align:right">{{row.MaterialQuantity| number:3}}</td>
-                                <td class="col-lg-1 col-md-1 col-sm-1">{{row.Unit}}</td>
-                                <td class="col-lg-1 col-md-1 col-sm-1">
+                                <td class="col-lg-1 col-md-1 col-sm-1" style="text-align:center">{{row.Unit}}</td>
+                                <td class="col-lg-1 col-md-1 col-sm-1" style="text-align:center">
                                     <button type="button" class="button-detail" ng-click="AddDocument(row)" data-dismiss="modal" title="Show detail">Details <i class="fa fa-eye"></i></button>
                                 </td>
 

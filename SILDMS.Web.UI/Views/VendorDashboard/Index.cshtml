@@ -311,7 +311,7 @@
                 <!-- Modal Header -->
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" ng-click="ResetSearchModel()" aria-hidden="true">x</button>
-                    <h3 class="modal-title">Invitations for Vendor Selection</h3>
+                    <h3 class="modal-title">RFQ - {{InvitationNumber}}</h3>
                 </div>
 
                 <!-- Modal Body -->
@@ -321,17 +321,17 @@
                             <tr>
                                 <th class="col-lg-1 col-md-1 col-sm-1">Material Code</th>
                                 <th class="col-lg-1 col-md-1 col-sm-1">Material Name</th>
-                                <th class="col-lg-1 col-md-1 col-sm-1" style="text-align:right">Quantity</th>
+                                <th class="col-lg-1 col-md-1 col-sm-1">Quantity</th>
                                 <th class="col-lg-1 col-md-1 col-sm-1">Unit</th>
-                                <th class="col-lg-1 col-md-1 col-sm-1">Type</th>
+                                <th class="col-lg-1 col-md-1 col-sm-1">Material Type</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="row in GridDisplayCollection | orderBy:'IsBack':true">
-                                <td class="text-right">{{formatMaterialCode(row.materialCode)}}</td>
+                                <td class="text-right" style="text-align:center">{{formatMaterialCode(row.materialCode)}}</td>
                                 <td class="text-left">{{row.materialName}}</td>
                                 <td class="text-right">{{row.MaterialQuantity | number:3}}</td>
-                                <td class="text-right">{{row.Unit}}</td>
+                                <td class="text-right" style="text-align:center">{{row.Unit}}</td>
                                 <!-- Removed Button for Documents -->
                                 <td class="text-left">{{row.MatInvType}}</td>
                             </tr>
@@ -633,6 +633,7 @@
         $scope.hideAll = function (list) {
             return list.UDDocCategoryCode != 'All';
         };
+        $scope.InvitationNumber = '';
 
         $scope.selectPR = function (row) {
             $scope.InvitationNumber = row.InnvitationNumber;
