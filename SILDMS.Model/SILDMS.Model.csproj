@@ -198,6 +198,7 @@
     <Compile Include="SecurityModule\SysDbTables.cs" />
     <Compile Include="BackgroundTaskModule\BackgroundTaskMessage.cs" />
     <Compile Include="BackgroundTaskModule\BackgroundTaskMessageAttachment.cs" />
+    <Compile Include="SecurityModule\VendorUser.cs" />
     <Compile Include="Vacation.cs" />
     <Compile Include="VendorSelectionModule\BiddingInvitation.cs" />
     <Compile Include="VendorSelectionModule\DashBoardInvitationFinanList.cs" />

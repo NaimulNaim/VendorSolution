@@ -1,0 +1,134 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+}
+
+<div class="box box-primary box-body" ng-controller="defaultValueSetupController">
+    <!-- box-header -->
+    <div class="box-header with-border">
+        <i class="fa  fa-files-o"></i>
+        <h3 class="box-title">Forgot Password</h3>
+
+    </div>
+
+
+
+
+    <div class="box-body">
+
+        <h2>Forgot Password</h2>
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" ng-model="email" required>
+            <button ng-click="sendCredentials()" class="btn btn-primary">Send Credentials</button>
+        </div>
+        <div ng-if="message">
+            <p>{{ message }}</p>
+        </div>
+
+    </div>
+
+
+    <!-- /.box-header -->
+    <!-- /Add DocProperty Modal -->
+    @*<div id="mydiv" data-ng-show="loading">
+            <div class="overlay">
+                <div class="loder">
+                    <img src="~/Content/AdminLTE/img/cube.gif" /> <span class="text-bold">Loading...</span>
+                </div>
+            </div>
+        </div>*@
+</div>
+
+
+
+<script type="text/javascript">
+        // Controller for Owner page
+        //app.controller('defaultValueSetupController', ["$scope", "$http", function ($scope, $http) {
+        //    applySecurity();
+        //    $scope.email = '';
+        //    $scope.sendCredentials = function () {
+        //        $http.post("/SecurityModule/ForgotPassword/SendCredentials",
+        //            {
+        //                email: $scope.email
+        //            })
+        //            .success(function (response) {
+        //                if (response.Msg == '2') {
+        //                    toastr.success('Password sent to the Mail');
+        //                }
+        //                else if (response.Msg == '0') {
+        //                    toastr.error('Error: Failed to send email !!!');
+        //                }
+        //                else {
+        //                    toastr.error('Not registered yet');
+        //                }
+        //                $scope.loading = false;
+        //            }).error(function () {
+
+        //            });
+        //    };
+
+        //    $scope.toggleRefreshTable = function () {
+        //        $scope.loading = true;
+        //    };
+        //}]);
+
+
+
+
+
+        app.controller('defaultValueSetupController', ['$scope', '$http', '$window', '$timeout', function ($scope, $http, $window, $timeout) {
+
+            applySecurity();
+            $scope.email = '';
+            $scope.sendCredentials = function () {
+                $http.post("/SecurityModule/ForgotPassword/SendCredentials", { email: $scope.email })
+                    .success(function (response) {
+                        if (response.Msg == '2') {
+                            toastr.success('Password sent to the Mail');
+                            // Delay the redirection by 1 second
+                            $timeout(function () {
+                                $window.location.href = '/';
+                            }, 2000); // 1000 milliseconds = 1 second
+                        } else if (response.Msg == '0') {
+                            toastr.error('Error: Failed to send email !!!');
+                            $timeout(function () {
+                                $window.location.href = '/';
+                            }, 2000); // 1000 milliseconds = 1 second
+                        } else {
+                            toastr.error('Not registered yet');
+                            $timeout(function () {
+                                $window.location.href = '/';
+                            }, 2000); // 1000 milliseconds = 1 second
+                        }
+                        $scope.loading = false;
+                    })
+                    .error(function () {
+                        toastr.error('An error occurred while sending credentials.');
+                        $timeout(function () {
+                            $window.location.href = '/';
+                        }, 2000); // 1000 milliseconds = 1 second
+                        $scope.loading = false;
+                    });
+            };
+
+            $scope.toggleRefreshTable = function () {
+                $scope.loading = true;
+            };
+        }]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>

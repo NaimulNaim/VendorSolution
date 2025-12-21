@@ -7,7 +7,9 @@ using SILDMS.Utillity;
 using SILDMS.Web.UI.Areas.SecurityModule.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Helpers;
@@ -237,6 +239,36 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
 
         }
 
+
+        [HttpPost]
+        public async Task<ActionResult> UploadOtherFiles(
+    string serverIP,
+    int ftpPort,
+    string ftpUserName,
+    string ftpPassword,
+    string vendorId,
+    string docType)
+        {
+            HttpPostedFileBase file = Request.Files["file"];
+
+            string folder = docType == "TIN"
+                ? "chqDivision/PharmaceuticalsDivision/VendorDocuments/SuportingDocuments/TIN"
+                : "chqDivision/PharmaceuticalsDivision/VendorDocuments/SuportingDocuments/BIN";
+
+            string ftpPath = $"ftp://{serverIP}:{ftpPort}/{folder}/{vendorId}.pdf";
+
+            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ftpPath);
+            request.Credentials = new NetworkCredential(ftpUserName, ftpPassword);
+            request.Method = WebRequestMethods.Ftp.UploadFile;
+            request.UseBinary = true;
+
+            using (var stream = request.GetRequestStream())
+            {
+                await file.InputStream.CopyToAsync(stream);
+            }
+
+            return new HttpStatusCodeResult(200);
+        }
 
 
 

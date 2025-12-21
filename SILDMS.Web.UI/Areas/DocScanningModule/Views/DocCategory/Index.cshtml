@@ -356,9 +356,9 @@
 
 
         // Refresh Documnet Category Table
-        $scope.toggleRefreshTable = function() {
-            $scope.loading = true;
-            $scope.changeOwner();
+
+        $scope.toggleRefreshTable = function (row) {
+            location.reload();
         };
     }]);
 </script>

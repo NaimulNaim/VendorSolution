@@ -294,6 +294,7 @@
     <Compile Include="Areas\SecurityModule\Controllers\AutoValueSetupController.cs" />
     <Compile Include="Areas\SecurityModule\Controllers\DataLevelPermissionController.cs" />
     <Compile Include="Areas\SecurityModule\Controllers\DefaultValueSetupController.cs" />
+    <Compile Include="Areas\SecurityModule\Controllers\ForgotPasswordController.cs" />
     <Compile Include="Areas\SecurityModule\Controllers\MasterDataSetupController.cs" />
     <Compile Include="Areas\SecurityModule\Controllers\MasterDataTypeController.cs" />
     <Compile Include="Areas\SecurityModule\Controllers\MenuController.cs" />
@@ -657,6 +658,7 @@
     <Content Include="Areas\DocScanningModule\Views\Posting\Index.cshtml" />
     <Content Include="Areas\SecurityModule\Views\Test\Index.cshtml" />
     <Content Include="Areas\VendorSelectionModule\Views\web.config" />
+    <Content Include="Areas\SecurityModule\Views\ForgotPassword\Index.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
