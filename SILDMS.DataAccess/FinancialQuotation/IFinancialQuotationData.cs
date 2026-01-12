@@ -12,7 +12,7 @@ namespace SILDMS.DataAccess.FinancialQuotation
     public interface IFinancialQuotationData
     {
         List<Invitation> GetAllInvitationData(string userid, out string errorNumber);
-        List<MaterialInvitation> InvWiseMaterialData(string UserID, string invNumber,string ProposalType, out string errorNumber);
+        List<MaterialInvitation> InvWiseMaterialData(string UserID, string invNumber,string ProposalType,string fintype, out string errorNumber);
 
         BPS_NewBillReturnData AddDocumentInfo(DocumentsInfo _modelDocumentsInfo,
             string _selectedPropID, List<DocMetaValue> _docMetaValues,

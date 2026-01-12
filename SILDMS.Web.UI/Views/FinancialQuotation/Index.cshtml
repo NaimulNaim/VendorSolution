@@ -91,7 +91,7 @@
             </div>
 
             <div class="col-lg-1">
-                <button type="button" ng-show="!fromDashboard" ng-if="!Quotation" ng-click="InvitationList()" class="form-control">Search</button>
+                <button type="button" ng-show="!fromDashboard" @*ng-if="!Quotation"*@ ng-click="InvitationList()" class="form-control">Search</button>
             </div>
         </div>
         <div class="row">
@@ -151,11 +151,11 @@
                                 </td>
 
 
-                                <td class="col-lg-1 col-md-1 col-sm-1">{{row.MatInvType}}</td>
+
 
 
                                 <td class="col-lg-1 col-md-1 col-sm-1">
-                                    <button ng-click="DetailItem(row,$index+1)">
+                                    <button ng-click="DetailItem(row)">
                                         {{ row.Action === 'A' ? 'Add' : 'Edit' }}
                                     </button>
 
@@ -190,214 +190,247 @@
         </div>
 
         <div class="row" ng-show="p===1" @*style="background: #9ebdc7; padding: 11px; border-radius: 10px; border: 2px solid #b7ced5; "*@>
-            <div class="col-sm-12 col-md-12 col-lg-12" style="padding: 11px; margin-right: 15px; margin-left: 15px;">
+            <div class="row" ng-show="p===1" style="padding:11px; border-radius:10px; border:2px solid #b7ced5; background:#f8f9fa;">
+                <div class="col-sm-12 col-md-12 col-lg-12" style="padding:11px; margin:0 15px;">
 
+                    <!-- Row 1: Supplier / Local Agent / Currency -->
+                    <div class="row">
+                        <div class="col-lg-3"><label>Supplier Name:</label></div>
+                        <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.SupplierName" /></div>
 
-                <div class="row">
-                    <div class="col-lg-3">
-                        <div class="form-group">
-                            <label for="ProposeQty">Propose Qty :</label>
-                        </div>
-                    </div>
-                    <div class="col-lg-2">
-
-                        <input id="ProposeQty" name="ProposeQty" data-ng-model="FinancialQuotationDetail.ProposeQty" class="form-control"
-                               type="number" placeholder="0.00" min="0.01" ng-blur="checkAndFormat('ProposeQty')" autofocus />
-
-
-
-                    </div>
-                    <div class="col-lg-1">
-
-
-
-
-                        <select id="Unit" name="Unit" ng-model="FinancialQuotationDetail.Unit" class="form-control" autofocus
-                                ng-options="Item as Item.Item_Code for Item in ItemList track by Item.Item_Code" style="padding:1px;">
-                            <option value="" style="display: none;">---</option>
-                        </select>
-
-
-
-
+                        <div class="col-lg-3"><label>Local Agent Name:</label></div>
+                        <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.LocalAgentName" /></div>
                     </div>
 
-
-                    <div class="col-lg-2">
-                        <div class="form-group">
-                            <label for="UnitPrice">Unit Price :</label>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2">
-                        <input id="UnitPrice" name="UnitPrice" data-ng-model="FinancialQuotationDetail.UnitPrice" class="form-control"
-                               type="number" placeholder="0.00" min="0.01" ng-blur="checkAndFormat('UnitPrice'); calculateTotalPrice()" autofocus />
-
-                    </div>
-                    <div class="col-lg-1">
-                        <div class="form-group">
-                            <select id="Currency" name="Currency" class="form-control" ng-model="FinancialQuotationDetail.Currency"
-                                    @*ng-options="ItemTypes.MasterDataValue as ItemTypes.MasterDataValue for ItemTypes in ItemTypeList track by ItemTypes.MasterDataValue " ng-required="true" style="height: 26px; font-size:smaller">*@
-                                    ng-options="ItemTypes as ItemTypes.MasterDataValue for ItemTypes in ItemTypeList track by ItemTypes.MasterDataValue " ng-required="true" style="height: 26px; font-size:smaller">
-                                <option value="" selected style="display: none">---</option>
-
-
+                    <div class="row mt-2">
+                        <div class="col-lg-3"><label>Currency:</label></div>
+                        <div class="col-lg-3">
+                            <select class="form-control" ng-model="FinancialQuotationDetail.Currency"
+                                    ng-options="c.MasterDataValue for c in ItemTypeList track by c.MasterDataValue">
+                                <option value="" style="display:none">---</option>
                             </select>
-
                         </div>
                     </div>
 
+                    <!-- Row 2: Price, Per, Price Unit -->
+                    <div class="row mt-2">
+                        <div class="col-lg-3"><label>Price:</label></div>
+                        <div class="col-lg-3"><input type="number" class="form-control" ng-model="FinancialQuotationDetail.Price" min="0.01" /></div>
+
+                        <div class="col-lg-3"><label>Per:</label></div>
+                        <div class="col-lg-3"><input type="number" class="form-control" ng-model="FinancialQuotationDetail.Per" min="0.01" /></div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-lg-3"><label>Price Unit:</label></div>
+                        <div class="col-lg-3">
+                            <select class="form-control" ng-model="FinancialQuotationDetail.PriceUnit"
+                                    ng-options="i.Item_Code as i.Item_Code for i in ItemList track by i.Item_Code">
+                                <option value="" style="display:none">---</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Row 3: Taxes / Freight -->
+                    <div class="row mt-2">
+                        <div class="col-lg-3"><label>Taxes:</label></div>
+                        <div class="col-lg-3">
+                            <select class="form-control" ng-model="FinancialQuotationDetail.Taxes"
+                                    ng-options="t.MasterDataValue as t.MasterDataValue for t in TaxList track by t.MasterDataValue">
+                                <option value="" style="display:none">---</option>
+                            </select>
+                        </div>
+
+                        <div class="col-lg-3"><label>Freight:</label></div>
+                        <div class="col-lg-3"><input type="number" class="form-control" ng-model="FinancialQuotationDetail.Freight" min="0.01" /></div>
+                    </div>
+
+                    <!-- Row 4: RFQ Qty / RFQ Qty Unit / Quotation Qty / Quotation Qty Unit -->
+                 
+
+                    <div class="row mt-2">
+                        <div class="col-lg-3"><label>Quotation Qty:</label></div>
+                        <div class="col-lg-3"><input type="number" class="form-control" ng-model="FinancialQuotationDetail.QuotationQty" min="0.01" /></div>
+
+                        <div class="col-lg-3"><label>Quotation Qty Unit:</label></div>
+                        <div class="col-lg-3">
+                            <select class="form-control" ng-model="FinancialQuotationDetail.QuotationQtyUnit"
+                                    ng-options="i.Item_Code as i.Item_Code for i in ItemList track by i.Item_Code">
+                                <option value="" style="display:none">---</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Row 5: Delivery Timeline / Incoterms / Incoterms Location / Shipment Mode / Payment Mode -->
+                    <div class="row mt-2">
+                        <div class="col-lg-3"><label>Delivery Timeline:</label></div>
+                        <div class="col-lg-3"><input type="text" class="form-control DatePicker" ng-model="FinancialQuotationDetail.DeliveryTimeline" placeholder="DD/MM/YYYY" /></div>
+
+                        <div class="col-lg-3"><label>Incoterms:</label></div>
+                        <div class="col-lg-3">
+                            <select class="form-control" ng-model="FinancialQuotationDetail.Incoterms"
+                                    ng-options="i.MasterDataValue for i in IncotermsList track by i.MasterDataValue">
+                                <option value="" style="display:none">---</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-lg-3"><label>Incoterms Location:</label></div>
+                        <div class="col-lg-3">
+                            <select class="form-control" ng-model="FinancialQuotationDetail.IncotermsLocation"
+                                    ng-options="i.MasterDataValue for i in IncotermsLocationList track by i.MasterDataValue">
+                                <option value="" style="display:none">---</option>
+                            </select>
+                        </div>
+
+                        <div class="col-lg-3"><label>Shipment Mode:</label></div>
+                        <div class="col-lg-3">
+                            
+                                   <select class="form-control" ng-model="FinancialQuotationDetail.ShipmentMode">
+    <option value="">--Select--</option>
+    <option value="AIR">Air</option>
+    <option value="SEA">Sea</option>
+    <option value="ROAD">Road</option>
+    <option value="TRAIN">Train</option>
+    <option value="MAIL">Mail</option>
+    <option value="AIR/SEA">Air/Sea</option>
+    <option value="AIR/ROAD">Air/Road</option>
+    <option value="AIR/TRAIN">Air/Train</option>
+    <option value="AIR/SEA/ROAD">Air/Sea/Road</option>
+    <option value="AIR/SEA/ROAD/TRAIN">Air/Sea/Road/Train</option>
+    <option value="SEA/ROAD">Sea/Road</option>
+    <option value="SEA/TRAIN">Sea/Train</option>
+    <option value="ROAD/TRAIN">Road/Train</option>
 
 
+</select>
+                        
+                        </div>
+                    </div>
 
+                    <div class="row mt-2">
+                        <div class="col-lg-3"><label>Payment Mode:</label></div>
+                        <div class="col-lg-3">
+                            <select class="form-control" ng-model="FinancialQuotationDetail.PaymentMode"
+                                    ng-options="p.MasterDataValue for p in PaymentModeList track by p.MasterDataValue">
+                                <option value="" style="display:none">---</option>
+                            </select>
+                        </div>
+                    </div>
 
+                    <!-- Row 6: Quotation Validity / Qty Tolerance / Part Delivery -->
+                    <div class="row mt-2">
+                        <div class="col-lg-3"><label>Quotation Validity:</label></div>
+                        <div class="col-lg-3"><input type="text" class="form-control DatePicker" ng-model="FinancialQuotationDetail.QuotationValidity" placeholder="DD/MM/YYYY" /></div>
 
+                        <div class="col-lg-3"><label>Qty Tolerance (%):</label></div>
+                        <div class="col-lg-3"><input type="number" class="form-control" ng-model="FinancialQuotationDetail.QtyTolerance" min="0" /></div>
+                    </div>
 
+                    <div class="row mt-2">
+                        <div class="col-lg-3"><label>Part Delivery:</label></div>
+                        <div class="col-lg-3">
+                            <select class="form-control" ng-model="FinancialQuotationDetail.PartDelivery"
+                                    ng-options="p.MasterDataValue for p in PartDeliveryList track by p.MasterDataValue">
+                                <option value="" style="display:none">---</option>
+                            </select>
+                        </div>
+                    </div>
 
+                    <!-- Row 7: Manufacturer / Site / Discount / Charges -->
+                    <div class="row mt-2">
+                        <div class="col-lg-3"><label>Manufacturer Part No:</label></div>
+                        <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.ManufacturerPartNo" /></div>
+
+                        <div class="col-lg-3"><label>Manufacturer Name:</label></div>
+                        <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.ManufacturerName" /></div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-lg-3"><label>Manufacturer Site Address:</label></div>
+                        <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.ManufacturerSiteAddress" /></div>
+
+                        <div class="col-lg-3"><label>Discount:</label></div>
+                        <div class="col-lg-3"><input type="number" class="form-control" ng-model="FinancialQuotationDetail.Discount" min="0.01" /></div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-lg-3"><label>Order Handling Charges:</label></div>
+                        <div class="col-lg-3"><input type="number" class="form-control" ng-model="FinancialQuotationDetail.OrderHandlingCharges" /></div>
+
+                        <div class="col-lg-3"><label>Packing Charges:</label></div>
+                        <div class="col-lg-3"><input type="number" class="form-control" ng-model="FinancialQuotationDetail.PackingCharges" /></div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-lg-3"><label>Sundry Charges:</label></div>
+                        <div class="col-lg-3"><input type="number" class="form-control" ng-model="FinancialQuotationDetail.SundryCharges" /></div>
+
+                        <div class="col-lg-3"><label>Pack Size:</label></div>
+                        <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.PackSize" /></div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-lg-3"><label>Minimum Order Qty:</label></div>
+                        <div class="col-lg-3"><input type="number" class="form-control" ng-model="FinancialQuotationDetail.MinimumOrderQty" /></div>
+
+                        <div class="col-lg-3"><label>Warranty:</label></div>
+                        <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.Warranty" /></div>
+                    </div>
+
+                    <!-- Row 8: Installation / Servicing / Inland Transportation -->
+                    <div class="row mt-2">
+                        <div class="col-lg-3"><label>Installation:</label></div>
+                        <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.Installation" /></div>
+
+                        <div class="col-lg-3"><label>Servicing:</label></div>
+                        <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.Servicing" /></div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-lg-3"><label>Inland Transportation:</label></div>
+                        <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.InlandTransportation" /></div>
+                    </div>
+
+                    <!-- Row 9: Key Customer List / Subcontractor / Returnable Item -->
+                    <div class="row mt-2">
+                        <div class="col-lg-3"><label>Key Customer List:</label></div>
+                        <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.KeyCustomerList" /></div>
+
+                        <div class="col-lg-3"><label>Subcontractor:</label></div>
+                        <div class="col-lg-3">
+                            <select class="form-control" ng-model="FinancialQuotationDetail.Subcontractor"
+                                    ng-options="s.MasterDataValue for s in SubcontractorList track by s.MasterDataValue">
+                                <option value="" style="display:none">---</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-lg-3"><label>Returnable Item:</label></div>
+                        <div class="col-lg-3">
+                            <select class="form-control" ng-model="FinancialQuotationDetail.ReturnableItem"
+                                    ng-options="r.MasterDataValue for r in ReturnableItemList track by r.MasterDataValue">
+                                <option value="" style="display:none">---</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Row 10: Penalty Clause / Remarks / Variance Note -->
+                    <div class="row mt-2">
+                        <div class="col-lg-3"><label>Penalty Clause:</label></div>
+                        <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.PenaltyClause" /></div>
+
+                        <div class="col-lg-3"><label>Remarks:</label></div>
+                        <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.Remarks" /></div>
+                    </div>
+
+                   
 
                 </div>
-
-
-
-
-                <div class="row">
-                    <div class="col-lg-3">
-                        <div class="form-group">
-                            <label for="TotalPrice">Total Price :</label>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2">
-                        <input id="TotalPrice" name="TotalPrice" readonly data-ng-model="FinancialQuotationDetail.TotalPrice" class="form-control"
-                               type="number" placeholder="0.000" min="0.001" ng-blur="checkAndFormat('TotalPrice')" autofocus />
-
-                    </div>
-                    <div class="col-lg-1">
-                    </div>
-                    <div class="col-lg-2">
-                        <div class="form-group">
-                            <label for="VatAmount">Vat Amount :</label>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2">
-                        <input id="VatAmount" name="VatAmount" data-ng-model="FinancialQuotationDetail.VatAmount" class="form-control"
-                               type="number" placeholder="0.00" min="0.01" ng-blur="checkAndFormat('VatAmount'); calculateGrossPrice()" autofocus />
-
-                    </div>
-
-
-
-
-                </div>
-
-                <div class="row">
-
-
-
-                    <div class="col-lg-3">
-                        <div class="form-group">
-                            <label for="TaxAmount">Tax Amount :</label>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2">
-                        <input id="TaxAmount" name="TaxAmount" data-ng-model="FinancialQuotationDetail.TaxAmount" class="form-control"
-                               type="number" placeholder="0.00" min="0.01" ng-blur="checkAndFormat('TaxAmount'); calculateGrossPrice() " autofocus />
-
-                    </div>
-                    <div class="col-lg-1">
-                    </div>
-                    <div class="col-lg-2">
-                        <div class="form-group">
-                            <label for="GrossPrice">Gross Amount :</label>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2">
-                        <input id="GrossPrice" name="GrossPrice" readonly data-ng-model="FinancialQuotationDetail.GrossPrice" class="form-control"
-                               type="number" placeholder="0.00" min="0.01" ng-blur="checkAndFormat('GrossPrice')" autofocus />
-
-                    </div>
-
-
-
-
-
-                </div>
-
-
-
-                <div class="row">
-                    <div class="col-lg-3">
-                        <div class="form-group">
-                            <label for="DiscountPrice">Discount Price :</label>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2">
-                        <input id="DiscountPrice" name="DiscountPrice" data-ng-model="FinancialQuotationDetail.DiscountPrice" class="form-control"
-                               type="number" placeholder="0.00" min="0.01" ng-blur="checkAndFormat('DiscountPrice'); calculateNetPrice()" autofocus />
-
-                    </div>
-                    <div class="col-lg-1">
-                    </div>
-                    <div class="col-lg-2">
-                        <div class="form-group">
-                            <label for="NetPrice">Net Price :</label>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2">
-                        <input id="NetPrice" name="NetPrice" readonly data-ng-model="FinancialQuotationDetail.NetPrice" class="form-control"
-                               type="number" placeholder="0.00" min="0.01" ng-blur="checkAndFormat('NetPrice')" autofocus />
-
-                    </div>
-
-
-                </div>
-
-
-
-                <div class="row">
-
-                    <div class="col-lg-3">
-                        <div class="form-group">
-                            <label>QuotValid Delivery Date :</label>
-                        </div>
-                    </div>
-                    <div class="col-lg-2">
-                        <div class="form-group">
-                            <input id="QuotValidDate" name="QuotValidDate" readonly type="text" class="DatePicker form-control" placeholder="DD/MM/YYYY"
-                                   ng-model="FinancialQuotationDetail.QuotValidDate" ng-disabled="loading " ng-style="{ 'background-color': (loading) ? '#f0f0f0' : 'white' }" />
-                        </div>
-                    </div>
-                    <div class="col-lg-1">
-                    </div>
-                    <div class="col-lg-2">
-                        <div class="form-group">
-                            <label>Expected Delivery Date :</label>
-                        </div>
-                    </div>
-                    <div class="col-lg-2">
-                        <div class="form-group">
-                            <input id="ExpecDeliDate" name="ExpecDeliDate" type="text" class="DatePicker form-control" placeholder="DD/MM/YYYY"
-                                   ng-model="FinancialQuotationDetail.ExpecDeliDate" @*ng-disabled="loading || PurreqMaster.PurreqNumber !== '' " ng-style="{ 'background-color': (loading || PurreqMaster.PurreqDate !== '') ? '#f0f0f0' : 'white' }"*@ />
-                        </div>
-                    </div>
-
-
-
-
-                </div>
-
-
-
-
-
-
-
             </div>
+
 
         </div>
 
@@ -844,6 +877,7 @@
                             <tr>
                                 <th class="col-lg-1 col-md-1 col-sm-1">Number</th>
                                 <th class="col-lg-4 col-md-4 col-sm-4">Invitation Number</th>
+                                <th class="col-lg-4 col-md-4 col-sm-4">Fintype</th>
 
                                 <th class="col-lg-1 col-md-1 col-sm-1">Action</th>
                             </tr>
@@ -853,9 +887,10 @@
                             <tr ng-repeat="row in InvitationDisplayedCollection">
                                 <td class="text-center">{{$index+1}}</td>
                                 <td class="">{{row.Invitation_Number}}</td>
+                                <td class="">{{row.Fintype}}</td>
 
                                 <td class="text-center">
-                                    <a class="btn col-center btn-sm btn-flat btn-success" data-ng-click="toggleInvitationSelect(row.Invitation_Number, row.ProposalType)">Select</a>
+                                    <a class="btn col-center btn-sm btn-flat btn-success" data-ng-click="toggleInvitationSelect(row.Invitation_Number,row.ProposalType,row.Fintype)">Select</a>
                                 </td>
                             </tr>
                         </tbody>
@@ -1025,7 +1060,7 @@
             TechQuotationItemID: '',
             FinanQuotationItemID: '',
             invitationNumber: '',
-            InvitationID:'',
+            InvitationID: '',
             departmentId: null,
             matCategory: '',
             itemNo: null,
@@ -1297,12 +1332,14 @@
         $scope.p = 0;
 
 
-        $scope.toggleInvitationSelect = function (Invitation_Number, ProposalType) {
+        $scope.toggleInvitationSelect = function (Invitation_Number, proposal, Fintype) {
             $scope.InvitationNumber = Invitation_Number;
+            $scope.proposal = proposal;
+            $scope.Fintype = Fintype;
             $scope.p = 0;
             // dwObject.RemoveAllImages();
-            $scope.ProposalType = ProposalType;
-            $scope.InvWiseMaterial($scope.InvitationNumber, $scope.ProposalType);
+            /*$scope.ProposalType = ProposalType;*/
+            $scope.InvWiseMaterial($scope.InvitationNumber, $scope.proposal, $scope.Fintype);
 
             $('#InvitationModal').modal('hide');
         }
@@ -1336,7 +1373,7 @@
 
                     if ($scope.response === 'Data Updated Successfully') {
                         $scope.p = 0;
-                  
+
                         toastr.success($scope.response);
 
                         $scope.reset();
@@ -1721,7 +1758,7 @@
                                 } else {
                                     dwObject.SelectedImagesCount = i + 1;
                                     dwObject.SetSelectedImageIndex(i, i);
-                                
+
                                 }
                             };
 
@@ -1770,16 +1807,18 @@
 
 
 
-        $scope.InvWiseMaterial = function (detail,proposal) {
+        $scope.InvWiseMaterial = function (invnumber, proposaltype, fintype) {
             $http.post('/VendorSelectionModule/FinancialQuotation/InvWiseMaterial',
                 {
-                    InvNumber: detail,
-                    ProposalType: proposal
+                    InvNumber: invnumber,
+                    Proposal: proposaltype,
+                    fintype: fintype
                 })
                 .success(function (response) {
                     $scope.flagToShow = false;
                     $scope.flagToShowMasterTbl = true;
                     $scope.MaterialList = response.InvMaterialList;
+
 
                     $scope.GridDisplayCollection = [].concat($scope.MaterialList);
 
@@ -1845,7 +1884,7 @@
                 MaterialQuantity: "",
                 MatInvType: "",
                 VendorID: "",
-                InvitationID:""
+                InvitationID: ""
             };
 
 
@@ -1946,221 +1985,137 @@
 
 
 
+   
+        $http.post("/VendorSelectionModule/TechnicalQuotation/loadItemType", {
+                masterDataType: 'Incoterms'
+            })
+                .success(function (response) {
+                    $scope.IncotermsList = [];
+                    $scope.IncotermsList = response.result;
+                    console.log("Inco", response.result)
+                })
+                .error(function () {
+                    $scope.IncotermsList = [];
+                });
+        
+ 
+     
+        $http.post('/VendorSelectionModule/TechnicalQuotation/loadItemType', {
+                masterDataType: 'Incoterms Locations'
+            })
+                .success(function (response) {
+                    $scope.IncotermsLocationList = [];
+                    $scope.IncotermsLocationList = response.result;
+                    console.log("Incolocation", response.result)
+                })
+                .error(function () {
+                    $scope.IncotermsLocationList = [];
+                });
+        
+    
+        $http.post('/VendorSelectionModule/TechnicalQuotation/loadItemType', {
+            masterDataType: 'Payment Mode'
+            })
+                .success(function (response) {
+                    $scope.PaymentModeList = [];
+                    $scope.PaymentModeList = response.result;
+                    console.log("PaymentMode", response.result)
+                })
+                .error(function () {
+                    $scope.PaymentModeList = [];
+                });
+        
 
 
+      
 
-        $scope.DetailItem = function (row, $i) {
+        $scope.DetailItem = function (row) {
             console.log(row);
-            $scope.GridDisplayCollection.forEach(function (item) {
-                item.selected = false;
-            });
+          
             row.selected = true;
-            // dwObject.RemoveAllImages();
-            if (row.FinanQuotationItemID) {
-                $scope.MaterialInvitation.SampleDocumentID = row.SampleDocumentID;
-                $scope.MaterialInvitation.FinanQuotationItemID = row.FinanQuotationItemID;
-
-                $http.post('/VendorSelectionModule/FinancialQuotation/FinQuotwiseDetails',
-                    { FinanQuotationItemID: row.FinanQuotationItemID })
-                    .success(function (response) {
-                        $scope.flagToShow = false;
-                        $scope.flagToShowMasterTbl = true;
-                        $scope.FinancialQuotationDetailList = response.FinancialQuotationDetailList;
-                        if ($scope.FinancialQuotationDetailList.length > 0) {
-                            $scope.p = 1;
-                            $("#btnSubmit").html('Update');
-                            $scope.mapToFinancialQuotation($scope.FinancialQuotationDetailList[0]); // Example: Map the first item
-                        }
+           
 
 
 
 
-                        $scope.loading = false;
-                    }).error(function () {
-                        $scope.loading = false;
-                        toastr.error('Data Loading Failed.');
-                    });
+                $scope.reset();
 
+
+             
+            $scope.MaterialInvitation.materialName = row.materialName;
+            $scope.MaterialInvitation.materialCode = row.materialCode;
+            $scope.MaterialInvitation.invitationNumber = row.invitationNumber;
+            $scope.MaterialInvitation.InvitationID = row.InvitationID;
+            $scope.MaterialInvitation.MaterialQuantity = row.MaterialQuantity;
+            $scope.MaterialInvitation.oderUnit = row.Unit;
+            $scope.MaterialInvitation.VendorID = row.VendorID;
+            $scope.MaterialInvitation.BiddingID = row.BiddingID;
+            $scope.MaterialInvitation.BiddingItemVendorID = row.BiddingItemVendorID;
+
+            // 🔽 Bind IMPORT-specific financial fields
+            $scope.FinancialQuotationDetail.DeliveryTimeline = row.DeliveryTimeline;
+            //$scope.FinancialQuotationDetail.Incoterms = row.Incoterms;
+            //$scope.FinancialQuotationDetail.IncotermsLocation = row.IncotermsLocation;
+            $scope.FinancialQuotationDetail.ShipmentMode = row.ShipmentMode;
+         /*   $scope.FinancialQuotationDetail.PaymentMode = row.PaymentMode;*/
+            $scope.FinancialQuotationDetail.PartDelivery = row.PartDelivery;
+            $scope.FinancialQuotationDetail.PaymentTerms = row.PaymentTerms;
+            $scope.FinancialQuotationDetail.ManufacturerPartNo = row.ManufacturerPartNo;
+            $scope.FinancialQuotationDetail.ManufacturerName = row.ManufacturerName;
+            $scope.FinancialQuotationDetail.Warranty = row.Warranty;
+            $scope.FinancialQuotationDetail.Installation = row.Installation;
+            $scope.FinancialQuotationDetail.Servicing = row.Servicing;
+            $scope.FinancialQuotationDetail.PenaltyClause = row.PenaltyClause;
+            $scope.FinancialQuotationDetail.Remarks = row.Remarks;
+            $scope.FinancialQuotationDetail.QuotationQty = row.MaterialQuantity;
+
+            // If you have dropdown objects (like ItemList / IncotermsList), resolve to object:
+            if (row.Unit) {
+                var unitObj = $scope.ItemList.find(i => i.Item_Code === row.Unit);
+                $scope.FinancialQuotationDetail.QuotationQtyUnit = unitObj || row.Unit;
             }
-            else {
-
-
-                var temp = [];
-                var f = 0;
-                for (var j = 0; j < $scope.myarray.length; j++) {
-                    if ($scope.myarray[j].rowIndex === $i) {
-
-                        temp = $scope.myarray[j];
-
-
-                        $scope.myarray.splice(j, 1);
-
-                        f = 1;
-
-
-                        break;
-                    }
-                }
-
-                //var matchedItemIndex = $scope.myarray.findIndex(function (item) {
-                //    return item.rowIndex === $i;
-                //});
-                if (f == 1) {
-
-                    console.log(temp);
-                    $scope.MaterialInvitation.SampleDocumentID = temp.SampleDocumentID;
-                    $scope.MaterialInvitation.rowIndex = temp.rowIndex;
-
-
-                    $scope.MaterialInvitation.materialName = temp.materialName;
-                    $scope.MaterialInvitation.materialCode = temp.materialCode;
-                    $scope.MaterialInvitation.invitationNumber = temp.invitationNumber;
-                    $scope.MaterialInvitation.InvitationID = temp.InvitationID;
-                    // Add additional mappings here as needed
-                    $scope.MaterialInvitation.MaterialQuantity = temp.MaterialQuantity;
-                    $scope.MaterialInvitation.oderUnit = temp.Unit;
-                    $scope.MaterialInvitation.VendorID = temp.VendorID;
-
-                    $scope.MaterialInvitation.MatInvType = temp.MatInvType;
-                    $scope.MaterialInvitation.material_Category_Code = temp.material_Category_Code;
-
-                    $scope.MaterialInvitation.QuotationID = temp.QuotationID;
-                    $scope.MaterialInvitation.QuotationNo = temp.QuotationNo;
-
-
-
-
-                    $scope.BillReceiveModel.invitationNumber = temp.invitationNumber;
-                    $scope.BillReceiveModel.InvitationID = temp.InvitationID;
-                    $scope.BillReceiveModel.BiddingItemVendorID = temp.BiddingItemVendorID;
-                    $scope.BillReceiveModel.VendorID = temp.VendorID;
-                    $scope.BillReceiveModel.materialCode = temp.materialCode;
-
-                    if (temp.MatInvType === 'Materials') {
-                        $scope.p = 1;
-                    }
-                    else if (temp.MatInvType === 'Spares') {
-                        $scope.p = 2;
-                    }
-                    $scope.fetchServer();
-                    $scope.docshow();
-                    console.log('dsfsdfdfs');
-
-
-
-                    //var matchedItemIndex1 = $scope.myarray2.findIndex(function (item) {
-                    //    return item.rowIndex === $i;
-                    //});
-                    var matchedItem = [];
-                    for (var j = 0; j < $scope.myarray2.length; j++) {
-                        if ($scope.myarray2[j].rowIndex === $i) {
-
-                            matchedItem = $scope.myarray2[j];
-
-                            $scope.myarray2.splice(j, 1);
-
-
-                            break;
-                        }
-                    }
-
-
-
-
-
-                    $scope.FinancialQuotationDetail.ProposeQty = matchedItem.ProposeQty;
-                    var element = document.getElementById('ProposeQty');
-                    element.value = (matchedItem.ProposeQty).toFixed(3);
-                    element.dispatchEvent(new Event('change'));
-                    $scope.FinancialQuotationDetail.rowIndex = matchedItem.rowIndex;
-                    $scope.FinancialQuotationDetail.Unit = matchedItem.Unit;
-                    $scope.FinancialQuotationDetail.UnitPrice = matchedItem.UnitPrice;
-                    var element = document.getElementById('UnitPrice');
-                    element.value = (matchedItem.UnitPrice).toFixed(3);
-                    element.dispatchEvent(new Event('change'));
-                    $scope.FinancialQuotationDetail.Currency = matchedItem.Currency;
-                    $scope.FinancialQuotationDetail.TotalPrice = matchedItem.TotalPrice;
-                    var element = document.getElementById('TotalPrice');
-                    element.value = (matchedItem.TotalPrice).toFixed(3);
-                    element.dispatchEvent(new Event('change'));
-                    $scope.FinancialQuotationDetail.VatAmount = matchedItem.VatAmount;
-                    var element = document.getElementById('VatAmount');
-                    element.value = (matchedItem.VatAmount).toFixed(3);
-                    element.dispatchEvent(new Event('change'));
-                    $scope.FinancialQuotationDetail.TaxAmount = matchedItem.TaxAmount;
-                    var element = document.getElementById('TaxAmount');
-                    element.value = (matchedItem.TaxAmount).toFixed(3);
-                    element.dispatchEvent(new Event('change'));
-                    $scope.FinancialQuotationDetail.DiscountPrice = matchedItem.DiscountPrice;
-                    var element = document.getElementById('DiscountPrice');
-                    element.value = (matchedItem.DiscountPrice).toFixed(3);
-                    element.dispatchEvent(new Event('change'));
-                    $scope.FinancialQuotationDetail.GrossPrice = matchedItem.GrossPrice;
-                    var element = document.getElementById('GrossPrice');
-                    element.value = (matchedItem.GrossPrice).toFixed(3);
-                    element.dispatchEvent(new Event('change'));
-                    $scope.FinancialQuotationDetail.NetPrice = matchedItem.NetPrice;
-                    var element = document.getElementById('NetPrice');
-                    element.value = (matchedItem.NetPrice).toFixed(3);
-                    element.dispatchEvent(new Event('change'));
-                    $scope.FinancialQuotationDetail.QuotValidDate = $scope.formatDate(matchedItem.QuotValidDate);
-                    $('#QuotValidDate').val($scope.FinancialQuotationDetail.QuotValidDate);
-                    $scope.FinancialQuotationDetail.ExpecDeliDate = $scope.formatDate(matchedItem.ExpecDeliDate);
-
-                    $('#ExpecDeliDate').val($scope.FinancialQuotationDetail.ExpecDeliDate);
-
-
-                    // Copy values to model
-
-
-                }
-                else {
-                    $scope.reset();
-
-
-                    $scope.MaterialInvitation.rowIndex = $i;
-                    $scope.MaterialInvitation.materialName = row.materialName;
-                    $scope.MaterialInvitation.materialCode = row.materialCode;
-                    $scope.MaterialInvitation.invitationNumber = row.invitationNumber;
-                    $scope.MaterialInvitation.InvitationID = row.InvitationID;
-                    // Add additional mappings here as needed
-                    $scope.MaterialInvitation.MaterialQuantity = row.MaterialQuantity;
-                    $scope.MaterialInvitation.oderUnit = row.Unit;
-                    $scope.MaterialInvitation.VendorID = row.VendorID;
-
-
-                    $scope.MaterialInvitation.MatInvType = row.MatInvType;
-                    $scope.MaterialInvitation.material_Category_Code = row.material_Category_Code;
-
-                    $scope.BillReceiveModel.invitationNumber = row.invitationNumber;
-                    $scope.BillReceiveModel.InvitationID = row.InvitationID;
-                    $scope.BillReceiveModel.BiddingItemVendorID = row.BiddingItemVendorID;
-                    $scope.BillReceiveModel.VendorID = row.VendorID;
-                    $scope.BillReceiveModel.materialCode = row.materialCode;
-                    $scope.MaterialInvitation.QuotationID = row.QuotationID;
-                    $scope.MaterialInvitation.QuotationNo = row.QuotationNo;
-
-                    if (row.MatInvType === 'Materials') {
-                        $scope.p = 1;
-                    }
-                    else if (row.MatInvType === 'Spares') {
-                        $scope.p = 2;
-                    }
-                    $scope.Material = row.materialName;
-
-                }
-
-
-
-
-
-
-
-
-                $scope.TechnicalQuote = true;
-
+            if (row.Incoterms) {
+                var incotermObj = $scope.IncotermsList.find(i => i.MasterDataID === row.Incoterms);
+                $scope.FinancialQuotationDetail.Incoterms = incotermObj || row.Incoterms;
             }
-        }
+            if (row.IncotermsLocation) {
+                var incLocObj = $scope.IncotermsLocationList.find(i => i.MasterDataID === row.IncotermsLocation);
+                $scope.FinancialQuotationDetail.IncotermsLocation = incLocObj || row.IncotermsLocation;
+            }
+           
+            if (row.PaymentMode) {
+                var payModeObj = $scope.PaymentModeList.find(p => p.MasterDataID === row.PaymentMode);
+                $scope.FinancialQuotationDetail.PaymentMode = payModeObj || row.PaymentMode;
+            }
+            
+
+
+                $scope.MaterialInvitation.MatInvType = row.MatInvType;
+                $scope.MaterialInvitation.material_Category_Code = row.material_Category_Code;
+
+                $scope.BillReceiveModel.invitationNumber = row.invitationNumber;
+                $scope.BillReceiveModel.InvitationID = row.InvitationID;
+                $scope.BillReceiveModel.BiddingItemVendorID = row.BiddingItemVendorID;
+                $scope.BillReceiveModel.VendorID = row.VendorID;
+                $scope.BillReceiveModel.materialCode = row.materialCode;
+                $scope.MaterialInvitation.QuotationID = row.QuotationID;
+                $scope.MaterialInvitation.QuotationNo = row.QuotationNo;
+
+            $scope.p = 1;
+                $scope.Material = row.materialName;
+
+            
+
+
+
+
+
+
+
+
+            $scope.TechnicalQuote = true;
+
+    }
 
 
 
@@ -2170,14 +2125,6 @@
             $scope.IsDownload = false;
 
 
-            //$scope.Server.ServerIP = response.DistinctID[0].ServerIP;
-            //$scope.Server.FileServerURL = response.DistinctID[0].FileServerUrl;
-            ///* $scope.DocumentID = document.DocumentID;*/
-            ///*  $scope.FileExtension = document.FileExtension;*/
-            //$scope.Server.ServerPort = response.DistinctID[0].ServerPort;
-            //$scope.Server.FtpUserName = response.DistinctID[0].FtpUserName;
-            //$scope.Server.FtpPassword = response.DistinctID[0].FtpPassword;
-            //$scope.Server.Extensions = response.DistinctID[0].Extensions;
 
 
 
@@ -2304,47 +2251,27 @@
 
 
 
-        $scope.docshow = function () {
-            //$scope.ServerIP = response.DistinctID[0].ServerIP;
-            //$scope.FileServerURL = response.DistinctID[0].FileServerUrl;
-            //$scope.ServerPort = response.DistinctID[0].ServerPort;
-            //$scope.FtpUserName = response.DistinctID[0].FtpUserName;
-            //$scope.FtpPassword = response.DistinctID[0].FtpPassword;
+    $scope.docshow = function () {
+        //$scope.ServerIP = response.DistinctID[0].ServerIP;
+        //$scope.FileServerURL = response.DistinctID[0].FileServerUrl;
+        //$scope.ServerPort = response.DistinctID[0].ServerPort;
+        //$scope.FtpUserName = response.DistinctID[0].FtpUserName;
+        //$scope.FtpPassword = response.DistinctID[0].FtpPassword;
 
 
 
 
 
-            // Check if the string contains any commas
-            if ($scope.Server.Extensions.includes(',')) {
-                // Split the string into an array based on commas
-                var separatedExtensions = $scope.Server.Extensions.split(',');
+        // Check if the string contains any commas
+        if ($scope.Server.Extensions.includes(',')) {
+            // Split the string into an array based on commas
+            var separatedExtensions = $scope.Server.Extensions.split(',');
 
-                // Store the results in two variables
-                $scope.FileExtension = separatedExtensions[0];
+            // Store the results in two variables
+            $scope.FileExtension = separatedExtensions[0];
 
-                $scope.IsDownload = true;
+            $scope.IsDownload = true;
 
-
-
-            }
-
-
-
-
-
-            dwObject.IfShowFileDialog = false;
-            // dwObject.RemoveAllImages();
-            dwObject.FTPPort = $scope.Server.ServerPort;
-            dwObject.FTPUserName = $scope.Server.FtpUserName;
-            dwObject.FTPPassword = $scope.Server.FtpPassword;
-            //DWObject.FTPDownload($scope.data.ServerIP, ($scope.data.FileServerUrl + "//" +
-            //    $scope.data.DocumentID + ".pdf"));
-
-
-            dwObject.FTPDownload($scope.Server.ServerIP,
-                $scope.Server.FileServerURL + "//" +
-                $scope.MaterialInvitation.SampleDocumentID + ".pdf");
 
 
         }
@@ -2353,398 +2280,318 @@
 
 
 
+        dwObject.IfShowFileDialog = false;
+        // dwObject.RemoveAllImages();
+        dwObject.FTPPort = $scope.Server.ServerPort;
+        dwObject.FTPUserName = $scope.Server.FtpUserName;
+        dwObject.FTPPassword = $scope.Server.FtpPassword;
+        //DWObject.FTPDownload($scope.data.ServerIP, ($scope.data.FileServerUrl + "//" +
+        //    $scope.data.DocumentID + ".pdf"));
 
 
+        dwObject.FTPDownload($scope.Server.ServerIP,
+            $scope.Server.FileServerURL + "//" +
+            $scope.MaterialInvitation.SampleDocumentID + ".pdf");
 
 
-        /*  Dynamsoft.WebTwainEnv.RegisterEvent('OnWebTwainReady', Dynamsoft_OnReady);*/
-
-
-
-        var DWObject;
-        var DWObjectLargeViewer;
-        var DWObjectLargeViewer2;
-        var zoomFactor = .5;
-        var width = 9.69 * 90;
-        var height = 10.69 * 90;
-        //$scope.updateLargeViewer = function () {
-        //    DWObject.CopyToClipboard(DWObject.CurrentImageIndexInBuffer);
-        //    DWObjectLargeViewer.LoadDibFromClipboard();
-        //    $('#viewerModal2').modal('show');
-        //};
-        //function Dynamsoft_OnReady() {
-        //    DWObject = Dynamsoft.WebTwainEnv.GetWebTwain('dwtHorizontalThumbnil');
-
-        //    DWObjectLargeViewer = Dynamsoft.WebTwainEnv.GetWebTwain('dwtLargeViewer');
-
-        //    DWObjectLargeViewer.SetViewMode(1, 1);
-        //   /* DWObjectLargeViewer.MaxImagesInBuffer = 1;*/
-
-        //    DWObject.SetViewMode(4, -1);
-        //    DWObject.PDFCompressionType = EnumDWT_PDFCompressionType.PDF_AUTO;
-        //    DWObject.JPEGQuality = 20;
-        //    DWObject.FitWindowType = 0;
-        //    DWObject.SelectionImageBorderColor = 0x691254;
-        //    DWObject.ShowPageNumber = true;
-        //    DWObject.IfAppendImage = true;
-        //  /*  DWObject.RegisterEvent('OnMouseDoubleClick', $scope.updateLargeViewer);*/
-        //    DWObject.RegisterEvent('OnImageAreaSelected', function (sImageIndex, left, top, right, bottom) {
-        //        DWObject.Erase(sImageIndex, left, top, right, bottom);
-        //    });
-
-        //    if (DWObject) {
-        //        var count = DWObject.SourceCount;
-        //        if (count == 0 && Dynamsoft.Lib.env.bMac) {
-        //            DWObject.CloseSourceManager();
-        //            DWObject.ImageCaptureDriverType = 0;
-        //            DWObject.OpenSourceManager();
-        //            count = DWObject.SourceCount;
-        //        }
-
-        //        for (var i = 0; i < count; i++)
-        //            document.getElementById("source").options.add(new Option(DWObject.GetSourceNameItems(i), i)); // Get Data Source names from Data Source Manager and put them in a drop-down box
-
-        //    }
-        //    DWObject.Addon.PDF.Download("../Resources/addon/Pdf.zip",  // specify the url of the add-on resource
-        //        function () { console.log('Successfully Downloaded PDF add-on'); }, // successful callback
-        //        function (errorCode, errorString) { alert(errorString); }  // failure callback and show error message
-        //    );
-        //};
-
-
-
-        /*  $scope.selectedFiles = []; */// Array to store selected files
-
-        // Function to handle file selection
-        //$scope.handleFileSelect = function (files) {
-        //    // Reset selected files array
-        //    $scope.selectedFiles = [];
-
-        //    // Iterate through selected files
-        //    angular.forEach(files, function (file) {
-        //        $scope.selectedFiles.push(file);
-        //    });
-        //};
-        //$scope.files = [];
-        //$scope.getFileDetails = function (e) {
-
-
-        //    $scope.$apply(function () {
-
-        //        // store the file object in an array.
-        //        for (var i = 0; i < e.files.length; i++) {
-        //            $scope.files.push(e.files[i])
-        //        }
-
-        //    });
-        //    console.log($scope.files);
-        //};
-
-
-
-        $scope.ZoomIn = function () {
-            dwObjectLargeViewer.Zoom = zoomFactor * 1.2;
-            zoomFactor = zoomFactor * 1.2;
-        };
-
-        $scope.ZoomOut = function () {
-            dwObjectLargeViewer.Zoom = zoomFactor / 1.2;
-            zoomFactor = zoomFactor / 1.2;
-        };
-        $scope.DownloadDocument = function () {
-            if (dwObjectLargeViewer.HowManyImagesInBuffer > 0) {
-                dwObjectLargeViewer.IfShowFileDialog = true;
-                dwObjectLargeViewer.SaveAllAsPDF(' ', function () { }, function () { })
-            }
-        };
-        $scope.DownloadDocumentAll = function () {
-            if (dwObject.HowManyImagesInBuffer > 0) {
-                dwObject.IfShowFileDialog = true;
-                dwObject.SaveAllAsPDF(' ', function () { }, function () { })
-            }
-        };
-        $scope.AcquireImage = function () {
-            if (dwObject) {
-                dwObject.IfAutomaticDeskew = true;
-                dwObject.IfAutoDiscardBlankpages = false;
-                $scope.ShowUploadImageDivVar = false;
-                var OnAcquireImageSuccess, OnAcquireImageFailure;
-                OnAcquireImageSuccess = OnAcquireImageFailure = function () {
-                    dwObject.CloseSource();
-                };
-
-                dwObject.SelectSourceByIndex(document.getElementById("source").selectedIndex); //Use method SelectSourceByIndex to avoid the 'Select Source' dialog
-                dwObject.OpenSource();
-
-                dwObject.IfDisableSourceAfterAcquire = true;	// Scanner source will be disabled/closed automatically after the scan.
-                dwObject.AcquireImage(OnAcquireImageSuccess, OnAcquireImageFailure);
-            }
-        };
-
-        $scope.LoadImage = function () {
-
-            dwObject.Addon.PDF.SetResolution(200);
-            dwObject.Addon.PDF.SetConvertMode(EnumDWT_ConverMode.CM_RENDERALL);
-
-            dwObject.IfShowFileDialog = true;
-
-            // dwObject.RemoveAllImages();
-            dwObject.LoadImageEx("", EnumDWT_ImageType.IT_PDF, function () { }, function () { });
-
-            $scope.ShowUploadImageDivVar = false;
-        };
-
-
-        //$scope.LoadImage = function () {
-        //    dwObject.Addon.PDF.SetResolution(200);
-        //    dwObject.Addon.PDF.SetConvertMode(EnumDWT_ConverMode.CM_RENDERALL);
-
-        //    dwObject.IfShowFileDialog = true;
-
-        //    // dwObject.RemoveAllImages();
-        //    dwObject.LoadImageEx("", EnumDWT_ImageType.IT_PDF, function () {
-        //        compressLoadedImages().then(() => {
-        //            // Check if the total size exceeds the limit before proceeding with upload
-        //            var maxPDFSize = 2 * 1024 * 1024; // 2 MB limit (example)
-
-        //            if (calculateTotalSize() > maxPDFSize) {
-        //                toastr.error("The PDF file size exceeds the maximum allowed size of 2 MB.");
-        //                $scope.ShowUploadImageDivVar = false;
-        //                return;
-        //            }
-
-        //            $scope.ShowUploadImageDivVar = false;
-        //        }).catch(error => {
-        //            console.error('Error during image compression:', error);
-        //        });
-        //    }, function () {
-        //        console.error("Failed to load image.");
-        //    });
-        //};
-
-        //// Function to compress all loaded images in the buffer
-        //function compressLoadedImages() {
-        //    return new Promise((resolve, reject) => {
-        //        var compressionRatio = 0.5; // Example compression ratio; adjust as needed
-        //        var maxPages = 30; // Limit of pages to compress
-        //        var compressionPromises = [];
-
-        //        for (var i = 0; i < dwObject.HowManyImagesInBuffer && i < maxPages; i++) {
-        //            try {
-        //                var imageUrl = dwObject.GetImageURL(i); // Get the image URL for the index
-
-        //                var promise = fetch(imageUrl)
-        //                    .then(response => response.blob())
-        //                    .then(pageBlob => compressPageWithRatio(pageBlob, compressionRatio))
-        //                    .then(compressedBlob => {
-        //                        // Replace the current image in the buffer with the compressed one
-        //                        dwObject.ReplaceImage(i, compressedBlob);
-        //                    })
-        //                    .catch(error => {
-        //                        console.error('Error compressing page:', error);
-        //                    });
-
-        //                compressionPromises.push(promise);
-        //            } catch (error) {
-        //                console.error('Error processing image:', error);
-        //            }
-        //        }
-
-        //        // Wait for all compression promises to resolve
-        //        Promise.all(compressionPromises).then(resolve).catch(reject);
-        //    });
-        //}
-
-        //// Function to calculate the total size of all images in the buffer
-        //function calculateTotalSize() {
-        //    var totalSize = 0;
-        //    for (var i = 0; i < dwObject.HowManyImagesInBuffer; i++) {
-        //        try {
-        //            var imageUrl = dwObject.GetImageURL(i); // Get the image URL for the index
-        //            fetch(imageUrl)
-        //                .then(response => response.blob())
-        //                .then(pageBlob => {
-        //                    totalSize += pageBlob.size;
-        //                })
-        //                .catch(error => {
-        //                    console.error('Error fetching image:', error);
-        //                });
-        //        } catch (error) {
-        //            console.error('Error calculating total size:', error);
-        //        }
-        //    }
-        //    return totalSize;
-        //}
-
-        //// Function to compress the image using a canvas
-        //function compressPageWithRatio(pageBlob, ratio) {
-        //    return new Promise((resolve, reject) => {
-        //        const reader = new FileReader();
-        //        reader.onload = function (event) {
-        //            const img = new Image();
-        //            img.onload = function () {
-        //                const canvas = document.createElement('canvas');
-        //                const ctx = canvas.getContext('2d');
-
-        //                // Set canvas dimensions to match the image
-        //                canvas.width = img.width * ratio; // Adjust width based on ratio
-        //                canvas.height = img.height * ratio; // Adjust height based on ratio
-
-        //                // Draw the image onto the canvas
-        //                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-        //                // Convert canvas to a Blob with the desired compression quality
-        //                canvas.toBlob(function (compressedBlob) {
-        //                    if (compressedBlob) {
-        //                        resolve(compressedBlob);
-        //                    } else {
-        //                        reject(new Error('Compression failed: No Blob created'));
-        //                    }
-        //                }, 'image/jpeg', 0.8); // Adjust image format and quality if needed
-        //            };
-        //            img.src = event.target.result;
-        //        };
-        //        reader.onerror = function (error) {
-        //            reject(error);
-        //        };
-        //        reader.readAsDataURL(pageBlob); // Assuming pageBlob is a Blob
-        //    });
-        //}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        $scope.LoadImageWithoutBlank = function () {
-
-            dwObject.Addon.PDF.SetResolution(200);
-            dwObject.Addon.PDF.SetConvertMode(EnumDWT_ConverMode.CM_RENDERALL);
-            dwObject.IfShowFileDialog = true;
-            dwObject.HTTPDownloadEx(window.location.origin, '/Buffer/BlankPDF/blank.pdf', 3);
-            $scope.ShowUploadImageDivVar = false;
-        };
-
-
-        $scope.LoadImageWithoutBlank2 = function () {
-            dwObjectLargeViewer.Addon.PDF.SetResolution(200);
-            dwObjectLargeViewer.Addon.PDF.SetConvertMode(EnumDWT_ConverMode.CM_RENDERALL);
+    }
+
+
+
+
+
+
+
+
+
+    /*  Dynamsoft.WebTwainEnv.RegisterEvent('OnWebTwainReady', Dynamsoft_OnReady);*/
+
+
+
+    var DWObject;
+    var DWObjectLargeViewer;
+    var DWObjectLargeViewer2;
+    var zoomFactor = .5;
+    var width = 9.69 * 90;
+    var height = 10.69 * 90;
+    //$scope.updateLargeViewer = function () {
+    //    DWObject.CopyToClipboard(DWObject.CurrentImageIndexInBuffer);
+    //    DWObjectLargeViewer.LoadDibFromClipboard();
+    //    $('#viewerModal2').modal('show');
+    //};
+    //function Dynamsoft_OnReady() {
+    //    DWObject = Dynamsoft.WebTwainEnv.GetWebTwain('dwtHorizontalThumbnil');
+
+    //    DWObjectLargeViewer = Dynamsoft.WebTwainEnv.GetWebTwain('dwtLargeViewer');
+
+    //    DWObjectLargeViewer.SetViewMode(1, 1);
+    //   /* DWObjectLargeViewer.MaxImagesInBuffer = 1;*/
+
+    //    DWObject.SetViewMode(4, -1);
+    //    DWObject.PDFCompressionType = EnumDWT_PDFCompressionType.PDF_AUTO;
+    //    DWObject.JPEGQuality = 20;
+    //    DWObject.FitWindowType = 0;
+    //    DWObject.SelectionImageBorderColor = 0x691254;
+    //    DWObject.ShowPageNumber = true;
+    //    DWObject.IfAppendImage = true;
+    //  /*  DWObject.RegisterEvent('OnMouseDoubleClick', $scope.updateLargeViewer);*/
+    //    DWObject.RegisterEvent('OnImageAreaSelected', function (sImageIndex, left, top, right, bottom) {
+    //        DWObject.Erase(sImageIndex, left, top, right, bottom);
+    //    });
+
+    //    if (DWObject) {
+    //        var count = DWObject.SourceCount;
+    //        if (count == 0 && Dynamsoft.Lib.env.bMac) {
+    //            DWObject.CloseSourceManager();
+    //            DWObject.ImageCaptureDriverType = 0;
+    //            DWObject.OpenSourceManager();
+    //            count = DWObject.SourceCount;
+    //        }
+
+    //        for (var i = 0; i < count; i++)
+    //            document.getElementById("source").options.add(new Option(DWObject.GetSourceNameItems(i), i)); // Get Data Source names from Data Source Manager and put them in a drop-down box
+
+    //    }
+    //    DWObject.Addon.PDF.Download("../Resources/addon/Pdf.zip",  // specify the url of the add-on resource
+    //        function () { console.log('Successfully Downloaded PDF add-on'); }, // successful callback
+    //        function (errorCode, errorString) { alert(errorString); }  // failure callback and show error message
+    //    );
+    //};
+
+
+
+    /*  $scope.selectedFiles = []; */// Array to store selected files
+
+    // Function to handle file selection
+    //$scope.handleFileSelect = function (files) {
+    //    // Reset selected files array
+    //    $scope.selectedFiles = [];
+
+    //    // Iterate through selected files
+    //    angular.forEach(files, function (file) {
+    //        $scope.selectedFiles.push(file);
+    //    });
+    //};
+    //$scope.files = [];
+    //$scope.getFileDetails = function (e) {
+
+
+    //    $scope.$apply(function () {
+
+    //        // store the file object in an array.
+    //        for (var i = 0; i < e.files.length; i++) {
+    //            $scope.files.push(e.files[i])
+    //        }
+
+    //    });
+    //    console.log($scope.files);
+    //};
+
+
+
+    $scope.ZoomIn = function () {
+        dwObjectLargeViewer.Zoom = zoomFactor * 1.2;
+        zoomFactor = zoomFactor * 1.2;
+    };
+
+    $scope.ZoomOut = function () {
+        dwObjectLargeViewer.Zoom = zoomFactor / 1.2;
+        zoomFactor = zoomFactor / 1.2;
+    };
+    $scope.DownloadDocument = function () {
+        if (dwObjectLargeViewer.HowManyImagesInBuffer > 0) {
             dwObjectLargeViewer.IfShowFileDialog = true;
-            dwObjectLargeViewer.HTTPDownloadEx('', '/Buffer/BlankPDF/blank.pdf', 3);
-            $scope.ShowUploadImageDivVar = false;
-        };
-
-
-
-
-
-
-
-
-
-        $scope.Load = function () {
+            dwObjectLargeViewer.SaveAllAsPDF(' ', function () { }, function () { })
+        }
+    };
+    $scope.DownloadDocumentAll = function () {
+        if (dwObject.HowManyImagesInBuffer > 0) {
             dwObject.IfShowFileDialog = true;
-            dwObject.LoadImageEx("", EnumDWT_ImageType.IT_PDF);
+            dwObject.SaveAllAsPDF(' ', function () { }, function () { })
+        }
+    };
+    $scope.AcquireImage = function () {
+        if (dwObject) {
+            dwObject.IfAutomaticDeskew = true;
+            dwObject.IfAutoDiscardBlankpages = false;
             $scope.ShowUploadImageDivVar = false;
-        };
+            var OnAcquireImageSuccess, OnAcquireImageFailure;
+            OnAcquireImageSuccess = OnAcquireImageFailure = function () {
+                dwObject.CloseSource();
+            };
 
-        $scope.RemoveAllSelectedImages = function () {
-            dwObject.RemoveAllSelectedImages();
+            dwObject.SelectSourceByIndex(document.getElementById("source").selectedIndex); //Use method SelectSourceByIndex to avoid the 'Select Source' dialog
+            dwObject.OpenSource();
+
+            dwObject.IfDisableSourceAfterAcquire = true;	// Scanner source will be disabled/closed automatically after the scan.
+            dwObject.AcquireImage(OnAcquireImageSuccess, OnAcquireImageFailure);
         }
+    };
+
+    $scope.LoadImage = function () {
+
+        dwObject.Addon.PDF.SetResolution(200);
+        dwObject.Addon.PDF.SetConvertMode(EnumDWT_ConverMode.CM_RENDERALL);
+
+        dwObject.IfShowFileDialog = true;
+
+        // dwObject.RemoveAllImages();
+        dwObject.LoadImageEx("", EnumDWT_ImageType.IT_PDF, function () { }, function () { });
+
+        $scope.ShowUploadImageDivVar = false;
+    };
+
+
+    //$scope.LoadImage = function () {
+    //    dwObject.Addon.PDF.SetResolution(200);
+    //    dwObject.Addon.PDF.SetConvertMode(EnumDWT_ConverMode.CM_RENDERALL);
+
+    //    dwObject.IfShowFileDialog = true;
+
+    //    // dwObject.RemoveAllImages();
+    //    dwObject.LoadImageEx("", EnumDWT_ImageType.IT_PDF, function () {
+    //        compressLoadedImages().then(() => {
+    //            // Check if the total size exceeds the limit before proceeding with upload
+    //            var maxPDFSize = 2 * 1024 * 1024; // 2 MB limit (example)
+
+    //            if (calculateTotalSize() > maxPDFSize) {
+    //                toastr.error("The PDF file size exceeds the maximum allowed size of 2 MB.");
+    //                $scope.ShowUploadImageDivVar = false;
+    //                return;
+    //            }
+
+    //            $scope.ShowUploadImageDivVar = false;
+    //        }).catch(error => {
+    //            console.error('Error during image compression:', error);
+    //        });
+    //    }, function () {
+    //        console.error("Failed to load image.");
+    //    });
+    //};
+
+    //// Function to compress all loaded images in the buffer
+    //function compressLoadedImages() {
+    //    return new Promise((resolve, reject) => {
+    //        var compressionRatio = 0.5; // Example compression ratio; adjust as needed
+    //        var maxPages = 30; // Limit of pages to compress
+    //        var compressionPromises = [];
 
-        $scope.RotateRight = function () {
-            dwObject.RotateRight(DWObject.GetSelectedImageIndex(0));
-        }
+    //        for (var i = 0; i < dwObject.HowManyImagesInBuffer && i < maxPages; i++) {
+    //            try {
+    //                var imageUrl = dwObject.GetImageURL(i); // Get the image URL for the index
 
-        $scope.ShowMoveImageDiv = function () {
-            $("#MoveImage").toggleClass("hidden");
-            $scope.ShowUploadImageDivVar = false;
-        }
+    //                var promise = fetch(imageUrl)
+    //                    .then(response => response.blob())
+    //                    .then(pageBlob => compressPageWithRatio(pageBlob, compressionRatio))
+    //                    .then(compressedBlob => {
+    //                        // Replace the current image in the buffer with the compressed one
+    //                        dwObject.ReplaceImage(i, compressedBlob);
+    //                    })
+    //                    .catch(error => {
+    //                        console.error('Error compressing page:', error);
+    //                    });
 
-        $scope.MoveImage = function () {
-            dwObject.MoveImage(($("#WhichImage").val() - 1), ($("#Where").val() - 1));
-            $("#MoveImage").toggleClass("hidden");
-            $scope.ShowUploadImageDivVar = false;
-        };
+    //                compressionPromises.push(promise);
+    //            } catch (error) {
+    //                console.error('Error processing image:', error);
+    //            }
+    //        }
 
+    //        // Wait for all compression promises to resolve
+    //        Promise.all(compressionPromises).then(resolve).catch(reject);
+    //    });
+    //}
 
+    //// Function to calculate the total size of all images in the buffer
+    //function calculateTotalSize() {
+    //    var totalSize = 0;
+    //    for (var i = 0; i < dwObject.HowManyImagesInBuffer; i++) {
+    //        try {
+    //            var imageUrl = dwObject.GetImageURL(i); // Get the image URL for the index
+    //            fetch(imageUrl)
+    //                .then(response => response.blob())
+    //                .then(pageBlob => {
+    //                    totalSize += pageBlob.size;
+    //                })
+    //                .catch(error => {
+    //                    console.error('Error fetching image:', error);
+    //                });
+    //        } catch (error) {
+    //            console.error('Error calculating total size:', error);
+    //        }
+    //    }
+    //    return totalSize;
+    //}
 
+    //// Function to compress the image using a canvas
+    //function compressPageWithRatio(pageBlob, ratio) {
+    //    return new Promise((resolve, reject) => {
+    //        const reader = new FileReader();
+    //        reader.onload = function (event) {
+    //            const img = new Image();
+    //            img.onload = function () {
+    //                const canvas = document.createElement('canvas');
+    //                const ctx = canvas.getContext('2d');
 
+    //                // Set canvas dimensions to match the image
+    //                canvas.width = img.width * ratio; // Adjust width based on ratio
+    //                canvas.height = img.height * ratio; // Adjust height based on ratio
 
-        $scope.submit = function () {
+    //                // Draw the image onto the canvas
+    //                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
+    //                // Convert canvas to a Blob with the desired compression quality
+    //                canvas.toBlob(function (compressedBlob) {
+    //                    if (compressedBlob) {
+    //                        resolve(compressedBlob);
+    //                    } else {
+    //                        reject(new Error('Compression failed: No Blob created'));
+    //                    }
+    //                }, 'image/jpeg', 0.8); // Adjust image format and quality if needed
+    //            };
+    //            img.src = event.target.result;
+    //        };
+    //        reader.onerror = function (error) {
+    //            reject(error);
+    //        };
+    //        reader.readAsDataURL(pageBlob); // Assuming pageBlob is a Blob
+    //    });
+    //}
 
-            if ($scope.ProposalType === 'F') {
-                $http.post('/VendorSelectionModule/TechnicalQuotation/submitquotation',
 
 
-                    {
-                        InvId: $scope.BillReceiveModel.InvitationID,
-                        VendorID: $scope.BillReceiveModel.VendorID,
-                        InvitationNumber: $scope.BillReceiveModel.invitationNumber
 
-                    })
-                    .success(function (response) {
-                        $scope.flagToShow = false;
-                        $scope.flagToShowMasterTbl = true;
-                        $scope.QuotationList = response.QuotationList[0];
 
 
-                        $http.post('/VendorSelectionModule/FinancialQuotation/submitfinancialquotation',
 
 
-                            {
-                                FinancialQuotationlist: $scope.myarray2,
-                                MaterialInvitationlist: $scope.myarray,
-                                ProposalType: $scope.ProposalType,
-                                Quotation: $scope.QuotationList
 
-                            })
-                            .success(function (response) {
 
-                                $scope.response = response.respStatus.Message;
-                                if ($scope.response === 'Data Saved Successfully') {
 
-                                    toastr.success($scope.response);
 
-                                    // Delay the rest of the operations
-                                    $timeout(function () {
-                                        $scope.reset();
 
-                                        $scope.masterDataSetupGridData = [];  // base collection
-                                        $scope.GridDisplayCollection = [].concat($scope.masterDataSetupGridData);
-                                        $scope.myarray = [];
-                                        $scope.myarray2 = [];
-                                        $scope.Refresh();
-                                    }, 1000); // 2000 milliseconds = 2 seconds
-                                }
-                                else {
-                                    toastr.error($scope.response);
-                                }
 
 
-                                $scope.loading = false;
 
 
-                            }).error(function () {
-                                $scope.loading = false;
 
+    $scope.LoadImageWithoutBlank = function () {
 
+        dwObject.Addon.PDF.SetResolution(200);
+        dwObject.Addon.PDF.SetConvertMode(EnumDWT_ConverMode.CM_RENDERALL);
+        dwObject.IfShowFileDialog = true;
+        dwObject.HTTPDownloadEx(window.location.origin, '/Buffer/BlankPDF/blank.pdf', 3);
+        $scope.ShowUploadImageDivVar = false;
+    };
 
-                            });
 
+    $scope.LoadImageWithoutBlank2 = function () {
+        dwObjectLargeViewer.Addon.PDF.SetResolution(200);
+        dwObjectLargeViewer.Addon.PDF.SetConvertMode(EnumDWT_ConverMode.CM_RENDERALL);
+        dwObjectLargeViewer.IfShowFileDialog = true;
+        dwObjectLargeViewer.HTTPDownloadEx('', '/Buffer/BlankPDF/blank.pdf', 3);
+        $scope.ShowUploadImageDivVar = false;
+    };
 
 
 
@@ -2754,133 +2601,107 @@
 
 
 
+    $scope.Load = function () {
+        dwObject.IfShowFileDialog = true;
+        dwObject.LoadImageEx("", EnumDWT_ImageType.IT_PDF);
+        $scope.ShowUploadImageDivVar = false;
+    };
 
+    $scope.RemoveAllSelectedImages = function () {
+        dwObject.RemoveAllSelectedImages();
+    }
 
-                        $scope.GridDisplayCollection = [].concat($scope.MaterialList);
+    $scope.RotateRight = function () {
+        dwObject.RotateRight(DWObject.GetSelectedImageIndex(0));
+    }
 
+    $scope.ShowMoveImageDiv = function () {
+        $("#MoveImage").toggleClass("hidden");
+        $scope.ShowUploadImageDivVar = false;
+    }
 
-                        $scope.loading = false;
-                    }).error(function () {
-                        $scope.loading = false;
+    $scope.MoveImage = function () {
+        dwObject.MoveImage(($("#WhichImage").val() - 1), ($("#Where").val() - 1));
+        $("#MoveImage").toggleClass("hidden");
+        $scope.ShowUploadImageDivVar = false;
+    };
 
 
 
-                    });
-            }
-            else {
 
 
+    $scope.submit = function () {
 
-                $http.post('/VendorSelectionModule/FinancialQuotation/submitfinancialquotation',
 
+        if ($scope.ProposalType === 'F') {
+            $http.post('/VendorSelectionModule/TechnicalQuotation/submitquotation',
 
-                    {
-                        FinancialQuotationlist: $scope.myarray2,
-                        MaterialInvitationlist: $scope.myarray,
-                        ProposalType: $scope.ProposalType,
-                        Quotation:""
 
-                        
+                {
+                    InvId: $scope.BillReceiveModel.InvitationID,
+                    VendorID: $scope.BillReceiveModel.VendorID,
+                    InvitationNumber: $scope.BillReceiveModel.invitationNumber
 
-                    })
-                    .success(function (response) {
-
-                        $scope.response = response.respStatus.Message;
-                        if ($scope.response === 'Data Saved Successfully') {
-                            $scope.reset();
-                            toastr.success($scope.response);
-                            $scope.toggleRefreshTable();
-                            $scope.masterDataSetupGridData = [];  // base collection
-                            $scope.GridDisplayCollection = [].concat($scope.masterDataSetupGridData);
-                            $scope.myarray = [];
-                            $scope.myarray2 = [];
-                        }
-                        else {
-                            toastr.error($scope.response);
-                        }
-
-
-                        $scope.loading = false;
-
-
-                    }).error(function () {
-                        $scope.loading = false;
-
-
-
-                    });
-
-
-
-
-
-
-
-
-
-
-
-
-                $scope.GridDisplayCollection = [].concat($scope.MaterialList);
-
-
-
-
-
-            }
-
-        }
-
-
-
-
-
-
-
-
-
-        $scope.Search = function () {
-
-
-            $http.post('/VendorSelectionModule/FinancialQuotation/GetAllQuotation')
-                .success(function (response) {
-                    $scope.flagToShow = false;
-                    $scope.flagToShowMasterTbl = false;
-                    $scope.AllQuotation = response.AllQuotation;
-
-                    $scope.GridDisplayCollectionQuotation = [].concat($scope.AllQuotation);
-
-
-                    $scope.loading = false;
-                }).error(function () {
-                    $scope.loading = false;
-                    toastr.error('Data Loading Failed.');
-                });
-
-
-
-
-
-            $('#QuotationModal').modal('show');
-
-
-
-
-        }
-
-
-
-
-        $scope.toggleQuotationSelect = function (row) {
-
-            $scope.Quotation = row.quotationNo;
-            $scope.InvitationNumber = row.InvitationNumber;
-            $http.post('/VendorSelectionModule/FinancialQuotation/QuotWiseMaterial',
-                { QuotationNo: row.quotationNo })
+                })
                 .success(function (response) {
                     $scope.flagToShow = false;
                     $scope.flagToShowMasterTbl = true;
-                    $scope.MaterialList = response.AllQuotation;
+                    $scope.QuotationList = response.QuotationList[0];
+
+
+                    $http.post('/VendorSelectionModule/FinancialQuotation/submitfinancialquotation',
+
+
+                        {
+                            FinancialQuotationlist: $scope.myarray2,
+                            MaterialInvitationlist: $scope.myarray,
+                            ProposalType: $scope.ProposalType,
+                            Quotation: $scope.QuotationList
+
+                        })
+                        .success(function (response) {
+
+                            $scope.response = response.respStatus.Message;
+                            if ($scope.response === 'Data Saved Successfully') {
+
+                                toastr.success($scope.response);
+
+                                // Delay the rest of the operations
+                                $timeout(function () {
+                                    $scope.reset();
+
+                                    $scope.masterDataSetupGridData = [];  // base collection
+                                    $scope.GridDisplayCollection = [].concat($scope.masterDataSetupGridData);
+                                    $scope.myarray = [];
+                                    $scope.myarray2 = [];
+                                    $scope.Refresh();
+                                }, 1000); // 2000 milliseconds = 2 seconds
+                            }
+                            else {
+                                toastr.error($scope.response);
+                            }
+
+
+                            $scope.loading = false;
+
+
+                        }).error(function () {
+                            $scope.loading = false;
+
+
+
+                        });
+
+
+
+
+
+
+
+
+
+
+
 
                     $scope.GridDisplayCollection = [].concat($scope.MaterialList);
 
@@ -2888,7 +2709,52 @@
                     $scope.loading = false;
                 }).error(function () {
                     $scope.loading = false;
-                    toastr.error('Data Loading Failed.');
+
+
+
+                });
+        }
+        else {
+
+
+
+            $http.post('/VendorSelectionModule/FinancialQuotation/submitfinancialquotation',
+
+
+                {
+                    FinancialQuotationlist: $scope.myarray2,
+                    MaterialInvitationlist: $scope.myarray,
+                    ProposalType: $scope.ProposalType,
+                    Quotation: ""
+
+
+
+                })
+                .success(function (response) {
+
+                    $scope.response = response.respStatus.Message;
+                    if ($scope.response === 'Data Saved Successfully') {
+                        $scope.reset();
+                        toastr.success($scope.response);
+                        $scope.toggleRefreshTable();
+                        $scope.masterDataSetupGridData = [];  // base collection
+                        $scope.GridDisplayCollection = [].concat($scope.masterDataSetupGridData);
+                        $scope.myarray = [];
+                        $scope.myarray2 = [];
+                    }
+                    else {
+                        toastr.error($scope.response);
+                    }
+
+
+                    $scope.loading = false;
+
+
+                }).error(function () {
+                    $scope.loading = false;
+
+
+
                 });
 
 
@@ -2900,331 +2766,414 @@
 
 
 
-            $('#QuotationModal').modal('hide');
+
+
+            $scope.GridDisplayCollection = [].concat($scope.MaterialList);
+
+
+
 
 
         }
 
+    }
 
 
-        //$scope.isRowInArray2 = function (rowIndex) {
-        //    console.log($scope.myarray2);
-        //    return rowIndex;
-        //};
 
 
 
 
 
-        $scope.isRowInArray2 = function (value) {
-            console.log('sdsad');
-            return $scope.myarray2.some(function (item) {
-                return item.rowIndex === value;
-            });
 
 
-        };
+    $scope.Search = function () {
 
 
-
-
-
-
-
-        $scope.AddDocument = function (row) {
-
-
-            $http.post('/VendorSelectionModule/TechnicalQuotation/GetMaterialDocStatus', {
-                MaterialCode: row.materialCode,
-                BiddingID: row.BiddingID,
-                VendorCode: row.BiddingItemVendorID
-
-            })
-                .success(function (response) {
-
-
-                    $scope.showEditModal(row, response.document);
-
-                }
-
-                )
-        };
-
-
-
-
-
-
-
-        $scope.showEditModal = function (row, document) {
-
-            /*  $("#viewerModal2").modal("show");*/
-            /*  DWObjectLargeViewer.RemoveAllImages();*/
-            $scope.ServerIP = document.ServerIP;
-            $scope.FileServerURL = document.FileServerURL;
-            $scope.DocumentID = document.DocumentID;
-            $scope.FileExtension2 = document.FileExtension;
-            $scope.ServerPort = document.FtpPort;
-            $scope.FtpUserName = document.FtpUserName;
-            $scope.FtpPassword = document.FtpPassword;
-            $scope.DownloadedFileName = row.MaterialName;
-            $scope.DownloadedFileCode = row.MaterialCode;
-
-            if (document.FileExtension.includes(',')) {
-                // Split the string into an array based on commas
-                var separatedExtensions = document.FileExtension.split(',');
-
-                // Store the results in two variables
-                $scope.FileExtension2 = separatedExtensions[0];
-
-                $scope.IsDownload2 = true;
-
-
-
-            }
-
-
-
-
-
-
-            else if (document.FileExtension != ".pdf") {
-                $scope.IsDownload = true;
-            }
-
-            //if ($scope.FileExtension == ".pdf") {
-            //    $scope.uploadType = 1;
-            //}
-
-            UpdatedItem = document;
-            dwObject2.RemoveAllImages();
-            $scope.DocumentName = document.DocPropertyName;
-            dwObject2.IfShowFileDialog = false;
-
-            dwObject2.FTPPort = document.FtpPort;
-            dwObject2.FTPUserName = document.FtpUserName;
-            dwObject2.FTPPassword = document.FtpPassword;
-            dwObject2.FTPDownload(document.ServerIP, (document.FileServerURL + "//" +
-                document.DocumentID + ".pdf"));
-            $("#DetailViewModal").modal("show");
-            $scope.LoadImageWithoutBlank2();
-            //DWObjectOFMakeUpdate.IfShowFileDialog = false;
-            //DWObjectOFMakeUpdate.RemoveAllImages();
-
-            //DWObjectOFMakeUpdate.FTPPort =;
-            //DWObjectOFMakeUpdate.FTPUserName = document.FtpUserName;
-            //DWObjectOFMakeUpdate.FTPPassword = document.FtpPassword;
-
-            //DWObjectOFMakeUpdate.FTPDownload(document.ServerIP, (document.FileServerURL +
-            //    "//" + document.DocumentID + ".pdf"));
-
-
-        };
-
-        var dwObject;
-        var dwObject2;
-        var dwObjectLargeViewer;
-        var zoomFactor = .5;;
-
-        var dwtLargeViewer_single;
-
-        Dynamsoft.WebTwainEnv.RegisterEvent("OnWebTwainReady", dynamsoftOnReady);
-
-
-        Dynamsoft.WebTwainEnv.CreateDWTObject('dwtLargeViewer_single',
-            function (dwtObject) {
-                dwtLargeViewer_single = dwtObject;
-                dwtLargeViewer_single.SetViewMode(-1, -1);
-                dwtLargeViewer_single.MaxImagesInBuffer = 1;
-                dwtLargeViewer_single.Width = 9.69 * 90;
-                dwtLargeViewer_single.Height = $(window).height();
-            },
-            function (errorString) {
-                alert('WebTwain Loading Error');
-            }
-        );
-
-
-        function dynamsoftOnReady() {
-            dwObject = Dynamsoft.WebTwainEnv.GetWebTwain("dwtHorizontalThumbnil");
-            dwObject2 = Dynamsoft.WebTwainEnv.GetWebTwain("dwtVerticalThumbnil");
-
-            dwObjectLargeViewer = Dynamsoft.WebTwainEnv.GetWebTwain("dwtLargeViewer");
-
-            dwObjectLargeViewer.SetViewMode(-1, -1);
-            dwObjectLargeViewer.MaxImagesInBuffer = 1;
-
-            dwObject.SetViewMode(4, -1);
-            // DWObject.PDFCompressionType = EnumDWT_PDFCompressionType.PDF_JPEG;
-            dwObject.JPEGQuality = 20;
-            dwObject.FitWindowType = 0;
-            dwObject.SelectionImageBorderColor = 0x691254;
-            dwObject.ShowPageNumber = true;
-            dwObject.IfAppendImage = true;
-            //dwObject.RegisterEvent("OnMouseDoubleClick", function () {
-            //    dwObject.CopyToClipboard(dwObject.CurrentImageIndexInBuffer);
-            //    dwtLargeViewer_single.LoadDibFromClipboard();
-            //    $('#viewerModal').modal('show');
-            //});
-            dwObject.RegisterEvent("OnImageAreaSelected", function (sImageIndex, left, top, right, bottom) {
-                dwObject.Erase(sImageIndex, left, top, right, bottom);
-            });
-
-            dwObject2.SetViewMode(-1, 4);
-            //// DWObject.PDFCompressionType = EnumDWT_PDFCompressionType.PDF_JPEG;
-            dwObject2.JPEGQuality = 20;
-            dwObject2.FitWindowType = 0;
-            dwObject2.SelectionImageBorderColor = 0x691254;
-            dwObject2.ShowPageNumber = true;
-            dwObject2.IfAppendImage = true;
-            dwObject2.RegisterEvent("OnMouseClick", function () {
-                dwObject2.CopyToClipboard(dwObject2.CurrentImageIndexInBuffer);
-                dwObjectLargeViewer.LoadDibFromClipboard();
-            });
-            dwObject2.RegisterEvent("OnImageAreaSelected", function (sImageIndex, left, top, right, bottom) {
-                dwObject2.Erase(sImageIndex, left, top, right, bottom);
-            });
-
-            dwObject.Addon.PDF.Download("../Resources/addon/Pdf.zip",  // specify the url of the add-on resource
-                function () { console.log('Successfully Downloaded PDF add-on'); }, // successful callback
-                function (errorCode, errorString) { alert(errorString); }  // failure callback and show error message
-            );
-        }
-
-
-
-        $http.get("/VendorSelectionModule/TechnicalQuotation/loadItemType")
+        $http.post('/VendorSelectionModule/FinancialQuotation/GetAllQuotation')
             .success(function (response) {
-                $scope.ItemTypeList = [];
-                $scope.ItemTypeList = response.result;
-               /* console.log(ItemTypeList);*/
-            })
-            .error(function () {
-                $scope.ItemTypeList = [];
-                $scope.loading = false;
-            });
+                $scope.flagToShow = false;
+                $scope.flagToShowMasterTbl = false;
+                $scope.AllQuotation = response.AllQuotation;
+
+                $scope.GridDisplayCollectionQuotation = [].concat($scope.AllQuotation);
 
 
-
-        $http.post('/VendorSelectionModule/TechnicalQuotation/Itemlist')
-
-            .success(function (response) {
-                $scope.ItemList = response.ItemList;
-                console.log($scope.ItemList);
                 $scope.loading = false;
             }).error(function () {
                 $scope.loading = false;
+                toastr.error('Data Loading Failed.');
             });
 
 
 
-        $scope.checkAndFormat = function (id) {
-            CheckPositive(id);
-            $scope.FormatDigits(id, 13);
-        };
 
-        $scope.FormatDigits = function (txtVendor, lmt) {
-            if (!IsPositiveNumber($("#" + txtVendor).val())) {
-                $("#" + txtVendor).val('');
+
+        $('#QuotationModal').modal('show');
+
+
+
+
+    }
+
+
+
+
+    $scope.toggleQuotationSelect = function (row) {
+
+        $scope.Quotation = row.quotationNo;
+        $scope.InvitationNumber = row.InvitationNumber;
+        $http.post('/VendorSelectionModule/FinancialQuotation/QuotWiseMaterial',
+            { QuotationNo: row.quotationNo })
+            .success(function (response) {
+                $scope.flagToShow = false;
+                $scope.flagToShowMasterTbl = true;
+                $scope.MaterialList = response.AllQuotation;
+
+                $scope.GridDisplayCollection = [].concat($scope.MaterialList);
+
+
+                $scope.loading = false;
+            }).error(function () {
+                $scope.loading = false;
+                toastr.error('Data Loading Failed.');
+            });
+
+
+
+
+
+
+
+
+
+
+        $('#QuotationModal').modal('hide');
+
+
+    }
+
+
+
+    //$scope.isRowInArray2 = function (rowIndex) {
+    //    console.log($scope.myarray2);
+    //    return rowIndex;
+    //};
+
+
+
+
+
+    $scope.isRowInArray2 = function (value) {
+        console.log('sdsad');
+        return $scope.myarray2.some(function (item) {
+            return item.rowIndex === value;
+        });
+
+
+    };
+
+
+
+
+
+
+
+    $scope.AddDocument = function (row) {
+
+
+        $http.post('/VendorSelectionModule/TechnicalQuotation/GetMaterialDocStatus', {
+            MaterialCode: row.materialCode,
+            BiddingID: row.BiddingID,
+            VendorCode: row.BiddingItemVendorID
+
+        })
+            .success(function (response) {
+
+
+                $scope.showEditModal(row, response.document);
+
             }
-            else if (isNaN($("#" + txtVendor).val())) {
-                $("#" + txtVendor).val('');
+
+            )
+    };
+
+
+
+
+
+
+
+    $scope.showEditModal = function (row, document) {
+
+        /*  $("#viewerModal2").modal("show");*/
+        /*  DWObjectLargeViewer.RemoveAllImages();*/
+        $scope.ServerIP = document.ServerIP;
+        $scope.FileServerURL = document.FileServerURL;
+        $scope.DocumentID = document.DocumentID;
+        $scope.FileExtension2 = document.FileExtension;
+        $scope.ServerPort = document.FtpPort;
+        $scope.FtpUserName = document.FtpUserName;
+        $scope.FtpPassword = document.FtpPassword;
+        $scope.DownloadedFileName = row.MaterialName;
+        $scope.DownloadedFileCode = row.MaterialCode;
+
+        if (document.FileExtension.includes(',')) {
+            // Split the string into an array based on commas
+            var separatedExtensions = document.FileExtension.split(',');
+
+            // Store the results in two variables
+            $scope.FileExtension2 = separatedExtensions[0];
+
+            $scope.IsDownload2 = true;
+
+
+
+        }
+
+
+
+
+
+
+        else if (document.FileExtension != ".pdf") {
+            $scope.IsDownload = true;
+        }
+
+        //if ($scope.FileExtension == ".pdf") {
+        //    $scope.uploadType = 1;
+        //}
+
+        UpdatedItem = document;
+        dwObject2.RemoveAllImages();
+        $scope.DocumentName = document.DocPropertyName;
+        dwObject2.IfShowFileDialog = false;
+
+        dwObject2.FTPPort = document.FtpPort;
+        dwObject2.FTPUserName = document.FtpUserName;
+        dwObject2.FTPPassword = document.FtpPassword;
+        dwObject2.FTPDownload(document.ServerIP, (document.FileServerURL + "//" +
+            document.DocumentID + ".pdf"));
+        $("#DetailViewModal").modal("show");
+        $scope.LoadImageWithoutBlank2();
+        //DWObjectOFMakeUpdate.IfShowFileDialog = false;
+        //DWObjectOFMakeUpdate.RemoveAllImages();
+
+        //DWObjectOFMakeUpdate.FTPPort =;
+        //DWObjectOFMakeUpdate.FTPUserName = document.FtpUserName;
+        //DWObjectOFMakeUpdate.FTPPassword = document.FtpPassword;
+
+        //DWObjectOFMakeUpdate.FTPDownload(document.ServerIP, (document.FileServerURL +
+        //    "//" + document.DocumentID + ".pdf"));
+
+
+    };
+
+    var dwObject;
+    var dwObject2;
+    var dwObjectLargeViewer;
+    var zoomFactor = .5;;
+
+    var dwtLargeViewer_single;
+
+    Dynamsoft.WebTwainEnv.RegisterEvent("OnWebTwainReady", dynamsoftOnReady);
+
+
+    Dynamsoft.WebTwainEnv.CreateDWTObject('dwtLargeViewer_single',
+        function (dwtObject) {
+            dwtLargeViewer_single = dwtObject;
+            dwtLargeViewer_single.SetViewMode(-1, -1);
+            dwtLargeViewer_single.MaxImagesInBuffer = 1;
+            dwtLargeViewer_single.Width = 9.69 * 90;
+            dwtLargeViewer_single.Height = $(window).height();
+        },
+        function (errorString) {
+            alert('WebTwain Loading Error');
+        }
+    );
+
+
+    function dynamsoftOnReady() {
+        dwObject = Dynamsoft.WebTwainEnv.GetWebTwain("dwtHorizontalThumbnil");
+        dwObject2 = Dynamsoft.WebTwainEnv.GetWebTwain("dwtVerticalThumbnil");
+
+        dwObjectLargeViewer = Dynamsoft.WebTwainEnv.GetWebTwain("dwtLargeViewer");
+
+        dwObjectLargeViewer.SetViewMode(-1, -1);
+        dwObjectLargeViewer.MaxImagesInBuffer = 1;
+
+        dwObject.SetViewMode(4, -1);
+        // DWObject.PDFCompressionType = EnumDWT_PDFCompressionType.PDF_JPEG;
+        dwObject.JPEGQuality = 20;
+        dwObject.FitWindowType = 0;
+        dwObject.SelectionImageBorderColor = 0x691254;
+        dwObject.ShowPageNumber = true;
+        dwObject.IfAppendImage = true;
+        //dwObject.RegisterEvent("OnMouseDoubleClick", function () {
+        //    dwObject.CopyToClipboard(dwObject.CurrentImageIndexInBuffer);
+        //    dwtLargeViewer_single.LoadDibFromClipboard();
+        //    $('#viewerModal').modal('show');
+        //});
+        dwObject.RegisterEvent("OnImageAreaSelected", function (sImageIndex, left, top, right, bottom) {
+            dwObject.Erase(sImageIndex, left, top, right, bottom);
+        });
+
+        dwObject2.SetViewMode(-1, 4);
+        //// DWObject.PDFCompressionType = EnumDWT_PDFCompressionType.PDF_JPEG;
+        dwObject2.JPEGQuality = 20;
+        dwObject2.FitWindowType = 0;
+        dwObject2.SelectionImageBorderColor = 0x691254;
+        dwObject2.ShowPageNumber = true;
+        dwObject2.IfAppendImage = true;
+        dwObject2.RegisterEvent("OnMouseClick", function () {
+            dwObject2.CopyToClipboard(dwObject2.CurrentImageIndexInBuffer);
+            dwObjectLargeViewer.LoadDibFromClipboard();
+        });
+        dwObject2.RegisterEvent("OnImageAreaSelected", function (sImageIndex, left, top, right, bottom) {
+            dwObject2.Erase(sImageIndex, left, top, right, bottom);
+        });
+
+        dwObject.Addon.PDF.Download("../Resources/addon/Pdf.zip",  // specify the url of the add-on resource
+            function () { console.log('Successfully Downloaded PDF add-on'); }, // successful callback
+            function (errorCode, errorString) { alert(errorString); }  // failure callback and show error message
+        );
+    }
+
+
+
+        $http.post("/VendorSelectionModule/TechnicalQuotation/loadItemType", { masterDataType:'currency'})
+
+  
+        .success(function (response) {
+            $scope.ItemTypeList = [];
+            $scope.ItemTypeList = response.result;
+            /* console.log(ItemTypeList);*/
+        })
+        .error(function () {
+            $scope.ItemTypeList = [];
+            $scope.loading = false;
+        });
+
+
+
+    $http.post('/VendorSelectionModule/TechnicalQuotation/Itemlist')
+
+        .success(function (response) {
+            $scope.ItemList = response.ItemList;
+            console.log($scope.ItemList);
+            $scope.loading = false;
+        }).error(function () {
+            $scope.loading = false;
+        });
+
+
+
+    $scope.checkAndFormat = function (id) {
+        CheckPositive(id);
+        $scope.FormatDigits(id, 13);
+    };
+
+    $scope.FormatDigits = function (txtVendor, lmt) {
+        if (!IsPositiveNumber($("#" + txtVendor).val())) {
+            $("#" + txtVendor).val('');
+        }
+        else if (isNaN($("#" + txtVendor).val())) {
+            $("#" + txtVendor).val('');
+        }
+        else {
+            var d = $("#" + txtVendor).val().split('.');
+            if ((d[0].length > (lmt - 0))) {
+                $("#" + txtVendor).val("");
+                $("#btnSaveDoc").prop("disabled", true);
+                return;
             }
             else {
-                var d = $("#" + txtVendor).val().split('.');
-                if ((d[0].length > (lmt - 0))) {
-                    $("#" + txtVendor).val("");
-                    $("#btnSaveDoc").prop("disabled", true);
-                    return;
-                }
-                else {
-                    $("#btnSaveDoc").prop("disabled", false);
-                    $("#" + txtVendor).val(($("#" + txtVendor).val() - 0).toFixed(3));
-                }
+                $("#btnSaveDoc").prop("disabled", false);
+                $("#" + txtVendor).val(($("#" + txtVendor).val() - 0).toFixed(3));
             }
-
         }
 
-
-        $scope.calculateTotalPrice = function () {
-
+    }
 
 
-            $scope.FinancialQuotationDetail.TotalPrice = $scope.FinancialQuotationDetail.ProposeQty * $scope.FinancialQuotationDetail.UnitPrice;
-            var element = document.getElementById('TotalPrice');
-            element.value = ($scope.FinancialQuotationDetail.TotalPrice).toFixed(3);
-            element.dispatchEvent(new Event('change'));
-        }
-
-        $scope.calculateGrossPrice = function () {
+    $scope.calculateTotalPrice = function () {
 
 
 
+        $scope.FinancialQuotationDetail.TotalPrice = $scope.FinancialQuotationDetail.ProposeQty * $scope.FinancialQuotationDetail.UnitPrice;
+        var element = document.getElementById('TotalPrice');
+        element.value = ($scope.FinancialQuotationDetail.TotalPrice).toFixed(3);
+        element.dispatchEvent(new Event('change'));
+    }
 
-            $scope.FinancialQuotationDetail.GrossPrice = $scope.FinancialQuotationDetail.TotalPrice - $scope.FinancialQuotationDetail.TaxAmount - $scope.FinancialQuotationDetail.VatAmount;
-            $scope.FinancialQuotationDetail.NetPrice = $scope.FinancialQuotationDetail.TotalPrice - $scope.FinancialQuotationDetail.TaxAmount - $scope.FinancialQuotationDetail.VatAmount;
-            var element = document.getElementById('GrossPrice');
-            element.value = ($scope.FinancialQuotationDetail.GrossPrice).toFixed(3);
-            element.dispatchEvent(new Event('change'));
-
-            var element = document.getElementById('NetPrice');
-            element.value = ($scope.FinancialQuotationDetail.NetPrice).toFixed(3);
-            element.dispatchEvent(new Event('change'));
-
-
-        }
-
-        $scope.calculateNetPrice = function () {
+    $scope.calculateGrossPrice = function () {
 
 
 
 
+        $scope.FinancialQuotationDetail.GrossPrice = $scope.FinancialQuotationDetail.TotalPrice - $scope.FinancialQuotationDetail.TaxAmount - $scope.FinancialQuotationDetail.VatAmount;
+        $scope.FinancialQuotationDetail.NetPrice = $scope.FinancialQuotationDetail.TotalPrice - $scope.FinancialQuotationDetail.TaxAmount - $scope.FinancialQuotationDetail.VatAmount;
+        var element = document.getElementById('GrossPrice');
+        element.value = ($scope.FinancialQuotationDetail.GrossPrice).toFixed(3);
+        element.dispatchEvent(new Event('change'));
 
-            $scope.FinancialQuotationDetail.NetPrice = $scope.FinancialQuotationDetail.GrossPrice - $scope.FinancialQuotationDetail.DiscountPrice;
-            
-
-            var element = document.getElementById('NetPrice');
-            element.value = ($scope.FinancialQuotationDetail.NetPrice).toFixed(3);
-            element.dispatchEvent(new Event('change'));
-
-
-        }
-
-        $scope.formatDate = function (date) {
-
-            var res = date.split("/");
-            return res[1] + "/" + res[0] + "/" + res[2];
-
-        };
+        var element = document.getElementById('NetPrice');
+        element.value = ($scope.FinancialQuotationDetail.NetPrice).toFixed(3);
+        element.dispatchEvent(new Event('change'));
 
 
-        $scope.formatMaterialCode = function (materialCode) {
-            return materialCode.replace(/^0+/, '');
-        };
-        $scope.Refresh = function () {
-            location.reload();
-        };
+    }
 
-        //---------------------
+    $scope.calculateNetPrice = function () {
 
-        $scope.fromDashboard = false;
 
-        var qrStr = window.location.search.substring(1);
-        if (qrStr != "") {
 
-            $scope.fromDashboard = true;
-            var qrStrVariables = qrStr.split('&');
-            var qrStrone = qrStrVariables[0].split('=');
-            var info1 = qrStrone[1];
-            console.log(info1);
 
-            $scope.toggleInvitationSelect(info1, 'F');
 
-        }
+        $scope.FinancialQuotationDetail.NetPrice = $scope.FinancialQuotationDetail.GrossPrice - $scope.FinancialQuotationDetail.DiscountPrice;
 
-        $scope.toggleRefreshTable = function (row) {
-            window.location.href = "/VendorSelectionModule/FinancialQuotation";
-        };
+
+        var element = document.getElementById('NetPrice');
+        element.value = ($scope.FinancialQuotationDetail.NetPrice).toFixed(3);
+        element.dispatchEvent(new Event('change'));
+
+
+    }
+
+    $scope.formatDate = function (date) {
+
+        var res = date.split("/");
+        return res[1] + "/" + res[0] + "/" + res[2];
+
+    };
+
+
+    $scope.formatMaterialCode = function (materialCode) {
+        return materialCode.replace(/^0+/, '');
+    };
+    $scope.Refresh = function () {
+        location.reload();
+    };
+
+    //---------------------
+
+    $scope.fromDashboard = false;
+
+    var qrStr = window.location.search.substring(1);
+    if (qrStr != "") {
+
+        $scope.fromDashboard = true;
+        var qrStrVariables = qrStr.split('&');
+        var qrStrone = qrStrVariables[0].split('=');
+        var info1 = qrStrone[1];
+        console.log(info1);
+
+        $scope.toggleInvitationSelect(info1, 'FINANCIAL', '');
+
+    }
+
+    $scope.toggleRefreshTable = function (row) {
+        window.location.href = "/VendorSelectionModule/FinancialQuotation";
+    };
 
     })
 </script>

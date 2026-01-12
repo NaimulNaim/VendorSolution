@@ -48,10 +48,10 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
         }
 
         [Authorize]
-        public async Task<dynamic> InvWiseMaterial(string InvNumber, string ProposalType)
+        public async Task<dynamic> InvWiseMaterial(string InvNumber,string Proposal, string fintype)
         {
             var InvMaterialList = new List<MaterialInvitation>();
-            await Task.Run(() => _financialQuotationService.InvWiseMaterialService(UserID, InvNumber, ProposalType, out InvMaterialList));
+            await Task.Run(() => _financialQuotationService.InvWiseMaterialService(UserID, InvNumber, Proposal, fintype, out InvMaterialList));
             return Json(new { InvMaterialList, Msg = "" }, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]

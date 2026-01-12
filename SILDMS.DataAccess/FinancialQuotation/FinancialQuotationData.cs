@@ -47,7 +47,8 @@ namespace SILDMS.DataAccess.FinancialQuotation
                         invitationList = dt1.AsEnumerable().Select(reader => new Invitation
                         {
                             Invitation_Number = reader.GetString("InvitationNumber"),
-                            ProposalType = reader.GetString("PropasalType"),
+                            ProposalType = reader.GetString("Proposal"),
+                            Fintype = reader.GetString("Fintype"),
 
                         }).ToList();
                     }
@@ -56,7 +57,7 @@ namespace SILDMS.DataAccess.FinancialQuotation
             return invitationList;
         }
 
-        public List<MaterialInvitation> InvWiseMaterialData(string UserID, string invNumber,string ProposalType, out string errorNumber)
+        public List<MaterialInvitation> InvWiseMaterialData(string UserID, string invNumber,string ProposalType,string fintype, out string errorNumber)
         {
             errorNumber = string.Empty;
             var InvMaterialList = new List<MaterialInvitation>();
@@ -68,6 +69,7 @@ namespace SILDMS.DataAccess.FinancialQuotation
                 db.AddInParameter(dbCommandWrapper, "@UserID", SqlDbType.VarChar, UserID);
                 db.AddInParameter(dbCommandWrapper, "@InvNumber", SqlDbType.VarChar, invNumber);
                 db.AddInParameter(dbCommandWrapper, "@ProposalType", SqlDbType.VarChar, ProposalType);
+                db.AddInParameter(dbCommandWrapper, "@fintype", SqlDbType.VarChar, fintype);
                 db.AddOutParameter(dbCommandWrapper, "@p_Error", DbType.Int32, 10);
                 // Execute SP.
 
@@ -87,29 +89,91 @@ namespace SILDMS.DataAccess.FinancialQuotation
 
                         InvMaterialList = dt1.AsEnumerable().Select(reader => new MaterialInvitation
                         {
-
+                            // Existing mappings
                             materialName = reader.GetString("MaterialName"),
-                            MaterialQuantity = reader.GetString("RequestQty"),
-                            Unit = reader.GetString("Unit"),
-                            MatInvType = reader.GetString("MatInvType"),
                             materialCode = reader.GetString("MaterialCode"),
                             material_Category_Code = reader.GetString("MaterialCategory"),
+
+                            MaterialQuantity = reader.GetString("RFQQty"),
+                            Unit = reader.GetString("RFQQtyUnit"),
+
+                            //MatInvType = reader.GetString("MatInvType"),
+
                             invitationNumber = reader.GetString("InvitationNumber"),
                             InvitationID = reader.GetString("InvitationID"),
                             BiddingItemVendorID = reader.GetString("BiddingVendorID"),
                             VendorID = reader.GetString("VendorID"),
                             BiddingID = reader.GetString("BiddingID"),
-                            //QuotationID = dt1.Columns.Contains("QuotationID") && !reader.IsNull("QuotationID") ? reader.Field<Int64>("QuotationID") : 0,
-                            QuotationID = dt1.Columns.Contains("QuotationID") && !reader.IsNull("QuotationID") ? Convert.ToInt64(reader["QuotationID"]): 0,
+                            Status = reader.GetInt32("Status"),
 
+                            QuotationID = dt1.Columns.Contains("QuotationID") && !reader.IsNull("QuotationID")
+                       ? Convert.ToInt64(reader["QuotationID"])
+                       : 0,
 
-                            QuotationNo = dt1.Columns.Contains("QuotationNo") && !reader.IsNull("QuotationNo") ? reader.Field<string>("QuotationNo") : null,
+                            QuotationNo = dt1.Columns.Contains("QuotationNo") && !reader.IsNull("QuotationNo")
+                       ? reader.Field<string>("QuotationNo")
+                       : null,
+
                             Action = "A",
 
+                            // 🔽 Newly added fields
+                            DeliveryTimeline = dt1.Columns.Contains("DeliveryTimeline") && !reader.IsNull("DeliveryTimeline")
+                           ? reader.Field<string>("DeliveryTimeline")
+                           : null,
 
+                            Incoterms = dt1.Columns.Contains("Incoterms") && !reader.IsNull("Incoterms")
+                           ? reader.Field<string>("Incoterms")
+                           : null,
 
+                            IncotermsLocation = dt1.Columns.Contains("IncotermsLocation") && !reader.IsNull("IncotermsLocation")
+                           ? reader.Field<string>("IncotermsLocation")
+                           : null,
 
+                            ShipmentMode = dt1.Columns.Contains("ShipmentMode") && !reader.IsNull("ShipmentMode")
+                           ? reader.Field<string>("ShipmentMode")
+                           : null,
+
+                            PaymentMode = dt1.Columns.Contains("PaymentMode") && !reader.IsNull("PaymentMode")
+                           ? reader.Field<string>("PaymentMode")
+                           : null,
+
+                            PartDelivery = dt1.Columns.Contains("PartDelivery") && !reader.IsNull("PartDelivery")
+                           ? reader.Field<string>("PartDelivery")
+                           : null,
+
+                            PaymentTerms = dt1.Columns.Contains("PaymentTerms") && !reader.IsNull("PaymentTerms")
+                           ? reader.Field<string>("PaymentTerms")
+                           : null,
+
+                            ManufacturerPartNo = dt1.Columns.Contains("ManufacturerPartNo") && !reader.IsNull("ManufacturerPartNo")
+                           ? reader.Field<string>("ManufacturerPartNo")
+                           : null,
+
+                            ManufacturerName = dt1.Columns.Contains("ManufacturerName") && !reader.IsNull("ManufacturerName")
+                           ? reader.Field<string>("ManufacturerName")
+                           : null,
+
+                            Warranty = dt1.Columns.Contains("Warranty") && !reader.IsNull("Warranty")
+                           ? reader.Field<string>("Warranty")
+                           : null,
+
+                            Installation = dt1.Columns.Contains("Installation") && !reader.IsNull("Installation")
+                           ? reader.Field<string>("Installation")
+                           : null,
+
+                            Servicing = dt1.Columns.Contains("Servicing") && !reader.IsNull("Servicing")
+                           ? reader.Field<string>("Servicing")
+                           : null,
+
+                            PenaltyClause = dt1.Columns.Contains("PenaltyClause") && !reader.IsNull("PenaltyClause")
+                           ? reader.Field<string>("PenaltyClause")
+                           : null,
+
+                            Remarks = dt1.Columns.Contains("Remarks") && !reader.IsNull("Remarks")
+                           ? reader.Field<string>("Remarks")
+                           : null
                         }).ToList();
+
                     }
                 }
             }

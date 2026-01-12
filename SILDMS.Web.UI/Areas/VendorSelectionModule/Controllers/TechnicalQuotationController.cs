@@ -40,9 +40,9 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
 
 
         [Authorize]
-        public async Task<dynamic> loadItemType()
+        public async Task<dynamic> loadItemType(string masterDataType)
         {
-            string masterDataType = "Currency";
+            
             var itemTypes = new List<SILDMS.Model.CBPSModule.Sys_MasterData>();
             await Task.Run(() => _technicalQuotationService.GetAllItemTypes(masterDataType, out itemTypes));
             var result = itemTypes.Select(x => new

@@ -14,7 +14,7 @@ namespace SILDMS.Service.FinancialQuotation
     {
         ValidationResult GetAllInvitationService(string userID, out List<Invitation> invitationList);
 
-        ValidationResult InvWiseMaterialService(string UserID, string invNumber,string ProposalType, out List<MaterialInvitation> materialList);
+        ValidationResult InvWiseMaterialService(string UserID, string invNumber,string ProposalType,string Fintype, out List<MaterialInvitation> materialList);
 
         ValidationResult AddDocumentInfo(DocumentsInfo _modelDocumentsInfo,
             string _selectedPropID, List<DocMetaValue> _docMetaValues, string action,

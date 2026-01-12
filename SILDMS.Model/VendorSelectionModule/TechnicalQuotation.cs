@@ -100,6 +100,7 @@ public class FinancialQuotationDetail
         public string Invitation_Number { get; set; }
 
         public string ProposalType { get; set; }
+        public string Fintype { get; set; }
     }
 
 
@@ -126,6 +127,7 @@ public class FinancialQuotationDetail
         public string materialCode { get; set; }
         public string materialName { get; set; }
         public string remarks { get; set; }
+        public string Remarks { get; set; }
         public string sampleDocId { get; set; }
         public string proposalType { get; set; }
         public bool sharedToFactory { get; set; }
@@ -136,6 +138,7 @@ public class FinancialQuotationDetail
         public DateTime? modifiedOn { get; set; }
         public string modifiedBy { get; set; }
         public string status { get; set; }
+        public int Status { get; set; }
         public string SampleDocumentID { get; set; }
         public string material_Category_Code { get; set; }
         public string MatInvType { get; set; }
@@ -148,6 +151,19 @@ public class FinancialQuotationDetail
 
         public string QuotationNo { get; set; }
         public string BiddingID { get; set; }
+        public string DeliveryTimeline { get; set; }
+        public string Incoterms { get; set; }
+        public string IncotermsLocation { get; set; }
+        public string ShipmentMode { get; set; }
+        public string PaymentMode { get; set; }
+        public string PartDelivery { get; set; }
+        public string PaymentTerms { get; set; }
+        public string ManufacturerPartNo { get; set; }
+        public string ManufacturerName { get; set; }
+        public string Warranty { get; set; }
+        public string Installation { get; set; }
+        public string Servicing { get; set; }
+        public string PenaltyClause { get; set; }
     }
 
 
