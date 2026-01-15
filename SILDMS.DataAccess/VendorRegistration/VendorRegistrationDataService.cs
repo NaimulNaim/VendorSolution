@@ -490,6 +490,46 @@ namespace SILDMS.DataAccess.VendorRegistration
             return returnData;
         }
 
-    
+        public List<BusinessTypeDto> GetBusinessTypeList()
+        {
+            var list = new List<BusinessTypeDto>();
+            var factory = new DatabaseProviderFactory();
+            var db = factory.CreateDefault() as SqlDatabase;
+
+            using (var cmd = db.GetStoredProcCommand("VCMS_GetBusinessTypeList"))
+            using (var reader = db.ExecuteReader(cmd))
+            {
+                while (reader.Read())
+                {
+                    list.Add(new BusinessTypeDto
+                    {
+                        BusinessTypeID = Convert.ToInt32(reader["BusinessTypeID"]),
+                        BusinessTypeName = reader["BusinessTypeName"].ToString()
+                    });
+                }
+            }
+            return list;
+        }
+
+        public List<BusinessNatureDto> GetBusinessNatureList()
+        {
+            var list = new List<BusinessNatureDto>();
+            var factory = new DatabaseProviderFactory();
+            var db = factory.CreateDefault() as SqlDatabase;
+
+            using (var cmd = db.GetStoredProcCommand("VCMS_GetBusinessNatureList"))
+            using (var reader = db.ExecuteReader(cmd))
+            {
+                while (reader.Read())
+                {
+                    list.Add(new BusinessNatureDto
+                    {
+                        BusinessNatureID = Convert.ToInt32(reader["BusinessNatureID"]),
+                        BusinessNatureName = reader["BusinessNatureName"].ToString()
+                    });
+                }
+            }
+            return list;
+        }
     }
 }

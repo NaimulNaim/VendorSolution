@@ -271,7 +271,19 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
         }
 
 
+        [HttpGet]
+        public JsonResult GetBusinessTypeList()
+        {
+            var data = _vendorRegistrationService.GetBusinessTypeList();
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
 
+        [HttpGet]
+        public JsonResult GetBusinessNatureList()
+        {
+            var data = _vendorRegistrationService.GetBusinessNatureList();
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
 
     }
 }

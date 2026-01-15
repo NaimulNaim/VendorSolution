@@ -112,7 +112,15 @@ namespace SILDMS.Service.VendorRegistration
         }
 
 
-       
+        public List<BusinessTypeDto> GetBusinessTypeList()
+        {
+            return _vendorRegistrationDataService.GetBusinessTypeList();
+        }
+
+        public List<BusinessNatureDto> GetBusinessNatureList()
+        {
+            return _vendorRegistrationDataService.GetBusinessNatureList();
+        }
 
 
     }

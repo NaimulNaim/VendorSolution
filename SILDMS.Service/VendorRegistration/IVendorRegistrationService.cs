@@ -21,5 +21,8 @@ namespace SILDMS.Service.VendorRegistration
         ValidationResult GetIdentificationAttributesForDocProperties(string userID, string selectedPropID, out List<DSM_DocPropIdentify> docPropIdentifies);
         ValidationResult AddDocument(string UserId,string vendorId, string uploaderIP, string selectedPropID, List<DocMetaValue> docMetaValues, out BPS_NewBillReturnData objDocPropIdentifies);
         ValidationResult VendorRegistrationDetailsService(string businessName, string contactPerson, string vendorPhoneNumber, string email, string companyAddress, string country, string businessType, string typeOfMaterial, string tIN, string bIN, string generalDetailsServices, string userName, string password, string status, string vendor, out SecVendor_User user);
+
+        List<BusinessTypeDto> GetBusinessTypeList();
+        List<BusinessNatureDto> GetBusinessNatureList();
     }
 }

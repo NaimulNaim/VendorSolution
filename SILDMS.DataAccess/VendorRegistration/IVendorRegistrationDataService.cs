@@ -20,5 +20,8 @@ namespace SILDMS.DataAccess.VendorRegistration
         List<DSM_DocProperty> GetSupportDoc(string userID, string fromName, out string errorNumber);
         List<DSM_DocPropIdentify> GetIdentificationAttributesForDocProperties(string userID, string selectedPropID, out string errorNumber);
         BPS_NewBillReturnData AddDocument(string UserId,string vendorId, string uploaderIP, string selectedPropID, List<DocMetaValue> docMetaValues, out string errorNumber);
+
+        List<BusinessTypeDto> GetBusinessTypeList();
+        List<BusinessNatureDto> GetBusinessNatureList();
     }
 }

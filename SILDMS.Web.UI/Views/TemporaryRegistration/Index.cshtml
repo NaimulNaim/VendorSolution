@@ -46,16 +46,13 @@
             </div>
 
             <div class="col-lg-4">
-                <select id="BusinessType"
-                        name="BusinessType"
-                        class="form-control"
-                        ng-model="PurreqDtl.Vendor.BusinessType"
-                        style="font-size: smaller; padding: 3px 6px;"
-                        required>
-
-                    <option value="" disabled selected>Select Business Type</option>
-                    <option value="Not given from ERP Team">Not given from ERP Team</option>
-                </select>
+                    <select class="form-control"
+                            ng-model="PurreqDtl.Vendor.BusinessTypeName"
+                            ng-options="bt.BusinessTypeID as bt.BusinessTypeName for bt in BusinessTypeList">
+                        <option value="">-- Select Business Type --</option>
+                    </select>
+               
+               
             </div>
 
 
@@ -237,7 +234,7 @@
             @* button save*@
     <div class="row">
 
-        <div class="col-lg-11">
+        <div class="col-lg-10">
            
         </div>
 
@@ -556,7 +553,8 @@
                 GenaralDetailsServices: "",
                 UserName: "",
                 Password: "",
-                ConfirmPassword: ""
+                ConfirmPassword: "",
+                BusinessTypeName: ""
             }
         }
 
@@ -911,6 +909,7 @@
                 ContactPersonLastName: $scope.PurreqDtl.Vendor.ContactPersonLastName,
                 VendorPhoneNumber: $scope.PurreqDtl.Vendor.VendorPhoneNumber,
                 CompanyAddress: $scope.PurreqDtl.Vendor.CompanyAddress,
+                Email: $scope.info2,
                 Country: $scope.PurreqDtl.Vendor.Country,
                 BusinessType: $scope.PurreqDtl.Vendor.BusinessType,
                 TIN: $scope.PurreqDtl.Vendor.TIN,
@@ -1125,6 +1124,27 @@
                 });
         };
 
+
+        $scope.BusinessTypeList = [];
+        $scope.BusinessNatureList = [];
+
+        $scope.loadBusinessType = function () {
+            $http.get('/VendorSelectionModule/VendorRegistration/GetBusinessTypeList')
+                .then(function (response) {
+                    $scope.BusinessTypeList = response.data;
+                });
+        };
+
+        $scope.loadBusinessNature = function () {
+            $http.get('/VendorSelectionModule/VendorRegistration/GetBusinessNatureList')
+                .then(function (response) {
+                    $scope.BusinessNatureList = response.data;
+                });
+        };
+
+        // call on page load
+        $scope.loadBusinessType();
+        $scope.loadBusinessNature();
 
 
         //--------------utilities

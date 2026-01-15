@@ -48,4 +48,17 @@ namespace SILDMS.Model.DocScanningModule
         public string UserID { get; set; }
         public string VendorId { get; set; }
     }
+
+    public class BusinessTypeDto
+    {
+        public int BusinessTypeID { get; set; }
+        public string BusinessTypeName { get; set; }
+    }
+
+    public class BusinessNatureDto
+    {
+        public int BusinessNatureID { get; set; }
+        public string BusinessNatureName { get; set; }
+    }
+
 }

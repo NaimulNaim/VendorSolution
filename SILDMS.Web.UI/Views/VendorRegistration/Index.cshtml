@@ -129,7 +129,11 @@
                     <label for="BusinessType">Business Type :</label>
                 </div>
                 <div class="col-lg-4">
-                    <input id="BusinessType" autocomplete="off" type="text" name="BusinessType" class="form-control" ng-model="PurreqDtl.Vendor.BusinessType" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
+                    <select class="form-control"
+                            ng-model="Vendor.BusinessTypeID"
+                            ng-options="bt.BusinessTypeID as bt.BusinessTypeName for bt in BusinessTypeList">
+                        <option value="">-- Select Business Type --</option>
+                    </select>
                 </div>
             </div>
 
@@ -280,7 +284,7 @@
                 Email: "",
                 CompanyAddress: "",
                 Country: "",
-                BusinessType: "",
+                BusinessTypeName: "",
                 TypeOfMaterial: "",
                 TIN: "",
                 BIN: "",
@@ -400,6 +404,29 @@
                 toastr.error("Passwords do not match");
             }
         }
+
+
+        $scope.BusinessTypeList = [];
+        $scope.BusinessNatureList = [];
+
+        $scope.loadBusinessType = function () {
+            $http.get('/VendorRegistration/GetBusinessTypeList')
+                .then(function (response) {
+                    $scope.BusinessTypeList = response.data;
+                });
+        };
+
+        $scope.loadBusinessNature = function () {
+            $http.get('/VendorRegistration/GetBusinessNatureList')
+                .then(function (response) {
+                    $scope.BusinessNatureList = response.data;
+                });
+        };
+
+        // call on page load
+        $scope.loadBusinessType();
+        $scope.loadBusinessNature();
+
 
         //--------------Utilities
 

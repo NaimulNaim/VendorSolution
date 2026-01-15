@@ -128,6 +128,7 @@
     <Compile Include="DocumentType\DocTypeDataService.cs" />
     <Compile Include="FinancialQuotation\FinancialQuotationData.cs" />
     <Compile Include="FinancialQuotation\IFinancialQuotationData.cs" />
+    <Compile Include="MasterDataSetup\MasterDataSetupDataService.cs" />
     <Compile Include="Menu\MenuDataService.cs" />
     <Compile Include="MessageFormatDataSetup\MessageFormatDataService.cs" />
     <Compile Include="ModelMasterDataAccess.cs" />
