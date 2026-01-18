@@ -33,6 +33,8 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
             UserID = SILAuthorization.GetUserID();
 
         }
+
+        [Authorize]
         public ActionResult Index()
         {
             return View();

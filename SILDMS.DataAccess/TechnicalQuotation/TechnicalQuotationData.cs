@@ -87,9 +87,9 @@ namespace SILDMS.DataAccess.TechnicalQuotation
                         {
 
                             materialName = reader.GetString("MaterialName"),
-                            MaterialQuantity = reader.GetString("RequestQty"),
-                            Unit = reader.GetString("Unit"),
-                            MatInvType = reader.GetString("MatInvType"),
+                            MaterialQuantity = reader.GetString("RFQQty"),
+                            Unit = reader.GetString("RFQQtyUnit"),
+                            //MatInvType = reader.GetString("MatInvType"),
                             materialCode = reader.GetString("MaterialCode"),
                             material_Category_Code = reader.GetString("MaterialCategory"),
                             invitationNumber = reader.GetString("InvitationNumber"),

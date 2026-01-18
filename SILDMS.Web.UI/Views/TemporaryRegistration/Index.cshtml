@@ -164,15 +164,10 @@
                 </div>
 
                 <div class="col-lg-4">
-                    <select id="Country"
-                            name="Country"
-                            class="form-control"
+                    <select class="form-control"
                             ng-model="PurreqDtl.Vendor.Country"
-                            ng-options="country for country in countries"
-                            style="font-size: smaller; padding: 3px 6px;"
-                            required>
-
-                        <option value="">Select Country</option>
+                            ng-options="c.CountryID as c.CountryName for c in CountryList">
+                        <option value="">-- Select Country --</option>
                     </select>
                 </div>
 
@@ -554,7 +549,8 @@
                 UserName: "",
                 Password: "",
                 ConfirmPassword: "",
-                BusinessTypeName: ""
+                BusinessTypeName: "",
+                Country: ""
             }
         }
 
@@ -959,7 +955,7 @@
 
                         // Upload all files simultaneously
                         $.when.apply($, uploads).done(function () {
-                            toastr.success("TIN & BIN documents uploaded successfully");
+                            toastr.success("Data Saved and TIN & BIN documents uploaded successfully");
                             $scope.tinFile = null;
                             $scope.binFile = null;
                             $('#TINFile').val('');
@@ -1127,6 +1123,8 @@
 
         $scope.BusinessTypeList = [];
         $scope.BusinessNatureList = [];
+        $scope.CountryList = [];
+
 
         $scope.loadBusinessType = function () {
             $http.get('/VendorSelectionModule/VendorRegistration/GetBusinessTypeList')
@@ -1142,10 +1140,19 @@
                 });
         };
 
+        $scope.LoadCountryList = function () {
+            $http.get('/VendorSelectionModule/VendorRegistration/GetCountryList')
+                .then(function (res) {
+                    $scope.CountryList = res.data;
+                });
+        };
+
         // call on page load
         $scope.loadBusinessType();
         $scope.loadBusinessNature();
+        $scope.LoadCountryList();
 
+       
 
         //--------------utilities
 

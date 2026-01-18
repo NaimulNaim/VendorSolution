@@ -122,6 +122,14 @@ namespace SILDMS.Service.VendorRegistration
             return _vendorRegistrationDataService.GetBusinessNatureList();
         }
 
+        public List<CurrencyDto> GetCurrencyList()
+        {
+            return _vendorRegistrationDataService.GetCurrencyList();
+        }
 
+        public List<CountryDto> GetCountryList()
+        {
+            return _vendorRegistrationDataService.GetCountryList();
+        }
     }
 }
