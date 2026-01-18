@@ -62,12 +62,12 @@ namespace SILDMS.DataAccess.TechnicalQuotation
 
             var factory = new DatabaseProviderFactory();
             var db = factory.CreateDefault() as SqlDatabase;
+
             using (var dbCommandWrapper = db.GetStoredProcCommand("VCMS_InvMaterial"))
             {
                 db.AddInParameter(dbCommandWrapper, "@UserID", SqlDbType.VarChar, UserID);
                 db.AddInParameter(dbCommandWrapper, "@InvNumber", SqlDbType.VarChar, invNumber);
                 db.AddOutParameter(dbCommandWrapper, "@p_Error", DbType.Int32, 10);
-                // Execute SP.
 
                 var ds = db.ExecuteDataSet(dbCommandWrapper);
 
@@ -79,34 +79,70 @@ namespace SILDMS.DataAccess.TechnicalQuotation
                 {
                     if (ds.Tables[0].Rows.Count > 0)
                     {
-
-                        DataTable dt1 = new DataTable();
-                        dt1 = ds.Tables[0];
+                        DataTable dt1 = ds.Tables[0];
 
                         InvMaterialList = dt1.AsEnumerable().Select(reader => new MaterialInvitation
                         {
-
-                            materialName = reader.GetString("MaterialName"),
-                            MaterialQuantity = reader.GetString("RequestQty"),
-                            Unit = reader.GetString("Unit"),
-                            MatInvType = reader.GetString("MatInvType"),
                             materialCode = reader.GetString("MaterialCode"),
+                            materialName = reader.GetString("MaterialName"),
                             material_Category_Code = reader.GetString("MaterialCategory"),
+                            MaterialQuantity = reader.GetString("RFQQty"),
+                            Unit = reader.GetString("RFQQtyUnit"),
+                            MatInvType = reader.GetString("TechType"),
+
                             invitationNumber = reader.GetString("InvitationNumber"),
                             InvitationID = reader.GetString("InvitationID"),
                             BiddingItemVendorID = reader.GetString("BiddingVendorID"),
                             VendorID = reader.GetString("VendorID"),
                             BiddingID = reader.GetString("BiddingID"),
-                         
-                            Action = "A",
+                            Status = reader.GetInt32("Status"),
 
-
-
+                            MoleculeName = reader.GetString("MoleculeName"),
+                            Manufacturer = reader.GetString("Manufacturer"),
+                            ShelfLifeValue = reader.GetString("ShelfLifeValue"),
+                            ShelfLifeUnit = reader.GetString("ShelfLifeUnit"),
+                            Notes = reader.GetString("Notes"),
+                            CASNO = reader.GetString("CASNO"),
+                            CatalogueNo = reader.GetString("CatalogueNo"),
+                            SampleAvailable = reader.GetString("SampleAvailable"),
+                            SamplePackSize = reader.GetString("SamplePackSize"),
+                            Capacity = reader.GetString("Capacity"),
+                            CapacityExtendable = reader.GetString("CapacityExtendable"),
+                            CapacityExtendableOther = reader.GetString("CapacityExtendableOther"),
+                            FATAtManufacturerSite = reader.GetString("FATAtManufacturerSite"),
+                            FATAtManufacturerSiteOther = reader.GetString("FATAtManufacturerSiteOther"),
+                            SATScope = reader.GetString("SATScope"),
+                            AssistanceAtSite = reader.GetString("AssistanceAtSite"),
+                            AssistanceAtSiteOther = reader.GetString("AssistanceAtSiteOther"),
+                            ComplianceWith = reader.GetString("ComplianceWith"),
+                            QualificationDocuments = reader.GetString("QualificationDocuments"),
+                            QualificationDocumentsOther = reader.GetString("QualificationDocumentsOther"),
+                            UtilitiesRequirement = reader.GetString("UtilitiesRequirement"),
+                            SafetyFeatures = reader.GetString("SafetyFeatures"),
+                            EnergyEfficiencyFeatures = reader.GetString("EnergyEfficiencyFeatures"),
+                            SparesServicing = reader.GetString("SparesServicing"),
+                            ScopeConfirmation = reader.GetString("ScopeConfirmation"),
+                            ScopeDeviationRemarks = reader.GetString("ScopeDeviationRemarks"),
+                            Erection = reader.GetString("Erection"),
+                            ErectionOther = reader.GetString("ErectionOther"),
+                            InstallationResponsibility = reader.GetString("InstallationResponsibility"),
+                            InstallationResponsibilityOther = reader.GetString("InstallationResponsibilityOther"),
+                            Testing = reader.GetString("Testing"),
+                            TestingOther = reader.GetString("TestingOther"),
+                            Commissioning = reader.GetString("Commissioning"),
+                            CommissioningOther = reader.GetString("CommissioningOther"),
+                            ItemName = reader.GetString("ItemName"),
+                            ManufacturerPartNoTech = reader.GetString("ManufacturerPartNoTech"),
+                            ModelVersion = reader.GetString("ModelVersion"),
+                            ProductLifeCycleValue = reader.GetString("ProductLifeCycleValue"),
+                            ProductLifeCycleUnit = reader.GetString("ProductLifeCycleUnit"),
+                            Action="A"
 
                         }).ToList();
                     }
                 }
             }
+
             return InvMaterialList;
         }
 

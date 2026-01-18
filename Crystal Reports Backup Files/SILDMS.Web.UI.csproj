@@ -291,7 +291,6 @@
     <Compile Include="Areas\DocScanningModule\Controllers\VersioningOfOriginalDocController.cs" />
     <Compile Include="Areas\DocScanningModule\Controllers\VersioningVersionedDocController.cs" />
     <Compile Include="Areas\DocScanningModule\DocScanningModuleAreaRegistration.cs" />
-    <Compile Include="Areas\PIMS\Controllers\CompanyVisionController.cs" />
     <Compile Include="Areas\SecurityModule\AuthContext.cs" />
     <Compile Include="Areas\SecurityModule\AuthRepository.cs" />
     <Compile Include="Areas\SecurityModule\Controllers\AccountController.cs" />
@@ -301,6 +300,7 @@
     <Compile Include="Areas\SecurityModule\Controllers\AutoValueSetupController.cs" />
     <Compile Include="Areas\SecurityModule\Controllers\DataLevelPermissionController.cs" />
     <Compile Include="Areas\SecurityModule\Controllers\DefaultValueSetupController.cs" />
+    <Compile Include="Areas\SecurityModule\Controllers\ForgotPasswordController.cs" />
     <Compile Include="Areas\SecurityModule\Controllers\MasterDataSetupController.cs" />
     <Compile Include="Areas\SecurityModule\Controllers\MasterDataTypeController.cs" />
     <Compile Include="Areas\SecurityModule\Controllers\MenuController.cs" />
@@ -313,6 +313,7 @@
     <Compile Include="Areas\SecurityModule\Controllers\RoleMenuPermissionController.cs" />
     <Compile Include="Areas\SecurityModule\Controllers\RoleSetupController.cs" />
     <Compile Include="Areas\SecurityModule\Controllers\ServerController.cs" />
+    <Compile Include="Areas\SecurityModule\Controllers\TestController.cs" />
     <Compile Include="Areas\SecurityModule\Controllers\UserAccessLogController.cs" />
     <Compile Include="Areas\SecurityModule\Controllers\UserController.cs" />
     <Compile Include="Areas\SecurityModule\Controllers\UserLevelController.cs" />
@@ -324,6 +325,13 @@
     <Compile Include="Areas\SecurityModule\Provider\SimpleRefreshTokenProvider.cs" />
     <Compile Include="Areas\SecurityModule\SecurityModuleAreaRegistration.cs" />
     <Compile Include="Areas\SecurityModule\SILLogAttribute.cs" />
+    <Compile Include="Areas\VendorSelectionModule\Controllers\FinancialQuotationController.cs" />
+    <Compile Include="Areas\VendorSelectionModule\Controllers\TechnicalQuotationController.cs" />
+    <Compile Include="Areas\VendorSelectionModule\Controllers\TemporaryRegistrationController.cs" />
+    <Compile Include="Areas\VendorSelectionModule\Controllers\VendorDashboardController.cs" />
+    <Compile Include="Areas\VendorSelectionModule\Controllers\VendorRegistrationController.cs" />
+    <Compile Include="Areas\VendorSelectionModule\Controllers\VendorRegistrationUpdateController.cs" />
+    <Compile Include="Areas\VendorSelectionModule\VendorSelectionModuleAreaRegistration.cs" />
     <Compile Include="Controllers\apiLcEmailScheduleController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
@@ -353,22 +361,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\CBPSModule\Scripts\JSController\BillProcessingStopController.js" />
-    <Content Include="Areas\CBPSModule\Scripts\JSController\BillProcessStageController.js" />
-    <Content Include="Areas\CBPSModule\Scripts\JSController\BoxLocationPermissionController.js" />
-    <Content Include="Areas\CBPSModule\Scripts\JSController\BoxPreservationController.js" />
-    <Content Include="Areas\CBPSModule\Scripts\JSController\BoxSalvationController.js" />
-    <Content Include="Areas\CBPSModule\Scripts\JSController\BoxSendForPreservationController.js" />
-    <Content Include="Areas\CBPSModule\Scripts\JSController\DoctypeMapController.js" />
-    <Content Include="Areas\CBPSModule\Scripts\JSController\DocumentTransferController.js" />
-    <Content Include="Areas\CBPSModule\Scripts\JSController\FurtherDocumentDemandController.js" />
-    <Content Include="Areas\CBPSModule\Scripts\JSController\FurtherDocumentReceiveController.js" />
-    <Content Include="Areas\CBPSModule\Scripts\JSController\IssueRequestedDocumentsController.js" />
     <Content Include="Areas\CBPSModule\Scripts\JSController\LocationSetupController.js" />
-    <Content Include="Areas\CBPSModule\Scripts\JSController\ReceiveRequestedDocumentsController.js" />
-    <Content Include="Areas\CBPSModule\Scripts\JSController\RequestForDocumentsController.js" />
-    <Content Include="Areas\CBPSModule\Scripts\JSController\UserDoctypeMapServiceController.js" />
-    <Content Include="Areas\CBPSModule\Scripts\JSController\VendorSetupController.js" />
     <Content Include="Areas\CBPSModule\Scripts\JSDirectives\contenteditable.js" />
     <Content Include="Areas\CBPSModule\Scripts\JSDirectives\statusDropdown.js" />
     <Content Include="Areas\CBPSModule\Scripts\JSServices\ownerByCompanyService.js" />
@@ -538,6 +531,7 @@
     <Content Include="Content\plugin\toaster\toastr.css" />
     <Content Include="Content\plugin\toaster\toastr.js" />
     <Content Include="Content\sb-admin-2.css" />
+    <Content Include="Content\Site.css" />
     <Content Include="Controllers\Content\AdminLTE\AdminLTE.css" />
     <Content Include="Controllers\Content\AdminLTE\AdminLTE.min.css" />
     <Content Include="Controllers\Content\AdminLTE\img\avatar.png" />
@@ -668,7 +662,9 @@
     <Content Include="Content\plugin\ionic-v1.2.4\version.json" />
     <Content Include="Areas\SecurityModule\Views\Menu\Index.cshtml" />
     <Content Include="Areas\DocScanningModule\Views\Posting\Index.cshtml" />
-    <Content Include="Areas\PIMS\Views\CompanyVision\Index.cshtml" />
+    <Content Include="Areas\SecurityModule\Views\Test\Index.cshtml" />
+    <Content Include="Areas\VendorSelectionModule\Views\web.config" />
+    <Content Include="Areas\SecurityModule\Views\ForgotPassword\Index.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1465,6 +1461,13 @@
     </Content>
     <Content Include="Views\Reports\UserActivityStatusReport.cshtml" />
     <Content Include="Views\Home\AttendanceGeoData.cshtml" />
+    <Content Include="Views\FinancialQuotation\Index.cshtml" />
+    <Content Include="Views\TechnicalQuotation\Index.cshtml" />
+    <Content Include="Views\TemporaryRegistration\Index.cshtml" />
+    <Content Include="Views\VendorDashboard\Index.cshtml" />
+    <Content Include="Views\VendorRegistration\Index.cshtml" />
+    <Content Include="Views\VendorRegistration\Temporary.cshtml" />
+    <Content Include="Views\VendorRegistrationUpdate\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1473,6 +1476,14 @@
     <Folder Include="Areas\DocScanningModule\Views\DocDistribution\" />
     <Folder Include="Areas\DocScanningModule\Views\DocShare\" />
     <Folder Include="Areas\DocScanningModule\Views\VersioningVersionedDoc\" />
+    <Folder Include="Areas\VendorSelectionModule\Data\" />
+    <Folder Include="Areas\VendorSelectionModule\Views\FinancialQuotation\" />
+    <Folder Include="Areas\VendorSelectionModule\Views\Shared\" />
+    <Folder Include="Areas\VendorSelectionModule\Views\TechnicalQuotation\" />
+    <Folder Include="Areas\VendorSelectionModule\Views\TemporaryRegistration\" />
+    <Folder Include="Areas\VendorSelectionModule\Views\VendorDashboard\" />
+    <Folder Include="Areas\VendorSelectionModule\Views\VendorRegistrationUpdate\" />
+    <Folder Include="Areas\VendorSelectionModule\Views\VendorRegistration\" />
     <Folder Include="bin\Views\" />
     <Folder Include="Buffer\bufferPdf\" />
     <Folder Include="Buffer\inputPdf\" />
@@ -1486,6 +1497,10 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SILDMS.DataAccess\SILDMS.DataAccess.csproj">
+      <Project>{9613E6D2-2F28-4AE0-90DE-A0A13EFDD0F7}</Project>
+      <Name>SILDMS.DataAccess</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SILDMS.InfraStructure\SILDMS.InfraStructure.csproj">
       <Project>{2620e35d-3c88-44b7-95be-e41ceec5382f}</Project>
       <Name>SILDMS.InfraStructure</Name>

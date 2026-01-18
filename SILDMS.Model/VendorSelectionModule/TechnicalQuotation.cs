@@ -164,6 +164,49 @@ public class FinancialQuotationDetail
         public string Installation { get; set; }
         public string Servicing { get; set; }
         public string PenaltyClause { get; set; }
+
+
+        // TechnicalQuotation new
+
+        public string MoleculeName { get; set; }
+        public string Manufacturer { get; set; }
+        public string ShelfLifeValue { get; set; }
+        public string ShelfLifeUnit { get; set; }
+        public string Notes { get; set; }
+        public string CASNO { get; set; }
+        public string CatalogueNo { get; set; }
+        public string SampleAvailable { get; set; }
+        public string SamplePackSize { get; set; }
+        public string Capacity { get; set; }
+        public string CapacityExtendable { get; set; }
+        public string CapacityExtendableOther { get; set; }
+        public string FATAtManufacturerSite { get; set; }
+        public string FATAtManufacturerSiteOther { get; set; }
+        public string SATScope { get; set; }
+        public string AssistanceAtSite { get; set; }
+        public string AssistanceAtSiteOther { get; set; }
+        public string ComplianceWith { get; set; }
+        public string QualificationDocuments { get; set; }
+        public string QualificationDocumentsOther { get; set; }
+        public string UtilitiesRequirement { get; set; }
+        public string SafetyFeatures { get; set; }
+        public string EnergyEfficiencyFeatures { get; set; }
+        public string SparesServicing { get; set; }
+        public string ScopeConfirmation { get; set; }
+        public string ScopeDeviationRemarks { get; set; }
+        public string Erection { get; set; }
+        public string ErectionOther { get; set; }
+        public string InstallationResponsibility { get; set; }
+        public string InstallationResponsibilityOther { get; set; }
+        public string Testing { get; set; }
+        public string TestingOther { get; set; }
+        public string Commissioning { get; set; }
+        public string CommissioningOther { get; set; }
+        public string ItemName { get; set; }
+        public string ManufacturerPartNoTech { get; set; }
+        public string ModelVersion { get; set; }
+        public string ProductLifeCycleValue { get; set; }
+        public string ProductLifeCycleUnit { get; set; }
     }
 
 
