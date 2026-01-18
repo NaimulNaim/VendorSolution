@@ -531,5 +531,54 @@ namespace SILDMS.DataAccess.VendorRegistration
             }
             return list;
         }
+
+
+        public List<CurrencyDto> GetCurrencyList()
+        {
+            var list = new List<CurrencyDto>();
+            var factory = new DatabaseProviderFactory();
+            var db = factory.CreateDefault() as SqlDatabase;
+
+            using (var cmd = db.GetStoredProcCommand("VCMS_GetCurrencyList"))
+            {
+                using (var reader = db.ExecuteReader(cmd))
+                {
+                    while (reader.Read())
+                    {
+                        list.Add(new CurrencyDto
+                        {
+                            CurrencyID = Convert.ToInt32(reader["CurrencyID"]),
+                            CurrencyCode = reader["CurrencyCode"].ToString(),
+                            CurrencyName = reader["CurrencyName"].ToString()
+                        });
+                    }
+                }
+            }
+            return list;
+        }
+
+        public List<CountryDto> GetCountryList()
+        {
+            var list = new List<CountryDto>();
+            var factory = new DatabaseProviderFactory();
+            var db = factory.CreateDefault() as SqlDatabase;
+
+            using (var cmd = db.GetStoredProcCommand("VCMS_GetCountryList"))
+            {
+                using (var reader = db.ExecuteReader(cmd))
+                {
+                    while (reader.Read())
+                    {
+                        list.Add(new CountryDto
+                        {
+                            CountryID = Convert.ToInt32(reader["CountryID"]),
+                            CountryCode = reader["CountryCode"].ToString(),
+                            CountryName = reader["CountryName"].ToString()
+                        });
+                    }
+                }
+            }
+            return list;
+        }
     }
 }

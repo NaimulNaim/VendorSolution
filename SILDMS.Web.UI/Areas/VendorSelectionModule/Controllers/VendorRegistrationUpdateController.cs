@@ -25,6 +25,8 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
         private readonly IAutoValueSetupService _autoValueSetupService;
         private string action = "";
 
+
+        [Authorize]
         public ActionResult Index()
         {
             return View();

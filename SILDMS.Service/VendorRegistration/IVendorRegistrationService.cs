@@ -24,5 +24,8 @@ namespace SILDMS.Service.VendorRegistration
 
         List<BusinessTypeDto> GetBusinessTypeList();
         List<BusinessNatureDto> GetBusinessNatureList();
+
+        List<CurrencyDto> GetCurrencyList();
+        List<CountryDto> GetCountryList();
     }
 }

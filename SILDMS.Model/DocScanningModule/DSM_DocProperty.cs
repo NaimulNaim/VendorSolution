@@ -61,4 +61,19 @@ namespace SILDMS.Model.DocScanningModule
         public string BusinessNatureName { get; set; }
     }
 
+    public class CurrencyDto
+    {
+        public int CurrencyID { get; set; }
+        public string CurrencyCode { get; set; }
+        public string CurrencyName { get; set; }
+    }
+
+    public class CountryDto
+    {
+        public int CountryID { get; set; }
+        public string CountryCode { get; set; }
+        public string CountryName { get; set; }
+    }
+
+
 }

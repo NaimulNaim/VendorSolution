@@ -30,11 +30,14 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
             _userId = SILAuthorization.GetUserID();
         }
 
+        [Authorize]
         // GET: VendorSelectionModule/VendorDashboard
         public ActionResult Index()
         {
             return View();
         }
+
+        [Authorize]
         public async Task<dynamic> GetUserWiseInvList()
         {
             RequisitionUnassaign pd = new RequisitionUnassaign();
@@ -43,6 +46,7 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
             return Json(new { totalList = pd }, JsonRequestBehavior.AllowGet);
         }
 
+        [Authorize]
         public async Task<dynamic> GetUserWiseInvDetailList(string invitationNumber)
         {
             InvitationDetail pd = new InvitationDetail();

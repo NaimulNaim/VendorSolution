@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
+using System.Web.Services.Description;
 
 namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
 {
@@ -282,6 +283,21 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
         public JsonResult GetBusinessNatureList()
         {
             var data = _vendorRegistrationService.GetBusinessNatureList();
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+
+        [HttpGet]
+        public JsonResult GetCurrencyList()
+        {
+            var data = _vendorRegistrationService.GetCurrencyList();
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult GetCountryList()
+        {
+            var data = _vendorRegistrationService.GetCountryList();
             return Json(data, JsonRequestBehavior.AllowGet);
         }
 
