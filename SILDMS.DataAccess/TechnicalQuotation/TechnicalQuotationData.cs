@@ -842,7 +842,7 @@ namespace SILDMS.DataAccess.TechnicalQuotation
                             CountryOrigin = reader["CountryOrigin"] != DBNull.Value ? reader["CountryOrigin"].ToString() : null,
                             YearOfManufacturing = reader["YearOfManufacturing"] != DBNull.Value ? reader["YearOfManufacturing"].ToString() : null,
                          
-                            ProductLifeCycleValue = reader["ProductLifeCycleValue"] != DBNull.Value ? Convert.ToInt32(reader["ProductLifeCycleValue"]),
+                            ProductLifeCycleValue =  Convert.ToInt32(reader["ProductLifeCycleValue"]),
                             ProductLifeCycleUnit = reader["ProductLifeCycleUnit"] != DBNull.Value ? reader["ProductLifeCycleUnit"].ToString() : null,
                             Capacity = reader["Capacity"] != DBNull.Value ? reader["Capacity"].ToString() : null,
                             CapacityExtendable = reader["CapacityExtendable"] != DBNull.Value ? reader["CapacityExtendable"].ToString() : null,
