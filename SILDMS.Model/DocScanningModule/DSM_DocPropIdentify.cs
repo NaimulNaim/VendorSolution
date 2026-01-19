@@ -206,7 +206,9 @@ namespace SILDMS.Model.DocScanningModule
 
         public string InvitationID { get; set; }
         public string BiddingItemVendorID { get; set; }
+        public string VendorID { get; set; }
         public string materialCode { get; set; }
+        public string materialName { get; set; }
 
         public IList<DocMetaValue> DocMetaValues { get; set; }
         public IList<DocSearch> docList { get; set; }

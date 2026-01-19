@@ -189,7 +189,7 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
             return Json(new { QuotationList, Msg = "" }, JsonRequestBehavior.AllowGet);
         }
 
-        public async Task<dynamic> submitfinancialquotation(List<FinancialQuotationDetail> FinancialQuotationlist, List<MaterialInvitation> MaterialInvitationlist, string ProposalType, Quotation Quotation)
+        public async Task<dynamic> submitfinancialquotation(FinancialQuotationDetail FinancialQuotationlist, SimplifiedMaterialInvitation MaterialInvitationlist, string ProposalType, Quotation Quotation)
         {
             int ID = 0;
             var QuotationList = new List<Quotation>();

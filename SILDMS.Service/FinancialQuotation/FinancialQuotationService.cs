@@ -74,7 +74,7 @@ namespace SILDMS.Service.FinancialQuotation
                 : ValidationResult.Success;
         }
 
-        public ValidationResult submitfinancialquotationservice(string UserId,List<FinancialQuotationDetail> financialQuotationlist, List<MaterialInvitation> materialInvitationlist,string ProposalType, Quotation quotation, out int iD)
+        public ValidationResult submitfinancialquotationservice(string UserId,FinancialQuotationDetail financialQuotationlist, SimplifiedMaterialInvitation materialInvitationlist,string ProposalType, Quotation quotation, out int iD)
         {
 
             iD = _financialQuotationData.submitfinancialquotationData(UserId,financialQuotationlist, materialInvitationlist, ProposalType, quotation, out _errorNumber);

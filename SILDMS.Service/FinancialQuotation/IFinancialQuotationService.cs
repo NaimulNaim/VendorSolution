@@ -20,7 +20,7 @@ namespace SILDMS.Service.FinancialQuotation
             string _selectedPropID, List<DocMetaValue> _docMetaValues, string action,
             out BPS_NewBillReturnData docPropIdentifyList);
         ValidationResult submitquotationService(string invId, string biddingItemVendorID, string invitationNumber, out List<Quotation> QuotationList);
-        ValidationResult submitfinancialquotationservice(string UserID,List<FinancialQuotationDetail> financialQuotationlist, List<MaterialInvitation> materialInvitationlist,string ProposalType, Quotation quotation, out int iD);
+        ValidationResult submitfinancialquotationservice(string UserID,FinancialQuotationDetail financialQuotationlist, SimplifiedMaterialInvitation materialInvitationlist,string ProposalType, Quotation quotation, out int iD);
         ValidationResult GetAllQuotationService(string userid, out List<Quotation> quotationList);
         ValidationResult QuotWiseMaterialService(string UserId,string quotationNo, out List<MaterialInvitation> allmaterial);
         ValidationResult FinQuotwiseDetailsService(string financialquotdetailID, out List<FinancialQuotationDetail> technicalQuotationList);

@@ -149,6 +149,7 @@
                                 <td class="col-lg-1 col-md-1 col-sm-1" style="text-align:center">
                                     <button type="button" class="button-detail" ng-click="AddDocument(row)" data-dismiss="modal" title="Show detail">Details <i class="fa fa-eye"></i></button>
                                 </td>
+                                <td class="col-lg-1 col-md-1 col-sm-1" style="text-align:center">{{row.Fintype}}</td>
 
 
 
@@ -205,9 +206,12 @@
                     <div class="row mt-2">
                         <div class="col-lg-3"><label>Currency:</label></div>
                         <div class="col-lg-3">
-                            <select class="form-control" ng-model="FinancialQuotationDetail.Currency"
-                                    ng-options="c.MasterDataValue for c in ItemTypeList track by c.MasterDataValue">
-                                <option value="" style="display:none">---</option>
+                            <select id="Currency" class="form-control" ng-model="FinancialQuotationDetail.Currency"
+                                    ng-options="ItemTypes as ItemTypes.MasterDataValue for ItemTypes in ItemTypeList track by ItemTypes.MasterDataValue " ng-required="true" style="height: 26px; font-size:smaller">
+
+                                <option value="" selected style="display: none">-- Select One --</option>
+
+
                             </select>
                         </div>
                     </div>
@@ -215,15 +219,18 @@
                     <!-- Row 2: Price, Per, Price Unit -->
                     <div class="row mt-2">
                         <div class="col-lg-3"><label>Price:</label></div>
-                        <div class="col-lg-3"><input type="number" class="form-control" ng-model="FinancialQuotationDetail.Price" min="0.01" /></div>
-
-                        <div class="col-lg-3"><label>Per:</label></div>
-                        <div class="col-lg-3"><input type="number" class="form-control" ng-model="FinancialQuotationDetail.Per" min="0.01" /></div>
-                    </div>
-
-                    <div class="row mt-2">
-                        <div class="col-lg-3"><label>Price Unit:</label></div>
                         <div class="col-lg-3">
+                            <input type="number"
+                                   id="price"
+                                   class="form-control"
+                                   ng-model="FinancialQuotationDetail.Price"
+                                   ng-blur="checkAndFormat('price')">
+                        </div>
+
+                        <div class="col-lg-1"><label>Per:</label></div>
+                        <div class="col-lg-1"><input type="number" class="form-control" ng-model="FinancialQuotationDetail.Per" min="0.01" /></div>
+                        <div class="col-lg-2"><label>Price Unit:</label></div>
+                        <div class="col-lg-1">
                             <select class="form-control" ng-model="FinancialQuotationDetail.PriceUnit"
                                     ng-options="i.Item_Code as i.Item_Code for i in ItemList track by i.Item_Code">
                                 <option value="" style="display:none">---</option>
@@ -231,26 +238,37 @@
                         </div>
                     </div>
 
+
                     <!-- Row 3: Taxes / Freight -->
                     <div class="row mt-2">
-                        <div class="col-lg-3"><label>Taxes:</label></div>
+
+                        <div class="col-lg-3"><label>Taxes</label></div>
                         <div class="col-lg-3">
-                            <select class="form-control" ng-model="FinancialQuotationDetail.Taxes"
-                                    ng-options="t.MasterDataValue as t.MasterDataValue for t in TaxList track by t.MasterDataValue">
-                                <option value="" style="display:none">---</option>
+                            <select class="form-control"
+                                    ng-model="FinancialQuotationDetail.Tax">
+                                <option value="">--Select--</option>
+                                <option value="Included">Included</option>
+                                <option value="Excluded">Excluded</option>
                             </select>
                         </div>
-
                         <div class="col-lg-3"><label>Freight:</label></div>
                         <div class="col-lg-3"><input type="number" class="form-control" ng-model="FinancialQuotationDetail.Freight" min="0.01" /></div>
                     </div>
 
                     <!-- Row 4: RFQ Qty / RFQ Qty Unit / Quotation Qty / Quotation Qty Unit -->
-                 
+
 
                     <div class="row mt-2">
                         <div class="col-lg-3"><label>Quotation Qty:</label></div>
-                        <div class="col-lg-3"><input type="number" class="form-control" ng-model="FinancialQuotationDetail.QuotationQty" min="0.01" /></div>
+                        @*<div class="col-lg-3"><input type="number" class="form-control" ng-model="FinancialQuotationDetail.QuotationQty" min="0.01" /></div>*@
+                        <div class="col-lg-3">
+                            <input type="text"
+                                   class="form-control text-right"
+                                   ng-model="FinancialQuotationDetail.QuotationQty"
+                                   three-decimals
+                                   onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46">
+                        </div>
+
 
                         <div class="col-lg-3"><label>Quotation Qty Unit:</label></div>
                         <div class="col-lg-3">
@@ -264,7 +282,7 @@
                     <!-- Row 5: Delivery Timeline / Incoterms / Incoterms Location / Shipment Mode / Payment Mode -->
                     <div class="row mt-2">
                         <div class="col-lg-3"><label>Delivery Timeline:</label></div>
-                        <div class="col-lg-3"><input type="text" class="form-control DatePicker" ng-model="FinancialQuotationDetail.DeliveryTimeline" placeholder="DD/MM/YYYY" /></div>
+                        <div class="col-lg-3"><input type="text" class="form-control DatePicker"  id="DeliveryTimeline1" ng-model="FinancialQuotationDetail.DeliveryTimeline" placeholder="DD/MM/YYYY" /></div>
 
                         <div class="col-lg-3"><label>Incoterms:</label></div>
                         <div class="col-lg-3">
@@ -286,26 +304,26 @@
 
                         <div class="col-lg-3"><label>Shipment Mode:</label></div>
                         <div class="col-lg-3">
-                            
-                                   <select class="form-control" ng-model="FinancialQuotationDetail.ShipmentMode">
-    <option value="">--Select--</option>
-    <option value="AIR">Air</option>
-    <option value="SEA">Sea</option>
-    <option value="ROAD">Road</option>
-    <option value="TRAIN">Train</option>
-    <option value="MAIL">Mail</option>
-    <option value="AIR/SEA">Air/Sea</option>
-    <option value="AIR/ROAD">Air/Road</option>
-    <option value="AIR/TRAIN">Air/Train</option>
-    <option value="AIR/SEA/ROAD">Air/Sea/Road</option>
-    <option value="AIR/SEA/ROAD/TRAIN">Air/Sea/Road/Train</option>
-    <option value="SEA/ROAD">Sea/Road</option>
-    <option value="SEA/TRAIN">Sea/Train</option>
-    <option value="ROAD/TRAIN">Road/Train</option>
+
+                            <select class="form-control" ng-model="FinancialQuotationDetail.ShipmentMode">
+                                <option value="">--Select--</option>
+                                <option value="AIR">Air</option>
+                                <option value="SEA">Sea</option>
+                                <option value="ROAD">Road</option>
+                                <option value="TRAIN">Train</option>
+                                <option value="MAIL">Mail</option>
+                                <option value="AIR/SEA">Air/Sea</option>
+                                <option value="AIR/ROAD">Air/Road</option>
+                                <option value="AIR/TRAIN">Air/Train</option>
+                                <option value="AIR/SEA/ROAD">Air/Sea/Road</option>
+                                <option value="AIR/SEA/ROAD/TRAIN">Air/Sea/Road/Train</option>
+                                <option value="SEA/ROAD">Sea/Road</option>
+                                <option value="SEA/TRAIN">Sea/Train</option>
+                                <option value="ROAD/TRAIN">Road/Train</option>
 
 
-</select>
-                        
+                            </select>
+
                         </div>
                     </div>
 
@@ -322,7 +340,7 @@
                     <!-- Row 6: Quotation Validity / Qty Tolerance / Part Delivery -->
                     <div class="row mt-2">
                         <div class="col-lg-3"><label>Quotation Validity:</label></div>
-                        <div class="col-lg-3"><input type="text" class="form-control DatePicker" ng-model="FinancialQuotationDetail.QuotationValidity" placeholder="DD/MM/YYYY" /></div>
+                        <div class="col-lg-3"><input type="text" class="form-control DatePicker" id="QuotationValidity1" ng-model="FinancialQuotationDetail.QuotationValidity" placeholder="DD/MM/YYYY" /></div>
 
                         <div class="col-lg-3"><label>Qty Tolerance (%):</label></div>
                         <div class="col-lg-3"><input type="number" class="form-control" ng-model="FinancialQuotationDetail.QtyTolerance" min="0" /></div>
@@ -331,9 +349,10 @@
                     <div class="row mt-2">
                         <div class="col-lg-3"><label>Part Delivery:</label></div>
                         <div class="col-lg-3">
-                            <select class="form-control" ng-model="FinancialQuotationDetail.PartDelivery"
-                                    ng-options="p.MasterDataValue for p in PartDeliveryList track by p.MasterDataValue">
-                                <option value="" style="display:none">---</option>
+                            <select class="form-control" ng-model="FinancialQuotationDetail.PartDelivery">
+                                <option value="" style="display:none">--Select--</option>
+                                <option value="Y">Yes</option>
+                                <option value="N">No</option>
                             </select>
                         </div>
                     </div>
@@ -384,8 +403,15 @@
                         <div class="col-lg-3"><label>Installation:</label></div>
                         <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.Installation" /></div>
 
-                        <div class="col-lg-3"><label>Servicing:</label></div>
-                        <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.Servicing" /></div>
+
+                        <div class="col-lg-3"><label>Servicing</label></div>
+                        <div class="col-lg-3">
+                            <select class="form-control" ng-model="FinancialQuotationDetail.Servicing">
+                                <option value="" style="display:none">--Select--</option>
+                                <option value="Y">Yes</option>
+                                <option value="N">No</option>
+                            </select>
+                        </div>
                     </div>
 
                     <div class="row mt-2">
@@ -395,24 +421,37 @@
 
                     <!-- Row 9: Key Customer List / Subcontractor / Returnable Item -->
                     <div class="row mt-2">
-                        <div class="col-lg-3"><label>Key Customer List:</label></div>
-                        <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.KeyCustomerList" /></div>
-
-                        <div class="col-lg-3"><label>Subcontractor:</label></div>
                         <div class="col-lg-3">
-                            <select class="form-control" ng-model="FinancialQuotationDetail.Subcontractor"
-                                    ng-options="s.MasterDataValue for s in SubcontractorList track by s.MasterDataValue">
-                                <option value="" style="display:none">---</option>
+                            <label>Subcontractor</label>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <select class="form-control"
+                                    ng-model="FinancialQuotationDetail.Subcontractor"
+                                    ng-init="FinancialQuotationDetail.Subcontractor = 'No'">
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
                             </select>
                         </div>
+
+                        <!-- Appears only when Yes -->
+                        <div class="col-lg-6" ng-if="FinancialQuotationDetail.Subcontractor === 'Yes'">
+                            <input type="text"
+                                   class="form-control"
+                                   ng-model="FinancialQuotationDetail.SubcontractorDetails"
+                                   placeholder="Enter subcontractor details">
+                        </div>
                     </div>
+
 
                     <div class="row mt-2">
                         <div class="col-lg-3"><label>Returnable Item:</label></div>
                         <div class="col-lg-3">
-                            <select class="form-control" ng-model="FinancialQuotationDetail.ReturnableItem"
-                                    ng-options="r.MasterDataValue for r in ReturnableItemList track by r.MasterDataValue">
-                                <option value="" style="display:none">---</option>
+                            <select class="form-control" ng-model="FinancialQuotationDetail.ReturnableItem">
+                                <option value="" style="display:none">--Select--</option>
+                                <option value="Y">Yes</option>
+                                <option value="N">No</option>
+
                             </select>
                         </div>
                     </div>
@@ -426,7 +465,7 @@
                         <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.Remarks" /></div>
                     </div>
 
-                   
+
 
                 </div>
             </div>
@@ -438,70 +477,20 @@
 
 
         <div class="row" ng-show="p===2" @*style="background: #9ebdc7; padding: 11px; border-radius: 10px; border: 2px solid #b7ced5; "*@>
-            <div class="col-sm-12 col-md-12 col-lg-12" style="padding: 11px; margin-right: 15px; margin-left: 15px;">
+            <div class="col-sm-12 col-md-12 col-lg-12">
 
-                <div class="row">
-
-                    <div class="col-lg-3 ">
-                        <div class="form-group">
-                            <label for="ManufacturerPart">Manufacturer Part No :</label>
-                        </div>
-                    </div>
+                <!-- ================= CORE (MANDATORY) ================= -->
+                <!-- Currency -->
+                <div class="row mt-2">
+                    <div class="col-lg-3"><label>Currency<span class="text-danger">*</span></label></div>
                     <div class="col-lg-3">
-                        <div class="form-group">
-                            <input id="ManufacturerPart" name="ManufacturerPart" type="text" ng-model="TechnicalQuotation.ManufacturerPart" class="form-control"
-                                   placeholder="Manufacturer Part" />
+                        <select id="Currency" class="form-control" ng-model="FinancialQuotationDetail.Currency"
+                                ng-options="ItemTypes as ItemTypes.MasterDataValue for ItemTypes in ItemTypeList track by ItemTypes.MasterDataValue " ng-required="true" style="height: 26px; font-size:smaller">
 
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2 ">
-                        <div class="form-group">
-                            <label for="Installation">Installation,Testing & Commissioning :</label>
-                        </div>
-                    </div>
-                    <div class="col-lg-2">
-                        <div class="form-group">
-                            <input id="Installation" name="Installation" type="text" ng-model="TechnicalQuotation.Installation" class="form-control"
-                                   placeholder=" " />
-
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="row">
-
-                    <div class="col-lg-3">
-                        <div class="form-group">
-                            <label for="Manufacturer">Manufacturer :</label>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3">
-                        <input id="Manufacturer" name="Manufacturer" type="text" ng-model="TechnicalQuotation.Manufacturer" class="form-control"
-                               placeholder="Manufacturer" />
-
-                    </div>
+                            <option value="" selected style="display: none">-- Select One --</option>
 
 
-
-                    <div class="col-lg-2">
-                        <div class="form-group">
-                            <label for="Subcontractor">Subcontractor :</label>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="form-group">
-
-                            <input type="radio" ng-model="TechnicalQuotation.Subcontractor" ng-value="'Yes'"> Yes
-                            <input type="radio" ng-model="TechnicalQuotation.Subcontractor" ng-value="'No'"> No
-
-                            @*<input type="text" ng-show="sampleAvailable === 'other'" ng-model="otherSample" placeholder="Specify Other">*@
-
-
-
-                        </div>
+                        </select>
                     </div>
 
 
@@ -509,56 +498,160 @@
 
                 </div>
 
-                <div class="row">
-
+                <!-- Price / Per -->
+                <div class="row mt-2">
+                    <div class="col-lg-3"><label>Price<span class="text-danger">*</span></label></div>
                     <div class="col-lg-3">
-                        <div class="form-group">
-                            <label for="ManufacturerOrigin">Manufacturer Origin :</label>
-                        </div>
+                        <input id="price1"
+                               class="form-control"
+                               type="number" placeholder="0.00" min="0.01"
+                               ng-model="FinancialQuotationDetail.Price"
+                               ng-blur="checkAndFormat('price1')">
                     </div>
 
-                    <div class="col-lg-3">
-                        <input id="ManufacturerOrigin" name="ManufacturerOrigin" type="text" ng-model="TechnicalQuotation.ManufacturerOrigin" class="form-control"
-                               placeholder="Manufacturer Origin" />
-
+                    <div class="col-lg-1"><label>Per<span class="text-danger">*</span></label></div>
+                    <div class="col-lg-1">
+                        <input type="number" class="form-control"
+                               ng-model="FinancialQuotationDetail.Per"
+                               ng-init="FinancialQuotationDetail.Per=1"
+                               ng-required="true" min="1">
                     </div>
-
-
-
-
-                    <div class="col-lg-2">
-                        <div class="form-group">
-                            <label for="Reference">Reference :</label>
-                        </div>
+                    <div class="col-lg-2"><label>Price Unit<span class="text-danger">*</span></label></div>
+                    <div class="col-lg-1">
+                        <select class="form-control"
+                                ng-model="FinancialQuotationDetail.PriceUnit"
+                                ng-required="true"
+                                ng-options="i.Item_Code for i in ItemList">
+                            <option value="" style="display:none">---</option>
+                        </select>
                     </div>
-                    <div class="col-lg-2">
-                        <input id="Reference" name="Reference" type="text" ng-model="TechnicalQuotation.Reference" class="form-control"
-                               placeholder="Reference" />
+                </div>
 
-                    </div>
-
-
-
-
-
+                <!-- Price Unit -->
+                <div class="row mt-2">
 
                 </div>
 
-                <div class="row">
-
+                <!-- VAT / Taxes -->
+                <div class="row mt-2">
+                    <div class="col-lg-3"><label>VAT<span class="text-danger">*</span></label></div>
                     <div class="col-lg-3">
-                        <div class="form-group">
-                            <label for="LocalPartner">Local Partner :</label>
-                        </div>
+                        <select class="form-control"
+                                ng-model="FinancialQuotationDetail.VAT"
+                                ng-required="true">
+                            <option value="">--Select--</option>
+                            <option value="Included">Included</option>
+                            <option value="Excluded">Excluded</option>
+                        </select>
                     </div>
 
+                    <div class="col-lg-3"><label>Taxes</label></div>
                     <div class="col-lg-3">
-                        <input id="LocalPartner" name="LocalPartner" type="text" ng-model="TechnicalQuotation.LocalPartner" class="form-control"
-                               placeholder="Local Partner " />
+                        <select class="form-control"
+                                ng-model="FinancialQuotationDetail.Tax">
+                            <option value="">--Select--</option>
+                            <option value="Included">Included</option>
+                            <option value="Excluded">Excluded</option>
+                        </select>
+                    </div>
+                </div>
 
+                <!-- Quotation Qty -->
+                <div class="row mt-2">
+                    <div class="col-lg-3"><label>Quotation Qty<span class="text-danger">*</span></label></div>
+                    <div class="col-lg-3">
+                        <input type="text"
+                               class="form-control text-right"
+                               ng-model="FinancialQuotationDetail.QuotationQty"
+                               three-decimals
+                               onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46">
                     </div>
 
+                    <div class="col-lg-3"><label>Quotation Qty Unit<span class="text-danger">*</span></label></div>
+                    <div class="col-lg-3">
+                        <select class="form-control"
+                                ng-model="FinancialQuotationDetail.QuotationQtyUnit"
+                                ng-required="true"
+                                ng-options="i.Item_Code for i in ItemList">
+                            <option value="" style="display:none">---</option>
+                        </select>
+                    </div>
+                </div>
 
+                <!-- Delivery / Validity -->
+                <div class="row mt-2">
+                    <div class="col-lg-3"><label>Delivery Timeline<span class="text-danger">*</span></label></div>
+                    <div class="col-lg-3">
+                        <input type="text" class="form-control DatePicker"
+                               id="DeliveryTimeline"
+                               ng-model="FinancialQuotationDetail.DeliveryTimeline"
+                               ng-required="true">
+                    </div>
+
+                    <div class="col-lg-3"><label>Quotation Validity<span class="text-danger">*</span></label></div>
+                    <div class="col-lg-3">
+                        <input type="text" class="form-control DatePicker"
+                               id="QuotationValidity"
+                               ng-model="FinancialQuotationDetail.QuotationValidity"
+                               ng-required="true">
+                    </div>
+                </div>
+
+                <!-- Part Delivery / Qty Tolerance -->
+                <div class="row mt-2">
+                    <div class="col-lg-3"><label>Part Delivery</label></div>
+                    <div class="col-lg-3">
+                        <select class="form-control" ng-model="FinancialQuotationDetail.PartDelivery">
+                            <option value="" style="display:none">--Select--</option>
+                            <option value="Y">Yes</option>
+                            <option value="N">No</option>
+                        </select>
+                    </div>
+
+                    <div class="col-lg-3"><label>Qty Tolerance (%)</label></div>
+                    <div class="col-lg-3">
+                        <input type="number" class="form-control"
+                               ng-model="FinancialQuotationDetail.QtyTolerance" min="0">
+                    </div>
+                </div>
+
+
+                <!-- Row 1 -->
+                <div class="row mt-2">
+                    <div class="col-lg-3"><label>Payment Terms</label></div>
+                    <div class="col-lg-3">
+                        <input type="text"
+                               class="form-control"
+                               ng-model="FinancialQuotationDetail.PaymentTerms"
+                               required>
+                    </div>
+
+                    <div class="col-lg-3"><label>Manufacturer Part No.</label></div>
+                    <div class="col-lg-3">
+                        <input type="text"
+                               class="form-control"
+                               ng-model="FinancialQuotationDetail.ManufacturerPartNo"
+                               required>
+                    </div>
+                </div>
+
+                <!-- Row 2 -->
+                <div class="row mt-2">
+                    <div class="col-lg-3"><label>Manufacturer Name</label></div>
+                    <div class="col-lg-3">
+                        <input type="text"
+                               class="form-control"
+                               ng-model="FinancialQuotationDetail.ManufacturerName"
+                               required>
+                    </div>
+
+                    <div class="col-lg-3"><label>Manufacturer Site Address</label></div>
+                    <div class="col-lg-3">
+                        <textarea class="form-control"
+                                  ng-model="FinancialQuotationDetail.ManufacturerSiteAddress"
+                                  rows="2"
+                                  required></textarea>
+                    </div>
                 </div>
 
 
@@ -567,132 +660,104 @@
 
 
 
+                <!-- ================= COLLAPSIBLE (OPTIONAL) ================= -->
 
-                <div class="row">
-                    <div class="col-lg-3">
-                        <div class="form-group">
-                            <label for="Prerequisite">Prerequisite/Assistance At Site :</label>
-                        </div>
+                <div class="row mt-3">
+                    <div class="col-lg-12">
+                        <button type="button" class="btn btn-link"
+                                ng-click="showOptional = !showOptional">
+                            {{ showOptional ? 'Hide Additional Details' : 'Show Additional Details' }}
+                        </button>
                     </div>
-
-                    <div class="col-lg-3">
-                        <input id="Prerequisite" name="Prerequisite" type="text" ng-model="TechnicalQuotation.Prerequisite" class="form-control"
-                               placeholder="Prerequisite " />
-
-                    </div>
-
-
-                    <div class="col-lg-2 ">
-                        <div class="form-group">
-                            <label for="Penalty">Penalty Clause :</label>
-                        </div>
-                    </div>
-                    <div class="col-lg-2">
-                        <input id="Penalty" name="Penalty" type="text" ng-model="TechnicalQuotation.Penalty" class="form-control"
-                               placeholder="Penalty Clause " />
-
-                    </div>
-
-
-
                 </div>
-                <div class="row">
-                    <div class="col-lg-3">
-                        <div class="form-group">
-                            <label for="Fat">Fat At Manufacture's Site :</label>
+
+                <div ng-show="showOptional">
+
+                    <div class="row mt-2">
+                        <div class="col-lg-3"><label>Discount</label></div>
+                        <div class="col-lg-3"><input type="number" class="form-control" ng-model="FinancialQuotationDetail.Discount"></div>
+
+                        <div class="col-lg-3"><label>Delivery Charge</label></div>
+                        <div class="col-lg-3"><input type="number" class="form-control" ng-model="FinancialQuotationDetail.DeliveryCharge"></div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-lg-3"><label>Pack Size</label></div>
+                        <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.PackSize"></div>
+
+                        <div class="col-lg-3"><label>Minimum Order Qty</label></div>
+                        <div class="col-lg-3"><input type="number" class="form-control" ng-model="FinancialQuotationDetail.MinimumOrderQty"></div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-lg-3"><label>Warranty</label></div>
+                        <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.Warranty"></div>
+
+                        <div class="col-lg-3"><label>Installation</label></div>
+                        <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.Installation"></div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-lg-3"><label>Servicing</label></div>
+                        <div class="col-lg-3">
+                            <select class="form-control" ng-model="FinancialQuotationDetail.Servicing">
+                                <option value="" style="display:none">--Select--</option>
+                                <option value="Y">Yes</option>
+                                <option value="N">No</option>
+                            </select>
+                        </div>
+
+                        <div class="col-lg-3"><label>Key Customer List</label></div>
+                        <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.KeyCustomerList"></div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-lg-3">
+                            <label>Subcontractor</label>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <select class="form-control"
+                                    ng-model="FinancialQuotationDetail.Subcontractor"
+                                    ng-init="FinancialQuotationDetail.Subcontractor = 'No'">
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+
+                        <!-- Appears only when Yes -->
+                        <div class="col-lg-6" ng-if="FinancialQuotationDetail.Subcontractor === 'Yes'">
+                            <input type="text"
+                                   class="form-control"
+                                   ng-model="FinancialQuotationDetail.SubcontractorDetails"
+                                   placeholder="Enter subcontractor details">
                         </div>
                     </div>
 
-                    <div class="col-lg-3">
-                        <input id="Fat" name="Fat" type="text" data-ng-model="TechnicalQuotation.Fat" class="form-control"
-                               placeholder="" />
 
-                    </div>
-
-
-                    <div class="col-lg-2 ">
-                        <div class="form-group">
-                            <label for="Calibration">Calibration :</label>
-                        </div>
-                    </div>
-                    <div class="col-lg-2">
-                        <div class="form-group">
-                            <select id="Calibration" class="form-control" ng-model="TechnicalQuotation.Calibration"
-                                    ng-options="option.value as option.label for option in allcalibration">
-                                <option value="" style="display: none;">--Select--</option>
+                    <div class="row mt-2">
+                        <div class="col-lg-3"><label>Returnable Item:</label></div>
+                        <div class="col-lg-3">
+                            <select class="form-control" ng-model="FinancialQuotationDetail.ReturnableItem">
+                                <option value="" style="display:none">--Select--</option>
+                                <option value="Y">Yes</option>
+                                <option value="N">No</option>
 
                             </select>
-
                         </div>
                     </div>
 
+                    <div class="row mt-2">
+                        <div class="col-lg-3"><label>Penalty Clause</label></div>
+                        <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.PenaltyClause"></div>
 
-
+                        <div class="col-lg-3"><label>Remarks</label></div>
+                        <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.Remarks"></div>
+                    </div>
 
                 </div>
-
-                <div class="row">
-                    <div class="col-lg-3">
-                        <div class="form-group">
-                            <label for="Document">Qualification Documents :</label>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3">
-                        <select ui-select2="{ allowClear: true}" id="select-option" multiple ng-model="TechnicalQuotation.Document" data-placeholder="Material Cat" style="width:100%;" class="form-control"
-                                ng-options="option.value as option.label for option in allcalibration">
-                        </select>
-                    </div>
-
-
-
-
-
-
-                </div>
-
-                <div class="row">
-                    <div class="col-lg-3">
-                        <div class="form-group">
-                            <label for="Validation">Validation Scope :</label>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3">
-                        <input id="Validation" name="Validation" type="text" data-ng-model="TechnicalQuotation.Validation" class="form-control"
-                               placeholder="Validation" />
-                    </div>
-
-
-
-                    <div class="col-lg-2">
-                        <div class="form-group">
-                            <label for="Training">Training :</label>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2">
-                        <select id="Training" class="form-control" ng-model="TechnicalQuotation.Training"
-                                ng-options="option.value as option.label for option in alltraining">
-                            <option value="" style="display: none;">--Select--</option>
-
-                        </select>
-
-                    </div>
-
-
-
-                </div>
-
-
-
-
-
-
-
-
-
             </div>
+
 
         </div>
 
@@ -875,19 +940,19 @@
                     <table st-table="InvitationDisplayedCollection" st-safe-src="Invitation" class="table table-condensed table-bordered table-striped table-hover pnlView">
                         <thead>
                             <tr>
-                                <th class="col-lg-1 col-md-1 col-sm-1">Number</th>
-                                <th class="col-lg-4 col-md-4 col-sm-4">Invitation Number</th>
-                                <th class="col-lg-4 col-md-4 col-sm-4">Fintype</th>
+                                <th class="col-lg-1 col-md-1 col-sm-1 text-center">Number</th>
+                                <th class="col-lg-4 col-md-4 col-sm-4 text-center">Invitation Number</th>
+                                <th class="col-lg-4 col-md-4 col-sm-4 text-center">Fintype</th>
 
-                                <th class="col-lg-1 col-md-1 col-sm-1">Action</th>
+                                <th class="col-lg-1 col-md-1 col-sm-1 text-center">Action</th>
                             </tr>
 
                         </thead>
                         <tbody>
                             <tr ng-repeat="row in InvitationDisplayedCollection">
                                 <td class="text-center">{{$index+1}}</td>
-                                <td class="">{{row.Invitation_Number}}</td>
-                                <td class="">{{row.Fintype}}</td>
+                                <td class="text-center">{{row.Invitation_Number}}</td>
+                                <td class="text-center">{{row.Fintype}}</td>
 
                                 <td class="text-center">
                                     <a class="btn col-center btn-sm btn-flat btn-success" data-ng-click="toggleInvitationSelect(row.Invitation_Number,row.ProposalType,row.Fintype)">Select</a>
@@ -1039,7 +1104,37 @@
 
 <script type="text/javascript">
 
+    app.directive('threeDecimals', function () {
+        return {
+            require: 'ngModel',
+            link: function (scope, element, attrs, ngModelController) {
+                // Remove the $parsers that convert to number
+                // Let the model value stay as string
 
+                ngModelController.$formatters.push(function (modelValue) {
+                    if (modelValue === null || modelValue === undefined || modelValue === '') {
+                        return '';
+                    }
+                    // Convert to number, format, then return as string
+                    var num = parseFloat(modelValue);
+                    return isNaN(num) ? modelValue : num.toFixed(3);
+                });
+
+                element.on('blur', function () {
+                    var value = element.val();
+                    if (value !== '') {
+                        var num = parseFloat(value);
+                        if (!isNaN(num)) {
+                            var formatted = num.toFixed(3);
+                            element.val(formatted);
+                            ngModelController.$setViewValue(formatted);
+                            ngModelController.$render();
+                        }
+                    }
+                });
+            }
+        };
+    });
 
     app.controller('FinancialQuotationCtrl', function ($scope, $http, $timeout) {
 
@@ -1106,24 +1201,88 @@
 
 
 
-        $scope.FinancialQuotationDetail = {
-            rowIndex: '',
-            FinanQuotationItemID: "",
-            ProposeQty: "",
-            Unit: { Item_Code: "", Item_Name: "" },
-            UnitPrice: "",
-            Currency: { MasterDataID: "", MasterDataValue: "" },
-            TotalPrice: "",
-            VatAmount: "",
-            TaxAmount: "",
-            GrossPrice: "",
-            DiscountPrice: "",
-            NetPrice: "",
-            QuotValidDate: "",
-            ExpecDeliDate: "",
-            ProposalType: ""
-        };
+        //$scope.FinancialQuotationDetail = {
+        //    rowIndex: '',
+        //    FinanQuotationItemID: "",
+        //    ProposeQty: "",
+        //    Unit: { Item_Code: "", Item_Name: "" },
+        //    UnitPrice: "",
+        //    Currency: { MasterDataID: "", MasterDataValue: "" },
+        //    TotalPrice: "",
+        //    VatAmount: "",
+        //    TaxAmount: "",
+        //    GrossPrice: "",
+        //    DiscountPrice: "",
+        //    NetPrice: "",
+        //    QuotValidDate: "",
+        //    ExpecDeliDate: "",
+        //    ProposalType: ""
+        //};
 
+
+        $scope.FinancialQuotationDetail = {
+            // Supplier and Agent Information
+            SupplierName: "",
+            LocalAgentName: "",
+
+            // Currency and Pricing
+            Currency: { MasterDataID: "", MasterDataValue: "" }, 
+            Price: null,
+            Per: 1,
+            PriceUnit: "",
+
+            // Taxes and Charges
+            VAT: "",
+            Tax: "",
+            Freight: null,
+            Discount: null,
+            OrderHandlingCharges: null,
+            PackingCharges: null,
+            SundryCharges: null,
+            DeliveryCharge: null,
+
+            // Quantity Information
+            QuotationQty: "",
+            QuotationQtyUnit: "",
+            QtyTolerance: null,
+            MinimumOrderQty: null,
+            PackSize: "",
+
+            // Delivery Information
+            DeliveryTimeline: "",
+            PartDelivery: "",
+            Incoterms: { MasterDataID: "", MasterDataValue: "" }, 
+            IncotermsLocation: { MasterDataID: "", MasterDataValue: "" }, 
+            ShipmentMode: "",
+            InlandTransportation: "",
+
+            // Payment Information
+            PaymentMode: { MasterDataID: "", MasterDataValue: "" }, 
+            PaymentTerms: "",
+
+            // Validity and Terms
+            QuotationValidity: "",
+
+            // Manufacturer Information
+            ManufacturerPartNo: "",
+            ManufacturerName: "",
+            ManufacturerSiteAddress: "",
+
+            // Service and Support
+            Warranty: "",
+            Installation: "",
+            Servicing: "",
+
+            // Additional Details
+            KeyCustomerList: "",
+            Subcontractor: "No",
+            SubcontractorDetails: "",
+            ReturnableItem: "",
+            PenaltyClause: "",
+            Remarks: "",
+            Fintype: "",
+            SampleDocumentID:""
+        };
 
 
 
@@ -1304,7 +1463,9 @@
             MushakDate: "",
             InvitationID: "",
             BiddingItemVendorID: "",
+       
             materialCode: "",
+            materialName:"",
             invitationNumber: "",
             Extension: "",
             VendorID: ""
@@ -1365,6 +1526,16 @@
 
 
         $scope.Update = function () {
+
+            if ($scope.FinancialQuotationDetail.Fintype === 'DOMESTIC') {
+                $scope.FinancialQuotationDetail.DeliveryTimeline = $scope.formatDate($('#DeliveryTimeline').val());
+                $scope.FinancialQuotationDetail.QuotationValidity = $scope.formatDate($('#QuotationValidity').val());
+            } else {
+                $scope.FinancialQuotationDetail.DeliveryTimeline = $scope.formatDate($('#DeliveryTimeline1').val());
+                $scope.FinancialQuotationDetail.QuotationValidity = $scope.formatDate($('#QuotationValidity1').val());
+            }
+
+
             $scope.UpdateDocument();
             $http.post('/VendorSelectionModule/FinancialQuotation/SaveFinQuotwiseDetails',
                 { financialQuotation: $scope.FinancialQuotationDetail })
@@ -1445,354 +1616,219 @@
 
 
         $scope.Post = function () {
-
-
             var DocIDsCounter = 0;
-            $scope.FinancialQuotationDetail.QuotValidDate = $scope.formatDate($('#QuotValidDate').val());
-            $scope.FinancialQuotationDetail.ExpecDeliDate = $scope.formatDate($('#ExpecDeliDate').val());
 
-            $scope.FinancialQuotationDetail.rowIndex = $scope.MaterialInvitation.rowIndex;
-            for (var i = 0; i < $scope.GridDisplayCollection.length; i++) {
-                if ($scope.GridDisplayCollection[i].materialCode === $scope.MaterialInvitation.materialCode) {
-                    $scope.GridDisplayCollection[i].Action = 'E';
+            // Format dates based on FinType
+            if ($scope.FinancialQuotationDetail.Fintype === 'DOMESTIC') {
+                $scope.FinancialQuotationDetail.DeliveryTimeline = $scope.formatDate($('#DeliveryTimeline').val());
+                $scope.FinancialQuotationDetail.QuotationValidity = $scope.formatDate($('#QuotationValidity').val());
+            } else {
+                $scope.FinancialQuotationDetail.DeliveryTimeline = $scope.formatDate($('#DeliveryTimeline1').val());
+                $scope.FinancialQuotationDetail.QuotationValidity = $scope.formatDate($('#QuotationValidity1').val());
+            }
+
+            console.log('DeliveryTimeline:', $scope.FinancialQuotationDetail.DeliveryTimeline);
+
+ /*           $scope.FinancialQuotationDetail.rowIndex = $scope.MaterialInvitation.rowIndex;*/
+
+            // Update grid display collection
+            //for (var i = 0; i < $scope.GridDisplayCollection.length; i++) {
+            //    if ($scope.GridDisplayCollection[i].materialCode === $scope.MaterialInvitation.materialCode) {
+            //        $scope.GridDisplayCollection[i].Action = 'E';
+            //    }
+            //}
+
+            console.log('FinancialQuotationDetail:', $scope.FinancialQuotationDetail);
+
+            // Check if document already exists
+            if (!$scope.FinancialQuotationDetail.SampleDocumentID) {
+                console.log('No document ID, saving document first...');
+                // Document doesn't exist, save it first
+                $scope.SaveDocumentAndSubmit();
+            } else {
+                console.log('Document ID exists, submitting directly...');
+                // Document exists, directly submit
+                $scope.submit();
+                $scope.p = 0;
+            }
+        };
+
+        $scope.SaveDocumentAndSubmit = function () {
+            console.log('SaveDocumentAndSubmit called');
+
+            var fileUpload = $("#FileUpload1").get(0);
+            var files = fileUpload.files;
+            var validFiles = [];
+            var extensions = [];
+            var concatenatedExtensions = "";
+
+            console.log('Files found:', files.length);
+
+            // Process files and filter out valid files
+            if (files.length > 0) {
+                angular.forEach(files, function (file) {
+                    var ext = file.name.split('.').pop().toLowerCase();
+                    validFiles.push(file);
+                    extensions.push(ext);
+                });
+
+                if (validFiles.length === 0) {
+                    alert('No valid files to upload.');
+                    return;
+                }
+
+                concatenatedExtensions = extensions.join(',') + ',.pdf';
+            } else {
+                concatenatedExtensions = '.pdf';
+            }
+
+            $scope.BillReceiveModel.Extensions = concatenatedExtensions;
+
+            // Check if scanner has documents
+            if (concatenatedExtensions === '.pdf') {
+                if (typeof dwObject !== 'undefined' && dwObject.HowManyImagesInBuffer === 0) {
+                    $scope.loading = false;
+                    toastr.error("There are no documents.");
+                    return;
                 }
             }
-            console.log($scope.FinancialQuotationDetail);
 
+            console.log('Calling AddDocumentInfo API...');
 
-            if (!$scope.MaterialInvitation.SampleDocumentID) {
-                var fileUpload = $("#FileUpload1").get(0);
-                var files = fileUpload.files;
-                var validFiles = [];
-                var extensions = [];
-                var concatenatedExtensions = "";
-                console.log(files);
-                // Process files and filter out PDF files
-                if (files.length > 0) {
-                    angular.forEach(files, function (file) {
-                        var ext = file.name.split('.').pop().toLowerCase();
+            // Step 1: Save document info to get Document ID
+            $http.post('/VendorSelectionModule/FinancialQuotation/AddDocumentInfo', {
+                _modelDocumentsInfo: $scope.BillReceiveModel
+            })
+                .then(function (response) {
+                    console.log('AddDocumentInfo response:', response);
 
-                        validFiles.push(file);
-                        extensions.push(ext);
+                    if (response.data.ResponseCode === "S201") {
+                        $scope.data = response.data.DistinctID[0];
 
-                    });
+                        // Store the document ID immediately
+                        $scope.FinancialQuotationDetail.SampleDocumentID = response.data.DistinctID[0].BillReceiveID;
+                        console.log('Document ID saved:', $scope.FinancialQuotationDetail.SampleDocumentID);
 
-                    if (validFiles.length === 0) {
-                        alert('No valid files to upload.');
-                        return;
-                    }
+                        var allUploadsComplete = false;
+                        var otherFilesComplete = false;
+                        var scannerPDFComplete = false;
 
-                    // Concatenate extensions
+                        // Function to check if both uploads are done
+                        var checkAllUploadsComplete = function () {
+                            if (otherFilesComplete && scannerPDFComplete) {
+                                console.log('All uploads complete, calling submit...');
+                                $scope.submit();
+                                $scope.p = 0;
+                            }
+                        };
 
-                    concatenatedExtensions = extensions.join(',');
-                    concatenatedExtensions = extensions.join(',') + ',.pdf';
-                }
-                else {
-                    concatenatedExtensions = '.pdf';
-                }
-
-                $scope.BillReceiveModel.Extensions = concatenatedExtensions;
-
-
-                // Send model to server to get upload information
-                if (concatenatedExtensions === '.pdf') {
-                    if (dwObject.HowManyImagesInBuffer === 0) {
-                        $scope.loading = false;
-                        toastr.error("There are no  documents.");
-                        return;
-                    }
-                }
-
-
-
-                $http.post('/VendorSelectionModule/FinancialQuotation/AddDocumentInfo',
-                    {
-                        _modelDocumentsInfo: $scope.BillReceiveModel,
-
-                    })
-                    .success(function (response) {
-                        if (response.ResponseCode === "S201") {
-                            $scope.data = response.DistinctID[0];
+                        // Step 2: Upload files (if any)
+                        if (files.length > 0) {
+                            console.log('Starting other files upload...');
                             var uploadCount = 0;
 
-                            // Prepare FormData for each file and upload
-                            if (files.length > 0) {
-                                angular.forEach(validFiles, function (file) {
-                                    var fileData = new FormData();
-                                    fileData.append('serverIP', response.DistinctID[0].ServerIP);
-                                    fileData.append('ftpPort', response.DistinctID[0].ServerPort);
-                                    fileData.append('ftpUserName', response.DistinctID[0].FtpUserName);
-                                    fileData.append('ftpPassword', response.DistinctID[0].FtpPassword);
-                                    fileData.append('serverURL', response.DistinctID[0].FileServerUrl);
-                                    fileData.append('documentID', response.DistinctID[0].BillReceiveID);
-                                    fileData.append('Ext', file.name.split('.').pop().toLowerCase());
-                                    fileData.append(file.name, file);
+                            angular.forEach(validFiles, function (file) {
+                                var fileData = new FormData();
+                                fileData.append('serverIP', response.data.DistinctID[0].ServerIP);
+                                fileData.append('ftpPort', response.data.DistinctID[0].ServerPort);
+                                fileData.append('ftpUserName', response.data.DistinctID[0].FtpUserName);
+                                fileData.append('ftpPassword', response.data.DistinctID[0].FtpPassword);
+                                fileData.append('serverURL', response.data.DistinctID[0].FileServerUrl);
+                                fileData.append('documentID', response.data.DistinctID[0].BillReceiveID);
+                                fileData.append('Ext', file.name.split('.').pop().toLowerCase());
+                                fileData.append(file.name, file);
 
-                                    $.ajax({
-                                        url: '/VendorSelectionModule/FinancialQuotation/UploadOtherFiles',
-                                        type: "POST",
-                                        contentType: false,
-                                        processData: false,
-                                        data: fileData,
-                                        success: function (result) {
-                                            uploadCount++;
-                                            if (uploadCount == validFiles.length) {
-                                                toastr.success("Document Uploaded Successfully");
-                                                var $el = $('#FileUpload1');
-                                                $el.wrap('<form>').closest('form').get(0).reset();
-                                                $el.unwrap();
+                                $.ajax({
+                                    url: '/VendorSelectionModule/FinancialQuotation/UploadOtherFiles',
+                                    type: "POST",
+                                    contentType: false,
+                                    processData: false,
+                                    data: fileData,
+                                    success: function (result) {
+                                        uploadCount++;
+                                        console.log('File uploaded:', uploadCount, '/', validFiles.length);
 
-                                            }
-                                        },
-                                        error: function (err) {
-                                            toastr.error("Document Upload Failed");
+                                        if (uploadCount === validFiles.length) {
+                                            toastr.success("Other files uploaded successfully");
+                                            var $el = $('#FileUpload1');
+                                            $el.wrap('<form>').closest('form').get(0).reset();
+                                            $el.unwrap();
+
+                                            otherFilesComplete = true;
+                                            checkAllUploadsComplete();
                                         }
-                                    });
+                                    },
+                                    error: function (err) {
+                                        toastr.error("File upload failed");
+                                        console.error('Upload error:', err);
+                                    }
                                 });
+                            });
+                        } else {
+                            console.log('No other files to upload');
+                            otherFilesComplete = true;
+                        }
+
+                        // Step 3: Upload Scanner PDF
+                        if (typeof dwObject !== 'undefined' && dwObject.HowManyImagesInBuffer > 0) {
+                            console.log('Starting scanner PDF upload...');
+
+                            var strFTPServer = response.data.DistinctID[0].ServerIP;
+
+                            if (strFTPServer == "" || strFTPServer == null) {
+                                toastr.error("FTP Server is not assigned");
+                                $scope.loading = false;
+                                return;
                             }
 
+                            if (dwObject.CurrentImageIndexInBuffer == "-1") {
+                                toastr.error("No document found for upload");
+                                $scope.loading = false;
+                                return;
+                            }
 
-
-
-
-                            $scope.MaterialInvitation.SampleDocumentID = response.DistinctID[0].BillReceiveID;
-                            console.log($scope.MaterialInvitation);
-                            $scope.myarray.push($scope.MaterialInvitation);
-                            $scope.myarray2.push($scope.FinancialQuotationDetail);
-
-                            $scope.reset();
-                            console.log($scope.myarray);
-                            console.log($scope.myarray2);
-                            var uploadStatus = 0;
-
-
-                            var totalPDFSize = 0;
-                            var maxPDFSize = 2 * 1024; // 5MB in bytes
-                            var maxPages = 30;
-
-                            var pageSizes = [];
-                            var compressedPages = [];
+                            dwObject.FTPPort = response.data.DistinctID[0].ServerPort;
+                            dwObject.FTPUserName = response.data.DistinctID[0].FtpUserName;
+                            dwObject.FTPPassword = response.data.DistinctID[0].FtpPassword;
 
                             dwObject.SelectedImagesCount = 0;
 
-                            // Function to calculate compression ratio
-
-
-                            // Step 1: Store the size of each page
-
-
-                            for (var j = 0; j < dwObject.HowManyImagesInBuffer && j < maxPages; j++) {
-                                try {
-                                    // Get the image as a Blob from the WebTwain instance (use the appropriate method)
-                                    var imageUrl = dwObject.GetImageURL(j); // Get the image URL for the index j
-
-                                    // Fetch the image data
-                                    fetch(imageUrl)
-                                        .then(response => response.blob())
-                                        .then(pageBlob => {
-                                            // Compress the image using the compression ratio
-                                            compressPageWithRatio(pageBlob, compressionRatio).then(compressedBlob => {
-                                                compressedPages.push(compressedBlob);
-
-                                                // After collecting all the compressed pages, start the upload process
-                                                if (compressedPages.length === dwObject.HowManyImagesInBuffer || compressedPages.length === maxPages) {
-                                                    uploadCompressedPages(compressedPages);
-                                                }
-                                            }).catch(error => {
-                                                console.error('Error compressing page:', error);
-                                            });
-                                        })
-                                        .catch(error => {
-                                            console.error('Error fetching image:', error);
-                                        });
-                                } catch (error) {
-                                    console.error('Error processing image:', error);
-                                }
-                            }
-
-
-
-
-
-
-
-
-
-
-                            //for (var i = 0; i < dwObject.HowManyImagesInBuffer && i < maxPages; i++) {
-                            //    try {
-                            //        // Use GetImageData or similar method to retrieve the image data
-                            //        var width = dwObject.GetImageWidth(i);
-                            //        var height = dwObject.GetImageHeight(i);
-                            //        var originalSize = dwObject.GetImageSize(i, width, height);
-                            //        var pageBlob = dwObject.GetImageSizeWithSpecifiedType(i, 1);
-
-                            //        pageSizes.push(pageBlob);
-                            //        totalPDFSize += pageBlob;
-                            //    } catch (error) {
-                            //        console.error('Error getting page blob:', error);
-                            //    }
-                            //}
-                            //// Step 2: Calculate compression ratio if total size exceeds max PDF size
-                            //if (totalPDFSize > maxPDFSize) {
-                            //    var compressionRatio = calculateCompressionRatio(totalPDFSize, maxPDFSize);
-
-                            //    for (var j = 0; j < dwObject.HowManyImagesInBuffer && j < maxPages; j++) {
-                            //        var pageBlob = dwObject.GetImageSizeWithSpecifiedType(i, 1);
-
-                            //        // Step 3: Compress each page with the calculated ratio
-                            //        compressPageWithRatio(pageBlob, compressionRatio).then(compressedBlob => {
-                            //            compressedPages.push(compressedBlob);
-                            //        }).catch(error => {
-                            //            console.error('Error compressing page:', error);
-                            //        });
-                            //    }
-                            //} else {
-                            //    // If no compression is needed, just store the original pages
-                            //    for (var k = 0; k < dwObject.HowManyImagesInBuffer && k < maxPages; k++) {
-                            //        var pageBlob = dwObject.GetImageSizeWithSpecifiedType(i, 1);
-                            //        compressedPages.push(pageBlob);
-                            //    }
-                            //}
-
-                            //// Step 4: Upload compressed pages
-                            //compressedPages.forEach(function (compressedBlob, index) {
-                            //    var strFTPServer = response.DistinctID[0].ServerIP;
-
-                            //    if (strFTPServer == "" || strFTPServer == null) {
-                            //        toastr.error("Ftp Server is not assigned");
-                            //        $scope.loading = false;
-                            //        return;
-                            //    }
-
-                            //    dwObject.FTPPort = response.DistinctID[0].ServerPort;
-                            //    dwObject.FTPUserName = response.DistinctID[0].FtpUserName;
-                            //    dwObject.FTPPassword = response.DistinctID[0].FtpPassword;
-
-                            //    var isSave = dwObject.FTPUploadAsMultiPagePDF(strFTPServer,
-                            //        response.DistinctID[0].FileServerUrl + "//" +
-                            //        response.DistinctID[0].BillReceiveID + ".pdf", compressedBlob); // Adjust this method to accept the compressedBlob
-
-                            //    if (isSave) {
-                            //        DocIDsCounter++;
-                            //        dwObject.RemoveAllSelectedImages();
-                            //        dwObject.RemoveImage(0);
-                            //        uploadStatus = 1;
-                            //    } else {
-                            //        return; // Stop the loop if upload fails
-                            //    }
-                            //});
-
-                            //if (uploadStatus === 1) {
-                            //    console.log('All okay');
-                            //}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                            dwObject.SelectedImagesCount = 0;
                             for (var i = 0; i <= dwObject.HowManyImagesInBuffer - 1; i++) {
-
                                 if (dwObject.HowManyImagesInBuffer - 1 == i) {
-                                    /* DWObject.IfShowFileDialog = false;*/
-
-
-                                    var strFTPServer = response.DistinctID[0].ServerIP;
-
-                                    if (strFTPServer == "" || strFTPServer == null) {
-                                        toastr.error("Ftp Server is not assigned");
-                                        $scope.loading = false;
-                                        return;
-                                    }
-
-                                    if (dwObject.CurrentImageIndexInBuffer == "-1") {
-                                        toastr.error("No document found for upload");
-                                        $scope.loading = false;
-                                        return;
-                                    }
-
-                                    dwObject.FTPPort = response.DistinctID[0].ServerPort;
-                                    dwObject.FTPUserName = response.DistinctID[0].FtpUserName;
-                                    dwObject.FTPPassword = response.DistinctID[0].FtpPassword;
-
-
-
-
-
-
-
-
-
-
-                                    var isSave = dwObject.FTPUploadAsMultiPagePDF(strFTPServer,
-                                        response.DistinctID[0].FileServerUrl + "//" +
-                                        response.DistinctID[0].BillReceiveID + ".pdf");
-
+                                    var isSave = dwObject.FTPUploadAsMultiPagePDF(
+                                        strFTPServer,
+                                        response.data.DistinctID[0].FileServerUrl + "//" + response.data.DistinctID[0].BillReceiveID + ".pdf"
+                                    );
 
                                     if (isSave) {
-                                        DocIDsCounter++;
+                                        console.log('Scanner PDF uploaded successfully');
                                         dwObject.RemoveAllSelectedImages();
                                         dwObject.RemoveImage(0);
                                         i = -1;
-                                        uploadStatus = 1;
+                                        toastr.success("Scanner PDF uploaded successfully");
+
+                                        scannerPDFComplete = true;
+                                        checkAllUploadsComplete();
                                     } else {
+                                        toastr.error("Scanner PDF upload failed");
                                         break;
                                     }
-
                                 } else {
                                     dwObject.SelectedImagesCount = i + 1;
                                     dwObject.SetSelectedImageIndex(i, i);
-
                                 }
-                            };
-
-                            if (uploadStatus === 1) {
-
-                                console.log('all okay');
                             }
-
-
-
-
-
+                        } else {
+                            console.log('No scanner images to upload');
+                            scannerPDFComplete = true;
+                            checkAllUploadsComplete();
                         }
-                    }, function (error) {
-                        console.error('Error sending document info', error);
-                    });
-
-
-                $scope.p = 0;
-
-            }
-
-            else {
-                $scope.UpdateDocument();
-                $scope.myarray.push($scope.MaterialInvitation);
-                $scope.myarray2.push($scope.FinancialQuotationDetail);
-
-                $scope.reset();
-
-                $scope.p = 0;
-            }
-
-
-        }
+                    }
+                }, function (error) {
+                    console.error('Error sending document info', error);
+                    toastr.error("Failed to save document information");
+                });
+        };
 
 
 
@@ -1834,23 +1870,72 @@
 
         $scope.reset = function () {
 
+
+
             $scope.FinancialQuotationDetail = {
-                rowIndex: '',
-                FinanQuotationItemID: "",
-                ProposeQty: "",
-                Unit: { Item_Code: "", Item_Name: "" },
-                UnitPrice: "",
+                // Supplier and Agent Information
+                SupplierName: "",
+                LocalAgentName: "",
+
+                // Currency and Pricing
                 Currency: { MasterDataID: "", MasterDataValue: "" },
-                TotalPrice: "",
-                VatAmount: "",
-                TaxAmount: "",
-                GrossPrice: "",
-                DiscountPrice: "",
-                NetPrice: "",
-                QuotValidDate: "",
-                ExpecDeliDate: "",
-                ProposalType: ""
+                Price: null,
+                Per: 1,
+                PriceUnit: { Item_Code: "", Item_Name: "" }, 
+
+                // Taxes and Charges
+                VAT: "",
+                Tax: "",
+                Freight: null,
+                Discount: null,
+                OrderHandlingCharges: null,
+                PackingCharges: null,
+                SundryCharges: null,
+                DeliveryCharge: null,
+
+                // Quantity Information
+                QuotationQty: "",
+                QuotationQtyUnit: { Item_Code: "", Item_Name: "" }, 
+                QtyTolerance: null,
+                MinimumOrderQty: null,
+                PackSize: "",
+
+                // Delivery Information
+                DeliveryTimeline: "",
+                PartDelivery: "",
+                Incoterms: { MasterDataID: "", MasterDataValue: "" },
+                IncotermsLocation: { MasterDataID: "", MasterDataValue: "" },
+                ShipmentMode: "",
+                InlandTransportation: "",
+
+                // Payment Information
+                PaymentMode: { MasterDataID: "", MasterDataValue: "" },
+                PaymentTerms: "",
+
+                // Validity and Terms
+                QuotationValidity: "",
+
+                // Manufacturer Information
+                ManufacturerPartNo: "",
+                ManufacturerName: "",
+                ManufacturerSiteAddress: "",
+
+                // Service and Support
+                Warranty: "",
+                Installation: "",
+                Servicing: "",
+
+                // Additional Details
+                KeyCustomerList: "",
+                Subcontractor: "No",
+                SubcontractorDetails: "",
+                ReturnableItem: "",
+                PenaltyClause: "",
+                Remarks: "",
+                Fintype:""
             };
+
+
 
 
             $("#QuotValidDate").val('');
@@ -1924,56 +2009,185 @@
         $scope.mapToFinancialQuotation = function (data) {
 
 
-
-
-
-
             $scope.FinancialQuotationDetail.FinanQuotationItemID = data.FinanQuotationItemID;
+            $scope.FinancialQuotationDetail.QuotationID = data.QuotationID;
+            $scope.FinancialQuotationDetail.QuotationNo = data.QuotationNo;
+            $scope.FinancialQuotationDetail.InvitationNumber = data.InvitationNumber;
+
+            // =====================
+            // Quantities
+            // =====================
             $scope.FinancialQuotationDetail.ProposeQty = data.ProposeQty;
-            var element = document.getElementById('ProposeQty');
-            element.value = (data.ProposeQty).toFixed(3);
-            element.dispatchEvent(new Event('change'));
-            $scope.FinancialQuotationDetail.Unit = data.Unit;
+            $scope.FinancialQuotationDetail.QuotationQty = data.QuotationQty;
+            $scope.FinancialQuotationDetail.QtyTolerance = data.QtyTolerance;
+            $scope.FinancialQuotationDetail.MinimumOrderQty = data.MinimumOrderQty;
+            $scope.FinancialQuotationDetail.PackSize = data.PackSize;
 
-            $scope.FinancialQuotationDetail.UnitPrice = data.UnitPrice;
-            var element = document.getElementById('UnitPrice');
-            element.value = (data.UnitPrice).toFixed(3);
-            element.dispatchEvent(new Event('change'));
-            $scope.FinancialQuotationDetail.Currency = data.Currency;
-            $scope.FinancialQuotationDetail.TotalPrice = data.TotalPrice;
-            var element = document.getElementById('TotalPrice');
-            element.value = (data.TotalPrice).toFixed(3);
-            element.dispatchEvent(new Event('change'));
-            $scope.FinancialQuotationDetail.VatAmount = data.VatAmount;
-            var element = document.getElementById('VatAmount');
-            element.value = (data.VatAmount).toFixed(3);
-            element.dispatchEvent(new Event('change'));
-            $scope.FinancialQuotationDetail.TaxAmount = data.TaxAmount;
-            var element = document.getElementById('TaxAmount');
-            element.value = (data.TaxAmount).toFixed(3);
-            element.dispatchEvent(new Event('change'));
-            $scope.FinancialQuotationDetail.GrossPrice = data.GrossPrice;
-            var element = document.getElementById('GrossPrice');
-            element.value = (data.GrossPrice).toFixed(3);
-            element.dispatchEvent(new Event('change'));
-            $scope.FinancialQuotationDetail.DiscountPrice = data.DiscountPrice;
-            var element = document.getElementById('DiscountPrice');
-            element.value = (data.DiscountPrice).toFixed(3);
-            element.dispatchEvent(new Event('change'));
-            $scope.FinancialQuotationDetail.NetPrice = data.NetPrice;
-            var element = document.getElementById('NetPrice');
-            element.value = (data.NetPrice).toFixed(3);
-            element.dispatchEvent(new Event('change'));
-            $scope.FinancialQuotationDetail.QuotValidDate = data.QuotValidDate;
-            $scope.FinancialQuotationDetail.ExpecDeliDate = data.ExpecDeliDate;
 
-            $scope.FinancialQuotationDetail.QuotValidDate = $scope.formatDate(data.QuotValidDateString);
-            $scope.FinancialQuotationDetail.ExpecDeliDate = $scope.formatDate(data.ExpecDeliDateString);
+            if (data.Unit) {
+                var unitObj = $scope.ItemList.find(i => i.Item_Code === data.Unit);
+                $scope.FinancialQuotationDetail.QuotationQtyUnit = unitObj || data.Unit;
+            }
+            if (data.Unit) {
+                var unitObj = $scope.ItemList.find(i => i.Item_Code === data.Unit);
+                $scope.FinancialQuotationDetail.PriceUnit = unitObj || data.Unit;
+            }
+            if (data.Incoterms) {
+                var incotermObj = $scope.IncotermsList.find(i => i.MasterDataID === data.Incoterms.MasterDataID);
+                $scope.FinancialQuotationDetail.Incoterms = incotermObj || data.Incoterms;
+            }
+            if (data.IncotermsLocation) {
+                var incLocObj = $scope.IncotermsLocationList.find(i => i.MasterDataID === data.IncotermsLocation.MasterDataID);
+                $scope.FinancialQuotationDetail.IncotermsLocation = incLocObj || data.IncotermsLocation;
+            }
+
+            if (data.PaymentMode) {
+                var payModeObj = $scope.PaymentModeList.find(p => p.MasterDataID === data.PaymentMode.MasterDataID);
+                $scope.FinancialQuotationDetail.PaymentMode = payModeObj || data.PaymentMode;
+            }
+            if (data.Currency) {
+                var Currencyobj = $scope.ItemTypeList.find(p => p.MasterDataID === data.Currency.MasterDataID);
+                $scope.FinancialQuotationDetail.Currency = Currencyobj || data.Currency;
+            }
+
+            // =====================
+            // Units
+            // =====================
+            $scope.FinancialQuotationDetail.QuotationQtyUnit = data.QuotationQtyUnit;
+            $scope.FinancialQuotationDetail.PriceUnit = data.PriceUnit;
+
+            // =====================
+            // Pricing
+            // =====================
+            $scope.FinancialQuotationDetail.Price = data.Price;
+            $scope.FinancialQuotationDetail.Per = data.Per;
+            $scope.FinancialQuotationDetail.Freight = data.Freight;
+            $scope.FinancialQuotationDetail.Discount = data.Discount;
+            $scope.FinancialQuotationDetail.OrderHandlingCharges = data.OrderHandlingCharges;
+            $scope.FinancialQuotationDetail.PackingCharges = data.PackingCharges;
+            $scope.FinancialQuotationDetail.SundryCharges = data.SundryCharges;
+            $scope.FinancialQuotationDetail.DeliveryCharge = data.DeliveryCharge;
+
+            // =====================
+            // Currency & Tax
+            // =====================
+    
+            $scope.FinancialQuotationDetail.VAT = data.VAT;
+            $scope.FinancialQuotationDetail.Tax = data.Tax;
+
+            // =====================
+            // Delivery
+            // =====================
+            $scope.FinancialQuotationDetail.DeliveryTimeline = data.DeliveryTimeline;
+            $scope.FinancialQuotationDetail.PartDelivery = data.PartDelivery;
+            $scope.FinancialQuotationDetail.ShipmentMode = data.ShipmentMode;
+            $scope.FinancialQuotationDetail.InlandTransportation = data.InlandTransportation;
+
+            // =====================
+            // Incoterms
+            // =====================
+            //$scope.FinancialQuotationDetail.Incoterms = data.Incoterms;
+            //$scope.FinancialQuotationDetail.IncotermsLocation = data.IncotermsLocation;
+
+            // =====================
+            // Payment
+            // =====================
+      /*      $scope.FinancialQuotationDetail.PaymentMode = data.PaymentMode;*/
+            $scope.FinancialQuotationDetail.PaymentTerms = data.PaymentTerms;
+
+            // =====================
+            // Validity
+            // =====================
+            $scope.FinancialQuotationDetail.QuotationValidity = data.QuotationValidity;
+
+            // =====================
+            // Manufacturer
+            // =====================
+            $scope.FinancialQuotationDetail.ManufacturerPartNo = data.ManufacturerPartNo;
+            $scope.FinancialQuotationDetail.ManufacturerName = data.ManufacturerName;
+            $scope.FinancialQuotationDetail.ManufacturerSiteAddress = data.ManufacturerSiteAddress;
+
+            // =====================
+            // Services
+            // =====================
+            $scope.FinancialQuotationDetail.Warranty = data.Warranty;
+            $scope.FinancialQuotationDetail.Installation = data.Installation;
+            $scope.FinancialQuotationDetail.Servicing = data.Servicing;
+
+            // =====================
+            // Misc
+            // =====================
+            $scope.FinancialQuotationDetail.KeyCustomerList = data.KeyCustomerList;
+            $scope.FinancialQuotationDetail.Subcontractor = data.Subcontractor || 'No';
+            $scope.FinancialQuotationDetail.SubcontractorDetails = data.SubcontractorDetails;
+            $scope.FinancialQuotationDetail.ReturnableItem = data.ReturnableItem;
+            $scope.FinancialQuotationDetail.PenaltyClause = data.PenaltyClause;
+            $scope.FinancialQuotationDetail.Remarks = data.Remarks;
+
+            $scope.FinancialQuotationDetail.SupplierName = data.SupplierName;
+            $scope.FinancialQuotationDetail.LocalAgentName = data.LocalAgentName;
+            $scope.FinancialQuotationDetail.ProposalType = data.ProposalType;
+            $scope.FinancialQuotationDetail.Fintype = data.Fintype;
+            $scope.FinancialQuotationDetail.SampleDocumentID = data.SampleDocumentID;
+
+            if ($scope.FinancialQuotationDetail.Fintype === 'DOMESTIC') {
+                $scope.p = 2;
+            }
+            else {
+                p = 1;
+            }
+
+
+
+
+
+
+            //$scope.FinancialQuotationDetail.FinanQuotationItemID = data.FinanQuotationItemID;
+            //$scope.FinancialQuotationDetail.ProposeQty = data.ProposeQty;
+            //var element = document.getElementById('ProposeQty');
+            //element.value = (data.ProposeQty).toFixed(3);
+            //element.dispatchEvent(new Event('change'));
+            //$scope.FinancialQuotationDetail.Unit = data.Unit;
+
+            //$scope.FinancialQuotationDetail.UnitPrice = data.UnitPrice;
+            //var element = document.getElementById('UnitPrice');
+            //element.value = (data.UnitPrice).toFixed(3);
+            //element.dispatchEvent(new Event('change'));
+            //$scope.FinancialQuotationDetail.Currency = data.Currency;
+            //$scope.FinancialQuotationDetail.TotalPrice = data.TotalPrice;
+            //var element = document.getElementById('TotalPrice');
+            //element.value = (data.TotalPrice).toFixed(3);
+            //element.dispatchEvent(new Event('change'));
+            //$scope.FinancialQuotationDetail.VatAmount = data.VatAmount;
+            //var element = document.getElementById('VatAmount');
+            //element.value = (data.VatAmount).toFixed(3);
+            //element.dispatchEvent(new Event('change'));
+            //$scope.FinancialQuotationDetail.TaxAmount = data.TaxAmount;
+            //var element = document.getElementById('TaxAmount');
+            //element.value = (data.TaxAmount).toFixed(3);
+            //element.dispatchEvent(new Event('change'));
+            //$scope.FinancialQuotationDetail.GrossPrice = data.GrossPrice;
+            //var element = document.getElementById('GrossPrice');
+            //element.value = (data.GrossPrice).toFixed(3);
+            //element.dispatchEvent(new Event('change'));
+            //$scope.FinancialQuotationDetail.DiscountPrice = data.DiscountPrice;
+            //var element = document.getElementById('DiscountPrice');
+            //element.value = (data.DiscountPrice).toFixed(3);
+            //element.dispatchEvent(new Event('change'));
+            //$scope.FinancialQuotationDetail.NetPrice = data.NetPrice;
+            //var element = document.getElementById('NetPrice');
+            //element.value = (data.NetPrice).toFixed(3);
+            //element.dispatchEvent(new Event('change'));
+            //$scope.FinancialQuotationDetail.QuotValidDate = data.QuotValidDate;
+            //$scope.FinancialQuotationDetail.ExpecDeliDate = data.ExpecDeliDate;
+
+            //$scope.FinancialQuotationDetail.QuotValidDate = $scope.formatDate(data.QuotValidDateString);
+            //$scope.FinancialQuotationDetail.ExpecDeliDate = $scope.formatDate(data.ExpecDeliDateString);
 
             /*       $scope.PurreqDtl.Delivery_DateString = (tableRow.Delivery_DateString);*/
-            $('#QuotValidDate').val($scope.FinancialQuotationDetail.QuotValidDate);
-            $('#ExpecDeliDate').val($scope.FinancialQuotationDetail.ExpecDeliDate);
-            $scope.FinancialQuotationDetail.ProposalType = data.ProposalType;
+            //$('#QuotValidDate').val($scope.FinancialQuotationDetail.QuotValidDate);
+            //$('#ExpecDeliDate').val($scope.FinancialQuotationDetail.ExpecDeliDate);
+            //$scope.FinancialQuotationDetail.ProposalType = data.ProposalType;
 
 
             $scope.TechnicalQuote = true;
@@ -2035,59 +2249,94 @@
             row.selected = true;
            
 
+            dwObject.RemoveAllImages();
+            if (row.FinanQuotationItemID) {
+                $scope.MaterialInvitation.SampleDocumentID = row.SampleDocumentID;
+                $scope.MaterialInvitation.FinanQuotationItemID = row.FinanQuotationItemID;
+
+                $http.post('/VendorSelectionModule/FinancialQuotation/FinQuotwiseDetails',
+                    { FinanQuotationItemID: row.FinanQuotationItemID })
+                    .success(function (response) {
+                        $scope.flagToShow = false;
+                        $scope.flagToShowMasterTbl = true;
+                        $scope.FinancialQuotationDetailList = response.FinancialQuotationDetailList;
+                        if ($scope.FinancialQuotationDetailList.length > 0) {
+                            $scope.p = 1;
+                            $("#btnSubmit").html('Update');
+                            $scope.mapToFinancialQuotation($scope.FinancialQuotationDetailList[0]); // Example: Map the first item
+                        }
 
 
 
+
+                        $scope.loading = false;
+                    }).error(function () {
+                        $scope.loading = false;
+                        toastr.error('Data Loading Failed.');
+                    });
+
+            }
+
+            else {
                 $scope.reset();
 
 
-             
-            $scope.MaterialInvitation.materialName = row.materialName;
-            $scope.MaterialInvitation.materialCode = row.materialCode;
-            $scope.MaterialInvitation.invitationNumber = row.invitationNumber;
-            $scope.MaterialInvitation.InvitationID = row.InvitationID;
-            $scope.MaterialInvitation.MaterialQuantity = row.MaterialQuantity;
-            $scope.MaterialInvitation.oderUnit = row.Unit;
-            $scope.MaterialInvitation.VendorID = row.VendorID;
-            $scope.MaterialInvitation.BiddingID = row.BiddingID;
-            $scope.MaterialInvitation.BiddingItemVendorID = row.BiddingItemVendorID;
 
-            // 🔽 Bind IMPORT-specific financial fields
-            $scope.FinancialQuotationDetail.DeliveryTimeline = row.DeliveryTimeline;
-            //$scope.FinancialQuotationDetail.Incoterms = row.Incoterms;
-            //$scope.FinancialQuotationDetail.IncotermsLocation = row.IncotermsLocation;
-            $scope.FinancialQuotationDetail.ShipmentMode = row.ShipmentMode;
-         /*   $scope.FinancialQuotationDetail.PaymentMode = row.PaymentMode;*/
-            $scope.FinancialQuotationDetail.PartDelivery = row.PartDelivery;
-            $scope.FinancialQuotationDetail.PaymentTerms = row.PaymentTerms;
-            $scope.FinancialQuotationDetail.ManufacturerPartNo = row.ManufacturerPartNo;
-            $scope.FinancialQuotationDetail.ManufacturerName = row.ManufacturerName;
-            $scope.FinancialQuotationDetail.Warranty = row.Warranty;
-            $scope.FinancialQuotationDetail.Installation = row.Installation;
-            $scope.FinancialQuotationDetail.Servicing = row.Servicing;
-            $scope.FinancialQuotationDetail.PenaltyClause = row.PenaltyClause;
-            $scope.FinancialQuotationDetail.Remarks = row.Remarks;
-            $scope.FinancialQuotationDetail.QuotationQty = row.MaterialQuantity;
+                $scope.MaterialInvitation.materialName = row.materialName;
+                $scope.MaterialInvitation.materialCode = row.materialCode;
+                $scope.MaterialInvitation.invitationNumber = row.invitationNumber;
+                $scope.MaterialInvitation.InvitationID = row.InvitationID;
+                $scope.MaterialInvitation.MaterialQuantity = row.MaterialQuantity;
+                $scope.MaterialInvitation.oderUnit = row.Unit;
+                $scope.MaterialInvitation.VendorID = row.VendorID;
+                $scope.MaterialInvitation.BiddingID = row.BiddingID;
+                $scope.MaterialInvitation.BiddingItemVendorID = row.BiddingItemVendorID;
 
-            // If you have dropdown objects (like ItemList / IncotermsList), resolve to object:
-            if (row.Unit) {
-                var unitObj = $scope.ItemList.find(i => i.Item_Code === row.Unit);
-                $scope.FinancialQuotationDetail.QuotationQtyUnit = unitObj || row.Unit;
-            }
-            if (row.Incoterms) {
-                var incotermObj = $scope.IncotermsList.find(i => i.MasterDataID === row.Incoterms);
-                $scope.FinancialQuotationDetail.Incoterms = incotermObj || row.Incoterms;
-            }
-            if (row.IncotermsLocation) {
-                var incLocObj = $scope.IncotermsLocationList.find(i => i.MasterDataID === row.IncotermsLocation);
-                $scope.FinancialQuotationDetail.IncotermsLocation = incLocObj || row.IncotermsLocation;
-            }
-           
-            if (row.PaymentMode) {
-                var payModeObj = $scope.PaymentModeList.find(p => p.MasterDataID === row.PaymentMode);
-                $scope.FinancialQuotationDetail.PaymentMode = payModeObj || row.PaymentMode;
-            }
-            
+                // 🔽 Bind IMPORT-specific financial fields
+                $scope.FinancialQuotationDetail.DeliveryTimeline = row.DeliveryTimeline;
+                //$scope.FinancialQuotationDetail.Incoterms = row.Incoterms;
+                //$scope.FinancialQuotationDetail.IncotermsLocation = row.IncotermsLocation;
+                $scope.FinancialQuotationDetail.ShipmentMode = row.ShipmentMode;
+                /*   $scope.FinancialQuotationDetail.PaymentMode = row.PaymentMode;*/
+                $scope.FinancialQuotationDetail.PartDelivery = row.PartDelivery;
+                $scope.FinancialQuotationDetail.PaymentTerms = row.PaymentTerms;
+                $scope.FinancialQuotationDetail.ManufacturerPartNo = row.ManufacturerPartNo;
+                $scope.FinancialQuotationDetail.ManufacturerName = row.ManufacturerName;
+                $scope.FinancialQuotationDetail.Warranty = row.Warranty;
+                $scope.FinancialQuotationDetail.Installation = row.Installation;
+                $scope.FinancialQuotationDetail.Servicing = row.Servicing;
+                $scope.FinancialQuotationDetail.PenaltyClause = row.PenaltyClause;
+                $scope.FinancialQuotationDetail.Remarks = row.Remarks;
+                $scope.FinancialQuotationDetail.QuotationQty =
+                    row.MaterialQuantity;
+                $scope.FinancialQuotationDetail.Per = 1;
+                $scope.FinancialQuotationDetail.Subcontractor = 'No';
+                $scope.FinancialQuotationDetail.SubcontractorDetails = '';
+
+
+                // If you have dropdown objects (like ItemList / IncotermsList), resolve to object:
+                if (row.Unit) {
+                    var unitObj = $scope.ItemList.find(i => i.Item_Code === row.Unit);
+                    $scope.FinancialQuotationDetail.QuotationQtyUnit = unitObj || row.Unit;
+                }
+                if (row.Unit) {
+                    var unitObj = $scope.ItemList.find(i => i.Item_Code === row.Unit);
+                    $scope.FinancialQuotationDetail.PriceUnit = unitObj || row.Unit;
+                }
+                if (row.Incoterms) {
+                    var incotermObj = $scope.IncotermsList.find(i => i.MasterDataID === row.Incoterms);
+                    $scope.FinancialQuotationDetail.Incoterms = incotermObj || row.Incoterms;
+                }
+                if (row.IncotermsLocation) {
+                    var incLocObj = $scope.IncotermsLocationList.find(i => i.MasterDataID === row.IncotermsLocation);
+                    $scope.FinancialQuotationDetail.IncotermsLocation = incLocObj || row.IncotermsLocation;
+                }
+
+                if (row.PaymentMode) {
+                    var payModeObj = $scope.PaymentModeList.find(p => p.MasterDataID === row.PaymentMode);
+                    $scope.FinancialQuotationDetail.PaymentMode = payModeObj || row.PaymentMode;
+                }
+
 
 
                 $scope.MaterialInvitation.MatInvType = row.MatInvType;
@@ -2098,18 +2347,52 @@
                 $scope.BillReceiveModel.BiddingItemVendorID = row.BiddingItemVendorID;
                 $scope.BillReceiveModel.VendorID = row.VendorID;
                 $scope.BillReceiveModel.materialCode = row.materialCode;
+                $scope.BillReceiveModel.materialName = row.materialName;
                 $scope.MaterialInvitation.QuotationID = row.QuotationID;
                 $scope.MaterialInvitation.QuotationNo = row.QuotationNo;
 
-            $scope.p = 1;
+
                 $scope.Material = row.materialName;
 
-            
+                $scope.FinancialQuotationDetail.Fintype = row.Fintype;
+
+                if (row.Fintype === 'IMPORT') {
+                    $scope.p = 1;
+                }
+                else if (row.Fintype === 'DOMESTIC') {
+                    $scope.p = 2;
+                }
 
 
 
+                $scope.simplifiedMaterialInvitation = {
+                    MaterialQuantity: row.MaterialQuantity,
+                    Unit: row.Unit,
+                    MatInvType: row.Fintype,
+                    invitationNumber: row.invitationNumber,
+                    departmentId: row.departmentId,
+                    matCategory: row.matCategory,
+                    itemNo: row.itemNo,
+                    materialCode: row.materialCode,
+                    materialName: row.materialName,
+                    remarks: row.remarks,
+                    sampleDocId: row.sampleDocId,
+                    VendorID: row.VendorID,
+                    proposalType: row.proposalType,
+                    sharedToFactory: row.sharedToFactory,
+                    askFinanQoutations: row.askFinanQoutations,
+                    modificationType: row.modificationType,
+                    setOn: row.setOn,
+                    modifiedOn: row.modifiedOn,
+                    SampleDocumentID: row.SampleDocumentID,
+                    material_Category_Code: row.material_Category_Code,
+                    QuotationID: row.QuotationID,
+                    QuotationNo: row.QuotationNo
+                };
 
 
+
+            }
 
 
 
@@ -2231,6 +2514,8 @@
                         if (response.respStatus.Message) {
                             $scope.loading = false;
                             toastr.success("Document Updated Successfully");
+
+                            dwObject.RemoveAllImages();
 
                         }
                         else {
@@ -2633,14 +2918,16 @@
     $scope.submit = function () {
 
 
-        if ($scope.ProposalType === 'F') {
+        if ($scope.proposal === 'FINANCIAL') {
             $http.post('/VendorSelectionModule/TechnicalQuotation/submitquotation',
 
 
                 {
                     InvId: $scope.BillReceiveModel.InvitationID,
                     VendorID: $scope.BillReceiveModel.VendorID,
-                    InvitationNumber: $scope.BillReceiveModel.invitationNumber
+                    InvitationNumber: $scope.BillReceiveModel.invitationNumber,
+                    MaterialCode: $scope.BillReceiveModel.materialCode,
+                    MaterialName: $scope.BillReceiveModel.materialName,
 
                 })
                 .success(function (response) {
@@ -2653,9 +2940,9 @@
 
 
                         {
-                            FinancialQuotationlist: $scope.myarray2,
-                            MaterialInvitationlist: $scope.myarray,
-                            ProposalType: $scope.ProposalType,
+                            FinancialQuotationlist: $scope.FinancialQuotationDetail,
+                            MaterialInvitationlist: $scope.simplifiedMaterialInvitation,
+                            ProposalType: $scope.proposal,
                             Quotation: $scope.QuotationList
 
                         })
@@ -2722,9 +3009,9 @@
 
 
                 {
-                    FinancialQuotationlist: $scope.myarray2,
-                    MaterialInvitationlist: $scope.myarray,
-                    ProposalType: $scope.ProposalType,
+                    FinancialQuotationlist: $scope.FinancialQuotationDetail,
+                    MaterialInvitationlist: $scope.simplifiedMaterialInvitation,
+                    ProposalType: $scope.proposal,
                     Quotation: ""
 
 
@@ -3088,7 +3375,7 @@
             }
             else {
                 $("#btnSaveDoc").prop("disabled", false);
-                $("#" + txtVendor).val(($("#" + txtVendor).val() - 0).toFixed(3));
+                $("#" + txtVendor).val(($("#" + txtVendor).val() - 0).toFixed(2));
             }
         }
 

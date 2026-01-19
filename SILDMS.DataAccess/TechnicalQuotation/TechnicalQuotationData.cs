@@ -11,6 +11,7 @@ using SILDMS.Model.CBPSModule;
 using SILDMS.Model.DocScanningModule;
 using System.Data.Common;
 using System.Diagnostics.Eventing.Reader;
+using System.Globalization;
 
 namespace SILDMS.DataAccess.TechnicalQuotation
 {
@@ -47,6 +48,8 @@ namespace SILDMS.DataAccess.TechnicalQuotation
                         invitationList = dt1.AsEnumerable().Select(reader => new Invitation
                         {
                             Invitation_Number = reader.GetString("InvitationNumber"),
+                            ProposalType = reader.GetString("Proposal"),
+                            TechType = reader.GetString("TechType"),
 
                         }).ToList();
                     }
@@ -204,7 +207,7 @@ namespace SILDMS.DataAccess.TechnicalQuotation
                 db.AddInParameter(dbCommandWrapper, "@FileExtension", SqlDbType.NVarChar, _modelDocumentsInfo.Extensions);
                 db.AddInParameter(dbCommandWrapper, "@UploaderIP", SqlDbType.NVarChar, _modelDocumentsInfo.UploaderIP);
                 db.AddInParameter(dbCommandWrapper, "@SetBy", SqlDbType.NVarChar, _modelDocumentsInfo.SetBy);
-                db.AddInParameter(dbCommandWrapper, "@materialCode", SqlDbType.NVarChar, _modelDocumentsInfo.materialCode);
+                db.AddInParameter(dbCommandWrapper, "@materialName", SqlDbType.NVarChar, _modelDocumentsInfo.materialName);
                 //db.AddInParameter(dbCommandWrapper, "@ConfColumnIds", SqlDbType.NVarChar, _modelDocumentsInfo.ConfigureColumnIds);
                 db.AddInParameter(dbCommandWrapper, "@Status", SqlDbType.Int, 1);
                 //db.AddInParameter(dbCommandWrapper, "@Doc_MetaType", SqlDbType.Structured, docMetaDataTable);
@@ -212,7 +215,7 @@ namespace SILDMS.DataAccess.TechnicalQuotation
                 db.AddOutParameter(dbCommandWrapper, spStatusParam, SqlDbType.VarChar, 10);
 
                 db.AddInParameter(dbCommandWrapper, "@InvitationID", SqlDbType.NVarChar, _modelDocumentsInfo.InvitationID);
-                db.AddInParameter(dbCommandWrapper, "@BiddingItemVendorID", SqlDbType.NVarChar, _modelDocumentsInfo.BiddingItemVendorID);
+                db.AddInParameter(dbCommandWrapper, "@VendorID", SqlDbType.NVarChar, _modelDocumentsInfo.VendorID);
 
                 //db.AddInParameter(dbCommandWrapper, "@BoothID", SqlDbType.NVarChar, _modelDocumentsInfo.BoothID);
 
@@ -349,7 +352,7 @@ namespace SILDMS.DataAccess.TechnicalQuotation
             return returnData;
         }
 
-        public List<Quotation> submitquotationData(string UserId,string invId, string biddingItemVendorID, string invitationNumber, out string errorNumber)
+        public List<Quotation> submitquotationData(string UserId, string invId, string biddingItemVendorID, string invitationNumber, string MaterialCode, string MaterialName, out string errorNumber)
         {
             errorNumber = string.Empty;
             var QuotationList = new List<Quotation>();
@@ -361,6 +364,8 @@ namespace SILDMS.DataAccess.TechnicalQuotation
                 db.AddInParameter(dbCommandWrapper, "@invId", SqlDbType.VarChar, invId);
                 db.AddInParameter(dbCommandWrapper, "@invitationNumber", SqlDbType.VarChar, invitationNumber);
                 db.AddInParameter(dbCommandWrapper, "@biddingItemVendorID", SqlDbType.VarChar, biddingItemVendorID);
+                db.AddInParameter(dbCommandWrapper, "@MaterialCode", SqlDbType.VarChar, MaterialCode);
+                db.AddInParameter(dbCommandWrapper, "@MaterialName", SqlDbType.VarChar, MaterialName);
                 db.AddInParameter(dbCommandWrapper, "@Setby", SqlDbType.VarChar, UserId);
 
                 db.AddOutParameter(dbCommandWrapper, "@p_Error", DbType.Int32, 10);
@@ -413,7 +418,7 @@ namespace SILDMS.DataAccess.TechnicalQuotation
 
 
         //return 1;
-        public int submittechnicalquotationData(string UserId,List<Model.VendorSelectionModule.TechnicalQuotation> technicalQuotationlist, List<MaterialInvitation> materialInvitationlist, Quotation quotation, out string errorNumber)
+        public int submittechnicalquotationData(string UserId,Model.VendorSelectionModule.TechnicalQuotation technicalQuotation, SimplifiedMaterialInvitation materialInvitation, Quotation quotation, out string errorNumber)
         {
 
 
@@ -425,128 +430,165 @@ namespace SILDMS.DataAccess.TechnicalQuotation
             int ID = 0;
             errorNumber = string.Empty;
 
-            for (i = 0; i < technicalQuotationlist.Count; i++)
-            {
-                for (int j = 0; j < materialInvitationlist.Count; j++)
-                {
+           
+                
 
-                    if (technicalQuotationlist[i].rowIndex == materialInvitationlist[j].rowIndex)
-                    {
+                    
                         using (var dbCommandWrapper = db.GetStoredProcCommand("VCMS_SubmitTechnicalQuotation"))
                         {
 
 
 
-                            db.AddInParameter(dbCommandWrapper, "@MoleculeName", SqlDbType.VarChar, technicalQuotationlist[i].MoleculeName);
-                            db.AddInParameter(dbCommandWrapper, "@SampleAvailable", SqlDbType.VarChar, technicalQuotationlist[i].SampleAvailable);
-                            db.AddInParameter(dbCommandWrapper, "@OtherSample", SqlDbType.VarChar, technicalQuotationlist[i].OtherSample);
-                            db.AddInParameter(dbCommandWrapper, "@CASNO", SqlDbType.VarChar, technicalQuotationlist[i].CASNO);
-                            db.AddInParameter(dbCommandWrapper, "@RepresentativePackSize", SqlDbType.VarChar, technicalQuotationlist[i].RepresentativePackSize);
-                            db.AddInParameter(dbCommandWrapper, "@Manufacturer", SqlDbType.VarChar, technicalQuotationlist[i].Manufacturer);
-                            db.AddInParameter(dbCommandWrapper, "@Regulatory", SqlDbType.VarChar, technicalQuotationlist[i].Regulatory);
-                            db.AddInParameter(dbCommandWrapper, "@Supplier", SqlDbType.VarChar, technicalQuotationlist[i].Supplier);
-                            db.AddInParameter(dbCommandWrapper, "@CurrentStatus", SqlDbType.VarChar, technicalQuotationlist[i].CurrentStatus);
-                            db.AddInParameter(dbCommandWrapper, "@ManufactureAddress", SqlDbType.VarChar, technicalQuotationlist[i].ManufactureAddress);
-                            db.AddInParameter(dbCommandWrapper, "@ProdCapacity", SqlDbType.Int, technicalQuotationlist[i].ProdCapacity);
-                            db.AddInParameter(dbCommandWrapper, "@RDPrice", SqlDbType.Decimal, technicalQuotationlist[i].RDPrice);
-                            db.AddInParameter(dbCommandWrapper, "@Shelf", SqlDbType.Int, technicalQuotationlist[i].Shelf);
-                            db.AddInParameter(dbCommandWrapper, "@CommercialPrice", SqlDbType.Decimal, technicalQuotationlist[i].CommercialPrice);
-                            db.AddInParameter(dbCommandWrapper, "@Condition", SqlDbType.VarChar, technicalQuotationlist[i].Condition);
-                            db.AddInParameter(dbCommandWrapper, "@OrderQty", SqlDbType.Int, technicalQuotationlist[i].OrderQty);
-                            db.AddInParameter(dbCommandWrapper, "@Specification", SqlDbType.VarChar, technicalQuotationlist[i].Specification);
-                            db.AddInParameter(dbCommandWrapper, "@OtherSpecification", SqlDbType.VarChar, technicalQuotationlist[i].OtherSpecification);
-                            db.AddInParameter(dbCommandWrapper, "@CommercialConsignment", SqlDbType.Int, technicalQuotationlist[i].CommercialConsignment);
-                            db.AddInParameter(dbCommandWrapper, "@AvailPackSize", SqlDbType.Int, technicalQuotationlist[i].AvailPackSize);
-                            db.AddInParameter(dbCommandWrapper, "@MinPack", SqlDbType.Int, technicalQuotationlist[i].MinPack);
-                            db.AddInParameter(dbCommandWrapper, "@Example", SqlDbType.VarChar, technicalQuotationlist[i].Example);
+                db.AddInParameter(dbCommandWrapper, "@RowIndex", SqlDbType.VarChar, technicalQuotation.rowIndex);
+                db.AddInParameter(dbCommandWrapper, "@ItemName", SqlDbType.VarChar, technicalQuotation.ItemName);
+                db.AddInParameter(dbCommandWrapper, "@MoleculeName", SqlDbType.VarChar, technicalQuotation.MoleculeName);
+                db.AddInParameter(dbCommandWrapper, "@Manufacturer", SqlDbType.VarChar, technicalQuotation.Manufacturer);
+                db.AddInParameter(dbCommandWrapper, "@ManufacturerPart", SqlDbType.VarChar, technicalQuotation.ManufacturerPart);
+                db.AddInParameter(dbCommandWrapper, "@ManufactureAddress", SqlDbType.VarChar, technicalQuotation.ManufactureAddress);
+                db.AddInParameter(dbCommandWrapper, "@ManufacturerOrigin", SqlDbType.VarChar, technicalQuotation.ManufacturerOrigin);
+                db.AddInParameter(dbCommandWrapper, "@Supplier", SqlDbType.VarChar, technicalQuotation.Supplier);
+                db.AddInParameter(dbCommandWrapper, "@LocalPartner", SqlDbType.VarChar, technicalQuotation.LocalPartner);
 
-                            if (string.IsNullOrEmpty(technicalQuotationlist[i].Currency.MasterDataValue))
-                            {
-                                db.AddInParameter(dbCommandWrapper, "@Currency", SqlDbType.VarChar, DBNull.Value);
-                            }
-                            else
-                            {
-                                db.AddInParameter(dbCommandWrapper, "@Currency", SqlDbType.VarChar, technicalQuotationlist[i].Currency.MasterDataValue);
-                            }
+                // =======================
+                // Pricing
+                // =======================
+                db.AddInParameter(dbCommandWrapper, "@RDPrice", SqlDbType.Decimal, technicalQuotation.RDPrice ?? (object)DBNull.Value);
+                db.AddInParameter(dbCommandWrapper, "@CommercialPrice", SqlDbType.Decimal, technicalQuotation.CommercialPrice ?? (object)DBNull.Value);
+                db.AddInParameter(dbCommandWrapper, "@PricePer", SqlDbType.Decimal, technicalQuotation.PricePer ?? (object)DBNull.Value);
+                db.AddInParameter(dbCommandWrapper, "@PriceUnit", SqlDbType.VarChar,
+                    string.IsNullOrEmpty(technicalQuotation.PriceUnit) ? (object)DBNull.Value : technicalQuotation.PriceUnit);
+                db.AddInParameter(dbCommandWrapper, "@Currency", SqlDbType.VarChar,
+                    string.IsNullOrEmpty(technicalQuotation.Currency) ? (object)DBNull.Value : technicalQuotation.Currency);
 
+                // =======================
+                // Order / Shelf / Storage
+                // =======================
+                db.AddInParameter(dbCommandWrapper, "@MinOrderQty", SqlDbType.Int, technicalQuotation.MinOrderQty);
+                db.AddInParameter(dbCommandWrapper, "@OrderQtyUnit", SqlDbType.VarChar,string.IsNullOrEmpty(technicalQuotation.OrderQtyUnit) ? (object)DBNull.Value : technicalQuotation.OrderQtyUnit);
+                db.AddInParameter(dbCommandWrapper, "@CommercialPackSize", SqlDbType.VarChar, technicalQuotation.CommercialPackSize);
+                db.AddInParameter(dbCommandWrapper, "@MinPack", SqlDbType.VarChar, technicalQuotation.MinPack);
+                db.AddInParameter(dbCommandWrapper, "@ShelfLifeValue", SqlDbType.Int, technicalQuotation.ShelfLifeValue ?? (object)DBNull.Value);
+                db.AddInParameter(dbCommandWrapper, "@ShelfLifeUnit", SqlDbType.VarChar, technicalQuotation.ShelfLifeUnit);
+                db.AddInParameter(dbCommandWrapper, "@StorageCondition", SqlDbType.VarChar, technicalQuotation.StorageCondition);
 
-                            //db.AddInParameter(dbCommandWrapper, "@Currency", SqlDbType.VarChar, technicalQuotationlist[i].Currency.MasterDataValue);
-                            db.AddInParameter(dbCommandWrapper, "@Reference", SqlDbType.VarChar, technicalQuotationlist[i].Reference);
-                            db.AddInParameter(dbCommandWrapper, "@Validation", SqlDbType.VarChar, technicalQuotationlist[i].Validation);
-                            db.AddInParameter(dbCommandWrapper, "@Training", SqlDbType.VarChar, technicalQuotationlist[i].Training);
-                            db.AddInParameter(dbCommandWrapper, "@Prerequisite", SqlDbType.VarChar, technicalQuotationlist[i].Prerequisite);
-                            db.AddInParameter(dbCommandWrapper, "@ManufacturerPart", SqlDbType.VarChar, technicalQuotationlist[i].ManufacturerPart);
-                            db.AddInParameter(dbCommandWrapper, "@Installation", SqlDbType.VarChar, technicalQuotationlist[i].Installation);
-                            //db.AddInParameter(dbCommandWrapper, "@Subcontractor", SqlDbType.Bit, technicalQuotationlist[i].Subcontractor);
-                            db.AddInParameter(dbCommandWrapper, "@Subcontractor", SqlDbType.Bit, 1);
-                            db.AddInParameter(dbCommandWrapper, "@ManufacturerOrigin", SqlDbType.VarChar, technicalQuotationlist[i].ManufacturerOrigin);
-                            db.AddInParameter(dbCommandWrapper, "@Penalty", SqlDbType.VarChar, technicalQuotationlist[i].Penalty);
-                            db.AddInParameter(dbCommandWrapper, "@Fat", SqlDbType.VarChar, technicalQuotationlist[i].Fat);
-                            db.AddInParameter(dbCommandWrapper, "@Calibration", SqlDbType.VarChar, technicalQuotationlist[i].Calibration);
-                            db.AddInParameter(dbCommandWrapper, "@Document", SqlDbType.VarChar, technicalQuotationlist[i].Alldocuments);
+                // =======================
+                // References / Notes
+                // =======================
+                db.AddInParameter(dbCommandWrapper, "@Reference", SqlDbType.VarChar, technicalQuotation.Reference);
+                db.AddInParameter(dbCommandWrapper, "@Notes", SqlDbType.VarChar, technicalQuotation.Notes);
+                db.AddInParameter(dbCommandWrapper, "@CASNO", SqlDbType.VarChar, technicalQuotation.CASNO);
+                db.AddInParameter(dbCommandWrapper, "@CatalogueNo", SqlDbType.VarChar, technicalQuotation.CatalogueNo);
 
-                            if (string.IsNullOrEmpty(technicalQuotationlist[i].RNDPriceCur.MasterDataValue))
-                            {
-                                db.AddInParameter(dbCommandWrapper, "@RNDPriceCur", SqlDbType.VarChar, DBNull.Value);
-                            }
-                            else
-                            {
-                                db.AddInParameter(dbCommandWrapper, "@RNDPriceCur", SqlDbType.VarChar, technicalQuotationlist[i].RNDPriceCur.MasterDataValue);
-                            }
-                            if (string.IsNullOrEmpty(technicalQuotationlist[i].ComPriceCur.MasterDataValue))
-                            {
-                                db.AddInParameter(dbCommandWrapper, "@ComPriceCur", SqlDbType.VarChar, DBNull.Value);
-                            }
-                            else
-                            {
-                                db.AddInParameter(dbCommandWrapper, "@ComPriceCur", SqlDbType.VarChar, technicalQuotationlist[i].ComPriceCur.MasterDataValue);
-                            }
+                // =======================
+                // Production
+                // =======================
+                db.AddInParameter(dbCommandWrapper, "@CurrentStatus", SqlDbType.VarChar, technicalQuotation.CurrentStatus);
+                db.AddInParameter(dbCommandWrapper, "@ProdCapacity", SqlDbType.VarChar, technicalQuotation.ProdCapacity);
+                db.AddInParameter(dbCommandWrapper, "@ProductionFrequency", SqlDbType.VarChar, technicalQuotation.ProductionFrequency);
+                db.AddInParameter(dbCommandWrapper, "@ProductionLeadTimeValue", SqlDbType.Int,technicalQuotation.ProductionLeadTimeValue);
+                db.AddInParameter(dbCommandWrapper, "@ProductionLeadTimeUnit", SqlDbType.VarChar, technicalQuotation.ProductionLeadTimeUnit);
+                db.AddInParameter(dbCommandWrapper, "@RepresentativeSample", SqlDbType.VarChar, technicalQuotation.RepresentativeSample);
+                db.AddInParameter(dbCommandWrapper, "@RepresentativeSamplePackSize", SqlDbType.VarChar, technicalQuotation.RepresentativeSamplePackSize);
 
+                // =======================
+                // Compliance / Qualification
+                // =======================
+                db.AddInParameter(dbCommandWrapper, "@ComplianceWith", SqlDbType.VarChar, technicalQuotation.ComplianceWith);
+                db.AddInParameter(dbCommandWrapper, "@QualificationDocuments", SqlDbType.VarChar, technicalQuotation.QualificationDocuments);
+                db.AddInParameter(dbCommandWrapper, "@QualificationDocumentsOther", SqlDbType.VarChar, technicalQuotation.QualificationDocumentsOther);
 
+                // =======================
+                // FAT / SAT / Assistance
+                // =======================
+                db.AddInParameter(dbCommandWrapper, "@FATAtManufacturerSite", SqlDbType.VarChar, technicalQuotation.FATAtManufacturerSite);
+                db.AddInParameter(dbCommandWrapper, "@FATAtManufacturerSiteOther", SqlDbType.VarChar, technicalQuotation.FATAtManufacturerSiteOther);
+                db.AddInParameter(dbCommandWrapper, "@SATScope", SqlDbType.VarChar, technicalQuotation.SATScope);
+                db.AddInParameter(dbCommandWrapper, "@AssistanceAtSite", SqlDbType.VarChar, technicalQuotation.AssistanceAtSite);
+                db.AddInParameter(dbCommandWrapper, "@AssistanceAtSiteOther", SqlDbType.VarChar, technicalQuotation.AssistanceAtSiteOther);
 
-                            //db.AddInParameter(dbCommandWrapper, "@RNDPriceCur", SqlDbType.VarChar, technicalQuotationlist[i].RNDPriceCur);
-                            //db.AddInParameter(dbCommandWrapper, "@ComPriceCur", SqlDbType.VarChar, technicalQuotationlist[i].ComPriceCur);
-                            if (string.IsNullOrEmpty(technicalQuotationlist[i].OrderQtyUnit.Item_Code))
-                            {
-                                db.AddInParameter(dbCommandWrapper, "@OrderQtyUnit", SqlDbType.VarChar, DBNull.Value);
-                            }
-                            else
-                            {
-                                db.AddInParameter(dbCommandWrapper, "@OrderQtyUnit", SqlDbType.VarChar, technicalQuotationlist[i].OrderQtyUnit.Item_Code);
-                            }
-                            db.AddInParameter(dbCommandWrapper, "@LocalPartner", SqlDbType.VarChar, technicalQuotationlist[i].LocalPartner);
-                            db.AddInParameter(dbCommandWrapper, "@ShelfLifeUnit", SqlDbType.VarChar, technicalQuotationlist[i].ShelfUnit);
-                            db.AddInParameter(dbCommandWrapper, "@APIRegApproval", SqlDbType.VarChar, technicalQuotationlist[i].APIRegApproval);
+                // =======================
+                // Utilities / Safety
+                // =======================
+                db.AddInParameter(dbCommandWrapper, "@UtilitiesRequirement", SqlDbType.VarChar, technicalQuotation.UtilitiesRequirement);
+                db.AddInParameter(dbCommandWrapper, "@SafetyFeatures", SqlDbType.VarChar, technicalQuotation.SafetyFeatures);
+                db.AddInParameter(dbCommandWrapper, "@EnergyEfficiencyFeatures", SqlDbType.VarChar, technicalQuotation.EnergyEfficiencyFeatures);
 
+                // =======================
+                // Servicing / Scope
+                // =======================
+                db.AddInParameter(dbCommandWrapper, "@SparesServicing", SqlDbType.VarChar, technicalQuotation.SparesServicing);
+                db.AddInParameter(dbCommandWrapper, "@ScopeConfirmation", SqlDbType.VarChar, technicalQuotation.ScopeConfirmation);
+                db.AddInParameter(dbCommandWrapper, "@ScopeDeviationRemarks", SqlDbType.VarChar, technicalQuotation.ScopeDeviationRemarks);
 
-                          
+                // =======================
+                // Responsibility Matrix
+                // =======================
+                db.AddInParameter(dbCommandWrapper, "@Erection", SqlDbType.VarChar, technicalQuotation.Erection);
+                db.AddInParameter(dbCommandWrapper, "@ErectionOther", SqlDbType.VarChar, technicalQuotation.ErectionOther);
+                db.AddInParameter(dbCommandWrapper, "@Installation", SqlDbType.VarChar, technicalQuotation.Installation);
+                db.AddInParameter(dbCommandWrapper, "@InstallationOther", SqlDbType.VarChar, technicalQuotation.InstallationOther);
+                db.AddInParameter(dbCommandWrapper, "@Testing", SqlDbType.VarChar, technicalQuotation.Testing);
+                db.AddInParameter(dbCommandWrapper, "@TestingOther", SqlDbType.VarChar, technicalQuotation.TestingOther);
+                db.AddInParameter(dbCommandWrapper, "@Commissioning", SqlDbType.VarChar, technicalQuotation.Commissioning);
+                db.AddInParameter(dbCommandWrapper, "@CommissioningOther", SqlDbType.VarChar, technicalQuotation.CommissioningOther);
 
+                // =======================
+                // Regulatory
+                // =======================
+                db.AddInParameter(dbCommandWrapper, "@RegulatoryApproval", SqlDbType.VarChar, technicalQuotation.RegulatoryApproval);
+                db.AddInParameter(dbCommandWrapper, "@RegulatoryApprovalOther", SqlDbType.VarChar, technicalQuotation.RegulatoryApprovalOther);
 
+                // =======================
+                // Misc
+                // =======================
+                db.AddInParameter(dbCommandWrapper, "@ColumnSpecification", SqlDbType.VarChar, technicalQuotation.ColumnSpecification);
 
-                            db.AddInParameter(dbCommandWrapper, "@MaterialQuantity", SqlDbType.VarChar, materialInvitationlist[j].MaterialQuantity);
-                            db.AddInParameter(dbCommandWrapper, "@MatUnit", SqlDbType.VarChar, materialInvitationlist[j].Unit);
-                            db.AddInParameter(dbCommandWrapper, "@MatInvType", SqlDbType.VarChar, materialInvitationlist[j].MatInvType);
-                            db.AddInParameter(dbCommandWrapper, "@invitationNumber", SqlDbType.VarChar, materialInvitationlist[j].invitationNumber);
-                            db.AddInParameter(dbCommandWrapper, "@departmentId", SqlDbType.Int, materialInvitationlist[j].departmentId);
-                            db.AddInParameter(dbCommandWrapper, "@matCategory", SqlDbType.VarChar, materialInvitationlist[j].matCategory);
-                            db.AddInParameter(dbCommandWrapper, "@itemNo", SqlDbType.Int, materialInvitationlist[j].itemNo);
-                            db.AddInParameter(dbCommandWrapper, "@materialCode", SqlDbType.VarChar, materialInvitationlist[j].materialCode);
-                            db.AddInParameter(dbCommandWrapper, "@materialName", SqlDbType.VarChar, materialInvitationlist[j].materialName);
-                            db.AddInParameter(dbCommandWrapper, "@remarks", SqlDbType.VarChar, materialInvitationlist[j].remarks);
-                            db.AddInParameter(dbCommandWrapper, "@sampleDocId", SqlDbType.VarChar, materialInvitationlist[j].sampleDocId);
-                            db.AddInParameter(dbCommandWrapper, "@BiddingItemVendorID", SqlDbType.VarChar, materialInvitationlist[j].VendorID);
-                            db.AddInParameter(dbCommandWrapper, "@proposalType", SqlDbType.VarChar, materialInvitationlist[j].proposalType);
-                            db.AddInParameter(dbCommandWrapper, "@sharedToFactory", SqlDbType.Bit, materialInvitationlist[j].sharedToFactory);
-                            db.AddInParameter(dbCommandWrapper, "@askFinanQoutations", SqlDbType.Bit, materialInvitationlist[j].askFinanQoutations);
-                            db.AddInParameter(dbCommandWrapper, "@modificationType", SqlDbType.VarChar, materialInvitationlist[j].modificationType);
-                            db.AddInParameter(dbCommandWrapper, "@setOn", SqlDbType.DateTime, materialInvitationlist[j].setOn);
+                // =======================
+                // p === 2 Specific Fields
+                // =======================
+                db.AddInParameter(dbCommandWrapper, "@ModelVersion", SqlDbType.VarChar, technicalQuotation.ModelVersion);
+                db.AddInParameter(dbCommandWrapper, "@CountryOrigin", SqlDbType.VarChar, technicalQuotation.CountryOrigin);
+                db.AddInParameter(dbCommandWrapper, "@YearOfManufacturing", SqlDbType.VarChar, technicalQuotation.YearOfManufacturing);
+
+                db.AddInParameter(dbCommandWrapper, "@ProductLifeCycleValue",SqlDbType.Int, technicalQuotation.ProductLifeCycleValue);
+
+                db.AddInParameter(dbCommandWrapper, "@ProductLifeCycleUnit", SqlDbType.VarChar, technicalQuotation.ProductLifeCycleUnit);
+                db.AddInParameter(dbCommandWrapper, "@Capacity", SqlDbType.VarChar, technicalQuotation.Capacity);
+                db.AddInParameter(dbCommandWrapper, "@CapacityExtendable", SqlDbType.VarChar, technicalQuotation.CapacityExtendable);
+                db.AddInParameter(dbCommandWrapper, "@CapacityExtendableOther", SqlDbType.VarChar, technicalQuotation.CapacityExtendableOther);
+
+                // =======================
+                // Material Invitation fields
+                // =======================
+                db.AddInParameter(dbCommandWrapper, "@MaterialQuantity", SqlDbType.VarChar, materialInvitation.MaterialQuantity);
+                            db.AddInParameter(dbCommandWrapper, "@MatUnit", SqlDbType.VarChar, materialInvitation.Unit);
+                            db.AddInParameter(dbCommandWrapper, "@MatInvType", SqlDbType.VarChar, materialInvitation.MatInvType);
+                            db.AddInParameter(dbCommandWrapper, "@invitationNumber", SqlDbType.VarChar, materialInvitation.invitationNumber);
+                            db.AddInParameter(dbCommandWrapper, "@departmentId", SqlDbType.Int, materialInvitation.departmentId);
+                            db.AddInParameter(dbCommandWrapper, "@matCategory", SqlDbType.VarChar, materialInvitation.matCategory);
+                            db.AddInParameter(dbCommandWrapper, "@itemNo", SqlDbType.Int, materialInvitation.itemNo);
+                            db.AddInParameter(dbCommandWrapper, "@materialCode", SqlDbType.VarChar, materialInvitation.materialCode);
+                            db.AddInParameter(dbCommandWrapper, "@materialName", SqlDbType.VarChar, materialInvitation.materialName);
+                            db.AddInParameter(dbCommandWrapper, "@remarks", SqlDbType.VarChar, materialInvitation.remarks);
+                            db.AddInParameter(dbCommandWrapper, "@sampleDocId", SqlDbType.VarChar, materialInvitation.sampleDocId);
+                            db.AddInParameter(dbCommandWrapper, "@BiddingItemVendorID", SqlDbType.VarChar, materialInvitation.VendorID);
+                            db.AddInParameter(dbCommandWrapper, "@proposalType", SqlDbType.VarChar, materialInvitation.proposalType);
+                            db.AddInParameter(dbCommandWrapper, "@sharedToFactory", SqlDbType.Bit, materialInvitation.sharedToFactory);
+                            db.AddInParameter(dbCommandWrapper, "@askFinanQoutations", SqlDbType.Bit, materialInvitation.askFinanQoutations);
+                            db.AddInParameter(dbCommandWrapper, "@modificationType", SqlDbType.VarChar, materialInvitation.modificationType);
+                            db.AddInParameter(dbCommandWrapper, "@setOn", SqlDbType.DateTime, materialInvitation.setOn);
                             db.AddInParameter(dbCommandWrapper, "@setBy", SqlDbType.VarChar, UserId);
-                            db.AddInParameter(dbCommandWrapper, "@modifiedOn", SqlDbType.DateTime, materialInvitationlist[j].modifiedOn);
+                            db.AddInParameter(dbCommandWrapper, "@modifiedOn", SqlDbType.DateTime, materialInvitation.modifiedOn);
                             db.AddInParameter(dbCommandWrapper, "@modifiedBy", SqlDbType.VarChar, UserId);
-                            //db.AddInParameter(dbCommandWrapper, "@status", SqlDbType.VarChar, materialInvitationlist[j].status);
-                            db.AddInParameter(dbCommandWrapper, "@status", SqlDbType.VarChar, '1');
-                            db.AddInParameter(dbCommandWrapper, "@SampleDocumentID", SqlDbType.VarChar, materialInvitationlist[j].SampleDocumentID);
-                            db.AddInParameter(dbCommandWrapper, "@material_Category_Code", SqlDbType.VarChar, materialInvitationlist[j].material_Category_Code);
+                            db.AddInParameter(dbCommandWrapper, "@status", SqlDbType.VarChar, "1");
+                            db.AddInParameter(dbCommandWrapper, "@SampleDocumentID", SqlDbType.VarChar, technicalQuotation.SampleDocumentID);
+                            db.AddInParameter(dbCommandWrapper, "@proposal", SqlDbType.VarChar, technicalQuotation.proposal);
+                            db.AddInParameter(dbCommandWrapper, "@techtype", SqlDbType.VarChar, technicalQuotation.techtype);
+                            db.AddInParameter(dbCommandWrapper, "@material_Category_Code", SqlDbType.VarChar, materialInvitation.material_Category_Code);
+
+                            // =======================
+                            // Quotation fields
+                            // =======================
                             db.AddInParameter(dbCommandWrapper, "@quotationID", SqlDbType.VarChar, quotation.quotationID);
                             db.AddInParameter(dbCommandWrapper, "@quotationNo", SqlDbType.VarChar, quotation.quotationNo);
 
@@ -572,13 +614,7 @@ namespace SILDMS.DataAccess.TechnicalQuotation
 
                                 ID = dr.GetInt32("ID");
                             }
-                        }
-
-
-
-                    }
-                }
-
+                      
             }
             return ID;
 
@@ -676,7 +712,7 @@ namespace SILDMS.DataAccess.TechnicalQuotation
                             materialName = reader.GetString("MaterialName"),
                             MaterialQuantity = reader.GetString("RequestQty"),
                             Unit = reader.GetString("Unit"),
-                            MatInvType = reader.GetString("MatInvType"),
+                            MatInvType = reader.GetString("Techtype"),
                             materialCode = reader.GetString("MaterialCode"),
                             material_Category_Code = reader.GetString("MatCategory"),
                             invitationNumber = reader.GetString("InvitationNumber"),
@@ -727,49 +763,95 @@ namespace SILDMS.DataAccess.TechnicalQuotation
 
                         TechnicalQuotationList = dt1.AsEnumerable().Select(reader => new Model.VendorSelectionModule.TechnicalQuotation
                         {
-
+                    
                             TechQuotationItemID = reader["TechQuotationItemID"] != DBNull.Value ? reader["TechQuotationItemID"].ToString() : null,
+                            QuotationRevisionNo = reader["QuotationRevisionNo"] != DBNull.Value ? reader["QuotationRevisionNo"].ToString() : null,
+                            QuotationID = reader["QuotationID"] != DBNull.Value ? reader["QuotationID"].ToString() : null,
+                            QuotationNo = reader["QuotationNo"] != DBNull.Value ? reader["QuotationNo"].ToString() : null,
                             MoleculeName = reader["MoleculeName"] != DBNull.Value ? reader["MoleculeName"].ToString() : null,
-                            SampleAvailable = reader["RepSample"] != DBNull.Value ? reader["RepSample"].ToString() : null,
-                            OtherSample = reader["AssistanceAtSite"] != DBNull.Value ? reader["AssistanceAtSite"].ToString() : null,
-                            CASNO = reader["CASNo"] != DBNull.Value ? reader["CASNo"].ToString() : null,
-                            RepresentativePackSize = reader["RepSamplePackSize"] != DBNull.Value ? reader["RepSamplePackSize"].ToString() : null,
-                            Manufacturer = reader["ManufactureName"] != DBNull.Value ? reader["ManufactureName"].ToString() : null,
-                            Regulatory = reader["ProdRegularity"] != DBNull.Value ? reader["ProdRegularity"].ToString() : null,
-                            Supplier = reader["SupplierName"] != DBNull.Value ? reader["SupplierName"].ToString() : null,
-                            CurrentStatus = reader["CurApiStatus"] != DBNull.Value ? reader["CurApiStatus"].ToString() : null,
-                            ManufactureAddress = reader["ManufacSiteAdd"] != DBNull.Value ? reader["ManufacSiteAdd"].ToString() : null,
-                            ProdCapacity = reader["ProdCapacity"] != DBNull.Value ? Convert.ToInt32(reader["ProdCapacity"]) : 0,
-                            RDPrice = reader["RNDPriceOffer"] != DBNull.Value ? Convert.ToDecimal(reader["RNDPriceOffer"]) : 0,
-                            Shelf = reader["ShelfLife"] != DBNull.Value ? Convert.ToInt32(reader["ShelfLife"]) : 0,
-                            CommercialPrice = reader["CommercialPrice"] != DBNull.Value ? Convert.ToDecimal(reader["CommercialPrice"]) : 0,
-                            Condition = reader["StorageCondition"] != DBNull.Value ? reader["StorageCondition"].ToString() : null,
-                            OrderQty = reader["MiniOrderQty"] != DBNull.Value ? Convert.ToInt32(reader["MiniOrderQty"]) : 0,
-                           /* OrderUnit = reader["OrderQtyUnit"] != DBNull.Value  ? reader["OrderQtyUnit"].ToString() : null,*/
-                            Specification = reader["SpecComplies"] != DBNull.Value ? reader["SpecComplies"].ToString() : null,
+                            ManufacturerPart = reader["ManufacturerPart"] != DBNull.Value ? reader["ManufacturerPart"].ToString() : null,
+                            CASNo = reader["CASNo"] != DBNull.Value ? reader["CASNo"].ToString() : null,
+                            Manufacturer = reader["Manufacturer"] != DBNull.Value ? reader["Manufacturer"].ToString() : null,
+                            ManufactureOrigin = reader["ManufactureOrigin"] != DBNull.Value ? reader["ManufactureOrigin"].ToString() : null,
+                            Supplier = reader["Supplier"] != DBNull.Value ? reader["Supplier"].ToString() : null,
+                            LocalPartner = reader["LocalPartner"] != DBNull.Value ? reader["LocalPartner"].ToString() : null,
+                            ManufactureAddress = reader["ManufactureAddress"] != DBNull.Value ? reader["ManufactureAddress"].ToString() : null,
 
-                            CommercialConsignment = reader["LeadTimeForCC"] != DBNull.Value ? Convert.ToInt32(reader["LeadTimeForCC"]) : 0,
-                            AvailPackSize = reader["AvailComPackSize"] != DBNull.Value ? Convert.ToInt32(reader["AvailComPackSize"]) : 0,
-                            MinPack = reader["MiniPackSize"] != DBNull.Value ? Convert.ToInt32(reader["MiniPackSize"]) : 0,
-                            Example = reader["Refference"] != DBNull.Value ? reader["Refference"].ToString() : null,
-                            Alldocuments = reader["QualificationDoc"] != DBNull.Value ? reader["QualificationDoc"].ToString() : null,
-                            Installation = reader["InstallTestCom"] != DBNull.Value ? reader["InstallTestCom"].ToString() : null,
-                            ShelfUnit = reader["ShelfLifeUnit"] != DBNull.Value ? reader["ShelfLifeUnit"].ToString() : null,
+                            RDPrice = reader["RDPrice"] != DBNull.Value ? Convert.ToDecimal(reader["RDPrice"]) : (decimal?)null,
+                           
+                            ShelfLifeValue = reader["ShelfLifeValue"] != DBNull.Value ? Convert.ToInt32(reader["ShelfLifeValue"]) : (int?)null,
+                            CommercialPrice = reader["CommercialPrice"] != DBNull.Value ? Convert.ToDecimal(reader["CommercialPrice"]) : (decimal?)null,
+                            PriceUnit = reader["PriceUnit"] != DBNull.Value ? reader["PriceUnit"].ToString() : null,
+                            MinOrderQty = reader["MinOrderQty"] != DBNull.Value ? Convert.ToInt32(reader["MinOrderQty"]) : (int?)null,
+                            OrderQtyUnit = reader["OrderQtyUnit"] != DBNull.Value ? reader["OrderQtyUnit"].ToString() : null,
+                            ProductionLeadTimeValue = reader["ProductionLeadTimeValue"] != DBNull.Value ? Convert.ToInt32(reader["ProductionLeadTimeValue"]) : (int?)null,
+                     
+                         
+                            AssistanceAtSite = reader["AssistanceAtSite"] != DBNull.Value ? reader["AssistanceAtSite"].ToString() : null,
+                            FATAtManufacturerSite = reader["FATAtManufacturerSite"] != DBNull.Value ? reader["FATAtManufacturerSite"].ToString() : null,
+                            QualificationDocuments = reader["QualificationDocuments"] != DBNull.Value ? reader["QualificationDocuments"].ToString() : null,
+                            RepresentativeSample = reader["RepresentativeSample"] != DBNull.Value ? reader["RepresentativeSample"].ToString() : null,
+                            RepresentativeSamplePackSize = reader["RepresentativeSamplePackSize"] != DBNull.Value ? reader["RepresentativeSamplePackSize"].ToString() : null,
+                            ProductionFrequency = reader["ProductionFrequency"] != DBNull.Value ? reader["ProductionFrequency"].ToString() : null,
+                         
+                            ProdCapacity = reader["ProdCapacity"] != DBNull.Value ? reader["ProdCapacity"].ToString() : null,
+                            ShelfLifeUnit = reader["ShelfLifeUnit"] != DBNull.Value ? reader["ShelfLifeUnit"].ToString() : null,
+                            StorageCondition = reader["StorageCondition"] != DBNull.Value ? reader["StorageCondition"].ToString() : null,
+                      
+                            Currency = reader["Currency"] != DBNull.Value ? reader["Currency"].ToString() : null,
+                            Reference = reader["Reference"] != DBNull.Value ? reader["Reference"].ToString() : null,
+                            InstallTestCom = reader["InstallTestCom"] != DBNull.Value ? reader["InstallTestCom"].ToString() : null,
+                            SubContractor = reader["SubContractor"] != DBNull.Value ? reader["SubContractor"].ToString() : null,
+                            PenealtyClause = reader["PenealtyClause"] != DBNull.Value ? reader["PenealtyClause"].ToString() : null,
                             Calibration = reader["Calibration"] != DBNull.Value ? reader["Calibration"].ToString() : null,
-                            ComPriceCur = reader["ComPriceCur"] != DBNull.Value ? new Currency { MasterDataValue = reader["ComPriceCur"].ToString() } : new Currency { MasterDataValue = null },
-                            //OrderQtyUnit = reader["OrderQtyUnit"] != DBNull.Value ? new Item { Item_Code = reader["OrderQtyUnit"].ToString() } : null,
-                            OrderQtyUnit = reader["OrderQtyUnit"] != DBNull.Value ? new Item { Item_Code = reader["OrderQtyUnit"].ToString() }: new Item { Item_Code = null },
-                            Currency = reader["Currency"] != DBNull.Value ? new Currency { MasterDataValue = reader["Currency"].ToString() }: new Currency { MasterDataValue = null },
-                            RNDPriceCur = reader["RNDPriceCur"] != DBNull.Value ? new Currency { MasterDataValue = reader["RNDPriceCur"].ToString() } : new Currency { MasterDataValue = null },
-                            
+                            ValidationScope = reader["ValidationScope"] != DBNull.Value ? reader["ValidationScope"].ToString() : null,
+                            Training = reader["Training"] != DBNull.Value ? reader["Training"].ToString() : null,
+                            RegulatoryApproval = reader["RegulatoryApproval"] != DBNull.Value ? reader["RegulatoryApproval"].ToString() : null,
 
-                            APIRegApproval= reader["APIRegApproval"] != DBNull.Value ? reader["APIRegApproval"].ToString() : null
+                          
+                            rowIndex = reader["rowIndex"] != DBNull.Value ? reader["rowIndex"].ToString() : null,
+                            ItemName = reader["ItemName"] != DBNull.Value ? reader["ItemName"].ToString() : null,
+                            PricePer = reader["PricePer"] != DBNull.Value ? Convert.ToDecimal(reader["PricePer"]) : (decimal?)null,
+                            CommercialPackSize = reader["CommercialPackSize"] != DBNull.Value ? reader["CommercialPackSize"].ToString() : null,
+                            MinPack = reader["MinPack"] != DBNull.Value ? reader["MinPack"].ToString() : null,
+                            ProductionLeadTimeUnit = reader["ProductionLeadTimeUnit"] != DBNull.Value ? reader["ProductionLeadTimeUnit"].ToString() : null,
+                            Notes = reader["Notes"] != DBNull.Value ? reader["Notes"].ToString() : null,
+                            CatalogueNo = reader["CatalogueNo"] != DBNull.Value ? reader["CatalogueNo"].ToString() : null,
+                            ComplianceWith = reader["ComplianceWith"] != DBNull.Value ? reader["ComplianceWith"].ToString() : null,
+                            QualificationDocumentsOther = reader["QualificationDocumentsOther"] != DBNull.Value ? reader["QualificationDocumentsOther"].ToString() : null,
+                            FATAtManufacturerSiteOther = reader["FATAtManufacturerSiteOther"] != DBNull.Value ? reader["FATAtManufacturerSiteOther"].ToString() : null,
+                            SATScope = reader["SATScope"] != DBNull.Value ? reader["SATScope"].ToString() : null,
+                            AssistanceAtSiteOther = reader["AssistanceAtSiteOther"] != DBNull.Value ? reader["AssistanceAtSiteOther"].ToString() : null,
+                            UtilitiesRequirement = reader["UtilitiesRequirement"] != DBNull.Value ? reader["UtilitiesRequirement"].ToString() : null,
+                            SafetyFeatures = reader["SafetyFeatures"] != DBNull.Value ? reader["SafetyFeatures"].ToString() : null,
+                            EnergyEfficiencyFeatures = reader["EnergyEfficiencyFeatures"] != DBNull.Value ? reader["EnergyEfficiencyFeatures"].ToString() : null,
+                            SparesServicing = reader["SparesServicing"] != DBNull.Value ? reader["SparesServicing"].ToString() : null,
+                            ScopeConfirmation = reader["ScopeConfirmation"] != DBNull.Value ? reader["ScopeConfirmation"].ToString() : null,
+                            ScopeDeviationRemarks = reader["ScopeDeviationRemarks"] != DBNull.Value ? reader["ScopeDeviationRemarks"].ToString() : null,
+                            Erection = reader["Erection"] != DBNull.Value ? reader["Erection"].ToString() : null,
+                            ErectionOther = reader["ErectionOther"] != DBNull.Value ? reader["ErectionOther"].ToString() : null,
+                            Installation = reader["Installation"] != DBNull.Value ? reader["Installation"].ToString() : null,
+                            InstallationOther = reader["InstallationOther"] != DBNull.Value ? reader["InstallationOther"].ToString() : null,
+                            Testing = reader["Testing"] != DBNull.Value ? reader["Testing"].ToString() : null,
+                            TestingOther = reader["TestingOther"] != DBNull.Value ? reader["TestingOther"].ToString() : null,
+                            Commissioning = reader["Commissioning"] != DBNull.Value ? reader["Commissioning"].ToString() : null,
+                            CommissioningOther = reader["CommissioningOther"] != DBNull.Value ? reader["CommissioningOther"].ToString() : null,
+                            RegulatoryApprovalOther = reader["RegulatoryApprovalOther"] != DBNull.Value ? reader["RegulatoryApprovalOther"].ToString() : null,
+                            ColumnSpecification = reader["ColumnSpecification"] != DBNull.Value ? reader["ColumnSpecification"].ToString() : null,
+                            ModelVersion = reader["ModelVersion"] != DBNull.Value ? reader["ModelVersion"].ToString() : null,
+                            CountryOrigin = reader["CountryOrigin"] != DBNull.Value ? reader["CountryOrigin"].ToString() : null,
+                            YearOfManufacturing = reader["YearOfManufacturing"] != DBNull.Value ? reader["YearOfManufacturing"].ToString() : null,
+                         
+                            ProductLifeCycleValue = reader["ProductLifeCycleValue"] != DBNull.Value ? Convert.ToInt32(reader["ProductLifeCycleValue"]),
+                            ProductLifeCycleUnit = reader["ProductLifeCycleUnit"] != DBNull.Value ? reader["ProductLifeCycleUnit"].ToString() : null,
+                            Capacity = reader["Capacity"] != DBNull.Value ? reader["Capacity"].ToString() : null,
+                            CapacityExtendable = reader["CapacityExtendable"] != DBNull.Value ? reader["CapacityExtendable"].ToString() : null,
+                            CapacityExtendableOther = reader["CapacityExtendableOther"] != DBNull.Value ? reader["CapacityExtendableOther"].ToString() : null,
+                            Proposal = reader["Proposal"] != DBNull.Value ? reader["Proposal"].ToString() : null,
+                            Techtype = reader["Techtype"] != DBNull.Value ? reader["Techtype"].ToString() : null
 
+                        }).ToList();
 
-
-
-
-                    }).ToList();
                     }
                 }
             }
@@ -837,82 +919,82 @@ namespace SILDMS.DataAccess.TechnicalQuotation
             using (var dbCommandWrapper = db.GetStoredProcCommand("VCMS_UpdateTechnicalQuotation"))
             {
 
-                db.AddInParameter(dbCommandWrapper, "@TechQuotationItemID", SqlDbType.VarChar, technicalQuotation.TechQuotationItemID);
-                db.AddInParameter(dbCommandWrapper, "@MoleculeName", SqlDbType.VarChar, technicalQuotation.MoleculeName);
-                db.AddInParameter(dbCommandWrapper, "@SampleAvailable", SqlDbType.VarChar, technicalQuotation.SampleAvailable);
-                db.AddInParameter(dbCommandWrapper, "@OtherSample", SqlDbType.VarChar, technicalQuotation.OtherSample);
-                db.AddInParameter(dbCommandWrapper, "@CASNO", SqlDbType.VarChar, technicalQuotation.CASNO);
-                db.AddInParameter(dbCommandWrapper, "@RepresentativePackSize", SqlDbType.VarChar, technicalQuotation.RepresentativePackSize);
-                db.AddInParameter(dbCommandWrapper, "@Manufacturer", SqlDbType.VarChar, technicalQuotation.Manufacturer);
-                db.AddInParameter(dbCommandWrapper, "@Regulatory", SqlDbType.VarChar, technicalQuotation.Regulatory);
-                db.AddInParameter(dbCommandWrapper, "@Supplier", SqlDbType.VarChar, technicalQuotation.Supplier);
-                db.AddInParameter(dbCommandWrapper, "@CurrentStatus", SqlDbType.VarChar, technicalQuotation.CurrentStatus);
-                db.AddInParameter(dbCommandWrapper, "@ManufactureAddress", SqlDbType.VarChar, technicalQuotation.ManufactureAddress);
-                db.AddInParameter(dbCommandWrapper, "@ProdCapacity", SqlDbType.Int, technicalQuotation.ProdCapacity);
-                db.AddInParameter(dbCommandWrapper, "@RDPrice", SqlDbType.Decimal, technicalQuotation.RDPrice);
-                db.AddInParameter(dbCommandWrapper, "@Shelf", SqlDbType.Int, technicalQuotation.Shelf);
-                db.AddInParameter(dbCommandWrapper, "@CommercialPrice", SqlDbType.Decimal, technicalQuotation.CommercialPrice);
-                db.AddInParameter(dbCommandWrapper, "@Condition", SqlDbType.VarChar, technicalQuotation.Condition);
-                db.AddInParameter(dbCommandWrapper, "@OrderQty", SqlDbType.Int, technicalQuotation.OrderQty);
-                db.AddInParameter(dbCommandWrapper, "@Specification", SqlDbType.VarChar, technicalQuotation.Specification);
-                db.AddInParameter(dbCommandWrapper, "@OtherSpecification", SqlDbType.VarChar, technicalQuotation.OtherSpecification);
-                db.AddInParameter(dbCommandWrapper, "@CommercialConsignment", SqlDbType.Int, technicalQuotation.CommercialConsignment);
-                db.AddInParameter(dbCommandWrapper, "@AvailPackSize", SqlDbType.Int, technicalQuotation.AvailPackSize);
-                db.AddInParameter(dbCommandWrapper, "@MinPack", SqlDbType.Int, technicalQuotation.MinPack);
-                db.AddInParameter(dbCommandWrapper, "@Example", SqlDbType.VarChar, technicalQuotation.Example);
-                if (string.IsNullOrEmpty(technicalQuotation.Currency.MasterDataValue))
-                {
-                    db.AddInParameter(dbCommandWrapper, "@Currency", SqlDbType.VarChar, DBNull.Value);
-                }
-                else
-                {
-                    db.AddInParameter(dbCommandWrapper, "@Currency", SqlDbType.VarChar, technicalQuotation.Currency.MasterDataValue);
-                }
+                //db.AddInParameter(dbCommandWrapper, "@TechQuotationItemID", SqlDbType.VarChar, technicalQuotation.TechQuotationItemID);
+                //db.AddInParameter(dbCommandWrapper, "@MoleculeName", SqlDbType.VarChar, technicalQuotation.MoleculeName);
+                //db.AddInParameter(dbCommandWrapper, "@SampleAvailable", SqlDbType.VarChar, technicalQuotation.SampleAvailable);
+                //db.AddInParameter(dbCommandWrapper, "@OtherSample", SqlDbType.VarChar, technicalQuotation.OtherSample);
+                //db.AddInParameter(dbCommandWrapper, "@CASNO", SqlDbType.VarChar, technicalQuotation.CASNO);
+                //db.AddInParameter(dbCommandWrapper, "@RepresentativePackSize", SqlDbType.VarChar, technicalQuotation.RepresentativePackSize);
+                //db.AddInParameter(dbCommandWrapper, "@Manufacturer", SqlDbType.VarChar, technicalQuotation.Manufacturer);
+                //db.AddInParameter(dbCommandWrapper, "@Regulatory", SqlDbType.VarChar, technicalQuotation.Regulatory);
+                //db.AddInParameter(dbCommandWrapper, "@Supplier", SqlDbType.VarChar, technicalQuotation.Supplier);
+                //db.AddInParameter(dbCommandWrapper, "@CurrentStatus", SqlDbType.VarChar, technicalQuotation.CurrentStatus);
+                //db.AddInParameter(dbCommandWrapper, "@ManufactureAddress", SqlDbType.VarChar, technicalQuotation.ManufactureAddress);
+                //db.AddInParameter(dbCommandWrapper, "@ProdCapacity", SqlDbType.Int, technicalQuotation.ProdCapacity);
+                //db.AddInParameter(dbCommandWrapper, "@RDPrice", SqlDbType.Decimal, technicalQuotation.RDPrice);
+                //db.AddInParameter(dbCommandWrapper, "@Shelf", SqlDbType.Int, technicalQuotation.Shelf);
+                //db.AddInParameter(dbCommandWrapper, "@CommercialPrice", SqlDbType.Decimal, technicalQuotation.CommercialPrice);
+                //db.AddInParameter(dbCommandWrapper, "@Condition", SqlDbType.VarChar, technicalQuotation.Condition);
+                //db.AddInParameter(dbCommandWrapper, "@OrderQty", SqlDbType.Int, technicalQuotation.OrderQty);
+                //db.AddInParameter(dbCommandWrapper, "@Specification", SqlDbType.VarChar, technicalQuotation.Specification);
+                //db.AddInParameter(dbCommandWrapper, "@OtherSpecification", SqlDbType.VarChar, technicalQuotation.OtherSpecification);
+                //db.AddInParameter(dbCommandWrapper, "@CommercialConsignment", SqlDbType.Int, technicalQuotation.CommercialConsignment);
+                //db.AddInParameter(dbCommandWrapper, "@AvailPackSize", SqlDbType.Int, technicalQuotation.AvailPackSize);
+                //db.AddInParameter(dbCommandWrapper, "@MinPack", SqlDbType.Int, technicalQuotation.MinPack);
+                //db.AddInParameter(dbCommandWrapper, "@Example", SqlDbType.VarChar, technicalQuotation.Example);
+                //if (string.IsNullOrEmpty(technicalQuotation.Currency.MasterDataValue))
+                //{
+                //    db.AddInParameter(dbCommandWrapper, "@Currency", SqlDbType.VarChar, DBNull.Value);
+                //}
+                //else
+                //{
+                //    db.AddInParameter(dbCommandWrapper, "@Currency", SqlDbType.VarChar, technicalQuotation.Currency.MasterDataValue);
+                //}
 
-                //db.AddInParameter(dbCommandWrapper, "@Currency", SqlDbType.VarChar, technicalQuotation.Currency);
-                db.AddInParameter(dbCommandWrapper, "@Reference", SqlDbType.VarChar, technicalQuotation.Reference);
-                db.AddInParameter(dbCommandWrapper, "@Validation", SqlDbType.VarChar, technicalQuotation.Validation);
-                db.AddInParameter(dbCommandWrapper, "@Training", SqlDbType.VarChar, technicalQuotation.Training);
-                db.AddInParameter(dbCommandWrapper, "@Prerequisite", SqlDbType.VarChar, technicalQuotation.Prerequisite);
-                db.AddInParameter(dbCommandWrapper, "@ManufacturerPart", SqlDbType.VarChar, technicalQuotation.ManufacturerPart);
-                db.AddInParameter(dbCommandWrapper, "@Installation", SqlDbType.VarChar, technicalQuotation.Installation);
-                db.AddInParameter(dbCommandWrapper, "@Subcontractor", SqlDbType.VarChar, technicalQuotation.Subcontractor);
-                db.AddInParameter(dbCommandWrapper, "@ManufacturerOrigin", SqlDbType.VarChar, technicalQuotation.ManufacturerOrigin);
-                db.AddInParameter(dbCommandWrapper, "@Penalty", SqlDbType.VarChar, technicalQuotation.Penalty);
-                db.AddInParameter(dbCommandWrapper, "@Fat", SqlDbType.VarChar, technicalQuotation.Fat);
-                db.AddInParameter(dbCommandWrapper, "@Calibration", SqlDbType.VarChar, technicalQuotation.Calibration);
-                db.AddInParameter(dbCommandWrapper, "@Document", SqlDbType.VarChar, technicalQuotation.Alldocuments);
-                if (string.IsNullOrEmpty(technicalQuotation.RNDPriceCur.MasterDataValue))
-                {
-                    db.AddInParameter(dbCommandWrapper, "@RNDPriceCur", SqlDbType.VarChar, DBNull.Value);
-                }
-                else
-                {
-                    db.AddInParameter(dbCommandWrapper, "@RNDPriceCur", SqlDbType.VarChar, technicalQuotation.RNDPriceCur.MasterDataValue);
-                }
+                ////db.AddInParameter(dbCommandWrapper, "@Currency", SqlDbType.VarChar, technicalQuotation.Currency);
+                //db.AddInParameter(dbCommandWrapper, "@Reference", SqlDbType.VarChar, technicalQuotation.Reference);
+                //db.AddInParameter(dbCommandWrapper, "@Validation", SqlDbType.VarChar, technicalQuotation.Validation);
+                //db.AddInParameter(dbCommandWrapper, "@Training", SqlDbType.VarChar, technicalQuotation.Training);
+                //db.AddInParameter(dbCommandWrapper, "@Prerequisite", SqlDbType.VarChar, technicalQuotation.Prerequisite);
+                //db.AddInParameter(dbCommandWrapper, "@ManufacturerPart", SqlDbType.VarChar, technicalQuotation.ManufacturerPart);
+                //db.AddInParameter(dbCommandWrapper, "@Installation", SqlDbType.VarChar, technicalQuotation.Installation);
+                //db.AddInParameter(dbCommandWrapper, "@Subcontractor", SqlDbType.VarChar, technicalQuotation.Subcontractor);
+                //db.AddInParameter(dbCommandWrapper, "@ManufacturerOrigin", SqlDbType.VarChar, technicalQuotation.ManufacturerOrigin);
+                //db.AddInParameter(dbCommandWrapper, "@Penalty", SqlDbType.VarChar, technicalQuotation.Penalty);
+                //db.AddInParameter(dbCommandWrapper, "@Fat", SqlDbType.VarChar, technicalQuotation.Fat);
+                //db.AddInParameter(dbCommandWrapper, "@Calibration", SqlDbType.VarChar, technicalQuotation.Calibration);
+                //db.AddInParameter(dbCommandWrapper, "@Document", SqlDbType.VarChar, technicalQuotation.Alldocuments);
+                //if (string.IsNullOrEmpty(technicalQuotation.RNDPriceCur.MasterDataValue))
+                //{
+                //    db.AddInParameter(dbCommandWrapper, "@RNDPriceCur", SqlDbType.VarChar, DBNull.Value);
+                //}
+                //else
+                //{
+                //    db.AddInParameter(dbCommandWrapper, "@RNDPriceCur", SqlDbType.VarChar, technicalQuotation.RNDPriceCur.MasterDataValue);
+                //}
 
-                if (string.IsNullOrEmpty(technicalQuotation.ComPriceCur.MasterDataValue))
-                {
-                    db.AddInParameter(dbCommandWrapper, "@ComPriceCur", SqlDbType.VarChar, DBNull.Value);
-                }
-                else
-                {
-                    db.AddInParameter(dbCommandWrapper, "@ComPriceCur", SqlDbType.VarChar, technicalQuotation.ComPriceCur.MasterDataValue);
-                }
-                //db.AddInParameter(dbCommandWrapper, "@RNDPriceCur", SqlDbType.VarChar, technicalQuotation.RNDPriceCur);
-                //db.AddInParameter(dbCommandWrapper, "@ComPriceCur", SqlDbType.VarChar, technicalQuotation.ComPriceCur);
+                //if (string.IsNullOrEmpty(technicalQuotation.ComPriceCur.MasterDataValue))
+                //{
+                //    db.AddInParameter(dbCommandWrapper, "@ComPriceCur", SqlDbType.VarChar, DBNull.Value);
+                //}
+                //else
+                //{
+                //    db.AddInParameter(dbCommandWrapper, "@ComPriceCur", SqlDbType.VarChar, technicalQuotation.ComPriceCur.MasterDataValue);
+                //}
+                ////db.AddInParameter(dbCommandWrapper, "@RNDPriceCur", SqlDbType.VarChar, technicalQuotation.RNDPriceCur);
+                ////db.AddInParameter(dbCommandWrapper, "@ComPriceCur", SqlDbType.VarChar, technicalQuotation.ComPriceCur);
 
-                if (string.IsNullOrEmpty(technicalQuotation.OrderQtyUnit.Item_Code))
-                {
-                    db.AddInParameter(dbCommandWrapper, "@OrderQtyUnit", SqlDbType.VarChar, DBNull.Value);
-                }
-                else
-                {
-                    db.AddInParameter(dbCommandWrapper, "@OrderQtyUnit", SqlDbType.VarChar, technicalQuotation.OrderQtyUnit.Item_Code);
-                }
-                db.AddInParameter(dbCommandWrapper, "@LocalPartner", SqlDbType.VarChar, technicalQuotation.LocalPartner);
-                db.AddInParameter(dbCommandWrapper, "@ShelfLifeUnit", SqlDbType.VarChar, technicalQuotation.ShelfUnit);
-                db.AddInParameter(dbCommandWrapper, "@APIRegApproval", SqlDbType.VarChar, technicalQuotation.APIRegApproval);
+                //if (string.IsNullOrEmpty(technicalQuotation.OrderQtyUnit.Item_Code))
+                //{
+                //    db.AddInParameter(dbCommandWrapper, "@OrderQtyUnit", SqlDbType.VarChar, DBNull.Value);
+                //}
+                //else
+                //{
+                //    db.AddInParameter(dbCommandWrapper, "@OrderQtyUnit", SqlDbType.VarChar, technicalQuotation.OrderQtyUnit.Item_Code);
+                //}
+                //db.AddInParameter(dbCommandWrapper, "@LocalPartner", SqlDbType.VarChar, technicalQuotation.LocalPartner);
+                //db.AddInParameter(dbCommandWrapper, "@ShelfLifeUnit", SqlDbType.VarChar, technicalQuotation.ShelfUnit);
+                //db.AddInParameter(dbCommandWrapper, "@APIRegApproval", SqlDbType.VarChar, technicalQuotation.APIRegApproval);
 
 
 

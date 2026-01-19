@@ -20,8 +20,8 @@ namespace SILDMS.Service.TechnicalQuotation
         ValidationResult AddDocumentInfo(DocumentsInfo _modelDocumentsInfo,
             string _selectedPropID, List<DocMetaValue> _docMetaValues, string action,
             out BPS_NewBillReturnData docPropIdentifyList);
-        ValidationResult submitquotationService(string UserId,string invId, string biddingItemVendorID, string invitationNumber, out List<Quotation> QuotationList);
-        ValidationResult submittechnicalquotationservice(string UserId,List<Model.VendorSelectionModule.TechnicalQuotation> technicalQuotationlist, List<MaterialInvitation> materialInvitationlist, Quotation quotation, out int iD);
+        ValidationResult submitquotationService(string UserId,string invId, string biddingItemVendorID, string invitationNumber,string MaterialCode,string MaterialName, out List<Quotation> QuotationList);
+        ValidationResult submittechnicalquotationservice(string UserId, Model.VendorSelectionModule.TechnicalQuotation technicalQuotationlist,SimplifiedMaterialInvitation materialInvitationlist, Quotation quotation, out int iD);
         ValidationResult GetAllQuotationService(string UserID, out List<Quotation> quotationList);
         ValidationResult QuotWiseMaterialService(string quotationNo, out List<MaterialInvitation> allmaterial);
         ValidationResult TechQuotwiseDetailsService(string techQuotationItemID, out List<Model.VendorSelectionModule.TechnicalQuotation> technicalQuotationList);

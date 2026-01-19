@@ -18,7 +18,7 @@ namespace SILDMS.DataAccess.FinancialQuotation
             string _selectedPropID, List<DocMetaValue> _docMetaValues,
             string _action, out string _errorNumber);
         List<Quotation> submitquotationData(string invId, string biddingItemVendorID, string invitationNumber, out string errorNumber);
-        int submitfinancialquotationData(string UserId,List<FinancialQuotationDetail> financialQuotationlist, List<MaterialInvitation> materialInvitationlist,string ProposalType, Quotation quotation, out string errorNumber);
+        int submitfinancialquotationData(string UserId,FinancialQuotationDetail financialQuotationlist, SimplifiedMaterialInvitation materialInvitationlist,string ProposalType, Quotation quotation, out string errorNumber);
         List<Quotation> GetAllQuotationData(string userid,out string errorNumber);
         List<MaterialInvitation> QuotWiseMaterialData(string UserId,string quotationNo, out string errorNumber);
         List<FinancialQuotationDetail> FinQuotwiseDetailsData(string finQuotationItemID, out string errorNumber);

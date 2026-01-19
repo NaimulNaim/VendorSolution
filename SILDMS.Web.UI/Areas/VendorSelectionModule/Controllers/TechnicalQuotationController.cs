@@ -205,15 +205,21 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
         [HttpPost]
         [Authorize]
 
-        public async Task<dynamic> submitquotation(string InvId, string VendorID, string InvitationNumber)
+        public async Task<dynamic> submitquotation(string InvId, string VendorID, string InvitationNumber,string MaterialCode,string MaterialName)
         {
             var QuotationList = new List<Quotation>();
-            await Task.Run(() => _technicalQuotationService.submitquotationService(UserID, InvId, VendorID, InvitationNumber, out QuotationList));
+            await Task.Run(() => _technicalQuotationService.submitquotationService(UserID, InvId, VendorID, InvitationNumber, MaterialCode, MaterialName, out QuotationList));
             return Json(new { QuotationList, Msg = "" }, JsonRequestBehavior.AllowGet);
         }
 
-        public async Task<dynamic> submittechnicalquotation(List<TechnicalQuotation> TechnicalQuotationlist, List<MaterialInvitation> MaterialInvitationlist, Quotation Quotation)
+        public async Task<dynamic> submittechnicalquotation(
+              TechnicalQuotation TechnicalQuotationlist,
+   SimplifiedMaterialInvitation MaterialInvitationlist,
+    Quotation Quotation)
+
         {
+            //TechnicalQuotation TechnicalQuotation = new TechnicalQuotation();
+            //MaterialInvitation MaterialInvitation = new MaterialInvitation();
             int ID = 0;
             var QuotationList = new List<Quotation>();
             await Task.Run(() => _technicalQuotationService.submittechnicalquotationservice(UserID, TechnicalQuotationlist, MaterialInvitationlist, Quotation, out ID));
