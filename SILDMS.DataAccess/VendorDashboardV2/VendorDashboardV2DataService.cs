@@ -111,8 +111,11 @@ namespace SILDMS.DataAccess.VendorDashboardV2
                     invitationRunninglList = dt1.AsEnumerable().Select(reader => new DashBoardInvitationRunninglList
                     {
                         InnvitationNumber = reader.GetString("InvitationNumber"),
-                        InnvitationDt = reader.GetString("InvitationSendingDate"),
+                        QuotationSetOn = reader.GetString("QuotationSetOn"),
                         QuotationlastDt = reader.GetString("QuotationSendingLastDate"),
+                        QuotationNo = reader.GetString("QuotationNo"),
+                        TechQuotationItemID = reader.GetString("TechQuotationItemID"),
+                        FinanQuotationItemID = reader.GetString("FinanQuotationItemID"),
 
                     }).ToList();
                     pd.InvitationRunninglList = invitationRunninglList;

@@ -104,7 +104,7 @@
     <div class="box box-primary box-solid">
         <div class="box-header with-border" style="padding-top:5px;padding-bottom:5px">
             <i class="fa fa-user"></i>
-            <h3 class="box-title text-center">Vendor Invitations</h3>
+            <h3 class="box-title text-center">Vendor Dashboard</h3>
         </div>
         <div class="box-body">
             <div class="row">
@@ -117,7 +117,7 @@
                                         <div class="divCHQ">
                                             <div class="description-block">
                                                 <h5 class="description-header">{{TechInvToRespTotal === "" ? 0 : TechInvToRespTotal}}</h5>
-                                                <span><b>Technical Invitation to Response </b></span>
+                                                <span><b>Technical Proposal to Submit </b></span>
                                             </div>
                                         </div>
                                     </div>
@@ -127,7 +127,7 @@
                                         <div class="divDU">
                                             <div class="description-block">
                                                 <h5 class="description-header">{{FinanInvToRespTotal === "" ? 0 : FinanInvToRespTotal}}</h5>
-                                                <span>Financial Invitations to Response</span>
+                                                <span>Financial Quotation to Submit</span>
                                             </div>
                                         </div>
 
@@ -138,7 +138,7 @@
                                         <div class="divPU">
                                             <div class="description-block">
                                                 <h5 class="description-header">{{RunInvTotal === "" ? 0 : RunInvTotal}}</h5>
-                                                <span>Running Invitations</span>
+                                                <span>Quotations Submitted</span>
                                             </div>
                                         </div>
                                     </div>
@@ -163,32 +163,32 @@
         <div class="col-sm-4">
             <div class="box box-primary box-solid">
                 <div class="box-header with-border" style="padding-top:5px;padding-bottom:5px">
-                    <h3 class="box-title text-center">Technical Quotation to Response</h3>
+                    @*<h3 class="box-title text-center">Technical Quotation to Response</h3>*@
                 </div>
                 <div class="box-body">
                     <table st-table="displayedCollection" st-safe-src="" class="table table-condensed table-bordered table-striped table-hover">
                         <thead>
                             <tr>
-                                <th>Invitation No</th>
-                                <th>Invitation Date</th>
-                                <th>Quot. Last Dt</th>
-                                <th>Action</th>
+                                <th style="text-align:center;">RFQ No</th>
+                                <th style="text-align:center;">RFQ Date</th>
+                                <th style="text-align:center;">RFQ Deadline</th>
+                                <th style="text-align:center;">Action</th>
                             </tr>
                         </thead>
 
                         <tbody>
                             <tr ng-repeat="item in invitationTecnicalList">
                                 <td ng-style="item.TotalItem == 0 ? {'cursor': 'not-allowed'} : {'cursor': 'pointer'}">
-                                    <a ng-if="item.TotalItem != 0" href="/VendorSelectionModule/TechnicalQuotation?InnvitationNumber={{item.InnvitationNumber}}" style="color: #3c8dbc !important;">
+                                    <a ng-if="item.TotalItem != 0" href="/VendorSelectionModule/TechnicalQuotation?InvitationNumber={{item.InnvitationNumber}}" style="color: #3c8dbc !important;text-align:center;">
 
                                         {{item.InnvitationNumber}}
                                     </a>
                                 </td>
 
 
-                                <td>{{formatDatetest(item.InnvitationDt)}}</td>
-                                <td>{{formatDatetest(item.QuotationlastDt)}}</td>
-                                <td>
+                                <td style="text-align:center;">{{formatDatetest(item.InnvitationDt)}}</td>
+                                <td style="text-align:center;">{{formatDatetest(item.QuotationlastDt)}}</td>
+                                <td style="text-align:center;">
                                     <button type="button" ng-click="selectPR(item)" data-dismiss="modal" title="Select">
                                         <i class="fa fa-info"></i>
                                     </button>
@@ -214,31 +214,31 @@
         <div class="col-sm-4">
             <div class="box box-primary box-solid">
                 <div class="box-header with-border" style="padding-top:5px;padding-bottom:5px">
-                    <h3 class="box-title text-center">Financial Quotation to Response</h3>
+                    @*<h3 class="box-title text-center">Financial Quotation to Response</h3>*@
                 </div>
                 <div class="box-body">
                     <table st-table="displayedCollection" st-safe-src="" class="table table-condensed table-bordered table-striped table-hover">
                         <thead>
                             <tr>
-                                <th>Invitation No</th>
-                                <th>Invitation Date</th>
-                                <th>Quot. Last Dt</th>
-                                <th>Action</th>
+                                <th style="text-align:center;">RFQ No</th>
+                                <th style="text-align:center;">RFQ Date</th>
+                                <th style="text-align:center;">RFQ Deadline</th>
+                                <th style="text-align:center;">Action</th>
                             </tr>
                         </thead>
 
                         <tbody>
                             <tr ng-repeat="item in invitationFinanList">
                                 <td ng-style="item.TotalItem == 0 ? {'cursor': 'not-allowed'} : {'cursor': 'pointer'}">
-                                    <a ng-if="item.TotalItem != 0" href="/VendorSelectionModule/FinancialQuotation?InnvitationNumber={{item.InnvitationNumber}}"  style="color: #3c8dbc !important;">
+                                    <a ng-if="item.TotalItem != 0" href="/VendorSelectionModule/FinancialQuotation?InvitationNumber={{item.InnvitationNumber}}" style="color: #3c8dbc !important;">
 
                                         {{item.InnvitationNumber}}
                                     </a>
                                 </td>
-                                <td>{{formatDatetest(item.InnvitationDt)}}</td>
-                                <td>{{formatDatetest(item.QuotationlastDt)}}</td>
-                                <td>
-                                    <button type="button" ng-click="selectPR(item)" data-dismiss="modal" title="Select">
+                                <td style="text-align:center;">{{formatDatetest(item.InnvitationDt)}}</td>
+                                <td style="text-align:center;">{{formatDatetest(item.QuotationlastDt)}}</td>
+                                <td style="text-align:center;">
+                                    <button type="button" ng-click="selectPR(item)" data-dismiss="modal" title="Select" style="text-align:center;">
                                         <i class="fa fa-info"></i>
                                     </button>
                                 </td>
@@ -265,30 +265,47 @@
         <div class="col-md-4">
             <div class="box box-primary box-solid">
                 <div class="box-header with-border" style="padding-top:5px;padding-bottom:5px">
-                    <h3 class="box-title text-center">Running Quotation to Response</h3>
+                    @*<h3 class="box-title text-center">Running Quotation to Response</h3>*@
                 </div>
                 <div class="box-body">
                     <table st-table="displayedCollection" st-safe-src="" class="table table-condensed table-bordered table-striped table-hover">
                         <thead>
                             <tr>
-                                <th>Invitation No</th>
-                                <th>Invitation Date</th>
-                                <th>Quot. Last Dt</th>
-                                <th>Action</th>
+                      
+                                <th style="text-align:center;">Quotation No</th>
+                                <th style="text-align:center;">Quotation Date</th>
+                                <th style="text-align:center;">RFQ Deadline</th>
+                            
+
+                                <th style="text-align:center;">Action</th>
                             </tr>
                         </thead>
 
                         <tbody>
                             <tr ng-repeat="item in invitationRunninglList">
-                                <td>{{item.InnvitationNumber}}</td>
-                                <td>{{formatDatetest(item.InnvitationDt)}}</td>
-                                <td>{{formatDatetest(item.QuotationlastDt)}}</td>
-                                <td>
-                                    <button type="button" ng-click="selectPR(item)" data-dismiss="modal" title="Select">
-                                        <i class="fa fa-info"></i>
-                                    </button>
+                                <td>{{item.QuotationNo}}</td>
+                                <td style="text-align:center;">{{formatDatetest(item.QuotationSetOn)}}</td>
+                                <td style="text-align:center;">{{formatDatetest(item.QuotationlastDt)}}</td>
+                                <td style="text-align:center;">
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <!-- Tech Quotation Button -->
+                                        <a ng-if="item.TechQuotationItemID"
+                                           ng-href="/VendorSelectionModule/TechnicalQuotation?InvitationNumber={{item.InnvitationNumber}}&QuotationNo={{item.QuotationNo}}"
+                                           class="btn btn-sm btn-primary"
+                                           title="Technical Quotation">
+                                            TQ
+                                        </a>
+
+                                        <!-- Financial Quotation Button -->
+                                        <a ng-if="item.FinanQuotationItemID"
+                                           ng-href="/VendorSelectionModule/FinancialQuotation?InvitationNumber={{item.InnvitationNumber}}&QuotationNo={{item.QuotationNo}}"
+                                           class="btn btn-sm btn-success"
+                                           title="Financial Quotation">
+                                            FQ
+                                        </a>
+                                    </div>
                                 </td>
-                            </tr>
+</tr>
                         </tbody>
 
                         <tfoot>

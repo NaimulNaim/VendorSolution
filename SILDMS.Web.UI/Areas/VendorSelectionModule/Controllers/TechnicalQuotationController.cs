@@ -1,4 +1,5 @@
 ﻿using Antlr.Runtime.Misc;
+using Newtonsoft.Json;
 using SILDMS.Model.CBPSModule;
 using SILDMS.Model.DocScanningModule;
 using SILDMS.Model.VendorSelectionModule;
@@ -45,7 +46,7 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
         [Authorize]
         public async Task<dynamic> loadItemType(string masterDataType)
         {
-            
+
             var itemTypes = new List<SILDMS.Model.CBPSModule.Sys_MasterData>();
             await Task.Run(() => _technicalQuotationService.GetAllItemTypes(masterDataType, out itemTypes));
             var result = itemTypes.Select(x => new
@@ -205,43 +206,102 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
         [HttpPost]
         [Authorize]
 
-        public async Task<dynamic> submitquotation(string InvId, string VendorID, string InvitationNumber,string MaterialCode,string MaterialName)
+        public async Task<dynamic> submitquotation(string InvId, string VendorID, string InvitationNumber, string MaterialCode, string MaterialName)
         {
             var QuotationList = new List<Quotation>();
             await Task.Run(() => _technicalQuotationService.submitquotationService(UserID, InvId, VendorID, InvitationNumber, MaterialCode, MaterialName, out QuotationList));
             return Json(new { QuotationList, Msg = "" }, JsonRequestBehavior.AllowGet);
         }
 
-        public async Task<dynamic> submittechnicalquotation(
-              TechnicalQuotation TechnicalQuotationlist,
-   SimplifiedMaterialInvitation MaterialInvitationlist,
-    Quotation Quotation)
+        //public async Task<dynamic> submittechnicalquotation(
+        //      TechnicalQuotation TechnicalQuotation, SimplifiedMaterialInvitation MaterialInvitationlist, Quotation Quotation)
 
+        //{
+        //    //TechnicalQuotation TechnicalQuotation = new TechnicalQuotation();
+        //    //SimplifiedMaterialInvitation MaterialInvitationlist = new SimplifiedMaterialInvitation();
+        //    int ID = 0;
+        //    var QuotationList = new List<Quotation>();
+        //    await Task.Run(() => _technicalQuotationService.submittechnicalquotationservice(UserID, TechnicalQuotation, MaterialInvitationlist, Quotation, out ID));
+        //    if (ID > 0)
+        //    {
+        //        respStatus.Message = "Data Saved Successfully";
+        //        return Json(new
+        //        {
+        //            respStatus,
+        //            Msg = ""
+        //        }, JsonRequestBehavior.AllowGet);
+        //    }
+        //    else
+        //    {
+        //        respStatus.Message = "Error Found";
+        //        return Json(new
+        //        {
+        //            respStatus,
+        //            Msg = ""
+        //        }, JsonRequestBehavior.AllowGet);
+        //    }
+
+        //}
+
+
+        [HttpPost]
+        public async Task<JsonResult> submittechnicalquotation()
         {
-            //TechnicalQuotation TechnicalQuotation = new TechnicalQuotation();
-            //MaterialInvitation MaterialInvitation = new MaterialInvitation();
-            int ID = 0;
-            var QuotationList = new List<Quotation>();
-            await Task.Run(() => _technicalQuotationService.submittechnicalquotationservice(UserID, TechnicalQuotationlist, MaterialInvitationlist, Quotation, out ID));
-            if (ID > 0)
-            {
-                respStatus.Message = "Data Saved Successfully";
-                return Json(new
-                {
-                    respStatus,
-                    Msg = ""
-                }, JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-                respStatus.Message = "Error Found";
-                return Json(new
-                {
-                    respStatus,
-                    Msg = ""
-                }, JsonRequestBehavior.AllowGet);
-            }
+            System.Diagnostics.Debug.WriteLine("===== CONTROLLER HIT =====");
 
+            try
+            {
+                // Read raw request
+                Request.InputStream.Position = 0;
+                string requestBody = new System.IO.StreamReader(Request.InputStream).ReadToEnd();
+                System.Diagnostics.Debug.WriteLine("Request received");
+
+                // Parse JSON
+                dynamic jsonData = JsonConvert.DeserializeObject(requestBody);
+
+                var TechnicalQuotation = JsonConvert.DeserializeObject<TechnicalQuotation>(
+                    jsonData.TechnicalQuotation.ToString());
+                var MaterialInvitationlist = JsonConvert.DeserializeObject<SimplifiedMaterialInvitation>(
+                   jsonData.MaterialInvitationlist.ToString());
+                var Quotation = JsonConvert.DeserializeObject<Quotation>(
+                    jsonData.Quotation.ToString());
+
+                //SimplifiedMaterialInvitation MaterialInvitationlist = new SimplifiedMaterialInvitation();
+                int ID = 0;
+
+                await Task.Run(() => _technicalQuotationService.submittechnicalquotationservice(
+                    UserID, TechnicalQuotation, MaterialInvitationlist, Quotation, out ID));
+
+                if (ID > 0)
+                {
+                    respStatus.Message = "Data Saved Successfully";
+                    return Json(new
+                    {
+                        respStatus,
+                        Msg = ""
+                    }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    respStatus.Message = "Error Found";
+                    return Json(new
+                    {
+                        respStatus,
+                        Msg = ""
+                    }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("EXCEPTION: " + ex.Message);
+                System.Diagnostics.Debug.WriteLine("STACK: " + ex.StackTrace);
+
+                return Json(new
+                {
+                    error = ex.Message,
+                    stack = ex.StackTrace
+                }, JsonRequestBehavior.AllowGet);
+            }
         }
 
 
@@ -282,6 +342,7 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
 
 
         [Authorize]
+        [HttpPost]
         public async Task<dynamic> SaveTechQuotwiseDetails(TechnicalQuotation technicalQuotation)
         {
             long ID = 0;

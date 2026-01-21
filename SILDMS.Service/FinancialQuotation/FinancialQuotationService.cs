@@ -40,9 +40,9 @@ namespace SILDMS.Service.FinancialQuotation
                 : ValidationResult.Success;
         }
 
-        public ValidationResult InvWiseMaterialService(string UserID, string invNumber,string ProposalTYpe,string fintype, out List<MaterialInvitation> materialList)
+        public ValidationResult InvWiseMaterialService(string UserID, string invNumber, out List<MaterialInvitation> materialList)
         {
-            materialList = _financialQuotationData.InvWiseMaterialData(UserID, invNumber, ProposalTYpe, fintype, out _errorNumber);
+            materialList = _financialQuotationData.InvWiseMaterialData(UserID, invNumber, out _errorNumber);
             return _errorNumber.Length > 0
                 ? new ValidationResult(_errorNumber, _localizationService.GetResource(_errorNumber))
                 : ValidationResult.Success;

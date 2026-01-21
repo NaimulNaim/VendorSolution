@@ -26,7 +26,7 @@ namespace SILDMS.DataAccess.FinancialQuotation
             var db = factory.CreateDefault() as SqlDatabase;
             using (var dbCommandWrapper = db.GetStoredProcCommand("VCMS_InvitationForFinancialQuotation"))
             {
-                db.AddInParameter(dbCommandWrapper, "@UserId", SqlDbType.VarChar,  userid);
+                db.AddInParameter(dbCommandWrapper, "@UserId", SqlDbType.VarChar, userid);
                 db.AddOutParameter(dbCommandWrapper, "@p_Error", DbType.Int32, 10);
                 // Execute SP.
 
@@ -47,8 +47,7 @@ namespace SILDMS.DataAccess.FinancialQuotation
                         invitationList = dt1.AsEnumerable().Select(reader => new Invitation
                         {
                             Invitation_Number = reader.GetString("InvitationNumber"),
-                            ProposalType = reader.GetString("Proposal"),
-                            Fintype = reader.GetString("Fintype"),
+
 
                         }).ToList();
                     }
@@ -57,7 +56,7 @@ namespace SILDMS.DataAccess.FinancialQuotation
             return invitationList;
         }
 
-        public List<MaterialInvitation> InvWiseMaterialData(string UserID, string invNumber,string ProposalType,string fintype, out string errorNumber)
+        public List<MaterialInvitation> InvWiseMaterialData(string UserID, string invNumber, out string errorNumber)
         {
             errorNumber = string.Empty;
             var InvMaterialList = new List<MaterialInvitation>();
@@ -68,8 +67,7 @@ namespace SILDMS.DataAccess.FinancialQuotation
             {
                 db.AddInParameter(dbCommandWrapper, "@UserID", SqlDbType.VarChar, UserID);
                 db.AddInParameter(dbCommandWrapper, "@InvNumber", SqlDbType.VarChar, invNumber);
-                db.AddInParameter(dbCommandWrapper, "@ProposalType", SqlDbType.VarChar, ProposalType);
-                db.AddInParameter(dbCommandWrapper, "@fintype", SqlDbType.VarChar, fintype);
+
                 db.AddOutParameter(dbCommandWrapper, "@p_Error", DbType.Int32, 10);
                 // Execute SP.
 
@@ -105,7 +103,8 @@ namespace SILDMS.DataAccess.FinancialQuotation
                             VendorID = reader.GetString("VendorID"),
                             BiddingID = reader.GetString("BiddingID"),
                             Status = reader.GetInt32("Status"),
-                            Fintype=reader.GetString("Fintype"),
+                            Fintype = reader.GetString("Fintype"),
+                            Proposal = reader.GetString("Proposal"),
 
                             QuotationID = dt1.Columns.Contains("QuotationID") && !reader.IsNull("QuotationID")
                        ? Convert.ToInt64(reader["QuotationID"])
@@ -466,527 +465,6 @@ namespace SILDMS.DataAccess.FinancialQuotation
                 // Quantity and Unit (Existing)
                 // =======================
                 db.AddInParameter(dbCommandWrapper, "@ProposeQty", SqlDbType.Decimal, financialQuotationDetail.ProposeQty);
-           
-           
-
-                // =======================
-                // Pricing Information
-                // =======================
-              
-                db.AddInParameter(dbCommandWrapper, "@Price", SqlDbType.Decimal, financialQuotationDetail.Price ?? (object)DBNull.Value);
-                db.AddInParameter(dbCommandWrapper, "@Per", SqlDbType.Decimal, financialQuotationDetail.Per);
-                if (string.IsNullOrEmpty(financialQuotationDetail.PriceUnit.Item_Code))
-                {
-                    db.AddInParameter(dbCommandWrapper, "@PriceUnit", SqlDbType.VarChar, DBNull.Value);
-                }
-                else
-                {
-                    db.AddInParameter(dbCommandWrapper, "@PriceUnit", SqlDbType.VarChar, financialQuotationDetail.PriceUnit.Item_Code);
-                }
-              
-
-                if (string.IsNullOrEmpty(financialQuotationDetail.Currency.MasterDataID))
-                {
-                    db.AddInParameter(dbCommandWrapper, "@Currency", SqlDbType.VarChar, DBNull.Value);
-                }
-                else
-                {
-                    db.AddInParameter(dbCommandWrapper, "@Currency", SqlDbType.VarChar, financialQuotationDetail.Currency.MasterDataID);
-                }
-
-                // =======================
-                // Calculated Prices (Existing)
-                // =======================
-            
-
-                // =======================
-                // Taxes and Charges
-                // =======================
-             
-                
-                db.AddInParameter(dbCommandWrapper, "@VAT", SqlDbType.VarChar, financialQuotationDetail.VAT);
-                db.AddInParameter(dbCommandWrapper, "@Tax", SqlDbType.VarChar, financialQuotationDetail.Tax);
-                db.AddInParameter(dbCommandWrapper, "@Freight", SqlDbType.Decimal, financialQuotationDetail.Freight ?? (object)DBNull.Value);
-                db.AddInParameter(dbCommandWrapper, "@Discount", SqlDbType.Decimal, financialQuotationDetail.Discount ?? (object)DBNull.Value);
-                db.AddInParameter(dbCommandWrapper, "@OrderHandlingCharges", SqlDbType.Decimal, financialQuotationDetail.OrderHandlingCharges ?? (object)DBNull.Value);
-                db.AddInParameter(dbCommandWrapper, "@PackingCharges", SqlDbType.Decimal, financialQuotationDetail.PackingCharges ?? (object)DBNull.Value);
-                db.AddInParameter(dbCommandWrapper, "@SundryCharges", SqlDbType.Decimal, financialQuotationDetail.SundryCharges ?? (object)DBNull.Value);
-                db.AddInParameter(dbCommandWrapper, "@DeliveryCharge", SqlDbType.Decimal, financialQuotationDetail.DeliveryCharge ?? (object)DBNull.Value);
-
-                // =======================
-                // Quantity Information
-                // =======================
-                db.AddInParameter(dbCommandWrapper, "@QuotationQty", SqlDbType.Decimal, financialQuotationDetail.QuotationQty);
-            
-                if (string.IsNullOrEmpty(financialQuotationDetail.QuotationQtyUnit.Item_Code))
-                {
-                    db.AddInParameter(dbCommandWrapper, "@QuotationQtyUnit", SqlDbType.VarChar, DBNull.Value);
-                }
-                else
-                {
-                    db.AddInParameter(dbCommandWrapper, "@QuotationQtyUnit", SqlDbType.VarChar, financialQuotationDetail.QuotationQtyUnit.Item_Code);
-                }
-
-                db.AddInParameter(dbCommandWrapper, "@QtyTolerance", SqlDbType.Decimal, financialQuotationDetail.QtyTolerance );
-                db.AddInParameter(dbCommandWrapper, "@MinimumOrderQty", SqlDbType.Decimal, financialQuotationDetail.MinimumOrderQty);
-                db.AddInParameter(dbCommandWrapper, "@PackSize", SqlDbType.VarChar,
-                    string.IsNullOrEmpty(financialQuotationDetail.PackSize) ? (object)DBNull.Value : financialQuotationDetail.PackSize);
-
-                // =======================
-                // Delivery Information
-                // =======================
-                db.AddInParameter(dbCommandWrapper, "@DeliveryTimeline", SqlDbType.VarChar,
-                    string.IsNullOrEmpty(financialQuotationDetail.DeliveryTimeline) ? (object)DBNull.Value : financialQuotationDetail.DeliveryTimeline);
-                //db.AddInParameter(dbCommandWrapper, "@ExpecDeliDate", SqlDbType.DateTime, financialQuotationDetail.ExpecDeliDate);
-                db.AddInParameter(dbCommandWrapper, "@PartDelivery", SqlDbType.VarChar,
-                    string.IsNullOrEmpty(financialQuotationDetail.PartDelivery) ? (object)DBNull.Value : financialQuotationDetail.PartDelivery);
-                db.AddInParameter(dbCommandWrapper, "@Incoterms", SqlDbType.VarChar,
-                    string.IsNullOrEmpty(financialQuotationDetail.Incoterms?.MasterDataID) ? (object)DBNull.Value : financialQuotationDetail.Incoterms.MasterDataID);
-                db.AddInParameter(dbCommandWrapper, "@IncotermsLocation", SqlDbType.VarChar,
-                    string.IsNullOrEmpty(financialQuotationDetail.IncotermsLocation?.MasterDataID) ? (object)DBNull.Value : financialQuotationDetail.IncotermsLocation.MasterDataID);
-                db.AddInParameter(dbCommandWrapper, "@ShipmentMode", SqlDbType.VarChar,
-                    string.IsNullOrEmpty(financialQuotationDetail.ShipmentMode) ? (object)DBNull.Value : financialQuotationDetail.ShipmentMode);
-                db.AddInParameter(dbCommandWrapper, "@InlandTransportation", SqlDbType.VarChar,
-                    string.IsNullOrEmpty(financialQuotationDetail.InlandTransportation) ? (object)DBNull.Value : financialQuotationDetail.InlandTransportation);
-
-                // =======================
-                // Payment Information
-                // =======================
-                db.AddInParameter(dbCommandWrapper, "@PaymentMode", SqlDbType.VarChar,
-                    string.IsNullOrEmpty(financialQuotationDetail.PaymentMode?.MasterDataID) ? (object)DBNull.Value : financialQuotationDetail.PaymentMode.MasterDataID);
-                db.AddInParameter(dbCommandWrapper, "@PaymentTerms", SqlDbType.VarChar,
-                    string.IsNullOrEmpty(financialQuotationDetail.PaymentTerms) ? (object)DBNull.Value : financialQuotationDetail.PaymentTerms);
-
-                // =======================
-                // Validity and Terms
-                // =======================
-                db.AddInParameter(dbCommandWrapper, "@QuotationValidity", SqlDbType.VarChar,
-                    string.IsNullOrEmpty(financialQuotationDetail.QuotationValidity) ? (object)DBNull.Value : financialQuotationDetail.QuotationValidity);
-                //db.AddInParameter(dbCommandWrapper, "@QuotValidDate", SqlDbType.DateTime, financialQuotationDetail.QuotValidDate);
-
-                // =======================
-                // Manufacturer Information
-                // =======================
-                db.AddInParameter(dbCommandWrapper, "@ManufacturerPartNo", SqlDbType.VarChar,
-                    string.IsNullOrEmpty(financialQuotationDetail.ManufacturerPartNo) ? (object)DBNull.Value : financialQuotationDetail.ManufacturerPartNo);
-                db.AddInParameter(dbCommandWrapper, "@ManufacturerName", SqlDbType.VarChar,
-                    string.IsNullOrEmpty(financialQuotationDetail.ManufacturerName) ? (object)DBNull.Value : financialQuotationDetail.ManufacturerName);
-                db.AddInParameter(dbCommandWrapper, "@ManufacturerSiteAddress", SqlDbType.VarChar,
-                    string.IsNullOrEmpty(financialQuotationDetail.ManufacturerSiteAddress) ? (object)DBNull.Value : financialQuotationDetail.ManufacturerSiteAddress);
-
-                // =======================
-                // Service and Support
-                // =======================
-                db.AddInParameter(dbCommandWrapper, "@Warranty", SqlDbType.VarChar,
-                    string.IsNullOrEmpty(financialQuotationDetail.Warranty) ? (object)DBNull.Value : financialQuotationDetail.Warranty);
-                db.AddInParameter(dbCommandWrapper, "@Installation", SqlDbType.VarChar,
-                    string.IsNullOrEmpty(financialQuotationDetail.Installation) ? (object)DBNull.Value : financialQuotationDetail.Installation);
-                db.AddInParameter(dbCommandWrapper, "@Servicing", SqlDbType.VarChar,
-                    string.IsNullOrEmpty(financialQuotationDetail.Servicing) ? (object)DBNull.Value : financialQuotationDetail.Servicing);
-
-                // =======================
-                // Additional Details
-                // =======================
-                db.AddInParameter(dbCommandWrapper, "@KeyCustomerList", SqlDbType.VarChar,
-                    string.IsNullOrEmpty(financialQuotationDetail.KeyCustomerList) ? (object)DBNull.Value : financialQuotationDetail.KeyCustomerList);
-                db.AddInParameter(dbCommandWrapper, "@Subcontractor", SqlDbType.VarChar,
-                    string.IsNullOrEmpty(financialQuotationDetail.Subcontractor) ? (object)DBNull.Value : financialQuotationDetail.Subcontractor);
-                db.AddInParameter(dbCommandWrapper, "@SubcontractorDetails", SqlDbType.VarChar,
-                    string.IsNullOrEmpty(financialQuotationDetail.SubcontractorDetails) ? (object)DBNull.Value : financialQuotationDetail.SubcontractorDetails);
-                db.AddInParameter(dbCommandWrapper, "@ReturnableItem", SqlDbType.VarChar,
-                    string.IsNullOrEmpty(financialQuotationDetail.ReturnableItem) ? (object)DBNull.Value : financialQuotationDetail.ReturnableItem);
-                db.AddInParameter(dbCommandWrapper, "@PenaltyClause", SqlDbType.VarChar,
-                    string.IsNullOrEmpty(financialQuotationDetail.PenaltyClause) ? (object)DBNull.Value : financialQuotationDetail.PenaltyClause);
-                db.AddInParameter(dbCommandWrapper, "@Remarks", SqlDbType.VarChar,
-                    string.IsNullOrEmpty(financialQuotationDetail.Remarks) ? (object)DBNull.Value : financialQuotationDetail.Remarks);
-
-                // =======================
-                // Material Invitation Parameters
-                // =======================
-                db.AddInParameter(dbCommandWrapper, "@invitationNumber", SqlDbType.VarChar, materialInvitation.invitationNumber);
-                db.AddInParameter(dbCommandWrapper, "@materialCode", SqlDbType.VarChar, materialInvitation.materialCode);
-                db.AddInParameter(dbCommandWrapper, "@materialName", SqlDbType.VarChar, materialInvitation.materialName);
-    
-                db.AddInParameter(dbCommandWrapper, "@sampleDocId", SqlDbType.VarChar,
-                string.IsNullOrEmpty(financialQuotationDetail.SampleDocumentID) ? (object)DBNull.Value : financialQuotationDetail.SampleDocumentID);
-                db.AddInParameter(dbCommandWrapper, "@VendorID", SqlDbType.VarChar, materialInvitation.VendorID);
-                db.AddInParameter(dbCommandWrapper, "@modificationType", SqlDbType.VarChar, materialInvitation.modificationType);
-                db.AddInParameter(dbCommandWrapper, "@setOn", SqlDbType.DateTime, materialInvitation.setOn);
-                db.AddInParameter(dbCommandWrapper, "@setBy", SqlDbType.VarChar, userid);
-                db.AddInParameter(dbCommandWrapper, "@modifiedOn", SqlDbType.DateTime, materialInvitation.modifiedOn);
-                db.AddInParameter(dbCommandWrapper, "@modifiedBy", SqlDbType.VarChar, userid);
-                db.AddInParameter(dbCommandWrapper, "@status", SqlDbType.VarChar, '1');
-                db.AddInParameter(dbCommandWrapper, "@RequstedQty", SqlDbType.Decimal, Convert.ToDecimal(materialInvitation.MaterialQuantity));
-         
-                db.AddInParameter(dbCommandWrapper, "@Unit", SqlDbType.VarChar, materialInvitation.Unit);
-                db.AddInParameter(dbCommandWrapper, "@material_Category_Code", SqlDbType.VarChar, materialInvitation.material_Category_Code);
-
-                // =======================
-                // Quotation ID/No based on ProposalType
-                // =======================
-                if (ProposalType == "FINANCIAL")
-                {
-                    db.AddInParameter(dbCommandWrapper, "@quotationID", SqlDbType.VarChar, quotation.quotationID);
-                    db.AddInParameter(dbCommandWrapper, "@quotationNo", SqlDbType.VarChar, quotation.quotationNo);
-                }
-                else
-                {
-                    db.AddInParameter(dbCommandWrapper, "@quotationID", SqlDbType.VarChar, materialInvitation.QuotationID);
-                    db.AddInParameter(dbCommandWrapper, "@quotationNo", SqlDbType.VarChar, materialInvitation.QuotationNo);
-                }
-                db.AddInParameter(dbCommandWrapper, "@proposalType", SqlDbType.VarChar, ProposalType);
-                db.AddInParameter(dbCommandWrapper, "@Fintype", SqlDbType.VarChar, financialQuotationDetail.Fintype);
-
-                // =======================
-                // Execute and Get Result
-                // =======================
-                DataSet ds = db.ExecuteDataSet(dbCommandWrapper);
-
-                if (ds.Tables[0].Rows.Count > 0)
-                {
-                    var dt = ds.Tables[0];
-                    var dr = dt.Rows[0];
-                    ID = dr.GetInt32("ID");
-                }
-            }
-
-            return ID;
-        }
-
-        public List<Quotation> GetAllQuotationData(string userid, out string errorNumber)
-        {
-            errorNumber = string.Empty;
-            var QuotationList = new List<Quotation>();
-
-            var factory = new DatabaseProviderFactory();
-            var db = factory.CreateDefault() as SqlDatabase;
-            using (var dbCommandWrapper = db.GetStoredProcCommand("VCMS_GetAllFinancialQuotation"))
-            {
-                db.AddInParameter(dbCommandWrapper, "@userid", SqlDbType.VarChar, userid);
-
-                db.AddOutParameter(dbCommandWrapper, "@p_Error", DbType.Int32, 10);
-                // Execute SP.
-
-                var ds = db.ExecuteDataSet(dbCommandWrapper);
-
-                if (!db.GetParameterValue(dbCommandWrapper, "@p_Error").IsNullOrZero())
-                {
-                    errorNumber = db.GetParameterValue(dbCommandWrapper, "@p_Error").PrefixErrorCode();
-                }
-                else
-                {
-                    if (ds.Tables[0].Rows.Count > 0)
-                    {
-
-                        DataTable dt1 = new DataTable();
-                        dt1 = ds.Tables[0];
-
-                        QuotationList = dt1.AsEnumerable().Select(reader => new Quotation
-                        {
-
-                            quotationID = reader.GetString("QuotationID"),
-                            quotationNo = reader.GetString("QuotationNo"),
-                            InvitationNumber = reader.GetString("InvitationNumber"),
-                            QuotationDate = reader.GetDateTime("SetOn").ToString("dd/MM/yyyy"),
-
-
-
-
-
-                        }).ToList();
-                    }
-                }
-            }
-            return QuotationList;
-        }
-
-        public List<MaterialInvitation> QuotWiseMaterialData(string UserId, string quotationNo, out string errorNumber)
-        {
-            errorNumber = string.Empty;
-            var QuotMaterialList = new List<MaterialInvitation>();
-
-            var factory = new DatabaseProviderFactory();
-            var db = factory.CreateDefault() as SqlDatabase;
-            using (var dbCommandWrapper = db.GetStoredProcCommand("VCMS_QuoteFinancialQuotation"))
-            {
-                db.AddInParameter(dbCommandWrapper, "@quotationNo", SqlDbType.VarChar, quotationNo);
-                db.AddInParameter(dbCommandWrapper, "@userid", SqlDbType.VarChar, UserId);
-                db.AddOutParameter(dbCommandWrapper, "@p_Error", DbType.Int32, 10);
-                // Execute SP.
-
-                var ds = db.ExecuteDataSet(dbCommandWrapper);
-
-                if (!db.GetParameterValue(dbCommandWrapper, "@p_Error").IsNullOrZero())
-                {
-                    errorNumber = db.GetParameterValue(dbCommandWrapper, "@p_Error").PrefixErrorCode();
-                }
-                else
-                {
-                    if (ds.Tables[0].Rows.Count > 0)
-                    {
-
-                        DataTable dt1 = new DataTable();
-                        dt1 = ds.Tables[0];
-
-                        QuotMaterialList = dt1.AsEnumerable().Select(reader => new MaterialInvitation
-                        {
-
-                            FinanQuotationItemID = reader.GetString("FinanQuotationItemID"),
-                            materialName = reader.GetString("MaterialName"),
-                            MaterialQuantity = reader.GetString("RFQQty"),
-                            Unit = reader.GetString("RFQQtyUnit"),
-                            MatInvType = reader.GetString("Proposal"),
-                            Fintype = reader.GetString("Fintype"),
-                            materialCode = reader.GetString("MaterialCode"),
-                            //material_Category_Code = reader.GetString("MatCategory"),
-                            invitationNumber = reader.GetString("InvitationNumber"),
-                            InvitationID = reader.GetString("InvitationID"),
-                            BiddingItemVendorID = reader.GetString("BiddingVendorID"),
-                            VendorID = reader.GetString("VendorID"),
-                            BiddingID = reader.GetString("BiddingID"),
-                          
-                            SampleDocumentID = reader.GetString("SampleDocId"),
-                            Action = "E",
-
-
-
-
-                        }).ToList();
-                    }
-                }
-            }
-            return QuotMaterialList;
-        }
-
-        public List<FinancialQuotationDetail> FinQuotwiseDetailsData(string finQuotationItemID, out string errorNumber)
-        {
-            errorNumber = string.Empty;
-            var FinancialQuotationDetailList = new List<FinancialQuotationDetail>();
-
-            var factory = new DatabaseProviderFactory();
-            var db = factory.CreateDefault() as SqlDatabase;
-            using (var dbCommandWrapper = db.GetStoredProcCommand("VCMS_FinQuotMaterialDetail"))
-            {
-                db.AddInParameter(dbCommandWrapper, "@finQuotationItemID", SqlDbType.VarChar, finQuotationItemID);
-                db.AddOutParameter(dbCommandWrapper, "@p_Error", DbType.Int32, 10);
-                // Execute SP.
-
-                var ds = db.ExecuteDataSet(dbCommandWrapper);
-
-                if (!db.GetParameterValue(dbCommandWrapper, "@p_Error").IsNullOrZero())
-                {
-                    errorNumber = db.GetParameterValue(dbCommandWrapper, "@p_Error").PrefixErrorCode();
-                }
-                else
-                {
-                    if (ds.Tables[0].Rows.Count > 0)
-                    {
-
-                        DataTable dt1 = new DataTable();
-                        dt1 = ds.Tables[0];
-
-                        FinancialQuotationDetailList = dt1.AsEnumerable().Select(reader => new FinancialQuotationDetail
-                        {
-
-                            FinanQuotationItemID = reader["FinanQuotationItemID"] != DBNull.Value ? reader["FinanQuotationItemID"].ToString() : null,
-
-
-                            QuotationID = reader["QuotationID"] as string,
-                            QuotationNo = reader["QuotationNo"] as string,
-                            InvitationNumber = reader["InvitationNumber"] as string,
-
-                            // =====================
-                            // Quantities
-                            // =====================
-                            ProposeQty = reader["ProposeQty"] != DBNull.Value? Convert.ToDecimal(reader["ProposeQty"]) : 0m,
-
-                            QuotationQty = reader["QuotationQty"] != DBNull.Value ? Convert.ToDecimal(reader["QuotationQty"]) : 0m,
-
-                            QtyTolerance = reader["QtyTolerance"] != DBNull.Value? Convert.ToDecimal(reader["QtyTolerance"]): 0m,
-
-                            MinimumOrderQty = reader["MinimumOrderQty"] != DBNull.Value? Convert.ToDecimal(reader["MinimumOrderQty"]) : 0m,
-                            PackSize = reader["PackSize"] as string,
-
-                            // =====================
-                            // Units
-                            // =====================
-                            QuotationQtyUnit = reader["QuotationQtyUnit"] != DBNull.Value
-        ? new Item { Item_Code = reader["QuotationQtyUnit"].ToString() }
-        : null,
-
-                            PriceUnit = reader["PriceUnit"] != DBNull.Value
-        ? new Item { Item_Code = reader["PriceUnit"].ToString() }
-        : null,
-
-                            // =====================
-                            // Pricing
-                            // =====================
-                            Price = reader["Price"] != DBNull.Value ? Convert.ToDecimal(reader["Price"]) : (decimal?)null,
-                            Per = reader["Per"] != DBNull.Value ? Convert.ToDecimal(reader["Per"]) : 0,
-
-                            Freight = reader["Freight"] != DBNull.Value ? Convert.ToDecimal(reader["Freight"]) : (decimal?)null,
-                            Discount = reader["Discount"] != DBNull.Value ? Convert.ToDecimal(reader["Discount"]) : (decimal?)null,
-                            OrderHandlingCharges = reader["OrderHandlingCharges"] != DBNull.Value ? Convert.ToDecimal(reader["OrderHandlingCharges"]) : (decimal?)null,
-                            PackingCharges = reader["PackingCharges"] != DBNull.Value ? Convert.ToDecimal(reader["PackingCharges"]) : (decimal?)null,
-                            SundryCharges = reader["SundryCharges"] != DBNull.Value ? Convert.ToDecimal(reader["SundryCharges"]) : (decimal?)null,
-                            DeliveryCharge = reader["DeliveryCharge"] != DBNull.Value ? Convert.ToDecimal(reader["DeliveryCharge"]) : (decimal?)null,
-
-                            // =====================
-                            // Currency & Tax
-                            // =====================
-                            Currency = reader["Currency"] != DBNull.Value
-        ? new MasterData { MasterDataID = reader["Currency"].ToString() }
-        : null,
-
-                            VAT = reader["VAT"] as string,
-                            Tax = reader["Tax"] as string,
-
-                            // =====================
-                            // Delivery
-                            // =====================
-                            DeliveryTimeline = reader["DeliveryTimeline"] as string,
-                            PartDelivery = reader["PartDelivery"] as string,
-                            ShipmentMode = reader["ShipmentMode"] as string,
-                            InlandTransportation = reader["InlandTransportation"] as string,
-
-                   
-                            // =====================
-                            // Incoterms
-                            // =====================
-                            Incoterms = reader["Incoterms"] != DBNull.Value
-        ? new MasterData { MasterDataID = reader["Incoterms"].ToString() }
-        : null,
-
-                            IncotermsLocation = reader["IncotermsLocation"] != DBNull.Value
-        ? new MasterData { MasterDataID = reader["IncotermsLocation"].ToString() }
-        : null,
-
-                            // =====================
-                            // Payment
-                            // =====================
-                            PaymentMode = reader["PaymentMode"] != DBNull.Value
-        ? new MasterData { MasterDataID = reader["PaymentMode"].ToString() }
-        : null,
-
-                            PaymentTerms = reader["PaymentTerms"] as string,
-
-                            // =====================
-                            // Validity
-                            // =====================
-                            QuotationValidity = reader["QuotationValidity"] as string,
-
-                     
-                            // =====================
-                            // Manufacturer
-                            // =====================
-                            ManufacturerPartNo = reader["ManufacturerPartNo"] as string,
-                            ManufacturerName = reader["ManufacturerName"] as string,
-                            ManufacturerSiteAddress = reader["ManufacturerSiteAddress"] as string,
-
-                            // =====================
-                            // Services
-                            // =====================
-                            Warranty = reader["Warranty"] as string,
-                            Installation = reader["Installation"] as string,
-                            Servicing = reader["Servicing"] as string,
-
-                            // =====================
-                            // Misc
-                            // =====================
-                            KeyCustomerList = reader["KeyCustomerList"] as string,
-                            Subcontractor = reader["Subcontractor"] as string ?? "No",
-                            SubcontractorDetails = reader["SubcontractorDetails"] as string,
-                            ReturnableItem = reader["ReturnableItem"] as string,
-                            PenaltyClause = reader["PenaltyClause"] as string,
-                            Remarks = reader["Remarks"] as string,
-
-                            SupplierName = reader["SupplierName"] as string,
-                            LocalAgentName = reader["LocalAgentName"] as string,
-
-                            ProposalType = reader["ProposalType"] as string,
-                            Fintype = reader["FinType"] as string,
-
-                            SampleDocumentID = reader["SampleDocId"] as string
-
-
-                        }).ToList();
-                    }
-                }
-            }
-            return FinancialQuotationDetailList;
-        }
-
-        public Model.VendorSelectionModule.Server FetchServerDetailsData(string billReceiveID, out string errorNumber)
-        {
-            errorNumber = string.Empty;
-            var ServerList = new Model.VendorSelectionModule.Server();
-
-            var factory = new DatabaseProviderFactory();
-            var db = factory.CreateDefault() as SqlDatabase;
-            using (var dbCommandWrapper = db.GetStoredProcCommand("VCMS_GetVendorMaterialDocStatusFinancial"))
-            {
-                db.AddInParameter(dbCommandWrapper, "@billReceiveID", SqlDbType.VarChar, billReceiveID);
-                db.AddOutParameter(dbCommandWrapper, "@p_Error", DbType.Int32, 10);
-                // Execute SP.
-
-                var ds = db.ExecuteDataSet(dbCommandWrapper);
-
-                if (!db.GetParameterValue(dbCommandWrapper, "@p_Error").IsNullOrZero())
-                {
-                    errorNumber = db.GetParameterValue(dbCommandWrapper, "@p_Error").PrefixErrorCode();
-                }
-                else
-                {
-                    if (ds.Tables[0].Rows.Count > 0)
-                    {
-
-                        DataTable dt1 = new DataTable();
-                        dt1 = ds.Tables[0];
-
-                        ServerList = dt1.AsEnumerable().Select(reader => new Model.VendorSelectionModule.Server
-                        {
-
-
-                            ServerIP = reader.GetString("ServerIP"),
-                            ServerPort = reader.GetString("FtpPort"),
-                            FileServerURL = reader.GetString("FileServerURL"),
-                            FtpUserName = reader.GetString("FtpUserName"),
-                            FtpPassword = reader.GetString("FtpPassword"),
-                            Extensions = reader.GetString("FileExtension")
-
-
-
-
-                        }).FirstOrDefault();
-                    }
-                }
-            }
-            return ServerList;
-        }
-
-        public long SaveFinQuotwiseDetailsData(FinancialQuotationDetail financialQuotationDetail, out string errorNumber)
-        {
-
-            var factory = new DatabaseProviderFactory();
-            var db = factory.CreateDefault() as SqlDatabase;
-            var i = 0;
-            long ID = 0;
-            errorNumber = string.Empty;
-
-
-            using (var dbCommandWrapper = db.GetStoredProcCommand("VCMS_UpdateFinancialQuotation"))
-            {
-
-
-
-                db.AddInParameter(dbCommandWrapper, "@FinanQuotationItemID", SqlDbType.Decimal, financialQuotationDetail.FinanQuotationItemID);
-                db.AddInParameter(dbCommandWrapper, "@SupplierName", SqlDbType.VarChar, financialQuotationDetail.SupplierName);
-                db.AddInParameter(dbCommandWrapper, "@LocalAgentName", SqlDbType.VarChar, financialQuotationDetail.LocalAgentName);
-
-                // =======================
-                // Quantity and Unit (Existing)
-                // =======================
-           
 
 
 
@@ -1124,11 +602,532 @@ namespace SILDMS.DataAccess.FinancialQuotation
                 // =======================
                 // Material Invitation Parameters
                 // =======================
-          
+                db.AddInParameter(dbCommandWrapper, "@invitationNumber", SqlDbType.VarChar, materialInvitation.invitationNumber);
+                db.AddInParameter(dbCommandWrapper, "@materialCode", SqlDbType.VarChar, materialInvitation.materialCode);
+                db.AddInParameter(dbCommandWrapper, "@materialName", SqlDbType.VarChar, materialInvitation.materialName);
 
                 db.AddInParameter(dbCommandWrapper, "@sampleDocId", SqlDbType.VarChar,
                 string.IsNullOrEmpty(financialQuotationDetail.SampleDocumentID) ? (object)DBNull.Value : financialQuotationDetail.SampleDocumentID);
-       
+                db.AddInParameter(dbCommandWrapper, "@VendorID", SqlDbType.VarChar, materialInvitation.VendorID);
+                db.AddInParameter(dbCommandWrapper, "@modificationType", SqlDbType.VarChar, materialInvitation.modificationType);
+                db.AddInParameter(dbCommandWrapper, "@setOn", SqlDbType.DateTime, materialInvitation.setOn);
+                db.AddInParameter(dbCommandWrapper, "@setBy", SqlDbType.VarChar, userid);
+                db.AddInParameter(dbCommandWrapper, "@modifiedOn", SqlDbType.DateTime, materialInvitation.modifiedOn);
+                db.AddInParameter(dbCommandWrapper, "@modifiedBy", SqlDbType.VarChar, userid);
+                db.AddInParameter(dbCommandWrapper, "@status", SqlDbType.VarChar, '1');
+                db.AddInParameter(dbCommandWrapper, "@RequstedQty", SqlDbType.Decimal, Convert.ToDecimal(materialInvitation.MaterialQuantity));
+
+                db.AddInParameter(dbCommandWrapper, "@Unit", SqlDbType.VarChar, materialInvitation.Unit);
+                db.AddInParameter(dbCommandWrapper, "@material_Category_Code", SqlDbType.VarChar, materialInvitation.material_Category_Code);
+
+                // =======================
+                // Quotation ID/No based on ProposalType
+                // =======================
+                if (ProposalType == "FINANCIAL")
+                {
+                    db.AddInParameter(dbCommandWrapper, "@quotationID", SqlDbType.VarChar, quotation.quotationID);
+                    db.AddInParameter(dbCommandWrapper, "@quotationNo", SqlDbType.VarChar, quotation.quotationNo);
+                }
+                else
+                {
+                    db.AddInParameter(dbCommandWrapper, "@quotationID", SqlDbType.VarChar, materialInvitation.QuotationID);
+                    db.AddInParameter(dbCommandWrapper, "@quotationNo", SqlDbType.VarChar, materialInvitation.QuotationNo);
+                }
+                db.AddInParameter(dbCommandWrapper, "@proposalType", SqlDbType.VarChar, ProposalType);
+                db.AddInParameter(dbCommandWrapper, "@Fintype", SqlDbType.VarChar, financialQuotationDetail.Fintype);
+
+                // =======================
+                // Execute and Get Result
+                // =======================
+                DataSet ds = db.ExecuteDataSet(dbCommandWrapper);
+
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    var dt = ds.Tables[0];
+                    var dr = dt.Rows[0];
+                    ID = dr.GetInt32("ID");
+                }
+            }
+
+            return ID;
+        }
+
+        public List<Quotation> GetAllQuotationData(string userid, out string errorNumber)
+        {
+            errorNumber = string.Empty;
+            var QuotationList = new List<Quotation>();
+
+            var factory = new DatabaseProviderFactory();
+            var db = factory.CreateDefault() as SqlDatabase;
+            using (var dbCommandWrapper = db.GetStoredProcCommand("VCMS_GetAllFinancialQuotation"))
+            {
+                db.AddInParameter(dbCommandWrapper, "@userid", SqlDbType.VarChar, userid);
+
+                db.AddOutParameter(dbCommandWrapper, "@p_Error", DbType.Int32, 10);
+                // Execute SP.
+
+                var ds = db.ExecuteDataSet(dbCommandWrapper);
+
+                if (!db.GetParameterValue(dbCommandWrapper, "@p_Error").IsNullOrZero())
+                {
+                    errorNumber = db.GetParameterValue(dbCommandWrapper, "@p_Error").PrefixErrorCode();
+                }
+                else
+                {
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+
+                        DataTable dt1 = new DataTable();
+                        dt1 = ds.Tables[0];
+
+                        QuotationList = dt1.AsEnumerable().Select(reader => new Quotation
+                        {
+
+                            quotationID = reader.GetString("QuotationID"),
+                            quotationNo = reader.GetString("QuotationNo"),
+                            InvitationNumber = reader.GetString("InvitationNumber"),
+                            QuotationDate = reader.GetDateTime("SetOn").ToString("dd/MM/yyyy"),
+
+
+
+
+
+                        }).ToList();
+                    }
+                }
+            }
+            return QuotationList;
+        }
+
+        public List<MaterialInvitation> QuotWiseMaterialData(string UserId, string quotationNo, out string errorNumber)
+        {
+            errorNumber = string.Empty;
+            var QuotMaterialList = new List<MaterialInvitation>();
+
+            var factory = new DatabaseProviderFactory();
+            var db = factory.CreateDefault() as SqlDatabase;
+            using (var dbCommandWrapper = db.GetStoredProcCommand("VCMS_QuoteFinancialQuotation"))
+            {
+                db.AddInParameter(dbCommandWrapper, "@quotationNo", SqlDbType.VarChar, quotationNo);
+                db.AddInParameter(dbCommandWrapper, "@userid", SqlDbType.VarChar, UserId);
+                db.AddOutParameter(dbCommandWrapper, "@p_Error", DbType.Int32, 10);
+                // Execute SP.
+
+                var ds = db.ExecuteDataSet(dbCommandWrapper);
+
+                if (!db.GetParameterValue(dbCommandWrapper, "@p_Error").IsNullOrZero())
+                {
+                    errorNumber = db.GetParameterValue(dbCommandWrapper, "@p_Error").PrefixErrorCode();
+                }
+                else
+                {
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+
+                        DataTable dt1 = new DataTable();
+                        dt1 = ds.Tables[0];
+
+                        QuotMaterialList = dt1.AsEnumerable().Select(reader => new MaterialInvitation
+                        {
+
+                            FinanQuotationItemID = reader.GetString("FinanQuotationItemID"),
+                            materialName = reader.GetString("MaterialName"),
+                            MaterialQuantity = reader.GetString("RFQQty"),
+                            Unit = reader.GetString("RFQQtyUnit"),
+                            MatInvType = reader.GetString("Proposal"),
+                            Fintype = reader.GetString("Fintype"),
+                            materialCode = reader.GetString("MaterialCode"),
+                            //material_Category_Code = reader.GetString("MatCategory"),
+                            invitationNumber = reader.GetString("InvitationNumber"),
+                            InvitationID = reader.GetString("InvitationID"),
+                            BiddingItemVendorID = reader.GetString("BiddingVendorID"),
+                            VendorID = reader.GetString("VendorID"),
+                            BiddingID = reader.GetString("BiddingID"),
+
+                            SampleDocumentID = reader.GetString("SampleDocId"),
+                            Action = "E",
+
+
+
+
+                        }).ToList();
+                    }
+                }
+            }
+            return QuotMaterialList;
+        }
+
+        public List<FinancialQuotationDetail> FinQuotwiseDetailsData(string finQuotationItemID, out string errorNumber)
+        {
+            errorNumber = string.Empty;
+            var FinancialQuotationDetailList = new List<FinancialQuotationDetail>();
+
+            var factory = new DatabaseProviderFactory();
+            var db = factory.CreateDefault() as SqlDatabase;
+            using (var dbCommandWrapper = db.GetStoredProcCommand("VCMS_FinQuotMaterialDetail"))
+            {
+                db.AddInParameter(dbCommandWrapper, "@finQuotationItemID", SqlDbType.VarChar, finQuotationItemID);
+                db.AddOutParameter(dbCommandWrapper, "@p_Error", DbType.Int32, 10);
+                // Execute SP.
+
+                var ds = db.ExecuteDataSet(dbCommandWrapper);
+
+                if (!db.GetParameterValue(dbCommandWrapper, "@p_Error").IsNullOrZero())
+                {
+                    errorNumber = db.GetParameterValue(dbCommandWrapper, "@p_Error").PrefixErrorCode();
+                }
+                else
+                {
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+
+                        DataTable dt1 = new DataTable();
+                        dt1 = ds.Tables[0];
+
+                        FinancialQuotationDetailList = dt1.AsEnumerable().Select(reader => new FinancialQuotationDetail
+                        {
+
+                            FinanQuotationItemID = reader["FinanQuotationItemID"] != DBNull.Value ? reader["FinanQuotationItemID"].ToString() : null,
+
+
+                            QuotationID = reader["QuotationID"] as string,
+                            QuotationNo = reader["QuotationNo"] as string,
+                            InvitationNumber = reader["InvitationNumber"] as string,
+
+                            // =====================
+                            // Quantities
+                            // =====================
+                            ProposeQty = reader["ProposeQty"] != DBNull.Value ? Convert.ToDecimal(reader["ProposeQty"]) : 0m,
+
+                            QuotationQty = reader["QuotationQty"] != DBNull.Value ? Convert.ToDecimal(reader["QuotationQty"]) : 0m,
+
+                            QtyTolerance = reader["QtyTolerance"] != DBNull.Value ? Convert.ToDecimal(reader["QtyTolerance"]) : 0m,
+
+                            MinimumOrderQty = reader["MinimumOrderQty"] != DBNull.Value ? Convert.ToDecimal(reader["MinimumOrderQty"]) : 0m,
+                            PackSize = reader["PackSize"] as string,
+
+                            // =====================
+                            // Units
+                            // =====================
+                            QuotationQtyUnit = reader["QuotationQtyUnit"] != DBNull.Value
+        ? new Item { Item_Code = reader["QuotationQtyUnit"].ToString() }
+        : null,
+
+                            PriceUnit = reader["PriceUnit"] != DBNull.Value
+        ? new Item { Item_Code = reader["PriceUnit"].ToString() }
+        : null,
+
+                            // =====================
+                            // Pricing
+                            // =====================
+                            Price = reader["Price"] != DBNull.Value ? Convert.ToDecimal(reader["Price"]) : (decimal?)null,
+                            Per = reader["Per"] != DBNull.Value ? Convert.ToDecimal(reader["Per"]) : 0,
+
+                            Freight = reader["Freight"] != DBNull.Value ? Convert.ToDecimal(reader["Freight"]) : (decimal?)null,
+                            Discount = reader["Discount"] != DBNull.Value ? Convert.ToDecimal(reader["Discount"]) : (decimal?)null,
+                            OrderHandlingCharges = reader["OrderHandlingCharges"] != DBNull.Value ? Convert.ToDecimal(reader["OrderHandlingCharges"]) : (decimal?)null,
+                            PackingCharges = reader["PackingCharges"] != DBNull.Value ? Convert.ToDecimal(reader["PackingCharges"]) : (decimal?)null,
+                            SundryCharges = reader["SundryCharges"] != DBNull.Value ? Convert.ToDecimal(reader["SundryCharges"]) : (decimal?)null,
+                            DeliveryCharge = reader["DeliveryCharge"] != DBNull.Value ? Convert.ToDecimal(reader["DeliveryCharge"]) : (decimal?)null,
+
+                            // =====================
+                            // Currency & Tax
+                            // =====================
+                            Currency = reader["Currency"] != DBNull.Value
+        ? new MasterData { MasterDataID = reader["Currency"].ToString() }
+        : null,
+
+                            VAT = reader["VAT"] as string,
+                            Tax = reader["Tax"] as string,
+
+                            // =====================
+                            // Delivery
+                            // =====================
+                            DeliveryTimeline = reader["DeliveryTimeline"] as string,
+                            PartDelivery = reader["PartDelivery"] as string,
+                            ShipmentMode = reader["ShipmentMode"] as string,
+                            InlandTransportation = reader["InlandTransportation"] as string,
+
+
+                            // =====================
+                            // Incoterms
+                            // =====================
+                            Incoterms = reader["Incoterms"] != DBNull.Value
+        ? new MasterData { MasterDataID = reader["Incoterms"].ToString() }
+        : null,
+
+                            IncotermsLocation = reader["IncotermsLocation"] != DBNull.Value
+        ? new MasterData { MasterDataID = reader["IncotermsLocation"].ToString() }
+        : null,
+
+                            // =====================
+                            // Payment
+                            // =====================
+                            PaymentMode = reader["PaymentMode"] != DBNull.Value
+        ? new MasterData { MasterDataID = reader["PaymentMode"].ToString() }
+        : null,
+
+                            PaymentTerms = reader["PaymentTerms"] as string,
+
+                            // =====================
+                            // Validity
+                            // =====================
+                            QuotationValidity = reader["QuotationValidity"] as string,
+
+
+                            // =====================
+                            // Manufacturer
+                            // =====================
+                            ManufacturerPartNo = reader["ManufacturerPartNo"] as string,
+                            ManufacturerName = reader["ManufacturerName"] as string,
+                            ManufacturerSiteAddress = reader["ManufacturerSiteAddress"] as string,
+
+                            // =====================
+                            // Services
+                            // =====================
+                            Warranty = reader["Warranty"] as string,
+                            Installation = reader["Installation"] as string,
+                            Servicing = reader["Servicing"] as string,
+
+                            // =====================
+                            // Misc
+                            // =====================
+                            KeyCustomerList = reader["KeyCustomerList"] as string,
+                            Subcontractor = reader["Subcontractor"] as string ?? "No",
+                            SubcontractorDetails = reader["SubcontractorDetails"] as string,
+                            ReturnableItem = reader["ReturnableItem"] as string,
+                            PenaltyClause = reader["PenaltyClause"] as string,
+                            Remarks = reader["Remarks"] as string,
+
+                            SupplierName = reader["SupplierName"] as string,
+                            LocalAgentName = reader["LocalAgentName"] as string,
+
+                            ProposalType = reader["ProposalType"] as string,
+                            Fintype = reader["FinType"] as string,
+
+                            SampleDocumentID = reader["SampleDocId"] as string
+
+
+                        }).ToList();
+                    }
+                }
+            }
+            return FinancialQuotationDetailList;
+        }
+
+        public Model.VendorSelectionModule.Server FetchServerDetailsData(string billReceiveID, out string errorNumber)
+        {
+            errorNumber = string.Empty;
+            var ServerList = new Model.VendorSelectionModule.Server();
+
+            var factory = new DatabaseProviderFactory();
+            var db = factory.CreateDefault() as SqlDatabase;
+            using (var dbCommandWrapper = db.GetStoredProcCommand("VCMS_GetVendorMaterialDocStatusFinancial"))
+            {
+                db.AddInParameter(dbCommandWrapper, "@billReceiveID", SqlDbType.VarChar, billReceiveID);
+                db.AddOutParameter(dbCommandWrapper, "@p_Error", DbType.Int32, 10);
+                // Execute SP.
+
+                var ds = db.ExecuteDataSet(dbCommandWrapper);
+
+                if (!db.GetParameterValue(dbCommandWrapper, "@p_Error").IsNullOrZero())
+                {
+                    errorNumber = db.GetParameterValue(dbCommandWrapper, "@p_Error").PrefixErrorCode();
+                }
+                else
+                {
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+
+                        DataTable dt1 = new DataTable();
+                        dt1 = ds.Tables[0];
+
+                        ServerList = dt1.AsEnumerable().Select(reader => new Model.VendorSelectionModule.Server
+                        {
+
+
+                            ServerIP = reader.GetString("ServerIP"),
+                            ServerPort = reader.GetString("FtpPort"),
+                            FileServerURL = reader.GetString("FileServerURL"),
+                            FtpUserName = reader.GetString("FtpUserName"),
+                            FtpPassword = reader.GetString("FtpPassword"),
+                            Extensions = reader.GetString("FileExtension")
+
+
+
+
+                        }).FirstOrDefault();
+                    }
+                }
+            }
+            return ServerList;
+        }
+
+        public long SaveFinQuotwiseDetailsData(FinancialQuotationDetail financialQuotationDetail, out string errorNumber)
+        {
+
+            var factory = new DatabaseProviderFactory();
+            var db = factory.CreateDefault() as SqlDatabase;
+            var i = 0;
+            long ID = 0;
+            errorNumber = string.Empty;
+
+
+            using (var dbCommandWrapper = db.GetStoredProcCommand("VCMS_UpdateFinancialQuotation"))
+            {
+
+
+
+                db.AddInParameter(dbCommandWrapper, "@FinanQuotationItemID", SqlDbType.Decimal, financialQuotationDetail.FinanQuotationItemID);
+                db.AddInParameter(dbCommandWrapper, "@SupplierName", SqlDbType.VarChar, financialQuotationDetail.SupplierName);
+                db.AddInParameter(dbCommandWrapper, "@LocalAgentName", SqlDbType.VarChar, financialQuotationDetail.LocalAgentName);
+
+                // =======================
+                // Quantity and Unit (Existing)
+                // =======================
+
+
+
+
+                // =======================
+                // Pricing Information
+                // =======================
+
+                db.AddInParameter(dbCommandWrapper, "@Price", SqlDbType.Decimal, financialQuotationDetail.Price ?? (object)DBNull.Value);
+                db.AddInParameter(dbCommandWrapper, "@Per", SqlDbType.Decimal, financialQuotationDetail.Per);
+                if (string.IsNullOrEmpty(financialQuotationDetail.PriceUnit.Item_Code))
+                {
+                    db.AddInParameter(dbCommandWrapper, "@PriceUnit", SqlDbType.VarChar, DBNull.Value);
+                }
+                else
+                {
+                    db.AddInParameter(dbCommandWrapper, "@PriceUnit", SqlDbType.VarChar, financialQuotationDetail.PriceUnit.Item_Code);
+                }
+
+
+                if (string.IsNullOrEmpty(financialQuotationDetail.Currency.MasterDataID))
+                {
+                    db.AddInParameter(dbCommandWrapper, "@Currency", SqlDbType.VarChar, DBNull.Value);
+                }
+                else
+                {
+                    db.AddInParameter(dbCommandWrapper, "@Currency", SqlDbType.VarChar, financialQuotationDetail.Currency.MasterDataID);
+                }
+
+                // =======================
+                // Calculated Prices (Existing)
+                // =======================
+
+
+                // =======================
+                // Taxes and Charges
+                // =======================
+
+
+                db.AddInParameter(dbCommandWrapper, "@VAT", SqlDbType.VarChar, financialQuotationDetail.VAT);
+                db.AddInParameter(dbCommandWrapper, "@Tax", SqlDbType.VarChar, financialQuotationDetail.Tax);
+                db.AddInParameter(dbCommandWrapper, "@Freight", SqlDbType.Decimal, financialQuotationDetail.Freight ?? (object)DBNull.Value);
+                db.AddInParameter(dbCommandWrapper, "@Discount", SqlDbType.Decimal, financialQuotationDetail.Discount ?? (object)DBNull.Value);
+                db.AddInParameter(dbCommandWrapper, "@OrderHandlingCharges", SqlDbType.Decimal, financialQuotationDetail.OrderHandlingCharges ?? (object)DBNull.Value);
+                db.AddInParameter(dbCommandWrapper, "@PackingCharges", SqlDbType.Decimal, financialQuotationDetail.PackingCharges ?? (object)DBNull.Value);
+                db.AddInParameter(dbCommandWrapper, "@SundryCharges", SqlDbType.Decimal, financialQuotationDetail.SundryCharges ?? (object)DBNull.Value);
+                db.AddInParameter(dbCommandWrapper, "@DeliveryCharge", SqlDbType.Decimal, financialQuotationDetail.DeliveryCharge ?? (object)DBNull.Value);
+
+                // =======================
+                // Quantity Information
+                // =======================
+                db.AddInParameter(dbCommandWrapper, "@QuotationQty", SqlDbType.Decimal, financialQuotationDetail.QuotationQty);
+
+                if (string.IsNullOrEmpty(financialQuotationDetail.QuotationQtyUnit.Item_Code))
+                {
+                    db.AddInParameter(dbCommandWrapper, "@QuotationQtyUnit", SqlDbType.VarChar, DBNull.Value);
+                }
+                else
+                {
+                    db.AddInParameter(dbCommandWrapper, "@QuotationQtyUnit", SqlDbType.VarChar, financialQuotationDetail.QuotationQtyUnit.Item_Code);
+                }
+
+                db.AddInParameter(dbCommandWrapper, "@QtyTolerance", SqlDbType.Decimal, financialQuotationDetail.QtyTolerance);
+                db.AddInParameter(dbCommandWrapper, "@MinimumOrderQty", SqlDbType.Decimal, financialQuotationDetail.MinimumOrderQty);
+                db.AddInParameter(dbCommandWrapper, "@PackSize", SqlDbType.VarChar,
+                    string.IsNullOrEmpty(financialQuotationDetail.PackSize) ? (object)DBNull.Value : financialQuotationDetail.PackSize);
+
+                // =======================
+                // Delivery Information
+                // =======================
+                db.AddInParameter(dbCommandWrapper, "@DeliveryTimeline", SqlDbType.VarChar,
+                    string.IsNullOrEmpty(financialQuotationDetail.DeliveryTimeline) ? (object)DBNull.Value : financialQuotationDetail.DeliveryTimeline);
+                //db.AddInParameter(dbCommandWrapper, "@ExpecDeliDate", SqlDbType.DateTime, financialQuotationDetail.ExpecDeliDate);
+                db.AddInParameter(dbCommandWrapper, "@PartDelivery", SqlDbType.VarChar,
+                    string.IsNullOrEmpty(financialQuotationDetail.PartDelivery) ? (object)DBNull.Value : financialQuotationDetail.PartDelivery);
+                db.AddInParameter(dbCommandWrapper, "@Incoterms", SqlDbType.VarChar,
+                    string.IsNullOrEmpty(financialQuotationDetail.Incoterms?.MasterDataID) ? (object)DBNull.Value : financialQuotationDetail.Incoterms.MasterDataID);
+                db.AddInParameter(dbCommandWrapper, "@IncotermsLocation", SqlDbType.VarChar,
+                    string.IsNullOrEmpty(financialQuotationDetail.IncotermsLocation?.MasterDataID) ? (object)DBNull.Value : financialQuotationDetail.IncotermsLocation.MasterDataID);
+                db.AddInParameter(dbCommandWrapper, "@ShipmentMode", SqlDbType.VarChar,
+                    string.IsNullOrEmpty(financialQuotationDetail.ShipmentMode) ? (object)DBNull.Value : financialQuotationDetail.ShipmentMode);
+                db.AddInParameter(dbCommandWrapper, "@InlandTransportation", SqlDbType.VarChar,
+                    string.IsNullOrEmpty(financialQuotationDetail.InlandTransportation) ? (object)DBNull.Value : financialQuotationDetail.InlandTransportation);
+
+                // =======================
+                // Payment Information
+                // =======================
+                db.AddInParameter(dbCommandWrapper, "@PaymentMode", SqlDbType.VarChar,
+                    string.IsNullOrEmpty(financialQuotationDetail.PaymentMode?.MasterDataID) ? (object)DBNull.Value : financialQuotationDetail.PaymentMode.MasterDataID);
+                db.AddInParameter(dbCommandWrapper, "@PaymentTerms", SqlDbType.VarChar,
+                    string.IsNullOrEmpty(financialQuotationDetail.PaymentTerms) ? (object)DBNull.Value : financialQuotationDetail.PaymentTerms);
+
+                // =======================
+                // Validity and Terms
+                // =======================
+                db.AddInParameter(dbCommandWrapper, "@QuotationValidity", SqlDbType.VarChar,
+                    string.IsNullOrEmpty(financialQuotationDetail.QuotationValidity) ? (object)DBNull.Value : financialQuotationDetail.QuotationValidity);
+                //db.AddInParameter(dbCommandWrapper, "@QuotValidDate", SqlDbType.DateTime, financialQuotationDetail.QuotValidDate);
+
+                // =======================
+                // Manufacturer Information
+                // =======================
+                db.AddInParameter(dbCommandWrapper, "@ManufacturerPartNo", SqlDbType.VarChar,
+                    string.IsNullOrEmpty(financialQuotationDetail.ManufacturerPartNo) ? (object)DBNull.Value : financialQuotationDetail.ManufacturerPartNo);
+                db.AddInParameter(dbCommandWrapper, "@ManufacturerName", SqlDbType.VarChar,
+                    string.IsNullOrEmpty(financialQuotationDetail.ManufacturerName) ? (object)DBNull.Value : financialQuotationDetail.ManufacturerName);
+                db.AddInParameter(dbCommandWrapper, "@ManufacturerSiteAddress", SqlDbType.VarChar,
+                    string.IsNullOrEmpty(financialQuotationDetail.ManufacturerSiteAddress) ? (object)DBNull.Value : financialQuotationDetail.ManufacturerSiteAddress);
+
+                // =======================
+                // Service and Support
+                // =======================
+                db.AddInParameter(dbCommandWrapper, "@Warranty", SqlDbType.VarChar,
+                    string.IsNullOrEmpty(financialQuotationDetail.Warranty) ? (object)DBNull.Value : financialQuotationDetail.Warranty);
+                db.AddInParameter(dbCommandWrapper, "@Installation", SqlDbType.VarChar,
+                    string.IsNullOrEmpty(financialQuotationDetail.Installation) ? (object)DBNull.Value : financialQuotationDetail.Installation);
+                db.AddInParameter(dbCommandWrapper, "@Servicing", SqlDbType.VarChar,
+                    string.IsNullOrEmpty(financialQuotationDetail.Servicing) ? (object)DBNull.Value : financialQuotationDetail.Servicing);
+
+                // =======================
+                // Additional Details
+                // =======================
+                db.AddInParameter(dbCommandWrapper, "@KeyCustomerList", SqlDbType.VarChar,
+                    string.IsNullOrEmpty(financialQuotationDetail.KeyCustomerList) ? (object)DBNull.Value : financialQuotationDetail.KeyCustomerList);
+                db.AddInParameter(dbCommandWrapper, "@Subcontractor", SqlDbType.VarChar,
+                    string.IsNullOrEmpty(financialQuotationDetail.Subcontractor) ? (object)DBNull.Value : financialQuotationDetail.Subcontractor);
+                db.AddInParameter(dbCommandWrapper, "@SubcontractorDetails", SqlDbType.VarChar,
+                    string.IsNullOrEmpty(financialQuotationDetail.SubcontractorDetails) ? (object)DBNull.Value : financialQuotationDetail.SubcontractorDetails);
+                db.AddInParameter(dbCommandWrapper, "@ReturnableItem", SqlDbType.VarChar,
+                    string.IsNullOrEmpty(financialQuotationDetail.ReturnableItem) ? (object)DBNull.Value : financialQuotationDetail.ReturnableItem);
+                db.AddInParameter(dbCommandWrapper, "@PenaltyClause", SqlDbType.VarChar,
+                    string.IsNullOrEmpty(financialQuotationDetail.PenaltyClause) ? (object)DBNull.Value : financialQuotationDetail.PenaltyClause);
+                db.AddInParameter(dbCommandWrapper, "@Remarks", SqlDbType.VarChar,
+                    string.IsNullOrEmpty(financialQuotationDetail.Remarks) ? (object)DBNull.Value : financialQuotationDetail.Remarks);
+
+                // =======================
+                // Material Invitation Parameters
+                // =======================
+
+
+                db.AddInParameter(dbCommandWrapper, "@sampleDocId", SqlDbType.VarChar,
+                string.IsNullOrEmpty(financialQuotationDetail.SampleDocumentID) ? (object)DBNull.Value : financialQuotationDetail.SampleDocumentID);
+
 
 
 

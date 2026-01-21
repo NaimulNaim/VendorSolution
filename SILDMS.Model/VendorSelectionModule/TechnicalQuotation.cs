@@ -54,9 +54,131 @@ namespace SILDMS.Model.VendorSelectionModule
 
 
 
+    //public class TechnicalQuotation
+    //{
+
+    //    public string TechQuotationItemID { get; set; }
+    //    public string rowIndex { get; set; }
+
+    //    // --- Item / Molecule ---
+    //    public string ItemName { get; set; }
+    //    public string MoleculeName { get; set; }
+
+    //    // --- Manufacturer / Supplier ---
+    //    public string Manufacturer { get; set; }
+    //    public string ManufacturerPart { get; set; }
+    //    public string ManufactureAddress { get; set; }
+    //    public string ManufacturerOrigin { get; set; }
+    //    public string Supplier { get; set; }
+    //    public string LocalPartner { get; set; }
+
+    //    // --- Pricing ---
+    //    public decimal? RDPrice { get; set; }
+    //    public decimal? CommercialPrice { get; set; }
+    //    public decimal? PricePer { get; set; }
+    //    public string PriceUnit { get; set; }
+    //    public string Currency { get; set; }
+
+    //    // --- Order / Pack ---
+    //    public int? MinOrderQty { get; set; }
+    //    public string OrderQtyUnit { get; set; }
+    //    public string CommercialPackSize { get; set; }
+    //    public string MinPack { get; set; }
+
+    //    // --- Shelf / Storage ---
+    //    public int? ShelfLifeValue { get; set; }
+    //    public string ShelfLifeUnit { get; set; }
+    //    public string StorageCondition { get; set; }
+
+    //    // --- References / Notes ---
+    //    public string Reference { get; set; }
+    //    public string Notes { get; set; }
+    //    public string CASNO { get; set; }
+    //    public string CASNo { get; set; }
+    //    public string CatalogueNo { get; set; }
+
+    //    // --- Production ---
+    //    public string CurrentStatus { get; set; }
+    //    public string ProdCapacity { get; set; }
+    //    public string ProductionFrequency { get; set; }
+    //    public int? ProductionLeadTimeValue { get; set; }
+    //    public string ProductionLeadTimeUnit { get; set; }
+
+    //    // --- Representative Sample ---
+    //    public string RepresentativeSample { get; set; }
+    //    public string RepresentativeSamplePackSize { get; set; }
+
+    //    // --- Compliance / Qualification ---
+    //    public string ComplianceWith { get; set; }
+    //    public string QualificationDocuments { get; set; }
+    //    public string QualificationDocumentsOther { get; set; }
+
+    //    // --- FAT / SAT / Assistance ---
+    //    public string FATAtManufacturerSite { get; set; }
+    //    public string FATAtManufacturerSiteOther { get; set; }
+    //    public string SATScope { get; set; }
+    //    public string AssistanceAtSite { get; set; }
+    //    public string AssistanceAtSiteOther { get; set; }
+
+    //    // --- Utilities / Safety ---
+    //    public string UtilitiesRequirement { get; set; }
+    //    public string SafetyFeatures { get; set; }
+    //    public string EnergyEfficiencyFeatures { get; set; }
+
+    //    // --- Servicing / Scope ---
+    //    public string SparesServicing { get; set; }
+    //    public string ScopeConfirmation { get; set; }
+    //    public string ScopeDeviationRemarks { get; set; }
+
+    //    // --- Responsibility Matrix ---
+    //    public string Erection { get; set; }
+    //    public string ErectionOther { get; set; }
+
+    //    public string Installation { get; set; }
+    //    public string InstallationOther { get; set; }
+
+    //    public string Testing { get; set; }
+    //    public string TestingOther { get; set; }
+
+    //    public string Commissioning { get; set; }
+    //    public string CommissioningOther { get; set; }
+
+    //    // --- Regulatory ---
+    //    public string RegulatoryApproval { get; set; }
+    //    public string RegulatoryApprovalOther { get; set; }
+    //    public string SampleDocumentID { get; set; }
+
+
+    //    // --- Misc ---
+    //    public string ColumnSpecification { get; set; }
+    //    public string CapacityExtendable { get; set; }
+    //    public string ProductLifeCycleUnit { get; set; }
+    //    public string CapacityExtendableOther { get; set; }
+    //    public object CountryOrigin { get; set; }
+    //    public string YearOfManufacturing { get; set; }
+    //    public decimal ProductLifeCycleValue { get; set; }
+    //    public string Capacity { get; set; }
+    //    public string ModelVersion { get; set; }
+    //    public string proposal { get; set; }
+    //    public string Proposal { get; set; }
+    //    public string techtype { get; set; }
+    //    public string Techtype { get; set; }
+    //    public string QuotationRevisionNo { get; set; }
+    //    public string QuotationID { get; set; }
+    //    public string QuotationNo { get; set; }
+    //    public string ManufactureOrigin { get; set; }
+    //    public string InstallTestCom { get; set; }
+    //    public string SubContractor { get; set; }
+    //    public string Calibration { get; set; }
+    //    public string Training { get; set; }
+    //    public string ValidationScope { get; set; }
+    //    public string PenealtyClause { get; set; }
+    //}
+
+
     public class TechnicalQuotation
     {
-
+        // --- Identity ---
         public string TechQuotationItemID { get; set; }
         public string rowIndex { get; set; }
 
@@ -76,8 +198,8 @@ namespace SILDMS.Model.VendorSelectionModule
         public decimal? RDPrice { get; set; }
         public decimal? CommercialPrice { get; set; }
         public decimal? PricePer { get; set; }
-        public string PriceUnit { get; set; }
-        public string Currency { get; set; }
+        public Item PriceUnit { get; set; }
+        public MasterData Currency { get; set; }
 
         // --- Order / Pack ---
         public int? MinOrderQty { get; set; }
@@ -93,8 +215,7 @@ namespace SILDMS.Model.VendorSelectionModule
         // --- References / Notes ---
         public string Reference { get; set; }
         public string Notes { get; set; }
-        public string CASNO { get; set; }
-        public string CASNo { get; set; }
+        public string CASNO { get; set; }        // KEEP ONE
         public string CatalogueNo { get; set; }
 
         // --- Production ---
@@ -104,16 +225,16 @@ namespace SILDMS.Model.VendorSelectionModule
         public int? ProductionLeadTimeValue { get; set; }
         public string ProductionLeadTimeUnit { get; set; }
 
-        // --- Representative Sample ---
+        // --- Sample ---
         public string RepresentativeSample { get; set; }
         public string RepresentativeSamplePackSize { get; set; }
 
-        // --- Compliance / Qualification ---
+        // --- Compliance ---
         public string ComplianceWith { get; set; }
         public string QualificationDocuments { get; set; }
         public string QualificationDocumentsOther { get; set; }
 
-        // --- FAT / SAT / Assistance ---
+        // --- FAT / SAT ---
         public string FATAtManufacturerSite { get; set; }
         public string FATAtManufacturerSiteOther { get; set; }
         public string SATScope { get; set; }
@@ -125,54 +246,51 @@ namespace SILDMS.Model.VendorSelectionModule
         public string SafetyFeatures { get; set; }
         public string EnergyEfficiencyFeatures { get; set; }
 
-        // --- Servicing / Scope ---
+        // --- Scope ---
         public string SparesServicing { get; set; }
         public string ScopeConfirmation { get; set; }
         public string ScopeDeviationRemarks { get; set; }
 
-        // --- Responsibility Matrix ---
+        // --- Responsibility ---
         public string Erection { get; set; }
         public string ErectionOther { get; set; }
-
         public string Installation { get; set; }
         public string InstallationOther { get; set; }
-
         public string Testing { get; set; }
         public string TestingOther { get; set; }
-
         public string Commissioning { get; set; }
         public string CommissioningOther { get; set; }
 
         // --- Regulatory ---
         public string RegulatoryApproval { get; set; }
         public string RegulatoryApprovalOther { get; set; }
-        public string SampleDocumentID { get; set; }
-        
 
         // --- Misc ---
         public string ColumnSpecification { get; set; }
-        public string CapacityExtendable { get; set; }
-        public string ProductLifeCycleUnit { get; set; }
-        public string CapacityExtendableOther { get; set; }
-        public object CountryOrigin { get; set; }
-        public string YearOfManufacturing { get; set; }
-        public decimal ProductLifeCycleValue { get; set; }
-        public string Capacity { get; set; }
         public string ModelVersion { get; set; }
-        public string proposal { get; set; }
+        public string CountryOrigin { get; set; }
+        public string YearOfManufacturing { get; set; }
+        public decimal? ProductLifeCycleValue { get; set; }
+        public string ProductLifeCycleUnit { get; set; }
+        public string Capacity { get; set; }
+        public string CapacityExtendable { get; set; }
+        public string CapacityExtendableOther { get; set; }
+        public string SampleDocumentID { get; set; }
+        public string Techtype { get; set; }     // KEEP ONE
         public string Proposal { get; set; }
-        public string techtype { get; set; }
-        public string Techtype { get; set; }
         public string QuotationRevisionNo { get; set; }
         public string QuotationID { get; set; }
         public string QuotationNo { get; set; }
-        public string ManufactureOrigin { get; set; }
-        public string InstallTestCom { get; set; }
-        public string SubContractor { get; set; }
-        public string Calibration { get; set; }
-        public string Training { get; set; }
-        public string ValidationScope { get; set; }
-        public string PenealtyClause { get; set; }
+        
+        public string PenaltyClause { get; set; }// KEEP ONE
+
+       /* public string[] PharmacopeialReference { get; set; } */ // It's an array in Angular
+        public string InstallationResponsibility { get; set; }
+        public string InstallationResponsibilityOther { get; set; }
+        public string SampleAvailable { get; set; }
+        public string SamplePackSize { get; set; }
+        public string PharmacopeialReference { get; set; }
+        public string AllPharmacopeialReference { get; set; }
     }
 
 
@@ -412,7 +530,7 @@ namespace SILDMS.Model.VendorSelectionModule
 
         public string MoleculeName { get; set; }
         public string Manufacturer { get; set; }
-        public string ShelfLifeValue { get; set; }
+        public int ? ShelfLifeValue { get; set; }
         public string ShelfLifeUnit { get; set; }
         public string Notes { get; set; }
         public string CASNO { get; set; }
@@ -450,6 +568,7 @@ namespace SILDMS.Model.VendorSelectionModule
         public string ProductLifeCycleValue { get; set; }
         public string ProductLifeCycleUnit { get; set; }
         public string Fintype { get; set; }
+        public string Proposal { get; set; }
     }
 
 

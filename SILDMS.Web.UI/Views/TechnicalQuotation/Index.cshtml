@@ -21,7 +21,6 @@
     .selected-row {
         background-color: #a4f5da !important;
     }
-
 </style>
 
 <div class="box box-primary box-body" ng-controller="TechnicalQuotationCtrl">
@@ -176,10 +175,10 @@
                 <!-- Row 1: Item / Molecule Name & Manufacturer Name -->
                 <div class="row">
                     <div class="col-lg-3">
-                        <label for="ItemName">Item / Molecule Name:</label>
+                        <label for="MoleculeName">Item / Molecule Name:</label>
                     </div>
                     <div class="col-lg-3">
-                        <input id="ItemName" type="text" ng-model="TechnicalQuotation.MoleculeName" class="form-control"
+                        <input id="MoleculeName" type="text" ng-model="TechnicalQuotation.MoleculeName" class="form-control"
                                placeholder="Material Name" />
                     </div>
 
@@ -236,6 +235,7 @@
                     </div>
                     <div class="col-lg-2">
                         <input id="RDPrice" type="number" ng-model="TechnicalQuotation.RDPrice" class="form-control"
+                               ng-blur="checkAndFormat('RDPrice')"
                                placeholder="R&D Price" />
                     </div>
                 </div>
@@ -247,6 +247,7 @@
                     </div>
                     <div class="col-lg-3">
                         <input id="CommercialPrice" type="number" ng-model="TechnicalQuotation.CommercialPrice"
+                               ng-blur="checkAndFormat('CommercialPrice')"
                                class="form-control" placeholder="Commercial Price" />
                     </div>
 
@@ -266,7 +267,7 @@
                                 ng-model="TechnicalQuotation.PriceUnit"
                                 ng-options="Item.Item_Code as Item.Item_Code for Item in ItemList track by Item.Item_Code">
                         </select>
-                        
+
                     </div>
                 </div>
 
@@ -277,6 +278,7 @@
                     </div>
                     <div class="col-lg-3">
                         <input id="MinOrderQty" type="number" ng-model="TechnicalQuotation.MinOrderQty" class="form-control"
+                               ng-blur="checkAndFormat2('MinOrderQty')"
                                placeholder="Minimum Order Qty" />
                     </div>
 
@@ -297,7 +299,7 @@
                         </select>
                     </div>
                 </div>
-          
+
 
                 <!-- Row 6: Storage Condition & Reference Customer List -->
                 <div class="row">
@@ -327,26 +329,52 @@
                         <input id="Notes" type="text" ng-model="TechnicalQuotation.Notes" class="form-control" placeholder="Notes" />
                     </div>
 
-                    <div class="col-lg-2">
-                        <label for="CASNo">CAS No:</label>
-                    </div>
-                    <div class="col-lg-2">
-                        <input id="CASNo" type="text" ng-model="TechnicalQuotation.CASNO" class="form-control" placeholder="CAS No" />
-                    </div>
 
-                  
+
+
                 </div>
 
-                <!-- Row 8: Production Lead Time -->
-                <div class="row">
-                    <div class="col-lg-3">
-                        <label for="ProductionLeadTime">Production Lead Time:</label>
+                <div class="row mt-3">
+                    <div class="col-lg-12">
+                        <button type="button" class="btn btn-link"
+                                ng-click="showOptional = !showOptional">
+                            {{ showOptional ? 'Hide Additional Details' : 'Show Additional Details' }}
+                        </button>
                     </div>
-                    <div class="col-lg-2">
-                        <div class="input-group">
-                            <input id="ProductionLeadTime" type="number" ng-model="TechnicalQuotation.ProductionLeadTimeValue"
-                                   class="form-control" placeholder="Lead Time" />
+                </div>
+
+                <div ng-show="showOptional">
+
+
+
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label for="CASNo">CAS No:</label>
                         </div>
+                        <div class="col-lg-3">
+                            <input id="CASNo" type="text" ng-model="TechnicalQuotation.CASNO" class="form-control" placeholder="CAS No" />
+                        </div>
+
+                        <div class="col-lg-2">
+                            <label for="CatalogueNo">Catalogue No:</label>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <input id="CatalogueNo" type="text" ng-model="TechnicalQuotation.CatalogueNo" class="form-control"
+                                   placeholder="Catalogue No" />
+                        </div>
+                    </div>
+
+                    <!-- Row 8: Production Lead Time -->
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label for="ProductionLeadTime">Production Lead Time:</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="input-group">
+                                <input id="ProductionLeadTime" type="number" ng-model="TechnicalQuotation.ProductionLeadTimeValue"
+                                       class="form-control" placeholder="Lead Time" />
+                            </div>
                         </div>
                         <div class="col-lg-1">
                             <select ng-model="TechnicalQuotation.ProductionLeadTimeUnit" class="form-control">
@@ -355,144 +383,137 @@
                                 <option value="Years">Years</option>
                             </select>
                         </div>
-                 
-                    <div class="col-lg-2">
-                        <label for="CatalogueNo">Catalogue No:</label>
+
+
                     </div>
 
-                    <div class="col-lg-2">
-                        <input id="CatalogueNo" type="text" ng-model="TechnicalQuotation.CatalogueNo" class="form-control"
-                               placeholder="Catalogue No" />
+                    <!-- Row 9: Commercial & Minimum Pack Size -->
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label for="CommercialPackSize">Commercial Pack Size:</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <input id="CommercialPackSize" type="text" ng-model="TechnicalQuotation.CommercialPackSize"
+                                   class="form-control" placeholder="Commercial Pack Size" />
+                        </div>
+
+                        <div class="col-lg-2">
+                            <label for="MinPackSize">Minimum Pack Size:</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <input id="MinPackSize" type="text" ng-model="TechnicalQuotation.MinPack" class="form-control"
+                                   placeholder="Minimum Pack Size" />
+                        </div>
+                    </div>
+
+                    <!-- Row 10: Representative Sample -->
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label for="RepresentativeSample">Representative Sample:</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <select id="RepresentativeSample" ng-model="TechnicalQuotation.RepresentativeSample"
+                                    ng-change="showRepresentativeOther = (TechnicalQuotation.RepresentativeSample === 'Other')"
+                                    class="form-control">
+                                <option value="">--Select--</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <input type="text" ng-show="showRepresentativeOther"
+                                   ng-model="TechnicalQuotation.RepresentativeSamplePackSize" class="form-control"
+                                   placeholder="Specify Other" style="margin-top:5px;" />
+                        </div>
+                    </div>
+
+                    <!-- Row 11: Current Production Status & Production Capacity -->
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label for="CurrentProductionStatus">Current Production Status:</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <select id="CurrentProductionStatus"
+                                    ng-model="TechnicalQuotation.CurrentStatus"
+                                    class="form-control">
+                                <option value="">--Select--</option>
+                                <option value="Commercialized">Commercialized</option>
+                                <option value="Under Validation">Under Validation</option>
+                                <option value="R&D Stage">R&D Stage</option>
+                                <option value="Wish List">Wish List</option>
+                            </select>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <label for="ProductionCapacity">Production Capacity:</label>
+                        </div>
+                        <div class="col-lg-1">
+                            <input id="ProductionCapacity" type="text" ng-model="TechnicalQuotation.ProdCapacity" class="form-control"
+                                   placeholder="Production Capacity" />
+                        </div>
+
+                        <div class="col-lg-1">
+                            <label for="ProductionFrequency">Production Frequency:</label>
+                        </div>
+                        <div class="col-lg-1">
+                            <select id="ProductionFrequency" ng-model="TechnicalQuotation.ProductionFrequency" class="form-control">
+                                <option value="">--Select--</option>
+                                <option value="Campaign">Campaign</option>
+                                <option value="Regular">Regular</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Row 12: Pharmacopeial Reference & Regulatory Approval -->
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label for="PharmacopeialReference">Pharmacopeial Reference:</label>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <select ui-select2="{ allowClear: true }"
+                                    id="PharmacopeialReference"
+                                    multiple
+                                    ng-model="TechnicalQuotation.PharmacopeialReference"
+                                    data-placeholder="Pharmacopeial Reference"
+                                    style="width:100%;"
+                                    class="form-control"
+                                    ng-options="ref.value as ref.label for ref in pharmacopeialReferenceList">
+                            </select>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <label for="RegulatoryApproval">Regulatory Approval:</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <select id="RegulatoryApproval" ng-model="TechnicalQuotation.RegulatoryApproval"
+                                    ng-change="showRegulatoryOther = (TechnicalQuotation.RegulatoryApproval === 'OTHER')"
+                                    class="form-control">
+
+                                <option value="">--Select--</option>
+                                <option value="FDA">US FDA</option>
+                                <option value="CEP">CEP</option>
+                                <option value="OTHER">Other</option>
+                            </select>
+                            <input type="text" ng-show="showRegulatoryOther" ng-model="TechnicalQuotation.RegulatoryApprovalOther"
+                                   class="form-control" placeholder="Specify Other" style="margin-top:5px;" />
+                        </div>
+                    </div>
+
+                    <!-- Row 13: Column Specification -->
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label for="ColumnSpecification">Column Specification:</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <input id="ColumnSpecification" type="text" ng-model="TechnicalQuotation.ColumnSpecification"
+                                   class="form-control" placeholder="Column Specification" />
+                        </div>
+                    </div>
                     </div>
                 </div>
 
-                <!-- Row 9: Commercial & Minimum Pack Size -->
-                <div class="row">
-                    <div class="col-lg-3">
-                        <label for="CommercialPackSize">Commercial Pack Size:</label>
-                    </div>
-                    <div class="col-lg-3">
-                        <input id="CommercialPackSize" type="text" ng-model="TechnicalQuotation.CommercialPackSize"
-                               class="form-control" placeholder="Commercial Pack Size" />
-                    </div>
-
-                    <div class="col-lg-2">
-                        <label for="MinPackSize">Minimum Pack Size:</label>
-                    </div>
-                    <div class="col-lg-2">
-                        <input id="MinPackSize" type="text" ng-model="TechnicalQuotation.MinPack" class="form-control"
-                               placeholder="Minimum Pack Size" />
-                    </div>
-                </div>
-
-                <!-- Row 10: Representative Sample -->
-                <div class="row">
-                    <div class="col-lg-3">
-                        <label for="RepresentativeSample">Representative Sample:</label>
-                    </div>
-                    <div class="col-lg-3">
-                        <select id="RepresentativeSample" ng-model="TechnicalQuotation.RepresentativeSample"
-                                ng-change="showRepresentativeOther = (TechnicalQuotation.RepresentativeSample === 'Other')"
-                                class="form-control">
-                            <option value="">--Select--</option>
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
-                            <option value="Other">Other</option>
-                        </select>
-                        <input type="text" ng-show="showRepresentativeOther"
-                               ng-model="TechnicalQuotation.RepresentativeSamplePackSize" class="form-control"
-                               placeholder="Specify Other" style="margin-top:5px;" />
-                    </div>
-                </div>
-
-                <!-- Row 11: Current Production Status & Production Capacity -->
-                <div class="row">
-                    <div class="col-lg-3">
-                        <label for="CurrentProductionStatus">Current Production Status:</label>
-                    </div>
-                    <div class="col-lg-3">
-                        <select id="CurrentProductionStatus"
-                                ng-model="TechnicalQuotation.CurrentStatus"
-                                class="form-control">
-                            <option value="">--Select--</option>
-                            <option value="Commercialized">Commercialized</option>
-                            <option value="Under Validation">Under Validation</option>
-                            <option value="R&D Stage">R&D Stage</option>
-                            <option value="Wish List">Wish List</option>
-                        </select>
-                    </div>
-
-                    <div class="col-lg-2">
-                        <label for="ProductionCapacity">Production Capacity:</label>
-                    </div>
-                    <div class="col-lg-1">
-                        <input id="ProductionCapacity" type="text" ng-model="TechnicalQuotation.ProdCapacity" class="form-control"
-                               placeholder="Production Capacity" />
-                    </div>
-
-                    <div class="col-lg-1">
-                        <label for="ProductionFrequency">Production Frequency:</label>
-                    </div>
-                    <div class="col-lg-1">
-                        <select id="ProductionFrequency" ng-model="TechnicalQuotation.ProductionFrequency" class="form-control">
-                            <option value="">--Select--</option>
-                            <option value="Campaign">Campaign</option>
-                            <option value="Regular">Regular</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Row 12: Pharmacopeial Reference & Regulatory Approval -->
-                <div class="row">
-                    <div class="col-lg-3">
-                        <label for="PharmacopeialReference">Pharmacopeial Reference:</label>
-                    </div>
-
-                    <div class="col-lg-3">
-                        <select ui-select2="{ allowClear: true }"
-                                id="PharmacopeialReference"
-                                multiple
-                                ng-model="TechnicalQuotation.PharmacopeialReference"
-                                data-placeholder="Select Pharmacopeial Reference"
-                                style="width:100%;"
-                                class="form-control"
-                                ng-options="ref.value as ref.label for ref in pharmacopeialReferenceList">
-                        </select>
-                    </div>
-
-                    <div class="col-lg-2">
-                        <label for="RegulatoryApproval">Regulatory Approval:</label>
-                    </div>
-                    <div class="col-lg-2">
-                        <select id="RegulatoryApproval" ng-model="TechnicalQuotation.RegulatoryApproval"
-                                ng-change="showRegulatoryOther = (TechnicalQuotation.RegulatoryApproval === 'OTHER')"
-                                class="form-control">
-
-                            <option value="">--Select--</option>
-                            <option value="FDA">US FDA</option>
-                            <option value="CEP">CEP</option>
-                            <option value="OTHER">Other</option>
-                        </select>
-                        <input type="text" ng-show="showRegulatoryOther" ng-model="TechnicalQuotation.RegulatoryApprovalOther"
-                               class="form-control" placeholder="Specify Other" style="margin-top:5px;" />
-                    </div>
-                </div>
-
-                <!-- Row 13: Column Specification -->
-                <div class="row">
-                    <div class="col-lg-3">
-                        <label for="ColumnSpecification">Column Specification:</label>
-                    </div>
-                    <div class="col-lg-3">
-                        <input id="ColumnSpecification" type="text" ng-model="TechnicalQuotation.ColumnSpecification"
-                               class="form-control" placeholder="Column Specification" />
-                    </div>
-                </div>
 
             </div>
-
-
-        </div>
 
 
 
@@ -569,7 +590,7 @@
                         <input type="text"
                                class="DatePicker form-control" id="YearOfManufacturing" ng-model="TechnicalQuotation.YearOfManufacturing" placeholder="DD/MM/YYYY" ng-required="true" />
                     </div>
-              
+
 
 
                     <div class="col-lg-2">
@@ -626,278 +647,287 @@
                         <input id="Notes" type="text" ng-model="TechnicalQuotation.Notes" class="form-control" placeholder="Notes" />
                     </div>
                 </div>
-
-                <!-- Row 7: Capacity & Capacity Extendable -->
-                <div class="row">
-                    <div class="col-lg-3">
-                        <label for="Capacity">Capacity:</label>
-                    </div>
-                    <div class="col-lg-3">
-                        <input id="Capacity" type="text" ng-model="TechnicalQuotation.Capacity" class="form-control"
-                               placeholder="Capacity" />
-                    </div>
-
-                    <div class="col-lg-2">
-                        <label for="CapacityExtendable">Capacity Extendable:</label>
-                    </div>
-                    <div class="col-lg-2">
-                        <select id="CapacityExtendable" ng-model="TechnicalQuotation.CapacityExtendable" class="form-control"
-                                ng-change="showCapacityExtendableOther = (TechnicalQuotation.CapacityExtendable === 'OTHER')">
-                            <option value="">--Select--</option>
-                            <option value="YES">Yes</option>
-                            <option value="NO">No</option>
-                            <option value="OTHER">Other</option>
-                        </select>
-                        <input type="text" ng-show="showCapacityExtendableOther" ng-model="TechnicalQuotation.CapacityExtendableOther"
-                               class="form-control" placeholder="Specify Other" style="margin-top:5px;" />
+                <div class="row mt-3">
+                    <div class="col-lg-12">
+                        <button type="button" class="btn btn-link"
+                                ng-click="showOptional = !showOptional">
+                            {{ showOptional ? 'Hide Additional Details' : 'Show Additional Details' }}
+                        </button>
                     </div>
                 </div>
 
-                <!-- Row 8: FAT at Manufacturer's Site -->
-                <div class="row">
-                    <div class="col-lg-3">
-                        <label for="FAT">FAT at Manufacturer's Site:</label>
+                <div ng-show="showOptional">
+                    <!-- Row 7: Capacity & Capacity Extendable -->
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label for="Capacity">Capacity:</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <input id="Capacity" type="text" ng-model="TechnicalQuotation.Capacity" class="form-control"
+                                   placeholder="Capacity" />
+                        </div>
+
+                        <div class="col-lg-2">
+                            <label for="CapacityExtendable">Capacity Extendable:</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <select id="CapacityExtendable" ng-model="TechnicalQuotation.CapacityExtendable" class="form-control"
+                                    ng-change="showCapacityExtendableOther = (TechnicalQuotation.CapacityExtendable === 'OTHER')">
+                                <option value="">--Select--</option>
+                                <option value="YES">Yes</option>
+                                <option value="NO">No</option>
+                                <option value="OTHER">Other</option>
+                            </select>
+                            <input type="text" ng-show="showCapacityExtendableOther" ng-model="TechnicalQuotation.CapacityExtendableOther"
+                                   class="form-control" placeholder="Specify Other" style="margin-top:5px;" />
+                        </div>
                     </div>
-                    <div class="col-lg-3">
-                        <select id="FAT" ng-model="TechnicalQuotation.FATAtManufacturerSite" class="form-control"
-                                ng-change="showFATOther = (TechnicalQuotation.FATAtManufacturerSite === 'OTHER')">
-                            <option value="">--Select--</option>
-                            <option value="YES">Yes</option>
-                            <option value="NO">No</option>
-                            <option value="OTHER">Other</option>
-                        </select>
-            <input type="text" ng-show="showFATOther" ng-model="TechnicalQuotation.FATAtManufacturerSiteOther"
-                   class="form-control" placeholder="Specify Other" style="margin-top:5px;" />
-        </div>
 
-                    @*<div class="col-lg-3">
-                        <select id="FAT"
-                                ng-model="TechnicalQuotation.FATAtManufacturerSite"
-                                class="form-control">
+                    <!-- Row 8: FAT at Manufacturer's Site -->
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label for="FAT">FAT at Manufacturer's Site:</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <select id="FAT" ng-model="TechnicalQuotation.FATAtManufacturerSite" class="form-control"
+                                    ng-change="showFATOther = (TechnicalQuotation.FATAtManufacturerSite === 'OTHER')">
+                                <option value="">--Select--</option>
+                                <option value="YES">Yes</option>
+                                <option value="NO">No</option>
+                                <option value="OTHER">Other</option>
+                            </select>
+                            <input type="text" ng-show="showFATOther" ng-model="TechnicalQuotation.FATAtManufacturerSiteOther"
+                                   class="form-control" placeholder="Specify Other" style="margin-top:5px;" />
+                        </div>
 
-                            <option value="">-- Select --</option>
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
-                            <option value="Other">Other</option>
-                        </select>
+                        @*<div class="col-lg-3">
+                    <select id="FAT"
+                            ng-model="TechnicalQuotation.FATAtManufacturerSite"
+                            class="form-control">
 
-                        <input type="text"
-                               ng-if="TechnicalQuotation.FATAtManufacturerSite === 'Other'"
-                               ng-model="TechnicalQuotation.FATAtManufacturerSiteOther"
-                               class="form-control"
-                               placeholder="Specify Other"
-                               style="margin-top:5px;" />
-                    </div>*@
+                        <option value="">-- Select --</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                        <option value="Other">Other</option>
+                    </select>
 
-                    <div class="col-lg-2">
-                        <label for="SATScope">SAT Scope:</label>
+                    <input type="text"
+                           ng-if="TechnicalQuotation.FATAtManufacturerSite === 'Other'"
+                           ng-model="TechnicalQuotation.FATAtManufacturerSiteOther"
+                           class="form-control"
+                           placeholder="Specify Other"
+                           style="margin-top:5px;" />
+                </div>*@
+
+                        <div class="col-lg-2">
+                            <label for="SATScope">SAT Scope:</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <input id="SATScope" type="text" ng-model="TechnicalQuotation.SATScope" class="form-control" placeholder="SAT Scope" />
+                        </div>
                     </div>
-                    <div class="col-lg-2">
-                        <input id="SATScope" type="text" ng-model="TechnicalQuotation.SATScope" class="form-control" placeholder="SAT Scope" />
+
+                    <!-- Row 9: Assistance at Site -->
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label for="AssistanceAtSite">Assistance at Site:</label>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <select id="AssistanceAtSite"
+                                    ng-model="TechnicalQuotation.AssistanceAtSite"
+                                    class="form-control">
+
+                                <option value="">-- Select --</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                                <option value="Other">Other</option>
+                            </select>
+
+                            <input type="text"
+                                   ng-if="TechnicalQuotation.AssistanceAtSite === 'Other'"
+                                   ng-model="TechnicalQuotation.AssistanceAtSiteOther"
+                                   class="form-control"
+                                   placeholder="Specify Other"
+                                   style="margin-top:5px;" />
+                        </div>
                     </div>
+
+
+                    <!-- Row 10: Compliance With & Qualification Documents -->
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label for="ComplianceWith">Compliance With:</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <select id="ComplianceWith" ng-model="TechnicalQuotation.ComplianceWith" class="form-control">
+                                <option value="">--select--</option>
+                                <option value="GMP">GMP</option>
+                                <option value="WHO_GMP">WHO GMP</option>
+                                <option value="EU_GMP">EU GMP</option>
+                                <option value="FDA">US FDA</option>
+                                <option value="ISO">International Standard (ISO)</option>
+                            </select>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <label for="QualificationDocuments">Qualification Documents:</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <select id="QualificationDocuments" ng-model="TechnicalQuotation.QualificationDocuments"
+                                    ng-change="showQualificationOther = (TechnicalQuotation.QualificationDocuments === 'OTHER')"
+                                    class="form-control">
+                                <option value="">-- Select --</option>
+                                <option value="DQ">DQ</option>
+                                <option value="IQ">IQ</option>
+                                <option value="OQ">OQ</option>
+                                <option value="PQ">PQ</option>
+                                <option value="OTHER">Others</option>
+                            </select>
+                            <input type="text" ng-show="showQualificationOther" ng-model="TechnicalQuotation.QualificationDocumentsOther"
+                                   class="form-control" placeholder="Specify Other" style="margin-top:5px;" />
+                        </div>
+                    </div>
+
+                    <!-- Row 11: Utilities Requirement, Safety Features, Energy Efficiency -->
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label for="UtilitiesRequirement">Utilities Requirement:</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <input id="UtilitiesRequirement" type="text" ng-model="TechnicalQuotation.UtilitiesRequirement"
+                                   class="form-control" placeholder="Utilities Requirement" />
+                        </div>
+
+                        <div class="col-lg-2">
+                            <label for="SafetyFeatures">Safety Features:</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <input id="SafetyFeatures" type="text" ng-model="TechnicalQuotation.SafetyFeatures"
+                                   class="form-control" placeholder="Safety Features" />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label for="EnergyEfficiencyFeatures">Energy Efficiency Features:</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <input id="EnergyEfficiencyFeatures" type="text" ng-model="TechnicalQuotation.EnergyEfficiencyFeatures"
+                                   class="form-control" placeholder="Energy Efficiency Features" />
+                        </div>
+                    </div>
+
+                    <!-- Row 12: Servicing, Scope Confirmation -->
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label for="Servicing">Servicing:</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <select id="Servicing" ng-model="TechnicalQuotation.SparesServicing" class="form-control">
+                                <option value="">--Select--</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <label for="ScopeConfirmation">Scope Confirmation:</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <select id="ScopeConfirmation" ng-model="TechnicalQuotation.ScopeConfirmation" class="form-control">
+                                <option value="">--Select--</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Row 13: Scope Deviation Remarks -->
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label for="ScopeDeviationRemarks">Scope Deviation Remarks:</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <input id="ScopeDeviationRemarks" type="text" ng-model="TechnicalQuotation.ScopeDeviationRemarks"
+                                   class="form-control" placeholder="Scope Deviation Remarks" />
+                        </div>
+                    </div>
+
+                    <!-- Row 14: Responsibility Matrix -->
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label for="Erection">Erection:</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <select id="Erection" ng-model="TechnicalQuotation.Erection"
+                                    ng-change="showErectionOther = (TechnicalQuotation.Erection === 'OTHER')" class="form-control">
+                                <option value="">--Select--</option>
+                                <option value="SUPPLIER">Supplier</option>
+                                <option value="SQUARE">SQUARE</option>
+                                <option value="BOTH">Both</option>
+                                <option value="OTHER">Other</option>
+                            </select>
+                            <input type="text" ng-show="showErectionOther" ng-model="TechnicalQuotation.ErectionOther"
+                                   class="form-control" placeholder="Specify Other" style="margin-top:5px;" />
+                        </div>
+
+                        <div class="col-lg-2">
+                            <label for="Installation">Installation:</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <select id="Installation" ng-model="TechnicalQuotation.Installation"
+                                    ng-change="showInstallationOther = (TechnicalQuotation.Installation === 'OTHER')" class="form-control">
+                                <option value="">--select--</option>
+                                <option value="SUPPLIER">Supplier</option>
+                                <option value="SQUARE">SQUARE</option>
+                                <option value="BOTH">Both</option>
+                                <option value="OTHER">Other</option>
+                            </select>
+                            <input type="text" ng-show="showInstallationOther" ng-model="TechnicalQuotation.InstallationOther"
+                                   class="form-control" placeholder="Specify Other" style="margin-top:5px;" />
+                        </div>
+                    </div>
+
+                    <!-- Row 15: Testing & Commissioning -->
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label for="Testing">Testing:</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <select id="Testing" ng-model="TechnicalQuotation.Testing"
+                                    ng-change="showTestingOther = (TechnicalQuotation.Testing === 'OTHER')" class="form-control">
+                                <option value="">--select--</option>
+                                <option value="SUPPLIER">Supplier</option>
+                                <option value="SQUARE">SQUARE</option>
+                                <option value="BOTH">Both</option>
+                                <option value="OTHER">Other</option>
+                            </select>
+                            <input type="text" ng-show="showTestingOther" ng-model="TechnicalQuotation.TestingOther"
+                                   class="form-control" placeholder="Specify Other" style="margin-top:5px;" />
+                        </div>
+
+                        <div class="col-lg-2">
+                            <label for="Commissioning">Commissioning:</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <select id="Commissioning" ng-model="TechnicalQuotation.Commissioning"
+                                    ng-change="showCommissioningOther = (TechnicalQuotation.Commissioning === 'OTHER')" class="form-control">
+                                <option value="">--select--</option>
+                                <option value="SUPPLIER">Supplier</option>
+                                <option value="SQUARE">SQUARE</option>
+                                <option value="BOTH">Both</option>
+                                <option value="OTHER">Other</option>
+                            </select>
+                            <input type="text" ng-show="showCommissioningOther" ng-model="TechnicalQuotation.CommissioningOther"
+                                   class="form-control" placeholder="Specify Other" style="margin-top:5px;" />
+                        </div>
+                    </div>
+</div>
                 </div>
 
-                <!-- Row 9: Assistance at Site -->
-                <div class="row">
-                    <div class="col-lg-3">
-                        <label for="AssistanceAtSite">Assistance at Site:</label>
-                    </div>
-
-                    <div class="col-lg-3">
-                        <select id="AssistanceAtSite"
-                                ng-model="TechnicalQuotation.AssistanceAtSite"
-                                class="form-control">
-
-                            <option value="">-- Select --</option>
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
-                            <option value="Other">Other</option>
-                        </select>
-
-                        <input type="text"
-                               ng-if="TechnicalQuotation.AssistanceAtSite === 'Other'"
-                               ng-model="TechnicalQuotation.AssistanceAtSiteOther"
-                               class="form-control"
-                               placeholder="Specify Other"
-                               style="margin-top:5px;" />
-                    </div>
-                </div>
-
-
-                <!-- Row 10: Compliance With & Qualification Documents -->
-                <div class="row">
-                    <div class="col-lg-3">
-                        <label for="ComplianceWith">Compliance With:</label>
-                    </div>
-                    <div class="col-lg-3">
-                        <select id="ComplianceWith" ng-model="TechnicalQuotation.ComplianceWith" class="form-control">
-                            <option value="">--select--</option>
-                            <option value="GMP">GMP</option>
-                            <option value="WHO_GMP">WHO GMP</option>
-                            <option value="EU_GMP">EU GMP</option>
-                            <option value="FDA">US FDA</option>
-                            <option value="ISO">International Standard (ISO)</option>
-                        </select>
-                    </div>
-
-                    <div class="col-lg-2">
-                        <label for="QualificationDocuments">Qualification Documents:</label>
-                    </div>
-                    <div class="col-lg-2">
-                        <select id="QualificationDocuments" ng-model="TechnicalQuotation.QualificationDocuments"
-                                ng-change="showQualificationOther = (TechnicalQuotation.QualificationDocuments === 'OTHER')"
-                                class="form-control">
-                            <option value="">-- Select --</option>
-                            <option value="DQ">DQ</option>
-                            <option value="IQ">IQ</option>
-                            <option value="OQ">OQ</option>
-                            <option value="PQ">PQ</option>
-                            <option value="OTHER">Others</option>
-                        </select>
-                        <input type="text" ng-show="showQualificationOther" ng-model="TechnicalQuotation.QualificationDocumentsOther"
-                               class="form-control" placeholder="Specify Other" style="margin-top:5px;" />
-                    </div>
-                </div>
-
-                <!-- Row 11: Utilities Requirement, Safety Features, Energy Efficiency -->
-                <div class="row">
-                    <div class="col-lg-3">
-                        <label for="UtilitiesRequirement">Utilities Requirement:</label>
-                    </div>
-                    <div class="col-lg-3">
-                        <input id="UtilitiesRequirement" type="text" ng-model="TechnicalQuotation.UtilitiesRequirement"
-                               class="form-control" placeholder="Utilities Requirement" />
-                    </div>
-
-                    <div class="col-lg-2">
-                        <label for="SafetyFeatures">Safety Features:</label>
-                    </div>
-                    <div class="col-lg-2">
-                        <input id="SafetyFeatures" type="text" ng-model="TechnicalQuotation.SafetyFeatures"
-                               class="form-control" placeholder="Safety Features" />
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-lg-3">
-                        <label for="EnergyEfficiencyFeatures">Energy Efficiency Features:</label>
-                    </div>
-                    <div class="col-lg-3">
-                        <input id="EnergyEfficiencyFeatures" type="text" ng-model="TechnicalQuotation.EnergyEfficiencyFeatures"
-                               class="form-control" placeholder="Energy Efficiency Features" />
-                    </div>
-                </div>
-
-                <!-- Row 12: Servicing, Scope Confirmation -->
-                <div class="row">
-                    <div class="col-lg-3">
-                        <label for="Servicing">Servicing:</label>
-                    </div>
-                    <div class="col-lg-3">
-                        <select id="Servicing" ng-model="TechnicalQuotation.SparesServicing" class="form-control">
-                            <option value="">--Select--</option>
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
-                        </select>
-                    </div>
-
-                    <div class="col-lg-2">
-                        <label for="ScopeConfirmation">Scope Confirmation:</label>
-                    </div>
-                    <div class="col-lg-2">
-                        <select id="ScopeConfirmation" ng-model="TechnicalQuotation.ScopeConfirmation" class="form-control">
-                            <option value="">--Select--</option>
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Row 13: Scope Deviation Remarks -->
-                <div class="row">
-                    <div class="col-lg-3">
-                        <label for="ScopeDeviationRemarks">Scope Deviation Remarks:</label>
-                    </div>
-                    <div class="col-lg-3">
-                        <input id="ScopeDeviationRemarks" type="text" ng-model="TechnicalQuotation.ScopeDeviationRemarks"
-                               class="form-control" placeholder="Scope Deviation Remarks" />
-                    </div>
-                </div>
-
-                <!-- Row 14: Responsibility Matrix -->
-                <div class="row">
-                    <div class="col-lg-3">
-                        <label for="Erection">Erection:</label>
-                    </div>
-                    <div class="col-lg-3">
-                        <select id="Erection" ng-model="TechnicalQuotation.Erection"
-                                ng-change="showErectionOther = (TechnicalQuotation.Erection === 'OTHER')" class="form-control">
-                            <option value="">--Select--</option>
-                            <option value="SUPPLIER">Supplier</option>
-                            <option value="SQUARE">SQUARE</option>
-                            <option value="BOTH">Both</option>
-                            <option value="OTHER">Other</option>
-                        </select>
-                        <input type="text" ng-show="showErectionOther" ng-model="TechnicalQuotation.ErectionOther"
-                               class="form-control" placeholder="Specify Other" style="margin-top:5px;" />
-                    </div>
-
-                    <div class="col-lg-2">
-                        <label for="Installation">Installation:</label>
-                    </div>
-                    <div class="col-lg-3">
-                        <select id="Installation" ng-model="TechnicalQuotation.Installation"
-                                ng-change="showInstallationOther = (TechnicalQuotation.Installation === 'OTHER')" class="form-control">
-                            <option value="">--select--</option>
-                            <option value="SUPPLIER">Supplier</option>
-                            <option value="SQUARE">SQUARE</option>
-                            <option value="BOTH">Both</option>
-                            <option value="OTHER">Other</option>
-                        </select>
-                        <input type="text" ng-show="showInstallationOther" ng-model="TechnicalQuotation.InstallationOther"
-                               class="form-control" placeholder="Specify Other" style="margin-top:5px;" />
-                    </div>
-                </div>
-
-                <!-- Row 15: Testing & Commissioning -->
-                <div class="row">
-                    <div class="col-lg-3">
-                        <label for="Testing">Testing:</label>
-                    </div>
-                    <div class="col-lg-3">
-                        <select id="Testing" ng-model="TechnicalQuotation.Testing"
-                                ng-change="showTestingOther = (TechnicalQuotation.Testing === 'OTHER')" class="form-control">
-                            <option value="">--select--</option>
-                            <option value="SUPPLIER">Supplier</option>
-                            <option value="SQUARE">SQUARE</option>
-                            <option value="BOTH">Both</option>
-                            <option value="OTHER">Other</option>
-                        </select>
-                        <input type="text" ng-show="showTestingOther" ng-model="TechnicalQuotation.TestingOther"
-                               class="form-control" placeholder="Specify Other" style="margin-top:5px;" />
-                    </div>
-
-                    <div class="col-lg-2">
-                        <label for="Commissioning">Commissioning:</label>
-                    </div>
-                    <div class="col-lg-3">
-                        <select id="Commissioning" ng-model="TechnicalQuotation.Commissioning"
-                                ng-change="showCommissioningOther = (TechnicalQuotation.Commissioning === 'OTHER')" class="form-control">
-                            <option value="">--select--</option>
-                            <option value="SUPPLIER">Supplier</option>
-                            <option value="SQUARE">SQUARE</option>
-                            <option value="BOTH">Both</option>
-                            <option value="OTHER">Other</option>
-                        </select>
-                        <input type="text" ng-show="showCommissioningOther" ng-model="TechnicalQuotation.CommissioningOther"
-                               class="form-control" placeholder="Specify Other" style="margin-top:5px;" />
-                    </div>
-                </div>
 
             </div>
-
-
-     </div>
 
         <div class="row" ng-show="p===1 || p===2">
 
@@ -1079,21 +1109,20 @@
                         <thead>
                             <tr>
                                 <th class="col-lg-1 col-md-1 col-sm-1" style="text-align:center;">Number</th>
-                                <th class="col-lg-4 col-md-4 col-sm-4"style="text-align:center;">Invitation Number</th>
+                                <th class="col-lg-4 col-md-4 col-sm-4" style="text-align:center;">Invitation Number</th>
 
-                                <th class="col-lg-1 col-md-1 col-sm-1"style="text-align:center;">Action</th>
+                                <th class="col-lg-1 col-md-1 col-sm-1" style="text-align:center;">Action</th>
                             </tr>
 
                         </thead>
                         <tbody>
                             <tr ng-repeat="row in InvitationDisplayedCollection">
                                 <td class="text-center">{{$index+1}}</td>
-                                <td class=""style="text-align:center;">{{row.Invitation_Number}}</td>
-                                <td class="" style="text-align:center;">{{row.ProposalType}}</td>
-                                <td class="" style="text-align:center;">{{row.TechType}}</td>
+                                <td class="" style="text-align:center;">{{row.Invitation_Number}}</td>
+
 
                                 <td class="text-center">
-                                    <a class="btn col-center btn-sm btn-flat btn-success" data-ng-click="toggleInvitationSelect(row.Invitation_Number,row.ProposalType,row.TechType)">Select</a>
+                                    <a class="btn col-center btn-sm btn-flat btn-success" data-ng-click="toggleInvitationSelect(row.Invitation_Number)">Select</a>
                                 </td>
                             </tr>
                         </tbody>
@@ -1143,7 +1172,7 @@
                                 <td class="">{{row.QuotationDate}}</td>
 
                                 <td class="text-center">
-                                    <a class="btn col-center btn-sm btn-flat btn-success" data-ng-click="toggleQuotationSelect(row)">Select</a>
+                                    <a class="btn col-center btn-sm btn-flat btn-success" data-ng-click="toggleQuotationSelect(row.InvitationNumber,row.quotationNo)">Select</a>
                                 </td>
                             </tr>
                         </tbody>
@@ -1368,7 +1397,7 @@
             // TechnicalQuotation-related fields
             MoleculeName: '',
             Manufacturer: '',
-            ShelfLifeValue: '',
+            ShelfLifeValue: 0,
             ShelfLifeUnit: '',
             Notes: '',
             CASNO: '',
@@ -1422,10 +1451,10 @@
         }
 
 
-     
         $scope.TechnicalQuotation = {
             // --- Identity / Meta ---
             rowIndex: '',
+            TechQuotationItemID: '',
             ItemName: "",
             MoleculeName: "",
             Manufacturer: "",
@@ -1434,60 +1463,51 @@
             ManufacturerOrigin: "",
             Supplier: "",
             LocalPartner: "",
-
             // --- Pricing ---
-            RDPrice: null,
-            CommercialPrice: null,
+            RDPrice: 0,
+            CommercialPrice: 0,
             PricePer: 1,
-            PriceUnit: "",
-            Currency: "",
-
+            PriceUnit: { Item_Code: "", Item_Name: "" },
+            Currency: { MasterDataID: "", MasterDataValue: "" },
             // --- Order / Shelf / Storage ---
-            MinOrderQty: null,
+            MinOrderQty: 0,
             OrderQtyUnit: "",
             CommercialPackSize: "",
             MinPack: "",
-            ShelfLifeValue: null,
+            ShelfLifeValue: 0,
             ShelfLifeUnit: "Days",
             StorageCondition: "",
-
             // --- References / Notes ---
             Reference: "",
             Notes: "",
             CASNO: "",
             CatalogueNo: "",
-
             // --- Production ---
             CurrentStatus: "",
             ProdCapacity: "",
             ProductionFrequency: "",
-            ProductionLeadTimeValue: null,
+            ProductionLeadTimeValue: 0,
             ProductionLeadTimeUnit: "Days",
             RepresentativeSample: "",
             RepresentativeSamplePackSize: "",
-
             // --- Compliance / Qualification ---
             ComplianceWith: "",
             QualificationDocuments: "",
             QualificationDocumentsOther: "",
-
             // --- FAT / SAT / Assistance ---
             FATAtManufacturerSite: "",
             FATAtManufacturerSiteOther: "",
             SATScope: "",
             AssistanceAtSite: "",
             AssistanceAtSiteOther: "",
-
             // --- Utilities / Safety ---
             UtilitiesRequirement: "",
             SafetyFeatures: "",
             EnergyEfficiencyFeatures: "",
-
             // --- Servicing / Scope ---
             SparesServicing: "",
             ScopeConfirmation: "",
             ScopeDeviationRemarks: "",
-
             // --- Responsibility Matrix ---
             Erection: "",
             ErectionOther: "",
@@ -1497,27 +1517,126 @@
             TestingOther: "",
             Commissioning: "",
             CommissioningOther: "",
-
             // --- Regulatory ---
             RegulatoryApproval: "",
             RegulatoryApprovalOther: "",
-
             // --- Misc ---
             ColumnSpecification: "",
-
-            // --- p===2 specific fields ---
             ModelVersion: "",
             CountryOrigin: "",
             YearOfManufacturing: "",
-            ProductLifeCycleValue: null,
+            ProductLifeCycleValue: 0,
             ProductLifeCycleUnit: "Days",
             Capacity: "",
             CapacityExtendable: "",
             CapacityExtendableOther: "",
             SampleDocumentID: "",
-            techtype: "",
-            proposal:""
+            Techtype: "",
+            Proposal: "",  // Changed from 'proposal' to 'Proposal'
+            QuotationRevisionNo: "",  // Added
+            QuotationID: "",  // Added
+            QuotationNo: "",  // Added
+            PenaltyClause: "",
+            PharmacopeialReference: "",
+            AllPharmacopeialReference: ""// Added
         };
+        //$scope.TechnicalQuotation = {
+        //    // --- Identity / Meta ---
+
+        //    rowIndex: '',
+        //    TechQuotationItemID: '',
+        //    ItemName: "",
+        //    MoleculeName: "",
+        //    Manufacturer: "",
+        //    ManufacturerPart: "",
+        //    ManufactureAddress: "",
+        //    ManufacturerOrigin: "",
+        //    Supplier: "",
+        //    LocalPartner: "",
+
+        //    // --- Pricing ---
+        //    RDPrice: 0,
+        //    CommercialPrice: 0,
+        //    PricePer: 1,
+        //    PriceUnit: { Item_Code: "", Item_Name: "" },
+        //    Currency: { MasterDataID: "", MasterDataValue: "" },
+
+        //    // --- Order / Shelf / Storage ---
+        //    MinOrderQty: 0,
+        //    OrderQtyUnit: "",
+        //    CommercialPackSize: "",
+        //    MinPack: "",
+        //    ShelfLifeValue: 0,
+        //    ShelfLifeUnit: "Days",
+        //    StorageCondition: "",
+
+        //    // --- References / Notes ---
+        //    Reference: "",
+        //    Notes: "",
+        //    CASNO: "",
+        //    CatalogueNo: "",
+
+        //    // --- Production ---
+        //    CurrentStatus: "",
+        //    ProdCapacity: "",
+        //    ProductionFrequency: "",
+        //    ProductionLeadTimeValue: 0,
+        //    ProductionLeadTimeUnit: "Days",
+        //    RepresentativeSample: "",
+        //    RepresentativeSamplePackSize: "",
+
+        //    // --- Compliance / Qualification ---
+        //    ComplianceWith: "",
+        //    QualificationDocuments: "",
+        //    QualificationDocumentsOther: "",
+
+        //    // --- FAT / SAT / Assistance ---
+        //    FATAtManufacturerSite: "",
+        //    FATAtManufacturerSiteOther: "",
+        //    SATScope: "",
+        //    AssistanceAtSite: "",
+        //    AssistanceAtSiteOther: "",
+
+        //    // --- Utilities / Safety ---
+        //    UtilitiesRequirement: "",
+        //    SafetyFeatures: "",
+        //    EnergyEfficiencyFeatures: "",
+
+        //    // --- Servicing / Scope ---
+        //    SparesServicing: "",
+        //    ScopeConfirmation: "",
+        //    ScopeDeviationRemarks: "",
+
+        //    // --- Responsibility Matrix ---
+        //    Erection: "",
+        //    ErectionOther: "",
+        //    Installation: "",
+        //    InstallationOther: "",
+        //    Testing: "",
+        //    TestingOther: "",
+        //    Commissioning: "",
+        //    CommissioningOther: "",
+
+        //    // --- Regulatory ---
+        //    RegulatoryApproval: "",
+        //    RegulatoryApprovalOther: "",
+
+        //    // --- Misc ---
+        //    ColumnSpecification: "",
+
+        //    // --- p===2 specific fields ---
+        //    ModelVersion: "",
+        //    CountryOrigin: "",
+        //    YearOfManufacturing: "",
+        //    ProductLifeCycleValue: 0,
+        //    ProductLifeCycleUnit: "Days",
+        //    Capacity: "",
+        //    CapacityExtendable: "",
+        //    CapacityExtendableOther: "",
+        //    SampleDocumentID: "",
+        //    Techtype: "",
+        //    proposal: ""
+        //};
 
 
 
@@ -1674,7 +1793,7 @@
             InvitationID: "",
             BiddingItemVendorID: "",
             materialCode: "",
-            materialName:"",
+            materialName: "",
             invitationNumber: "",
             Extension: "",
             VendorID: ""
@@ -1702,10 +1821,10 @@
         $scope.p = 0;
 
 
-        $scope.toggleInvitationSelect = function (Invitation_Number,proposal,techtype) {
+        $scope.toggleInvitationSelect = function (Invitation_Number) {
             $scope.InvitationNumber = Invitation_Number;
-            $scope.proposal = proposal;
-            $scope.techtype = techtype;
+            //$scope.proposal = proposal;
+            //$scope.techtype = techtype;
 
             $scope.p = 0;
             // dwObject.RemoveAllImages();
@@ -1735,13 +1854,18 @@
 
 
         $scope.Update = function () {
-            $scope.UpdateDocument();
-            if ($scope.p == 2) {
-                $scope.TechnicalQuotation.Alldocuments = $scope.TechnicalQuotation.Document.join(',');
 
-            }
+         
+                if ($scope.p===1) {
+                    $scope.TechnicalQuotation.AllPharmacopeialReference = $scope.TechnicalQuotation.PharmacopeialReference.join(',');
+                }
+
+            
+
             $http.post('/VendorSelectionModule/TechnicalQuotation/SaveTechQuotwiseDetails',
-                { TechnicalQuotation: $scope.TechnicalQuotation })
+
+                { technicalQuotation: $scope.TechnicalQuotation }
+            )
                 .success(function (response) {
                     $scope.response = response.respStatus.Message;
 
@@ -1756,6 +1880,11 @@
                     }
 
                 });
+            $scope.UpdateDocument();
+           
+
+            console.log($scope.TechnicalQuotation);
+         
         }
 
 
@@ -1798,14 +1927,24 @@
 
         $scope.Post = function () {
             var DocIDsCounter = 0;
-
+            $scope.loading = true;
+            $timeout(function () {
             $scope.TechnicalQuotation.rowIndex = $scope.MaterialInvitation.rowIndex;
-            $scope.TechnicalQuotation.YearOfManufacturing = $scope.formatDate($('#YearOfManufacturing').val());
 
-            $scope.TechnicalQuotation.proposal = $scope.proposal;
+            if ($scope.TechnicalQuotation.techtype === 'SPARES') {
+                $scope.TechnicalQuotation.YearOfManufacturing = $scope.formatDate($('#YearOfManufacturing').val());
+            }
+            else {
+                if ($scope.TechnicalQuotation.PharmacopeialReference) {
+                    $scope.TechnicalQuotation.AllPharmacopeialReference = $scope.TechnicalQuotation.PharmacopeialReference.join(',');
+                }
+                
+            }
+
+            $scope.TechnicalQuotation.Proposal = $scope.proposal;
             $scope.TechnicalQuotation.techtype = $scope.techtype;
 
-        
+
 
             console.log('TechnicalQuotation:', $scope.TechnicalQuotation);
 
@@ -1822,7 +1961,8 @@
                 $scope.myarray2.push($scope.TechnicalQuotation);
                 $scope.reset();
                 $scope.p = 0;
-            }
+                }
+            }, 0);
         };
 
         $scope.SaveTechnicalDocumentAndSubmit = function () {
@@ -2010,7 +2150,7 @@
                     toastr.error("Failed to save document information");
                 });
         };
-    
+
 
 
 
@@ -2039,6 +2179,7 @@
             $scope.TechnicalQuotation = {
                 // --- Identity / Meta ---
                 rowIndex: '',
+                TechQuotationItemID: '',
                 ItemName: "",
                 MoleculeName: "",
                 Manufacturer: "",
@@ -2047,60 +2188,51 @@
                 ManufacturerOrigin: "",
                 Supplier: "",
                 LocalPartner: "",
-
                 // --- Pricing ---
-                RDPrice: null,
-                CommercialPrice: null,
+                RDPrice: 0,
+                CommercialPrice: 0,
                 PricePer: 1,
-                PriceUnit: "",
-                Currency: "",
-
+                PriceUnit: { Item_Code: "", Item_Name: "" },
+                Currency: { MasterDataID: "", MasterDataValue: "" },
                 // --- Order / Shelf / Storage ---
-                MinOrderQty: null,
+                MinOrderQty: 0,
                 OrderQtyUnit: "",
                 CommercialPackSize: "",
                 MinPack: "",
-                ShelfLifeValue: null,
+                ShelfLifeValue: 0,
                 ShelfLifeUnit: "Days",
                 StorageCondition: "",
-
                 // --- References / Notes ---
                 Reference: "",
                 Notes: "",
                 CASNO: "",
                 CatalogueNo: "",
-
                 // --- Production ---
                 CurrentStatus: "",
                 ProdCapacity: "",
                 ProductionFrequency: "",
-                ProductionLeadTimeValue: null,
+                ProductionLeadTimeValue: 0,
                 ProductionLeadTimeUnit: "Days",
                 RepresentativeSample: "",
                 RepresentativeSamplePackSize: "",
-
                 // --- Compliance / Qualification ---
                 ComplianceWith: "",
                 QualificationDocuments: "",
                 QualificationDocumentsOther: "",
-
                 // --- FAT / SAT / Assistance ---
                 FATAtManufacturerSite: "",
                 FATAtManufacturerSiteOther: "",
                 SATScope: "",
                 AssistanceAtSite: "",
                 AssistanceAtSiteOther: "",
-
                 // --- Utilities / Safety ---
                 UtilitiesRequirement: "",
                 SafetyFeatures: "",
                 EnergyEfficiencyFeatures: "",
-
                 // --- Servicing / Scope ---
                 SparesServicing: "",
                 ScopeConfirmation: "",
                 ScopeDeviationRemarks: "",
-
                 // --- Responsibility Matrix ---
                 Erection: "",
                 ErectionOther: "",
@@ -2110,26 +2242,28 @@
                 TestingOther: "",
                 Commissioning: "",
                 CommissioningOther: "",
-
                 // --- Regulatory ---
                 RegulatoryApproval: "",
                 RegulatoryApprovalOther: "",
-
                 // --- Misc ---
                 ColumnSpecification: "",
-
-                // --- p===2 specific fields ---
                 ModelVersion: "",
                 CountryOrigin: "",
                 YearOfManufacturing: "",
-                ProductLifeCycleValue: null,
+                ProductLifeCycleValue: 0,
                 ProductLifeCycleUnit: "Days",
                 Capacity: "",
                 CapacityExtendable: "",
                 CapacityExtendableOther: "",
                 SampleDocumentID: "",
-                techtype: "",
-                proposal: ""
+                Techtype: "",
+                Proposal: "",  // Changed from 'proposal' to 'Proposal'
+                QuotationRevisionNo: "",  // Added
+                QuotationID: "",  // Added
+                QuotationNo: "",  // Added
+                PenaltyClause: "",
+                PharmacopeialReference: "",
+                AllPharmacopeialReference:""// Added
             };
 
 
@@ -2195,7 +2329,7 @@
                 // TechnicalQuotation-related fields
                 MoleculeName: '',
                 Manufacturer: '',
-                ShelfLifeValue: '',
+                ShelfLifeValue: 0,
                 ShelfLifeUnit: '',
                 Notes: '',
                 CASNO: '',
@@ -2230,7 +2364,7 @@
                 ItemName: '',
                 ManufacturerPartNoTech: '',
                 ModelVersion: '',
-                ProductLifeCycleValue: '',
+                ProductLifeCycleValue: 0,
                 ProductLifeCycleUnit: ''
             };
 
@@ -2278,54 +2412,130 @@
 
 
             $scope.TechnicalQuotation.rowIndex = data.rowIndex;
+            // --- Identity / Meta ---
             $scope.TechnicalQuotation.TechQuotationItemID = data.TechQuotationItemID;
+
+            $scope.TechnicalQuotation.ItemName = data.ItemName;
             $scope.TechnicalQuotation.MoleculeName = data.MoleculeName;
-            $scope.TechnicalQuotation.sampleAvailable = data.SampleAvailable;
-            $scope.TechnicalQuotation.otherSample = data.OtherSample;
-            $scope.TechnicalQuotation.CASNO = data.CASNO;
-            $scope.TechnicalQuotation.RepresentativePackSize = data.RepresentativePackSize;
             $scope.TechnicalQuotation.Manufacturer = data.Manufacturer;
-            $scope.TechnicalQuotation.regulatory = data.Regulatory;
-            $scope.TechnicalQuotation.Supplier = data.Supplier;
-            $scope.TechnicalQuotation.CurrentStatus = data.CurrentStatus;
-            $scope.TechnicalQuotation.ManufactureAddress = data.ManufactureAddress;
-            $scope.TechnicalQuotation.ProdCapacity = data.ProdCapacity;
-            $scope.TechnicalQuotation.RDPrice = data.RDPrice;
-            $scope.TechnicalQuotation.Shelf = data.Shelf;
-            $scope.TechnicalQuotation.CommercialPrice = data.CommercialPrice;
-            $scope.TechnicalQuotation.Condition = data.Condition;
-            $scope.TechnicalQuotation.OrderQty = data.OrderQty;
-            $scope.TechnicalQuotation.Specification = data.Specification;
-            $scope.TechnicalQuotation.OtherSpecification = data.OtherSpecification;
-            $scope.TechnicalQuotation.CommercialConsignment = data.CommercialConsignment;
-            $scope.TechnicalQuotation.AvailPackSize = data.AvailPackSize;
-            $scope.TechnicalQuotation.MinPack = data.MinPack;
-            $scope.TechnicalQuotation.Example = data.Example;
-            $scope.TechnicalQuotation.RNDPriceCur = data.RNDPriceCur;
-            $scope.TechnicalQuotation.ComPriceCur = data.ComPriceCur;
-            $scope.TechnicalQuotation.OrderQtyUnit = data.OrderQtyUnit;
-            $scope.TechnicalQuotation.Currency = data.Currency;
-            $scope.TechnicalQuotation.Reference = data.Reference;
-            $scope.TechnicalQuotation.Validation = data.Validation;
-            $scope.TechnicalQuotation.Training = data.Training;
-            $scope.TechnicalQuotation.Prerequisite = data.Prerequisite;
             $scope.TechnicalQuotation.ManufacturerPart = data.ManufacturerPart;
-            $scope.TechnicalQuotation.Installation = data.Installation;
-            $scope.TechnicalQuotation.Subcontractor = data.Subcontractor;
-            $scope.TechnicalQuotation.Prerequisite = data.Prerequisite;
-            $scope.TechnicalQuotation.Penalty = data.Penalty;
-            $scope.TechnicalQuotation.Fat = data.Fat;
-            $scope.TechnicalQuotation.Calibration = data.Calibration;
-            if ($scope.p === 1) {
-                var arrayFromString = data.Alldocuments.split(',');
-                $scope.TechnicalQuotation.Document = arrayFromString;
-            }
+            $scope.TechnicalQuotation.ManufactureAddress = data.ManufactureAddress;
             $scope.TechnicalQuotation.ManufacturerOrigin = data.ManufacturerOrigin;
+            $scope.TechnicalQuotation.Supplier = data.Supplier;
             $scope.TechnicalQuotation.LocalPartner = data.LocalPartner;
-            $scope.TechnicalQuotation.ShelfUnit = data.ShelfUnit;
 
-            $scope.TechnicalQuotation.APIRegApproval = data.APIRegApproval;
+            // --- Pricing ---
 
+            
+           
+          /*  $scope.TechnicalQuotation.PriceUnit = data.PriceUnit;*/
+            if (data.PriceUnit) {
+                var unitObj = $scope.ItemList.find(i => i.Item_Code === data.PriceUnit.Item_Code);
+                $scope.TechnicalQuotation.PriceUnit = unitObj || row.PriceUnit;
+            }
+            if (data.Currency) {
+                var Currencyobj = $scope.ItemTypeList.find(p => p.MasterDataID === data.Currency.MasterDataID);
+                $scope.TechnicalQuotation.Currency = Currencyobj || data.Currency;
+            }
+
+            // --- Order / Shelf / Storage ---
+            $scope.TechnicalQuotation.MinOrderQty = data.MinOrderQty;
+            $scope.TechnicalQuotation.OrderQtyUnit = data.OrderQtyUnit;
+            $scope.TechnicalQuotation.CommercialPackSize = data.CommercialPackSize;
+            $scope.TechnicalQuotation.MinPack = data.MinPack;
+            $scope.TechnicalQuotation.ShelfLifeValue = data.ShelfLifeValue;
+            $scope.TechnicalQuotation.ShelfLifeUnit = data.ShelfLifeUnit;
+            $scope.TechnicalQuotation.StorageCondition = data.StorageCondition;
+
+            // --- References / Notes ---
+            $scope.TechnicalQuotation.Reference = data.Reference;
+            $scope.TechnicalQuotation.Notes = data.Notes;
+            $scope.TechnicalQuotation.CASNO = data.CASNO;
+            $scope.TechnicalQuotation.CatalogueNo = data.CatalogueNo;
+
+            // --- Production ---
+            $scope.TechnicalQuotation.ProdCapacity = data.ProdCapacity;
+            $scope.TechnicalQuotation.ProductionFrequency = data.ProductionFrequency;
+            $scope.TechnicalQuotation.ProductionLeadTimeValue = data.ProductionLeadTimeValue;
+            $scope.TechnicalQuotation.ProductionLeadTimeUnit = data.ProductionLeadTimeUnit;
+            $scope.TechnicalQuotation.RepresentativeSample = data.RepresentativeSample;
+            $scope.TechnicalQuotation.RepresentativeSamplePackSize = data.RepresentativeSamplePackSize;
+
+            // --- Compliance / Qualification ---
+            $scope.TechnicalQuotation.ComplianceWith = data.ComplianceWith;
+            $scope.TechnicalQuotation.QualificationDocuments = data.QualificationDocuments;
+            $scope.TechnicalQuotation.QualificationDocumentsOther = data.QualificationDocumentsOther;
+
+            // --- FAT / SAT / Assistance ---
+            $scope.TechnicalQuotation.FATAtManufacturerSite = data.FATAtManufacturerSite;
+            $scope.TechnicalQuotation.FATAtManufacturerSiteOther = data.FATAtManufacturerSiteOther;
+            $scope.TechnicalQuotation.SATScope = data.SATScope;
+            $scope.TechnicalQuotation.AssistanceAtSite = data.AssistanceAtSite;
+            $scope.TechnicalQuotation.AssistanceAtSiteOther = data.AssistanceAtSiteOther;
+
+            // --- Utilities / Safety ---
+            $scope.TechnicalQuotation.UtilitiesRequirement = data.UtilitiesRequirement;
+            $scope.TechnicalQuotation.SafetyFeatures = data.SafetyFeatures;
+            $scope.TechnicalQuotation.EnergyEfficiencyFeatures = data.EnergyEfficiencyFeatures;
+
+            // --- Servicing / Scope ---
+            $scope.TechnicalQuotation.SparesServicing = data.SparesServicing;
+            $scope.TechnicalQuotation.ScopeConfirmation = data.ScopeConfirmation;
+            $scope.TechnicalQuotation.ScopeDeviationRemarks = data.ScopeDeviationRemarks;
+
+            // --- Responsibility Matrix ---
+            $scope.TechnicalQuotation.Erection = data.Erection;
+            $scope.TechnicalQuotation.ErectionOther = data.ErectionOther;
+            $scope.TechnicalQuotation.Installation = data.Installation;
+            $scope.TechnicalQuotation.InstallationOther = data.InstallationOther;
+            $scope.TechnicalQuotation.Testing = data.Testing;
+            $scope.TechnicalQuotation.TestingOther = data.TestingOther;
+            $scope.TechnicalQuotation.Commissioning = data.Commissioning;
+            $scope.TechnicalQuotation.CommissioningOther = data.CommissioningOther;
+
+            // --- Regulatory ---
+            $scope.TechnicalQuotation.RegulatoryApproval = data.RegulatoryApproval;
+            $scope.TechnicalQuotation.RegulatoryApprovalOther = data.RegulatoryApprovalOther;
+
+            // --- Misc ---
+            $scope.TechnicalQuotation.ColumnSpecification = data.ColumnSpecification;
+
+            // --- p===2 specific fields ---
+            $scope.TechnicalQuotation.ModelVersion = data.ModelVersion;
+            $scope.TechnicalQuotation.CountryOrigin = data.CountryOrigin;
+            $scope.TechnicalQuotation.YearOfManufacturing = data.YearOfManufacturing;
+            $scope.TechnicalQuotation.ProductLifeCycleValue = data.ProductLifeCycleValue;
+            $scope.TechnicalQuotation.ProductLifeCycleUnit = data.ProductLifeCycleUnit;
+            $scope.TechnicalQuotation.Capacity = data.Capacity;
+            $scope.TechnicalQuotation.CapacityExtendable = data.CapacityExtendable;
+            $scope.TechnicalQuotation.CapacityExtendableOther = data.CapacityExtendableOther;
+            $scope.TechnicalQuotation.Techtype = data.Techtype;
+            $scope.TechnicalQuotation.Proposal = data.Proposal;
+            $scope.TechnicalQuotation.SampleDocumentID = data.SampleDocumentID;
+
+            if ($scope.p === 1) {
+                $scope.TechnicalQuotation.RDPrice = data.RDPrice;
+                var element = document.getElementById('RDPrice');
+                element.value = (data.RDPrice).toFixed(2);
+                element.dispatchEvent(new Event('change'));
+                $scope.TechnicalQuotation.CommercialPrice = data.CommercialPrice;
+                var element = document.getElementById('CommercialPrice');
+                element.value = (data.CommercialPrice).toFixed(2);
+                element.dispatchEvent(new Event('change'));
+                $scope.TechnicalQuotation.PricePer = data.PricePer;
+                var element = document.getElementById('PricePer');
+                element.value = (data.PricePer).toFixed(2);
+                element.dispatchEvent(new Event('change'));
+                if (data.AllPharmacopeialReference) {
+                    var arrayFromString = data.AllPharmacopeialReference.split(',');
+                    $scope.TechnicalQuotation.PharmacopeialReference = arrayFromString;
+                }
+                else {
+                    $scope.TechnicalQuotation.PharmacopeialReference = '';
+                }
+            }
+
+            
             $scope.TechnicalQuote = true;
             $scope.fetchServer();
 
@@ -2384,159 +2594,23 @@
 
                 var temp = [];
                 var f = 0;
-                //for (var j = 0; j < $scope.myarray.length; j++) {
-                //    if ($scope.myarray[j].rowIndex === $i) {
 
-                //        temp = $scope.myarray[j];
+                $scope.reset();
 
 
-                //        $scope.myarray.splice(j, 1);
-
-                //        f = 1;
-
-
-                //        break;
-                //    }
-                //}
-
-                //var matchedItemIndex = $scope.myarray.findIndex(function (item) {
-                //    return item.rowIndex === $i;
-                //});
-                //if (f == 1) {
-
-                ////    console.log(temp);
-                ////    $scope.MaterialInvitation.SampleDocumentID = temp.SampleDocumentID;
-                ////    $scope.MaterialInvitation.rowIndex = temp.rowIndex;
-
-
-                ////    $scope.MaterialInvitation.materialName = temp.materialName;
-                ////    $scope.MaterialInvitation.materialCode = temp.materialCode;
-                ////    $scope.MaterialInvitation.invitationNumber = temp.invitationNumber;
-                ////    // Add additional mappings here as needed
-                ////    $scope.MaterialInvitation.MaterialQuantity = temp.MaterialQuantity;
-                ////    $scope.MaterialInvitation.Unit = temp.Unit;
-                ////    $scope.MaterialInvitation.VendorID = temp.VendorID;
-
-                ////    $scope.MaterialInvitation.MatInvType = temp.MatInvType;
-                ////    $scope.MaterialInvitation.material_Category_Code = temp.material_Category_Code;
-
-
-                ////    //$scope.BillReceiveModel.invitationNumber = temp.invitationNumber;
-                ////    //$scope.BillReceiveModel.InvitationID = temp.InvitationID;
-                ////    $scope.BillReceiveModel.BiddingItemVendorID = temp.BiddingItemVendorID;
-                ////    $scope.BillReceiveModel.VendorID = temp.VendorID;
-                ////    $scope.BillReceiveModel.materialCode = temp.materialCode;
-                ////    if (temp.MatInvType === 'MATERIAL') {
-                ////        $scope.p = 1;
-                ////    }
-                ////    else if (temp.MatInvType === 'SPARES') {
-                ////        $scope.p = 2;
-                ////    }
-                ////    $scope.fetchServer();
-                ////    $scope.docshow();
-                ////    console.log('dsfsdfdfs');
+                $scope.MaterialInvitation.rowIndex = $i;
+                $scope.MaterialInvitation.materialName = row.materialName;
+                $scope.MaterialInvitation.materialCode = row.materialCode;
+                $scope.MaterialInvitation.invitationNumber = row.invitationNumber;
+                // Add additional mappings here as needed
+                $scope.MaterialInvitation.MaterialQuantity = row.MaterialQuantity;
+                $scope.MaterialInvitation.Unit = row.Unit;
+                $scope.MaterialInvitation.VendorID = row.VendorID;
 
 
 
-                ////    //var matchedItemIndex1 = $scope.myarray2.findIndex(function (item) {
-                ////    //    return item.rowIndex === $i;
-                ////    //});
-                ////    var matchedItem = [];
-                ////    for (var j = 0; j < $scope.myarray2.length; j++) {
-                ////        if ($scope.myarray2[j].rowIndex === $i) {
-
-                ////            matchedItem = $scope.myarray2[j];
-
-                ////            $scope.myarray2.splice(j, 1);
-
-
-                ////            break;
-                ////        }
-                ////    }
-
-
-                ////    $scope.TechnicalQuotation.AvailPackSize = matchedItem.AvailPackSize;
-                ////    $scope.TechnicalQuotation.rowIndex = matchedItem.rowIndex;
-                ////    $scope.TechnicalQuotation.MoleculeName = matchedItem.MoleculeName;
-                ////    $scope.TechnicalQuotation.sampleAvailable = matchedItem.sampleAvailable;
-                ////    $scope.TechnicalQuotation.otherSample = matchedItem.otherSample;
-                ////    $scope.TechnicalQuotation.CASNO = matchedItem.CASNO;
-                ////    $scope.TechnicalQuotation.RepresentativePackSize = matchedItem.RepresentativePackSize;
-                ////    $scope.TechnicalQuotation.Manufacturer = matchedItem.Manufacturer;
-                ////    $scope.TechnicalQuotation.regulatory = matchedItem.regulatory;
-                ////    $scope.TechnicalQuotation.Supplier = matchedItem.Supplier;
-                ////    $scope.TechnicalQuotation.CurrentStatus = matchedItem.CurrentStatus;
-                ////    $scope.TechnicalQuotation.ManufactureAddress = matchedItem.ManufactureAddress;
-                ////    $scope.TechnicalQuotation.ProdCapacity = matchedItem.ProdCapacity;
-                ////    $scope.TechnicalQuotation.RDPrice = matchedItem.RDPrice;
-                ////    $scope.TechnicalQuotation.RNDPriceCur = matchedItem.RNDPriceCur;
-                ////    $scope.TechnicalQuotation.Shelf = matchedItem.Shelf;
-                ////    $scope.TechnicalQuotation.CommercialPrice = matchedItem.CommercialPrice;
-                ////    $scope.TechnicalQuotation.ComPriceCur = matchedItem.ComPriceCur;
-                ////    $scope.TechnicalQuotation.Condition = matchedItem.Condition;
-                ////    $scope.TechnicalQuotation.OrderQty = matchedItem.OrderQty;
-                ////    $scope.TechnicalQuotation.OrderQtyUnit = matchedItem.OrderQtyUnit;
-                ////    $scope.TechnicalQuotation.Specification = matchedItem.Specification;
-                ////    $scope.TechnicalQuotation.OtherSpecification = matchedItem.OtherSpecification;
-                ////    $scope.TechnicalQuotation.CommercialConsignment = matchedItem.CommercialConsignment;
-                ////    $scope.TechnicalQuotation.AvailPackSize = matchedItem.AvailPackSize;
-                ////    $scope.TechnicalQuotation.MinPack = matchedItem.MinPack;
-                ////    $scope.TechnicalQuotation.Currency = matchedItem.Currency;
-                ////    $scope.TechnicalQuotation.Reference = matchedItem.Reference;
-                ////    $scope.TechnicalQuotation.Validation = matchedItem.Validation;
-                ////    $scope.TechnicalQuotation.Training = matchedItem.Training;
-                ////    $scope.TechnicalQuotation.Prerequisite = matchedItem.Prerequisite;
-                ////    $scope.TechnicalQuotation.ManufacturerPart = matchedItem.ManufacturerPart;
-                ////    $scope.TechnicalQuotation.Installation = matchedItem.Installation;
-                ////    $scope.TechnicalQuotation.Subcontractor = matchedItem.Subcontractor;
-                ////    $scope.TechnicalQuotation.Prerequisite = matchedItem.Prerequisite;
-                ////    $scope.TechnicalQuotation.Penalty = matchedItem.Penalty;
-                ////    $scope.TechnicalQuotation.Fat = matchedItem.Fat;
-                ////    $scope.TechnicalQuotation.Calibration = matchedItem.Calibration;
-
-                ////    $scope.TechnicalQuotation.Document = matchedItem.Document;
-                ////    $scope.TechnicalQuotation.ManufacturerOrigin = matchedItem.ManufacturerOrigin;
-                ////    $scope.TechnicalQuotation.LocalPartner = matchedItem.LocalPartner;
-                ////    $scope.TechnicalQuotation.ShelfUnit = matchedItem.ShelfUnit;
-                ////    $scope.TechnicalQuotation.APIRegApproval = matchedItem.APIRegApproval;
-
-                ////    // Copy values to model
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                ////}
-                //else {
-                    $scope.reset();
-
-
-                    $scope.MaterialInvitation.rowIndex = $i;
-                    $scope.MaterialInvitation.materialName = row.materialName;
-                    $scope.MaterialInvitation.materialCode = row.materialCode;
-                    $scope.MaterialInvitation.invitationNumber = row.invitationNumber;
-                    // Add additional mappings here as needed
-                    $scope.MaterialInvitation.MaterialQuantity = row.MaterialQuantity;
-                    $scope.MaterialInvitation.Unit = row.Unit;
-                    $scope.MaterialInvitation.VendorID = row.VendorID;
-
-
-                    $scope.MaterialInvitation.MatInvType = row.MatInvType;
-                    $scope.MaterialInvitation.material_Category_Code = row.material_Category_Code;
+                $scope.MaterialInvitation.MatInvType = row.MatInvType;
+                $scope.MaterialInvitation.material_Category_Code = row.material_Category_Code;
 
                 $scope.BillReceiveModel.invitationNumber = row.invitationNumber;
                 $scope.BillReceiveModel.InvitationID = row.InvitationID;
@@ -2544,62 +2618,69 @@
                 $scope.BillReceiveModel.VendorID = row.VendorID;
                 $scope.BillReceiveModel.materialCode = row.materialCode;
                 $scope.BillReceiveModel.materialName = row.materialName;
+                if (row.Unit) {
+                    var unitObj = $scope.ItemList.find(i => i.Item_Code === row.Unit);
+                    $scope.TechnicalQuotation.PriceUnit = unitObj || row.Unit;
+                }
 
 
-                
 
-                    $scope.TechnicalQuotation.MoleculeName = row.MoleculeName;
-                    $scope.TechnicalQuotation.Manufacturer = row.Manufacturer;
-                    $scope.TechnicalQuotation.ShelfLifeValue = row.ShelfLifeValue;
-                    $scope.TechnicalQuotation.ShelfLifeUnit = row.ShelfLifeUnit;
-                    $scope.TechnicalQuotation.Notes = row.Notes;
-                    $scope.TechnicalQuotation.CASNO = row.CASNO;
-                    $scope.TechnicalQuotation.CatalogueNo = row.CatalogueNo;
-                    $scope.TechnicalQuotation.SampleAvailable = row.SampleAvailable;
-                    $scope.TechnicalQuotation.SamplePackSize = row.SamplePackSize;
-                    $scope.TechnicalQuotation.Capacity = row.Capacity;
-                    $scope.TechnicalQuotation.CapacityExtendable = row.CapacityExtendable;
-                    $scope.TechnicalQuotation.CapacityExtendableOther = row.CapacityExtendableOther;
+                $scope.TechnicalQuotation.MoleculeName = row.MoleculeName;
+                $scope.TechnicalQuotation.Manufacturer = row.Manufacturer;
+                $scope.TechnicalQuotation.ShelfLifeValue = row.ShelfLifeValue;
+                $scope.TechnicalQuotation.ShelfLifeUnit = row.ShelfLifeUnit;
+                $scope.TechnicalQuotation.Notes = row.Notes;
+                $scope.TechnicalQuotation.CASNO = row.CASNO;
+                $scope.TechnicalQuotation.CatalogueNo = row.CatalogueNo;
+                $scope.TechnicalQuotation.SampleAvailable = row.SampleAvailable;
+                $scope.TechnicalQuotation.SamplePackSize = row.SamplePackSize;
+                $scope.TechnicalQuotation.Capacity = row.Capacity;
+                $scope.TechnicalQuotation.CapacityExtendable = row.CapacityExtendable;
+                $scope.TechnicalQuotation.CapacityExtendableOther = row.CapacityExtendableOther;
                 $scope.TechnicalQuotation.FATAtManufacturerSite = row.FATAtManufacturerSite;
-                
 
 
-                    $scope.TechnicalQuotation.FATAtManufacturerSiteOther = row.FATAtManufacturerSiteOther;
-                    $scope.TechnicalQuotation.FATAtManufacturerSiteOther = '';
-                    $scope.TechnicalQuotation.SATScope = row.SATScope;
-                    $scope.TechnicalQuotation.AssistanceAtSite = row.AssistanceAtSite;
-                    $scope.TechnicalQuotation.AssistanceAtSiteOther = row.AssistanceAtSiteOther;
-                    $scope.TechnicalQuotation.ComplianceWith = row.ComplianceWith;
-                    $scope.TechnicalQuotation.QualificationDocuments = row.QualificationDocuments;
-                    $scope.TechnicalQuotation.QualificationDocumentsOther = row.QualificationDocumentsOther;
-                    $scope.TechnicalQuotation.UtilitiesRequirement = row.UtilitiesRequirement;
-                    $scope.TechnicalQuotation.SafetyFeatures = row.SafetyFeatures;
-                    $scope.TechnicalQuotation.EnergyEfficiencyFeatures = row.EnergyEfficiencyFeatures;
-                    $scope.TechnicalQuotation.SparesServicing = row.SparesServicing;
-                    $scope.TechnicalQuotation.ScopeConfirmation = row.ScopeConfirmation;
-                    $scope.TechnicalQuotation.ScopeDeviationRemarks = row.ScopeDeviationRemarks;
-                    $scope.TechnicalQuotation.Erection = row.Erection;
-                    $scope.TechnicalQuotation.ErectionOther = row.ErectionOther;
-                    $scope.TechnicalQuotation.InstallationResponsibility = row.InstallationResponsibility;
-                    $scope.TechnicalQuotation.InstallationResponsibilityOther = row.InstallationResponsibilityOther;
-                    $scope.TechnicalQuotation.Testing = row.Testing;
-                    $scope.TechnicalQuotation.TestingOther = row.TestingOther;
-                    $scope.TechnicalQuotation.Commissioning = row.Commissioning;
-                    $scope.TechnicalQuotation.CommissioningOther = row.CommissioningOther;
-                    $scope.TechnicalQuotation.ItemName = row.ItemName;
-                    $scope.TechnicalQuotation.ManufacturerPart = row.ManufacturerPartNoTech;
-                    $scope.TechnicalQuotation.ModelVersion = row.ModelVersion;
-                    $scope.TechnicalQuotation.ProductLifeCycleValue = row.ProductLifeCycleValue;
+
+                $scope.TechnicalQuotation.FATAtManufacturerSiteOther = row.FATAtManufacturerSiteOther;
+                $scope.TechnicalQuotation.FATAtManufacturerSiteOther = '';
+                $scope.TechnicalQuotation.SATScope = row.SATScope;
+                $scope.TechnicalQuotation.AssistanceAtSite = row.AssistanceAtSite;
+                $scope.TechnicalQuotation.AssistanceAtSiteOther = row.AssistanceAtSiteOther;
+                $scope.TechnicalQuotation.ComplianceWith = row.ComplianceWith;
+                $scope.TechnicalQuotation.QualificationDocuments = row.QualificationDocuments;
+                $scope.TechnicalQuotation.QualificationDocumentsOther = row.QualificationDocumentsOther;
+                $scope.TechnicalQuotation.UtilitiesRequirement = row.UtilitiesRequirement;
+                $scope.TechnicalQuotation.SafetyFeatures = row.SafetyFeatures;
+                $scope.TechnicalQuotation.EnergyEfficiencyFeatures = row.EnergyEfficiencyFeatures;
+                $scope.TechnicalQuotation.SparesServicing = row.SparesServicing;
+                $scope.TechnicalQuotation.ScopeConfirmation = row.ScopeConfirmation;
+                $scope.TechnicalQuotation.ScopeDeviationRemarks = row.ScopeDeviationRemarks;
+                $scope.TechnicalQuotation.Erection = row.Erection;
+                $scope.TechnicalQuotation.ErectionOther = row.ErectionOther;
+                $scope.TechnicalQuotation.InstallationResponsibility = row.InstallationResponsibility;
+                $scope.TechnicalQuotation.InstallationResponsibilityOther = row.InstallationResponsibilityOther;
+                $scope.TechnicalQuotation.Testing = row.Testing;
+                $scope.TechnicalQuotation.TestingOther = row.TestingOther;
+                $scope.TechnicalQuotation.Commissioning = row.Commissioning;
+                $scope.TechnicalQuotation.CommissioningOther = row.CommissioningOther;
+                $scope.TechnicalQuotation.ItemName = row.ItemName;
+                $scope.TechnicalQuotation.ManufacturerPart = row.ManufacturerPartNoTech;
+                $scope.TechnicalQuotation.ModelVersion = row.ModelVersion;
+                $scope.TechnicalQuotation.ProductLifeCycleValue = row.ProductLifeCycleValue;
                 $scope.TechnicalQuotation.ProductLifeCycleUnit = row.ProductLifeCycleUnit;
                 $scope.TechnicalQuotation.AssistanceAtSite = '';
                 $scope.TechnicalQuotation.AssistanceAtSiteOther = '';
                 $scope.TechnicalQuotation.QualificationDocuments = '';
+                $scope.TechnicalQuotation.YearOfManufacturing = '';
                 $scope.TechnicalQuotation.QualificationDocumentsOther = '';
-              
+                $scope.TechnicalQuotation.Techtype = row.MatInvType;
 
 
 
-                 $scope.simplifiedMaterialInvitation = {
+                $scope.proposal = row.Proposal;
+                $scope.techtype = row.MatInvType;
+
+                $scope.simplifiedMaterialInvitation = {
                     MaterialQuantity: row.MaterialQuantity,
                     Unit: row.Unit,
                     MatInvType: row.MatInvType,
@@ -2623,15 +2704,15 @@
                 };
 
 
-                    if (row.MatInvType === 'MATERIAL') {
-                        $scope.p = 1;
-                    }
-                    else if (row.MatInvType === 'SPARES') {
-                        $scope.p = 2;
-                    }
-                    $scope.Material = row.materialName;
+                if (row.MatInvType === 'MATERIAL') {
+                    $scope.p = 1;
+                }
+                else if (row.MatInvType === 'SPARES') {
+                    $scope.p = 2;
+                }
+                $scope.Material = row.materialName;
 
-                
+
 
 
 
@@ -2763,6 +2844,7 @@
                         if (response.respStatus.Message) {
                             $scope.loading = false;
                             toastr.success("Document Updated Successfully");
+                            dwObject.RemoveAllImages();
 
                         }
                         else {
@@ -2974,7 +3056,7 @@
         $scope.submit = function () {
 
 
-          
+
 
             //$http.post('/VendorSelectionModule/TechnicalQuotation/submittechnicalquotation',
 
@@ -3030,45 +3112,74 @@
                     $scope.QuotationList = response.QuotationList[0];
 
 
-                    console.log($scope.MaterialInvitation);
-
-                    $http.post('/VendorSelectionModule/TechnicalQuotation/submittechnicalquotation',
-
-
-                        {
-                            TechnicalQuotationlist: $scope.TechnicalQuotation,
+                    console.log($scope.TechnicalQuotation);
+                    $http({
+                        method: 'POST',
+                        url: '/VendorSelectionModule/TechnicalQuotation/submittechnicalquotation',
+                        data: {
+                            TechnicalQuotation: $scope.TechnicalQuotation,
                             MaterialInvitationlist: $scope.simplifiedMaterialInvitation,
-
                             Quotation: $scope.QuotationList
-
-                        })
-                        .success(function (response) {
-
-                            $scope.response = response.respStatus.Message;
+                        },
+                        headers: { 'Content-Type': 'application/json' }
+                    })
+                        .then(function (response) {
+                            console.log("Success:", response.data);
+                            $scope.response = response.data.respStatus.Message;
                             if ($scope.response === 'Data Saved Successfully') {
+                                // Your success code
                                 $scope.reset();
                                 toastr.success($scope.response);
-                                $scope.toggleRefreshTable();
+                                /*   $scope.toggleRefreshTable();*/
+                                $scope.loading = false;
                                 $scope.masterDataSetupGridData = [];  // base collection
                                 $scope.GridDisplayCollection = [].concat($scope.masterDataSetupGridData);
                                 $scope.myarray = [];
                                 $scope.myarray2 = [];
+                                $scope.InvWiseMaterial($scope.InvitationNumber);
                             }
-                            else {
-                                toastr.error($scope.response);
-                            }
-
-
-                            $scope.loading = false;
-
-
-                        }).error(function () {
-                            $scope.loading = false;
-
-
-
+                        }, function (error) {
+                            console.log("Error Status:", error.status);
+                            console.log("Error Data:", error.data);
                         });
 
+                    //$http.post('/VendorSelectionModule/TechnicalQuotation/submittechnicalquotation',
+
+
+                    //    {
+                    //        TechnicalQuotation: $scope.TechnicalQuotation,
+                    //        MaterialInvitationlist: $scope.simplifiedMaterialInvitation,
+
+                    //        Quotation: $scope.QuotationList
+
+                    //    })
+                    //    .success(function (response) {
+
+                    //        $scope.response = response.respStatus.Message;
+                    //        if ($scope.response === 'Data Saved Successfully') {
+                    //            $scope.reset();
+                    //            toastr.success($scope.response);
+                    //            /*   $scope.toggleRefreshTable();*/
+                    //            $scope.masterDataSetupGridData = [];  // base collection
+                    //            $scope.GridDisplayCollection = [].concat($scope.masterDataSetupGridData);
+                    //            $scope.myarray = [];
+                    //            $scope.myarray2 = [];
+                    //            $scope.InvWiseMaterial($scope.InvitationNumber);
+                    //        }
+                    //        else {
+                    //            toastr.error($scope.response);
+                    //        }
+
+
+                    //        $scope.loading = false;
+
+
+                    //    }).error(function () {
+                    //        $scope.loading = false;
+
+
+
+                    //    });
 
 
 
@@ -3080,7 +3191,8 @@
 
 
 
-                    $scope.GridDisplayCollection = [].concat($scope.MaterialList);
+
+                
 
 
                     $scope.loading = false;
@@ -3133,12 +3245,12 @@
 
 
 
-        $scope.toggleQuotationSelect = function (row) {
+        $scope.toggleQuotationSelect = function (InvitationNumber, quotationNo) {
 
-            $scope.Quotation = row.quotationNo;
-            $scope.InvitationNumber = row.InvitationNumber;
+            $scope.Quotation = quotationNo;
+            $scope.InvitationNumber = InvitationNumber;
             $http.post('/VendorSelectionModule/TechnicalQuotation/QuotWiseMaterial',
-                { QuotationNo: row.quotationNo })
+                { QuotationNo: quotationNo })
                 .success(function (response) {
                     $scope.flagToShow = false;
 
@@ -3393,6 +3505,33 @@
                 }
                 else {
                     $("#btnSaveDoc").prop("disabled", false);
+                    $("#" + txtVendor).val(($("#" + txtVendor).val() - 0).toFixed(2));
+                }
+            }
+
+        }
+
+        $scope.checkAndFormat2 = function (id) {
+            CheckPositive(id);
+            $scope.FormatDigits2(id, 13);
+        };
+
+        $scope.FormatDigits2 = function (txtVendor, lmt) {
+            if (!IsPositiveNumber($("#" + txtVendor).val())) {
+                $("#" + txtVendor).val('');
+            }
+            else if (isNaN($("#" + txtVendor).val())) {
+                $("#" + txtVendor).val('');
+            }
+            else {
+                var d = $("#" + txtVendor).val().split('.');
+                if ((d[0].length > (lmt - 0))) {
+                    $("#" + txtVendor).val("");
+                    $("#btnSaveDoc").prop("disabled", true);
+                    return;
+                }
+                else {
+                    $("#btnSaveDoc").prop("disabled", false);
                     $("#" + txtVendor).val(($("#" + txtVendor).val() - 0).toFixed(3));
                 }
             }
@@ -3412,7 +3551,7 @@
             $scope.fromDashboard = true;
             var qrStrVariables = qrStr.split('&');
             var qrStrone = qrStrVariables[0].split('=');
-            var info1 = qrStrone[1];          
+            var info1 = qrStrone[1];
             console.log(info1);
 
             $scope.toggleInvitationSelect(info1);
@@ -3480,7 +3619,21 @@
         //};
 
 
+        if (qrStr != "") {
+            var params = {};
+            qrStr.split('&').forEach(function (param) {
+                var keyValue = param.split('=');
+                params[keyValue[0]] = decodeURIComponent(keyValue[1]);
+            });
 
+            if (params.InvitationNumber && params.QuotationNo) {
+                // All 3 parameters exist → call Financial quotation select
+                $scope.toggleQuotationSelect(params.InvitationNumber, params.QuotationNo);
+            } else if (params.InvitationNumber) {
+                // Only InvitationNumber → call Invitation select
+                $scope.toggleInvitationSelect(params.InvitationNumber);
+            }
+        }
 
 
 
@@ -3495,16 +3648,45 @@
 
 
 
-        $scope.toggleRefreshTable = function (row) {
-            window.location.href = "/VendorSelectionModule/TechnicalQuotation";
-        };
+        //$scope.toggleRefreshTable = function (row) {
+        //    window.location.href = "/VendorSelectionModule/TechnicalQuotation";
+        //};
 
         $scope.formatDate = function (date) {
 
             var res = date.split("/");
-            return res[1] + "/" + res[0] + "/" + res[2];
+            return res[0] + "/" + res[1] + "/" + res[2];
 
         };
+
+
+
+        $scope.checkAndFormat = function (id) {
+            CheckPositive(id);
+            $scope.FormatDigits(id, 13);
+        };
+
+        $scope.FormatDigits = function (txtVendor, lmt) {
+            if (!IsPositiveNumber($("#" + txtVendor).val())) {
+                $("#" + txtVendor).val('');
+            }
+            else if (isNaN($("#" + txtVendor).val())) {
+                $("#" + txtVendor).val('');
+            }
+            else {
+                var d = $("#" + txtVendor).val().split('.');
+                if ((d[0].length > (lmt - 0))) {
+                    $("#" + txtVendor).val("");
+                    $("#btnSaveDoc").prop("disabled", true);
+                    return;
+                }
+                else {
+                    $("#btnSaveDoc").prop("disabled", false);
+                    $("#" + txtVendor).val(($("#" + txtVendor).val() - 0).toFixed(2));
+                }
+            }
+
+        }
 
 
     })
@@ -3512,6 +3694,6 @@
 
 
 
-    
+
 
 
