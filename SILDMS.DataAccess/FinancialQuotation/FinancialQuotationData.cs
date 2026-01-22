@@ -88,6 +88,7 @@ namespace SILDMS.DataAccess.FinancialQuotation
                         InvMaterialList = dt1.AsEnumerable().Select(reader => new MaterialInvitation
                         {
                             // Existing mappings
+                            sampleDocId = reader.GetString("DocumentID"),
                             materialName = reader.GetString("MaterialName"),
                             materialCode = reader.GetString("MaterialCode"),
                             material_Category_Code = reader.GetString("MaterialCategory"),
@@ -171,6 +172,10 @@ namespace SILDMS.DataAccess.FinancialQuotation
 
                             Remarks = dt1.Columns.Contains("Remarks") && !reader.IsNull("Remarks")
                            ? reader.Field<string>("Remarks")
+                           : null,
+
+                            DeliveryLocation = dt1.Columns.Contains("DeliveryLocation") && !reader.IsNull("DeliveryLocation")
+                           ? reader.Field<string>("DeliveryLocation")
                            : null
                         }).ToList();
 
@@ -598,6 +603,8 @@ namespace SILDMS.DataAccess.FinancialQuotation
                     string.IsNullOrEmpty(financialQuotationDetail.PenaltyClause) ? (object)DBNull.Value : financialQuotationDetail.PenaltyClause);
                 db.AddInParameter(dbCommandWrapper, "@Remarks", SqlDbType.VarChar,
                     string.IsNullOrEmpty(financialQuotationDetail.Remarks) ? (object)DBNull.Value : financialQuotationDetail.Remarks);
+                db.AddInParameter(dbCommandWrapper, "@Deliverylocation", SqlDbType.VarChar,
+                    string.IsNullOrEmpty(financialQuotationDetail.DeliveryLocation) ? (object)DBNull.Value : financialQuotationDetail.DeliveryLocation);
 
                 // =======================
                 // Material Invitation Parameters
@@ -744,6 +751,7 @@ namespace SILDMS.DataAccess.FinancialQuotation
                             VendorID = reader.GetString("VendorID"),
                             BiddingID = reader.GetString("BiddingID"),
 
+                            sampleDocId = reader.GetString("DocumentID"),
                             SampleDocumentID = reader.GetString("SampleDocId"),
                             Action = "E",
 
@@ -844,6 +852,7 @@ namespace SILDMS.DataAccess.FinancialQuotation
                             // Delivery
                             // =====================
                             DeliveryTimeline = reader["DeliveryTimeline"] as string,
+                            DeliveryLocation = reader["Deliverylocation"] as string,
                             PartDelivery = reader["PartDelivery"] as string,
                             ShipmentMode = reader["ShipmentMode"] as string,
                             InlandTransportation = reader["InlandTransportation"] as string,
