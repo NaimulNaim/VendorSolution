@@ -139,6 +139,7 @@ namespace SILDMS.DataAccess.TechnicalQuotation
                             ModelVersion = reader.GetString("ModelVersion"),
                             ProductLifeCycleValue = reader.GetString("ProductLifeCycleValue"),
                             ProductLifeCycleUnit = reader.GetString("ProductLifeCycleUnit"),
+                            sampleDocId = reader.GetString("DocumentID"),
                             Action = "A"
 
                         }).ToList();
@@ -741,6 +742,7 @@ namespace SILDMS.DataAccess.TechnicalQuotation
                             invitationNumber = reader.GetString("InvitationNumber"),
                             InvitationID = reader.GetString("InvitationID"),
                             VendorID = reader.GetString("VendorID"),
+                            sampleDocId = reader.GetString("DocumentID"),
                             SampleDocumentID = reader.GetString("SampleDocId"),
                             BiddingItemVendorID = reader.GetString("BiddingVendorID"),
 
@@ -876,6 +878,7 @@ namespace SILDMS.DataAccess.TechnicalQuotation
                             CapacityExtendableOther = reader["CapacityExtendableOther"] != DBNull.Value ? reader["CapacityExtendableOther"].ToString() : null,
                             Proposal = reader["Proposal"] != DBNull.Value ? reader["Proposal"].ToString() : null,
                             Techtype = reader["Techtype"] != DBNull.Value ? reader["Techtype"].ToString() : null,
+                            SampleDocumentID = reader["SampleDocId"] != DBNull.Value ? reader["SampleDocId"].ToString() : null,
                             AllPharmacopeialReference = reader["AllPharmacopeialReference"] != DBNull.Value ? reader["AllPharmacopeialReference"].ToString() : null
 
                         }).ToList();

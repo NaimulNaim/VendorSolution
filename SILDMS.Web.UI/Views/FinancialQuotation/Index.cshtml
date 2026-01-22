@@ -64,9 +64,9 @@
                 <div class="btn-group pull-right" style="margin-left: 4px; margin-right: 4px;">
                     <button type="button" data-ng-click="Search()" class="btn btn-flat btn-primary pull-right " ng-disabled="btnSave"><i class="fa fa-search" style="padding-right: 5px"></i>Search</button>
                 </div>
-                <div class="btn-group pull-right" style="margin-left: 4px; margin-right: 4px;">
+                @*<div class="btn-group pull-right" style="margin-left: 4px; margin-right: 4px;">
                     <button type="button" data-ng-click="submit()" class="btn btn-flat btn-primary pull-right " ng-disabled="btnSave"><i class="fa fa-save" style="padding-right: 5px"></i>Submit</button>
-                </div>
+                </div>*@
 
 
             </div>
@@ -80,7 +80,7 @@
         <div class="row">
             <div class="col-lg-3 ">
                 <div class="form-group">
-                    <label for="InvitationNumber">RFQ Number :</label>
+                    <label for="InvitationNumber">RFQ No :</label>
                 </div>
             </div>
             <div class="col-lg-2">
@@ -91,19 +91,24 @@
             </div>
 
             <div class="col-lg-1">
-                <button type="button" ng-show="!fromDashboard" @*ng-if="!Quotation"*@ ng-click="InvitationList()" class="form-control">Search</button>
+                <button type="button"
+                        ng-show="!fromDashboard && !Quotation"
+                        ng-click="InvitationList()"
+                        class="form-control">
+                    Search
+                </button>
             </div>
         </div>
         <div class="row">
             <div class="col-lg-3 " ng-if="Quotation">
                 <div class="form-group">
-                    <label for="QuotationNumber">Quotation Number :</label>
+                    <label for="QuotationNumber">Quotation No :</label>
                 </div>
             </div>
             <div class="col-lg-2" ng-if="Quotation">
                 <div class="form-group">
                     <input id="QuotationNumber" name="QuotationNumber" type="text" data-ng-model="Quotation" class="form-control"
-                           placeholder="Quotation Number" ng-readonly="true" />
+                           placeholder="Quotation No" ng-readonly="true" />
                     @*<div ng-show="masterDataFrm.$submitted || masterDataFrm.UDCode.$touched">
                             <span ng-show="masterDataFrm.UDCode.$error.required" class="label label-danger">Please enter UD Code</span>
                         </div>*@
@@ -133,10 +138,10 @@
                             <tr style="background-color: #84abc1; color: darkblue; font-size: 13px;">
                                 <th style="text-align:center">Material Code</th>
                                 <th style="text-align:center">Material Name</th>
-                                <th style="text-align:center">Quantity</th>
-                                <th style="text-align:center">Unit</th>
+                                <th style="text-align:center">RFQ Quantity</th>
+                                <th style="text-align:center">RFQ Unit</th>
                                 <th style="text-align:center">Documents</th>
-                                <th style="text-align:center">Type</th>
+                                @*<th style="text-align:center">Type</th>*@
                                 <th style="text-align:center">Action</th>
                             </tr>
                         </thead>
@@ -146,16 +151,25 @@
                                 <td class="col-lg-4 col-md-4 col-sm-4">{{row.materialName}}</td>
                                 <td class="col-lg-1 col-md-1 col-sm-1" style="text-align:right">{{row.MaterialQuantity| number:3}}</td>
                                 <td class="col-lg-1 col-md-1 col-sm-1" style="text-align:center">{{row.Unit}}</td>
-                                <td class="col-lg-1 col-md-1 col-sm-1" style="text-align:center">
-                                    <button type="button" class="button-detail" ng-click="AddDocument(row)" data-dismiss="modal" title="Show detail">Details <i class="fa fa-eye"></i></button>
+                                <td class="col-lg-1 col-md-1 col-sm-1 text-center">
+                                    <button type="button"
+                                            class="button-detail"
+                                            ng-click="AddDocument(row)"
+                                            data-dismiss="modal"
+                                            title="Show detail"
+                                            ng-show="row.sampleDocId">
+                                        Details <i class="fa fa-eye"></i>
+                                    </button>
                                 </td>
-                                <td class="col-lg-1 col-md-1 col-sm-1" style="text-align:center">{{row.Fintype}}</td>
+
+
+                                @*<td class="col-lg-1 col-md-1 col-sm-1" style="text-align:center">{{row.Fintype}}</td>*@
 
 
 
 
 
-                                <td class="col-lg-1 col-md-1 col-sm-1">
+                                <td class="col-lg-1 col-md-1 col-sm-1" style="text-align:center">
                                     <button ng-click="DetailItem(row)">
                                         {{ row.Action === 'A' ? 'Add' : 'Edit' }}
                                     </button>
@@ -229,6 +243,7 @@
 
                         <div class="col-lg-1"><label>Per:</label></div>
                         <div class="col-lg-1"><input type="number" class="form-control" ng-model="FinancialQuotationDetail.Per" min="0.01" /></div>
+                        <div class="col-lg-1"></div>
                         <div class="col-lg-2"><label>Price Unit:</label></div>
                         <div class="col-lg-1">
                             <select class="form-control" ng-model="FinancialQuotationDetail.PriceUnit"
@@ -470,7 +485,7 @@
                         <!-- Row 10: Penalty Clause / Remarks / Variance Note -->
                         <div class="row mt-2">
                             <div class="col-lg-3"><label>Penalty Clause:</label></div>
-                            <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.PenaltyClause" /></div>
+                            <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.PenaltyClause" ng-readonly/></div>
 
                             <div class="col-lg-3"><label>Remarks:</label></div>
                             <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.Remarks" /></div>
@@ -527,247 +542,258 @@
                                ng-init="FinancialQuotationDetail.Per=1"
                                ng-required="true" min="1">
                     </div>
-                    <div class="col-lg-2"><label>Price Unit<span class="text-danger">*</span></label></div>
-                    <div class="col-lg-1">
-                        <select class="form-control"
-                                ng-model="FinancialQuotationDetail.PriceUnit"
-                                ng-required="true"
-                                ng-options="i.Item_Code for i in ItemList">
-                            <option value="" style="display:none">---</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Price Unit -->
-                <div class="row mt-2">
-
-                </div>
-
-                <!-- VAT / Taxes -->
-                <div class="row mt-2">
-                    <div class="col-lg-3"><label>VAT<span class="text-danger">*</span></label></div>
-                    <div class="col-lg-3">
-                        <select class="form-control"
-                                ng-model="FinancialQuotationDetail.VAT"
-                                ng-required="true">
-                            <option value="">--Select--</option>
-                            <option value="Included">Included</option>
-                            <option value="Excluded">Excluded</option>
-                        </select>
-                    </div>
-
-                    <div class="col-lg-3"><label>Taxes</label></div>
-                    <div class="col-lg-3">
-                        <select class="form-control"
-                                ng-model="FinancialQuotationDetail.Tax">
-                            <option value="">--Select--</option>
-                            <option value="Included">Included</option>
-                            <option value="Excluded">Excluded</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Quotation Qty -->
-                <div class="row mt-2">
-                    <div class="col-lg-3"><label>Quotation Qty<span class="text-danger">*</span></label></div>
-                    <div class="col-lg-3">
-                        <input type="text"
-                               class="form-control text-right"
-                               ng-model="FinancialQuotationDetail.QuotationQty"
-                               three-decimals
-                               onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46">
-                    </div>
-
-                    <div class="col-lg-3"><label>Quotation Qty Unit<span class="text-danger">*</span></label></div>
-                    <div class="col-lg-3">
-                        <select class="form-control"
-                                ng-model="FinancialQuotationDetail.QuotationQtyUnit"
-                                ng-required="true"
-                                ng-options="i.Item_Code for i in ItemList">
-                            <option value="" style="display:none">---</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Delivery / Validity -->
-                <div class="row mt-2">
-                    <div class="col-lg-3"><label>Delivery Timeline<span class="text-danger">*</span></label></div>
-                    <div class="col-lg-3">
-                        <input type="text" class="form-control DatePicker"
-                               id="DeliveryTimeline"
-                               ng-model="FinancialQuotationDetail.DeliveryTimeline"
-                               ng-required="true">
-                    </div>
-
-                    <div class="col-lg-3"><label>Quotation Validity<span class="text-danger">*</span></label></div>
-                    <div class="col-lg-3">
-                        <input type="text" class="form-control DatePicker"
-                               id="QuotationValidity"
-                               ng-model="FinancialQuotationDetail.QuotationValidity"
-                               ng-required="true">
-                    </div>
-                </div>
-
-                <!-- Part Delivery / Qty Tolerance -->
-                <div class="row mt-2">
-                    <div class="col-lg-3"><label>Part Delivery</label></div>
-                    <div class="col-lg-3">
-                        <select class="form-control" ng-model="FinancialQuotationDetail.PartDelivery">
-                            <option value="" style="display:none">--Select--</option>
-                            <option value="Y">Yes</option>
-                            <option value="N">No</option>
-                        </select>
-                    </div>
-
-                    <div class="col-lg-3"><label>Qty Tolerance (%)</label></div>
-                    <div class="col-lg-3">
-                        <input type="number" class="form-control"
-                               ng-model="FinancialQuotationDetail.QtyTolerance" min="0">
-                    </div>
-                </div>
-
-
-                <!-- Row 1 -->
-                <div class="row mt-2">
-                    <div class="col-lg-3"><label>Payment Terms</label></div>
-                    <div class="col-lg-3">
-                        <input type="text"
-                               class="form-control"
-                               ng-model="FinancialQuotationDetail.PaymentTerms"
-                               required>
-                    </div>
-
-                    <div class="col-lg-3"><label>Manufacturer Part No.</label></div>
-                    <div class="col-lg-3">
-                        <input type="text"
-                               class="form-control"
-                               ng-model="FinancialQuotationDetail.ManufacturerPartNo"
-                               required>
-                    </div>
-                </div>
-
-                <!-- Row 2 -->
-                <div class="row mt-2">
-                    <div class="col-lg-3"><label>Manufacturer Name</label></div>
-                    <div class="col-lg-3">
-                        <input type="text"
-                               class="form-control"
-                               ng-model="FinancialQuotationDetail.ManufacturerName"
-                               required>
-                    </div>
-
-                    <div class="col-lg-3"><label>Manufacturer Site Address</label></div>
-                    <div class="col-lg-3">
-                        <textarea class="form-control"
-                                  ng-model="FinancialQuotationDetail.ManufacturerSiteAddress"
-                                  rows="2"
-                                  required></textarea>
-                    </div>
-                </div>
-
-
-
-
-
-
-
-                <!-- ================= COLLAPSIBLE (OPTIONAL) ================= -->
-
-                <div class="row mt-3">
-                    <div class="col-lg-12">
-                        <button type="button" class="btn btn-link"
-                                ng-click="showOptional = !showOptional">
-                            {{ showOptional ? 'Hide Additional Details' : 'Show Additional Details' }}
-                        </button>
-                    </div>
-                </div>
-
-                <div ng-show="showOptional">
-
-                    <div class="row mt-2">
-                        <div class="col-lg-3"><label>Discount</label></div>
-                        <div class="col-lg-3"><input type="number" class="form-control" ng-model="FinancialQuotationDetail.Discount"></div>
-
-                        <div class="col-lg-3"><label>Delivery Charge</label></div>
-                        <div class="col-lg-3"><input type="number" class="form-control" ng-model="FinancialQuotationDetail.DeliveryCharge"></div>
-                    </div>
-
-                    <div class="row mt-2">
-                        <div class="col-lg-3"><label>Pack Size</label></div>
-                        <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.PackSize"></div>
-
-                        <div class="col-lg-3"><label>Minimum Order Qty</label></div>
-                        <div class="col-lg-3"><input type="number" class="form-control" ng-model="FinancialQuotationDetail.MinimumOrderQty"></div>
-                    </div>
-
-                    <div class="row mt-2">
-                        <div class="col-lg-3"><label>Warranty</label></div>
-                        <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.Warranty"></div>
-
-                        <div class="col-lg-3"><label>Installation</label></div>
-                        <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.Installation"></div>
-                    </div>
-
-                    <div class="row mt-2">
-                        <div class="col-lg-3"><label>Servicing</label></div>
-                        <div class="col-lg-3">
-                            <select class="form-control" ng-model="FinancialQuotationDetail.Servicing">
-                                <option value="" style="display:none">--Select--</option>
-                                <option value="Y">Yes</option>
-                                <option value="N">No</option>
+                    <div class="col-lg-1"></div>
+                        <div class="col-lg-2"><label>Price Unit<span class="text-danger">*</span></label></div>
+                        <div class="col-lg-1">
+                            <select class="form-control"
+                                    ng-model="FinancialQuotationDetail.PriceUnit"
+                                    ng-required="true"
+                                    ng-options="i.Item_Code for i in ItemList">
+                                <option value="" style="display:none">---</option>
                             </select>
                         </div>
-
-                        <div class="col-lg-3"><label>Key Customer List</label></div>
-                        <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.KeyCustomerList"></div>
                     </div>
 
+                    <!-- Price Unit -->
                     <div class="row mt-2">
-                        <div class="col-lg-3">
-                            <label>Subcontractor</label>
-                        </div>
 
+                    </div>
+
+                    <!-- VAT / Taxes -->
+                    <div class="row mt-2">
+                        <div class="col-lg-3"><label>VAT<span class="text-danger">*</span></label></div>
                         <div class="col-lg-3">
                             <select class="form-control"
-                                    ng-model="FinancialQuotationDetail.Subcontractor"
-                                    ng-init="FinancialQuotationDetail.Subcontractor = 'No'">
-                                <option value="Yes">Yes</option>
-                                <option value="No">No</option>
+                                    ng-model="FinancialQuotationDetail.VAT"
+                                    ng-required="true">
+                                <option value="">--Select--</option>
+                                <option value="Included">Included</option>
+                                <option value="Excluded">Excluded</option>
                             </select>
                         </div>
 
-                        <!-- Appears only when Yes -->
-                        <div class="col-lg-6" ng-if="FinancialQuotationDetail.Subcontractor === 'Yes'">
-                            <input type="text"
-                                   class="form-control"
-                                   ng-model="FinancialQuotationDetail.SubcontractorDetails"
-                                   placeholder="Enter subcontractor details">
+                        <div class="col-lg-3"><label>Taxes</label></div>
+                        <div class="col-lg-3">
+                            <select class="form-control"
+                                    ng-model="FinancialQuotationDetail.Tax">
+                                <option value="">--Select--</option>
+                                <option value="Included">Included</option>
+                                <option value="Excluded">Excluded</option>
+                            </select>
                         </div>
                     </div>
 
-
+                    <!-- Quotation Qty -->
                     <div class="row mt-2">
-                        <div class="col-lg-3"><label>Returnable Item:</label></div>
+                        <div class="col-lg-3"><label>Quotation Qty<span class="text-danger">*</span></label></div>
                         <div class="col-lg-3">
-                            <select class="form-control" ng-model="FinancialQuotationDetail.ReturnableItem">
+                            <input type="text"
+                                   class="form-control text-right"
+                                   ng-model="FinancialQuotationDetail.QuotationQty"
+                                   three-decimals
+                                   onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46">
+                        </div>
+
+                        <div class="col-lg-3"><label>Quotation Qty Unit<span class="text-danger">*</span></label></div>
+                        <div class="col-lg-3">
+                            <select class="form-control"
+                                    ng-model="FinancialQuotationDetail.QuotationQtyUnit"
+                                    ng-required="true"
+                                    ng-options="i.Item_Code for i in ItemList">
+                                <option value="" style="display:none">---</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Delivery / Validity -->
+                    <div class="row mt-2">
+                        <div class="col-lg-3"><label>Delivery Timeline<span class="text-danger">*</span></label></div>
+                        <div class="col-lg-3">
+                            <input type="text" class="form-control DatePicker"
+                                   id="DeliveryTimeline"
+                                   ng-model="FinancialQuotationDetail.DeliveryTimeline"
+                                   ng-required="true">
+                        </div>
+
+                        <div class="col-lg-3"><label>Delivery Location<span class="text-danger">*</span></label></div>
+                        <div class="col-lg-3">
+                            <input type="text" class="form-control"
+                                   id="DeliveryLocation"
+                                   ng-model="FinancialQuotationDetail.DeliveryLocation"
+                                   ng-readonly="true">
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+
+                        <div class="col-lg-3"><label>Quotation Validity<span class="text-danger">*</span></label></div>
+                        <div class="col-lg-3">
+                            <input type="text" class="form-control DatePicker"
+                                   id="QuotationValidity"
+                                   ng-model="FinancialQuotationDetail.QuotationValidity"
+                                   ng-required="true">
+                        </div>
+                    </div>
+
+                    <!-- Part Delivery / Qty Tolerance -->
+                    <div class="row mt-2">
+                        <div class="col-lg-3"><label>Part Delivery</label></div>
+                        <div class="col-lg-3">
+                            <select class="form-control" ng-model="FinancialQuotationDetail.PartDelivery">
                                 <option value="" style="display:none">--Select--</option>
                                 <option value="Y">Yes</option>
                                 <option value="N">No</option>
-
                             </select>
+                        </div>
+
+                        <div class="col-lg-3"><label>Qty Tolerance (%)</label></div>
+                        <div class="col-lg-3">
+                            <input type="number" class="form-control"
+                                   ng-model="FinancialQuotationDetail.QtyTolerance" min="0">
                         </div>
                     </div>
 
-                    <div class="row mt-2">
-                        <div class="col-lg-3"><label>Penalty Clause</label></div>
-                        <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.PenaltyClause"></div>
 
-                        <div class="col-lg-3"><label>Remarks</label></div>
-                        <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.Remarks"></div>
+                    <!-- Row 1 -->
+                    <div class="row mt-2">
+                        <div class="col-lg-3"><label>Payment Terms</label></div>
+                        <div class="col-lg-3">
+                            <input type="text"
+                                   class="form-control"
+                                   ng-model="FinancialQuotationDetail.PaymentTerms"
+                                   required>
+                        </div>
+
+                        <div class="col-lg-3"><label>Manufacturer Part No.</label></div>
+                        <div class="col-lg-3">
+                            <input type="text"
+                                   class="form-control"
+                                   ng-model="FinancialQuotationDetail.ManufacturerPartNo"
+                                   required>
+                        </div>
                     </div>
 
+                    <!-- Row 2 -->
+                    <div class="row mt-2">
+                        <div class="col-lg-3"><label>Manufacturer Name</label></div>
+                        <div class="col-lg-3">
+                            <input type="text"
+                                   class="form-control"
+                                   ng-model="FinancialQuotationDetail.ManufacturerName"
+                                   required>
+                        </div>
+
+                        <div class="col-lg-3"><label>Manufacturer Site Address</label></div>
+                        <div class="col-lg-3">
+                            <textarea class="form-control"
+                                      ng-model="FinancialQuotationDetail.ManufacturerSiteAddress"
+                                      rows="2"
+                                      required></textarea>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+                    <!-- ================= COLLAPSIBLE (OPTIONAL) ================= -->
+
+                    <div class="row mt-3">
+                        <div class="col-lg-12">
+                            <button type="button" class="btn btn-link"
+                                    ng-click="showOptional = !showOptional">
+                                {{ showOptional ? 'Hide Additional Details' : 'Show Additional Details' }}
+                            </button>
+                        </div>
+                    </div>
+
+                    <div ng-show="showOptional">
+
+                        <div class="row mt-2">
+                            <div class="col-lg-3"><label>Discount</label></div>
+                            <div class="col-lg-3"><input type="number" class="form-control" ng-model="FinancialQuotationDetail.Discount"></div>
+
+                            <div class="col-lg-3"><label>Delivery Charge</label></div>
+                            <div class="col-lg-3"><input type="number" class="form-control" ng-model="FinancialQuotationDetail.DeliveryCharge"></div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-lg-3"><label>Pack Size</label></div>
+                            <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.PackSize"></div>
+
+                            <div class="col-lg-3"><label>Minimum Order Qty</label></div>
+                            <div class="col-lg-3"><input type="number" class="form-control" ng-model="FinancialQuotationDetail.MinimumOrderQty"></div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-lg-3"><label>Warranty</label></div>
+                            <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.Warranty"></div>
+
+                            <div class="col-lg-3"><label>Installation</label></div>
+                            <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.Installation"></div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-lg-3"><label>Servicing</label></div>
+                            <div class="col-lg-3">
+                                <select class="form-control" ng-model="FinancialQuotationDetail.Servicing">
+                                    <option value="" style="display:none">--Select--</option>
+                                    <option value="Y">Yes</option>
+                                    <option value="N">No</option>
+                                </select>
+                            </div>
+
+                            <div class="col-lg-3"><label>Key Customer List</label></div>
+                            <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.KeyCustomerList"></div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-lg-3">
+                                <label>Subcontractor</label>
+                            </div>
+
+                            <div class="col-lg-3">
+                                <select class="form-control"
+                                        ng-model="FinancialQuotationDetail.Subcontractor"
+                                        ng-init="FinancialQuotationDetail.Subcontractor = 'No'">
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+
+                            <!-- Appears only when Yes -->
+                            <div class="col-lg-6" ng-if="FinancialQuotationDetail.Subcontractor === 'Yes'">
+                                <input type="text"
+                                       class="form-control"
+                                       ng-model="FinancialQuotationDetail.SubcontractorDetails"
+                                       placeholder="Enter subcontractor details">
+                            </div>
+                        </div>
+
+
+                        <div class="row mt-2">
+                            <div class="col-lg-3"><label>Returnable Item:</label></div>
+                            <div class="col-lg-3">
+                                <select class="form-control" ng-model="FinancialQuotationDetail.ReturnableItem">
+                                    <option value="" style="display:none">--Select--</option>
+                                    <option value="Y">Yes</option>
+                                    <option value="N">No</option>
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-lg-3"><label>Penalty Clause</label></div>
+                            <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.PenaltyClause"></div>
+
+                            <div class="col-lg-3"><label>Remarks</label></div>
+                            <div class="col-lg-3"><input type="text" class="form-control" ng-model="FinancialQuotationDetail.Remarks"></div>
+                        </div>
+
+                    </div>
                 </div>
-            </div>
 
 
         </div>
@@ -776,8 +802,8 @@
 
             <div class="btn-group pull-right" style=" margin-right: 70px;">
 
-                <button type="submit" id="btnSubmit1" ng-if="MaterialInvitation.FinanQuotationItemID!='' " ng-click=" Update()" class="btn btn-primary btn-flat">Update</button>
-                <button type="submit" id="btnSubmit" ng-if="MaterialInvitation.FinanQuotationItemID==''" ng-click=" Post()" class="btn btn-primary btn-flat">Save</button>
+                <button type="submit" id="btnSubmit1" ng-if="MaterialInvitation.FinanQuotationItemID!='' " ng-click=" Update()" class="btn btn-primary btn-flat">Update Quotation</button>
+                <button type="submit" id="btnSubmit" ng-if="MaterialInvitation.FinanQuotationItemID==''" ng-click=" Post()" class="btn btn-primary btn-flat">Save Quotation</button>
 
 
                 @*<button type="button" data-ng-click="ConfirmVision()" class="form-control" ng-disabled="btnConfirm"><i class="fa fa-plus" style="padding-right: 5px"></i>Add Item</button>*@
@@ -945,14 +971,14 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" ng-click="ResetSearchModel()" aria-hidden="true">x</button>
-                    <h3 class="modal-title">Invitation List</h3>
+                    <h3 class="modal-title">RFQ List</h3>
                 </div>
                 <div class="table-responsive" data-ng-disabled="" ng-cloak>
                     <table st-table="InvitationDisplayedCollection" st-safe-src="Invitation" class="table table-condensed table-bordered table-striped table-hover pnlView">
                         <thead>
                             <tr>
-                                <th class="col-lg-1 col-md-1 col-sm-1 text-center">Number</th>
-                                <th class="col-lg-4 col-md-4 col-sm-4 text-center">Invitation Number</th>
+                                <th class="col-lg-1 col-md-1 col-sm-1 text-center">SL</th>
+                                <th class="col-lg-4 col-md-4 col-sm-4 text-center">RFQ NO</th>
 
 
                                 <th class="col-lg-1 col-md-1 col-sm-1 text-center">Action</th>
@@ -999,9 +1025,9 @@
                     <table st-table="GridDisplayCollectionQuotation" st-safe-src="AllQuotation" class="table table-condensed table-bordered table-striped table-hover pnlView">
                         <thead>
                             <tr>
-                                <th class="col-lg-1 col-md-1 col-sm-1">Number</th>
-                                <th class="col-lg-2 col-md-2 col-sm-2">Quotation No</th>
-                                <th class="col-lg-2 col-md-2 col-sm-2">Invitation Number</th>
+                                <th class="col-lg-1 col-md-1 col-sm-1" style="text-align:center">SL</th>
+                                <th class="col-lg-2 col-md-2 col-sm-2" style="text-align:center">Quotation No</th>
+                                <th class="col-lg-2 col-md-2 col-sm-2" style="text-align:center">RFQ No</th>
                                 <th class="col-lg-2 col-md-2 col-sm-2">Quotation Date</th>
 
                                 <th class="col-lg-1 col-md-1 col-sm-1">Action</th>
@@ -1011,9 +1037,9 @@
                         <tbody>
                             <tr ng-repeat="row in GridDisplayCollectionQuotation">
                                 <td class="text-center">{{$index+1}}</td>
-                                <td class="">{{row.quotationNo}}</td>
-                                <td class="">{{row.InvitationNumber}}</td>
-                                <td class="">{{row.QuotationDate}}</td>
+                                <td class="text-center">{{row.quotationNo}}</td>
+                                <td class="text-center">{{row.InvitationNumber}}</td>
+                                <td class="text-center">{{row.QuotationDate}}</td>
 
                                 <td class="text-center">
                                     <a class="btn col-center btn-sm btn-flat btn-success" data-ng-click="toggleQuotationSelect(row.InvitationNumber,row.quotationNo)">Select</a>
@@ -1292,7 +1318,8 @@
             PenaltyClause: "",
             Remarks: "",
             Fintype: "",
-            SampleDocumentID: ""
+            SampleDocumentID: "",
+            DeliveryLocation:""
         };
 
 
@@ -1952,7 +1979,8 @@
                 ReturnableItem: "",
                 PenaltyClause: "",
                 Remarks: "",
-                Fintype: ""
+                Fintype: "",
+                DeliveryLocation:""
             };
 
 
@@ -2042,6 +2070,7 @@
             $scope.FinancialQuotationDetail.QtyTolerance = data.QtyTolerance;
             $scope.FinancialQuotationDetail.MinimumOrderQty = data.MinimumOrderQty;
             $scope.FinancialQuotationDetail.PackSize = data.PackSize;
+            $scope.FinancialQuotationDetail.DeliveryLocation = data.DeliveryLocation;
 
 
             if (data.QuotationQtyUnit) {
@@ -2326,6 +2355,7 @@
                 $scope.MaterialInvitation.VendorID = row.VendorID;
                 $scope.MaterialInvitation.BiddingID = row.BiddingID;
                 $scope.MaterialInvitation.BiddingItemVendorID = row.BiddingItemVendorID;
+                $scope.MaterialInvitation.sampleDocId = row.sampleDocId;
 
                 // 🔽 Bind IMPORT-specific financial fields
                 $scope.FinancialQuotationDetail.DeliveryTimeline = row.DeliveryTimeline;
@@ -2347,6 +2377,7 @@
                 $scope.FinancialQuotationDetail.Per = 1;
                 $scope.FinancialQuotationDetail.Subcontractor = 'No';
                 $scope.FinancialQuotationDetail.SubcontractorDetails = '';
+                $scope.FinancialQuotationDetail.DeliveryLocation = row.DeliveryLocation;
 
 
                 // If you have dropdown objects (like ItemList / IncotermsList), resolve to object:
@@ -2398,6 +2429,11 @@
                     $scope.p = 1;
                 }
                 else if (row.Fintype === 'DOMESTIC') {
+                   
+                        var Currencyobj = $scope.ItemTypeList.find(p => p.MasterDataID === '1');
+                        $scope.FinancialQuotationDetail.Currency = Currencyobj || data.Currency;
+                  
+                  
                     $scope.p = 2;
                 }
 
@@ -3169,12 +3205,6 @@
 
 
 
-
-
-
-
-
-
             $('#QuotationModal').modal('hide');
 
 
@@ -3210,7 +3240,7 @@
 
 
             $http.post('/VendorSelectionModule/TechnicalQuotation/GetMaterialDocStatus', {
-                MaterialCode: row.materialCode,
+                MaterialCode: row.materialName,
                 BiddingID: row.BiddingID,
                 VendorCode: row.BiddingItemVendorID
 
@@ -3503,6 +3533,7 @@
         var qrStr = window.location.search.substring(1);
 
         if (qrStr != "") {
+            $scope.fromDashboard = true;
             var params = {};
             qrStr.split('&').forEach(function (param) {
                 var keyValue = param.split('=');

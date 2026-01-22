@@ -406,7 +406,7 @@ namespace SILDMS.Model.VendorSelectionModule
         public string QuotationID { get; set; }
         public string QuotationNo { get; set; }
         public string InvitationNumber { get; set; }
-  
+        public string DeliveryLocation { get; set; }
     }
 
     // Supporting class for MasterData objects
@@ -569,6 +569,7 @@ namespace SILDMS.Model.VendorSelectionModule
         public string ProductLifeCycleUnit { get; set; }
         public string Fintype { get; set; }
         public string Proposal { get; set; }
+        public string DeliveryLocation { get; set; }
     }
 
 
