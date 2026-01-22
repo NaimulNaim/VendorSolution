@@ -28,7 +28,7 @@
         <div class="row" style="margin-top: 5px;">
             <div class="col-lg-2">
                 <div class="form-group" style="font-size: smaller;">
-                    <label for="BusinessName">Business Name :</label>
+                    <label for="BusinessName">Business Name :<span style="color: red;"> *</span></label>
                 </div>
             </div>
             <div class="col-lg-4">
@@ -45,7 +45,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-4">
+            <div class="col-lg-3">
                     <select class="form-control"
                             ng-model="PurreqDtl.Vendor.BusinessTypeName"
                             ng-options="bt.BusinessTypeID as bt.BusinessTypeName for bt in BusinessTypeList">
@@ -64,7 +64,7 @@
         <div class="row" style="margin-top: 5px;">
 
             <div class="col-lg-2 col-md-2 col-sm-2" style="font-size: smaller;">
-                <label for="ContactPerson">Contact Person :<span style="color: red;"> *</span></label>
+                <label for="ContactPerson">Contact Person :</label>
             </div>
             <div class="col-lg-2 col-md-2 col-sm-2">
                 <input id="FirstName" autocomplete="off" type="text" name="FirstName" class="form-control" ng-model="PurreqDtl.Vendor.ContactPersonFirstName" placeholder="First Name" style="font-size: smaller; padding: 3px 6px 3px;" required />
@@ -163,7 +163,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-4">
+                <div class="col-lg-3">
                     <select class="form-control"
                             ng-model="PurreqDtl.Vendor.Country"
                             ng-options="c.CountryID as c.CountryName for c in CountryList">
@@ -229,7 +229,7 @@
             @* button save*@
     <div class="row">
 
-        <div class="col-lg-10">
+        <div class="col-lg-9">
            
         </div>
 
@@ -270,7 +270,7 @@
             <div class="row" style="margin-top: 5px;">
                 <div class="col-lg-2">
                     <div class="form-group" style="font-size: smaller;">
-                        <label for="BusinessName">Business Name :</label>
+                        <label for="BusinessName">Business Name :<span style="color: red;"> *</span></label>
                     </div>
                 </div>
                 <div class="col-lg-4">
@@ -287,16 +287,11 @@
                     </div>
                 </div>
 
-                <div class="col-lg-4">
-                    <select id="BusinessType"
-                            name="BusinessType"
-                            class="form-control"
-                            ng-model="PurreqDtl.Vendor.BusinessType"
-                            style="font-size: smaller; padding: 3px 6px;"
-                            required>
-
-                        <option value="" disabled selected>Select Business Type</option>
-                        <option value="Not given from ERP Team">Not given from ERP Team</option>
+                <div class="col-lg-3">
+                    <select class="form-control"
+                            ng-model="PurreqDtl.Vendor.BusinessTypeName"
+                            ng-options="bt.BusinessTypeID as bt.BusinessTypeName for bt in BusinessTypeList">
+                        <option value="">-- Select Business Type --</option>
                     </select>
                 </div>
 
@@ -308,7 +303,7 @@
             <div class="row" style="margin-top: 5px;">
 
                 <div class="col-lg-2 col-md-2 col-sm-2" style="font-size: smaller;">
-                    <label for="ContactPerson">Contact Person :<span style="color: red;"> *</span></label>
+                    <label for="ContactPerson">Contact Person :</label>
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-2">
                     <input id="FirstName" autocomplete="off" type="text" name="FirstName" class="form-control" ng-model="PurreqDtl.Vendor.ContactPersonFirstName" placeholder="First Name" style="font-size: smaller; padding: 3px 6px 3px;" required />
@@ -648,35 +643,51 @@
 
 
         $scope.ValidationCheck = function () {
-            /*if ($("#BusinessName").val() == "") {
-                toastr.error("Please your Business Name.");
-                return;
-            }*/
-            //if ($("#FirstName").val() == "" && $("#LastName").val() == "") {
-            //    toastr.error("Please Contact Person Name.");
-            //    return;
-            //}
-            //if ($("#VendorPhoneNumber").val() == "") {
-            //    toastr.error("Please your VendorPhoneNumber.");
-            //    return;
-            //}
-            //if ($("#Email").val() == "") {
-            //    toastr.error("Please your Email.");
-            //    return;
-            //}
+            // Required fields validation
+            var errors = [];
 
-            //if ($("#UserName").val() == "") {
-            //    toastr.error("Please enter User Name");
-            //    return;
-            //}
-            //if ($("#Password").val() == "") {
-            //    toastr.error("Please enter Password");
-            //    return;
-            //}
-            //if ($("#ConfirmPassword").val() == "") {
-            //    toastr.error("Please enter Confirm Password");
-            //    return;
-            //}
+            if (!$scope.PurreqDtl.Vendor.BusinessName || $scope.PurreqDtl.Vendor.BusinessName.trim() === "") {
+                errors.push("Business Name is required");
+            }
+
+            if (!$scope.PurreqDtl.Vendor.VendorPhoneNumber || $scope.PurreqDtl.Vendor.VendorPhoneNumber.trim() === "") {
+                errors.push("Contact Number is required");
+            }
+
+            if (!$scope.PurreqDtl.Vendor.Email || $scope.PurreqDtl.Vendor.Email.trim() === "") {
+                errors.push("Email is required");
+            }
+
+            if (!$scope.PurreqDtl.Vendor.UserName || $scope.PurreqDtl.Vendor.UserName.trim() === "") {
+                errors.push("User Name is required");
+            }
+
+            if (!$scope.PurreqDtl.Vendor.Password || $scope.PurreqDtl.Vendor.Password.trim() === "") {
+                errors.push("Password is required");
+            }
+
+            if (!$scope.PurreqDtl.Vendor.ConfirmPassword || $scope.PurreqDtl.Vendor.ConfirmPassword.trim() === "") {
+                errors.push("Confirm Password is required");
+            }
+
+            if ($scope.PurreqDtl.Vendor.Password !== $scope.PurreqDtl.Vendor.ConfirmPassword) {
+                errors.push("Passwords do not match");
+            }
+
+            // Optional fields validation - only validate if provided
+            if ($scope.PurreqDtl.Vendor.TIN && $scope.PurreqDtl.Vendor.TIN.trim() !== "" && !$scope.tinFile) {
+                errors.push("Please upload TIN document");
+            }
+
+            if ($scope.PurreqDtl.Vendor.BIN && $scope.PurreqDtl.Vendor.BIN.trim() !== "" && !$scope.binFile) {
+                errors.push("Please upload BIN document");
+            }
+
+            if (errors.length > 0) {
+                toastr.error(errors.join("<br>"));
+                return;
+            }
+
             $scope.openConfirmModal();
         }
 
@@ -877,7 +888,6 @@
             }
         };
 
-
         $scope.RegistrationVendor = function () {
             var selectedPropID = [];
 
@@ -893,10 +903,8 @@
                 return;
             }
 
-            //if (!$scope.tinFile && !$scope.binFile) {
-            //    toastr.error("Please upload at least one PDF document (TIN or BIN)");
-            //    return;
-            //}
+            // Show loading indicator
+            $scope.loading = true;
 
             // 1️⃣ Save Vendor
             $http.post('/VendorSelectionModule/VendorRegistration/VendorRegistrationDetails', {
@@ -907,7 +915,7 @@
                 CompanyAddress: $scope.PurreqDtl.Vendor.CompanyAddress,
                 Email: $scope.info2,
                 Country: $scope.PurreqDtl.Vendor.Country,
-                BusinessType: $scope.PurreqDtl.Vendor.BusinessType,
+                BusinessType: $scope.PurreqDtl.Vendor.BusinessTypeName,
                 TIN: $scope.PurreqDtl.Vendor.TIN,
                 BIN: $scope.PurreqDtl.Vendor.BIN,
                 GenaralDetailsServices: $scope.PurreqDtl.Vendor.GenaralDetailsServices,
@@ -916,6 +924,12 @@
                 Status: 'Temporary',
                 Vendor: $scope.info1
             }).success(function (vendorResp) {
+
+                if (!vendorResp.user || !vendorResp.user.UserID) {
+                    toastr.error("Vendor registration failed");
+                    $scope.loading = false;
+                    return;
+                }
 
                 // 2️⃣ Save Document Metadata
                 $http.post('/VendorSelectionModule/VendorRegistration/AddDocument', {
@@ -936,7 +950,7 @@
                             fileData.append('ftpUserName', docInfo.FtpUserName);
                             fileData.append('ftpPassword', docInfo.FtpPassword);
                             fileData.append('vendorId', vendorResp.user.VendorId);
-                            fileData.append('docType', docType); // "TIN" or "BIN"
+                            fileData.append('docType', docType);
                             fileData.append('file', file);
 
                             return $.ajax({
@@ -953,28 +967,43 @@
                         if ($scope.tinFile) uploads.push(uploadFile($scope.tinFile, 'TIN'));
                         if ($scope.binFile) uploads.push(uploadFile($scope.binFile, 'BIN'));
 
-                        // Upload all files simultaneously
-                        $.when.apply($, uploads).done(function () {
-                            toastr.success("Data Saved and TIN & BIN documents uploaded successfully");
-                            $scope.tinFile = null;
-                            $scope.binFile = null;
-                            $('#TINFile').val('');
-                            $('#BINFile').val('');
+                        // Check if there are files to upload
+                        if (uploads.length > 0) {
+                            // Upload all files simultaneously
+                            $.when.apply($, uploads).done(function () {
+                                $scope.loading = false;
+                                toastr.success("Vendor registered successfully and documents uploaded");
+                                $scope.tinFile = null;
+                                $scope.binFile = null;
+                                $('#TINFile').val('');
+                                $('#BINFile').val('');
+                                $scope.$apply(() => $scope.refreshPage());
+                            }).fail(function () {
+                                $scope.loading = false;
+                                toastr.warning("Vendor registered but some documents failed to upload");
+                                $scope.$apply(() => $scope.refreshPage());
+                            });
+                        } else {
+                            // No documents to upload
+                            $scope.loading = false;
+                            toastr.success("Vendor registered successfully");
                             $scope.$apply(() => $scope.refreshPage());
-                        }).fail(function () {
-                            toastr.error("One or more file uploads failed");
-                        });
+                        }
+                    } else {
+                        $scope.loading = false;
+                        toastr.error("Document metadata save failed");
                     }
 
                 }).error(function () {
+                    $scope.loading = false;
                     toastr.error("Document metadata save failed");
                 });
 
             }).error(function () {
+                $scope.loading = false;
                 toastr.error("Vendor registration failed");
             });
         };
-
 
 
         $scope.AutoCompleteVendorInfo = function (vendorData) {
@@ -1013,7 +1042,6 @@
 
 
         $scope.updateRegistration = function () {
-
             var selectedPropID = [];
 
             angular.forEach($scope.docPropertyForSpecificDocType, function (item) {
@@ -1028,10 +1056,14 @@
                 return;
             }
 
-            if (!$scope.tinFile && !$scope.binFile) {
-                toastr.error("Please upload at least one document (TIN or BIN)");
-                return;
-            }
+            // Optional: Documents are not mandatory for update
+            // Remove this check if documents are optional
+            // if (!$scope.tinFile && !$scope.binFile) {
+            //     toastr.error("Please upload at least one document (TIN or BIN)");
+            //     return;
+            // }
+
+            $scope.loading = true;
 
             // 1️⃣ Update Vendor Info
             $http.post('/VendorSelectionModule/VendorRegistration/VendorupdateRegistrationDetails', {
@@ -1052,6 +1084,12 @@
             })
                 .success(function (vendorResp) {
 
+                    if (!vendorResp.user || !vendorResp.user.UserID) {
+                        $scope.loading = false;
+                        toastr.error("Vendor update failed");
+                        return;
+                    }
+
                     // 2️⃣ Save Document Metadata
                     $http.post('/VendorSelectionModule/VendorRegistration/AddDocument', {
                         UserId: vendorResp.user.UserID,
@@ -1062,10 +1100,9 @@
                         .success(function (docResp) {
 
                             if (docResp.ResponseCode === "S201") {
-
                                 var docInfo = docResp.DistinctID[0];
 
-                                // 🔁 Reusable upload function
+                                // Reusable upload function
                                 function uploadFile(file, docType) {
                                     var fileData = new FormData();
                                     fileData.append('serverIP', docInfo.ServerIP);
@@ -1073,7 +1110,7 @@
                                     fileData.append('ftpUserName', docInfo.FtpUserName);
                                     fileData.append('ftpPassword', docInfo.FtpPassword);
                                     fileData.append('vendorId', vendorResp.user.VendorId);
-                                    fileData.append('docType', docType); // BIN / TIN
+                                    fileData.append('docType', docType);
                                     fileData.append('file', file);
 
                                     return $.ajax({
@@ -1086,36 +1123,45 @@
                                 }
 
                                 var uploads = [];
+                                if ($scope.tinFile) uploads.push(uploadFile($scope.tinFile, 'TIN'));
+                                if ($scope.binFile) uploads.push(uploadFile($scope.binFile, 'BIN'));
 
-                                if ($scope.tinFile)
-                                    uploads.push(uploadFile($scope.tinFile, 'TIN'));
-
-                                if ($scope.binFile)
-                                    uploads.push(uploadFile($scope.binFile, 'BIN'));
-
-                                // 3️⃣ Upload both files simultaneously
-                                $.when.apply($, uploads)
-                                    .done(function () {
-                                        toastr.success("Vendor updated and documents uploaded successfully");
-
-                                        $scope.tinFile = null;
-                                        $scope.binFile = null;
-                                        $('#TINFile').val('');
-                                        $('#BINFile').val('');
-
-                                        $scope.$apply(() => $scope.refreshPage());
-                                    })
-                                    .fail(function () {
-                                        toastr.error("One or more document uploads failed");
-                                    });
+                                // 3️⃣ Upload files if any
+                                if (uploads.length > 0) {
+                                    $.when.apply($, uploads)
+                                        .done(function () {
+                                            $scope.loading = false;
+                                            toastr.success("Vendor updated and documents uploaded successfully");
+                                            $scope.tinFile = null;
+                                            $scope.binFile = null;
+                                            $('#TINFile').val('');
+                                            $('#BINFile').val('');
+                                            $scope.$apply(() => $scope.refreshPage());
+                                        })
+                                        .fail(function () {
+                                            $scope.loading = false;
+                                            toastr.warning("Vendor updated but some documents failed to upload");
+                                            $scope.$apply(() => $scope.refreshPage());
+                                        });
+                                } else {
+                                    // No documents to upload
+                                    $scope.loading = false;
+                                    toastr.success("Vendor updated successfully");
+                                    $scope.$apply(() => $scope.refreshPage());
+                                }
+                            } else {
+                                $scope.loading = false;
+                                toastr.error("Document metadata save failed");
                             }
                         })
                         .error(function () {
+                            $scope.loading = false;
                             toastr.error("Document metadata save failed");
                         });
 
                 })
                 .error(function () {
+                    $scope.loading = false;
                     toastr.error("Vendor update failed");
                 });
         };
@@ -1161,7 +1207,6 @@
                 window.location = "/SecurityModule/Account/Login";// Reload the current page
             }, 2000); // 2000 milliseconds = 3 seconds
         }
-
 
     });
 </script>
