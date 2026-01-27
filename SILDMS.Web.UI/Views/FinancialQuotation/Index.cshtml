@@ -2068,7 +2068,7 @@
             $scope.FinancialQuotationDetail.ProposeQty = data.ProposeQty;
             $scope.FinancialQuotationDetail.QuotationQty = data.QuotationQty;
             $scope.FinancialQuotationDetail.QtyTolerance = data.QtyTolerance;
-            $scope.FinancialQuotationDetail.MinimumOrderQty = data.MinimumOrderQty;
+            /*   $scope.FinancialQuotationDetail.MinimumOrderQty = data.MinimumOrderQty;*/
             $scope.FinancialQuotationDetail.PackSize = data.PackSize;
             $scope.FinancialQuotationDetail.DeliveryLocation = data.DeliveryLocation;
 
@@ -2108,11 +2108,11 @@
             // =====================
             // Pricing
             // =====================
-          
 
-           
+
+
             $scope.FinancialQuotationDetail.Per = data.Per;
-           
+
             $scope.FinancialQuotationDetail.Discount = data.Discount;
             $scope.FinancialQuotationDetail.OrderHandlingCharges = data.OrderHandlingCharges;
             $scope.FinancialQuotationDetail.PackingCharges = data.PackingCharges;
@@ -2183,21 +2183,49 @@
             $scope.FinancialQuotationDetail.Fintype = data.Fintype;
 
             if (data.Fintype === 'DOMESTIC') {
+
                 $scope.FinancialQuotationDetail.Price = data.Price;
-                var element = document.getElementById('price1');
-                element.value = (data.Price).toFixed(2);
-                element.dispatchEvent(new Event('change'));
+                setValue('price1', data.Price);
+                $scope.FinancialQuotationDetail.Discount = data.Discount;
+                setValue('Discount1', data.Discount);
+                $scope.FinancialQuotationDetail.DeliveryCharge = data.DeliveryCharge;
+                setValue('DeliveryCharge1', data.DeliveryCharge);
+
+                $scope.FinancialQuotationDetail.MinimumOrderQty = data.MinimumOrderQty;
+                setValue('MinimumOrderQty1', data.MinimumOrderQty);
                 $scope.p = 2;
             }
             else {
+
+
+
+
+
+
+
                 $scope.FinancialQuotationDetail.Price = data.Price;
-                var element = document.getElementById('price');
-                element.value = (data.Price).toFixed(2);
-                element.dispatchEvent(new Event('change'));
+                setValue('price', data.Price);
+
                 $scope.FinancialQuotationDetail.Freight = data.Freight;
-                var element = document.getElementById('Freight');
-                element.value = (data.Freight).toFixed(2);
-                element.dispatchEvent(new Event('change'));
+                setValue('Freight', data.Freight);
+                $scope.FinancialQuotationDetail.Discount = data.Discount;
+                setValue('Discount', data.Discount);
+
+                $scope.FinancialQuotationDetail.OrderHandlingCharges = data.OrderHandlingCharges;
+                setValue('OrderHandlingCharges', data.OrderHandlingCharges);
+
+                $scope.FinancialQuotationDetail.PackingCharges = data.PackingCharges;
+                setValue('PackingCharges', data.PackingCharges);
+
+                $scope.FinancialQuotationDetail.SundryCharges = data.SundryCharges;
+                setValue('SundryCharges', data.SundryCharges);
+
+                $scope.FinancialQuotationDetail.DeliveryCharge = data.DeliveryCharge;
+                setValue('DeliveryCharge', data.DeliveryCharge);
+
+                $scope.FinancialQuotationDetail.MinimumOrderQty = data.MinimumOrderQty;
+                setValue('MinimumOrderQty', data.MinimumOrderQty);
+
                 p = 1;
             }
 
@@ -2206,52 +2234,7 @@
 
 
 
-            //$scope.FinancialQuotationDetail.FinanQuotationItemID = data.FinanQuotationItemID;
-            //$scope.FinancialQuotationDetail.ProposeQty = data.ProposeQty;
-            //var element = document.getElementById('ProposeQty');
-            //element.value = (data.ProposeQty).toFixed(3);
-            //element.dispatchEvent(new Event('change'));
-            //$scope.FinancialQuotationDetail.Unit = data.Unit;
 
-            //$scope.FinancialQuotationDetail.UnitPrice = data.UnitPrice;
-            //var element = document.getElementById('UnitPrice');
-            //element.value = (data.UnitPrice).toFixed(3);
-            //element.dispatchEvent(new Event('change'));
-            //$scope.FinancialQuotationDetail.Currency = data.Currency;
-            //$scope.FinancialQuotationDetail.TotalPrice = data.TotalPrice;
-            //var element = document.getElementById('TotalPrice');
-            //element.value = (data.TotalPrice).toFixed(3);
-            //element.dispatchEvent(new Event('change'));
-            //$scope.FinancialQuotationDetail.VatAmount = data.VatAmount;
-            //var element = document.getElementById('VatAmount');
-            //element.value = (data.VatAmount).toFixed(3);
-            //element.dispatchEvent(new Event('change'));
-            //$scope.FinancialQuotationDetail.TaxAmount = data.TaxAmount;
-            //var element = document.getElementById('TaxAmount');
-            //element.value = (data.TaxAmount).toFixed(3);
-            //element.dispatchEvent(new Event('change'));
-            //$scope.FinancialQuotationDetail.GrossPrice = data.GrossPrice;
-            //var element = document.getElementById('GrossPrice');
-            //element.value = (data.GrossPrice).toFixed(3);
-            //element.dispatchEvent(new Event('change'));
-            //$scope.FinancialQuotationDetail.DiscountPrice = data.DiscountPrice;
-            //var element = document.getElementById('DiscountPrice');
-            //element.value = (data.DiscountPrice).toFixed(3);
-            //element.dispatchEvent(new Event('change'));
-            //$scope.FinancialQuotationDetail.NetPrice = data.NetPrice;
-            //var element = document.getElementById('NetPrice');
-            //element.value = (data.NetPrice).toFixed(3);
-            //element.dispatchEvent(new Event('change'));
-            //$scope.FinancialQuotationDetail.QuotValidDate = data.QuotValidDate;
-            //$scope.FinancialQuotationDetail.ExpecDeliDate = data.ExpecDeliDate;
-
-            //$scope.FinancialQuotationDetail.QuotValidDate = $scope.formatDate(data.QuotValidDateString);
-            //$scope.FinancialQuotationDetail.ExpecDeliDate = $scope.formatDate(data.ExpecDeliDateString);
-
-            /*       $scope.PurreqDtl.Delivery_DateString = (tableRow.Delivery_DateString);*/
-            //$('#QuotValidDate').val($scope.FinancialQuotationDetail.QuotValidDate);
-            //$('#ExpecDeliDate').val($scope.FinancialQuotationDetail.ExpecDeliDate);
-            //$scope.FinancialQuotationDetail.ProposalType = data.ProposalType;
 
 
             $scope.TechnicalQuote = true;
@@ -2261,7 +2244,17 @@
 
         };
 
+        function setValue(id, value) {
+            var element = document.getElementById(id);
+            if (!element) return;
 
+            var safeValue = (value !== null && value !== undefined)
+                ? Number(value).toFixed(2)
+                : '0.00';
+
+            element.value = safeValue;
+            element.dispatchEvent(new Event('change'));
+        }
 
 
         $http.post("/VendorSelectionModule/TechnicalQuotation/loadItemType", {
