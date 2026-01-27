@@ -46,11 +46,11 @@
             </div>
 
             <div class="col-lg-4">
-                    <select class="form-control"
-                            ng-model="PurreqDtl.Vendor.BusinessTypeName"
-                            ng-options="bt.BusinessTypeID as bt.BusinessTypeName for bt in BusinessTypeList">
-                        <option value="">-- Select Business Type --</option>
-                    </select>
+                <select class="form-control"
+                        ng-model="PurreqDtl.Vendor.BusinessType"
+                        ng-options="bt as bt.BusinessTypeName for bt in BusinessTypeList track by bt.BusinessTypeID">
+                    <option value="">-- Select Business Type --</option>
+                </select>
                
                
             </div>
@@ -536,6 +536,7 @@
 
         $scope.PurreqDtl = {
             Vendor: {
+                BusinessType: { BusinessTypeID: "", BusinessTypeName:""},
                 BusinessName: "",
                 ContactPerson: "",
                 ContactPersonFirstName: "",
@@ -900,24 +901,30 @@
 
             // 1️⃣ Save Vendor
             $http.post('/VendorSelectionModule/VendorRegistration/VendorRegistrationDetails', {
-                BusinessName: $scope.PurreqDtl.Vendor.BusinessName,
-                ContactPersonFirstName: $scope.PurreqDtl.Vendor.ContactPersonFirstName,
-                ContactPersonLastName: $scope.PurreqDtl.Vendor.ContactPersonLastName,
-                VendorPhoneNumber: $scope.PurreqDtl.Vendor.VendorPhoneNumber,
-                CompanyAddress: $scope.PurreqDtl.Vendor.CompanyAddress,
-                Email: $scope.info2,
-                Country: $scope.PurreqDtl.Vendor.Country,
-                BusinessType: $scope.PurreqDtl.Vendor.BusinessType,
-                TIN: $scope.PurreqDtl.Vendor.TIN,
-                BIN: $scope.PurreqDtl.Vendor.BIN,
-                GenaralDetailsServices: $scope.PurreqDtl.Vendor.GenaralDetailsServices,
-                UserName: $scope.PurreqDtl.Vendor.UserName,
-                Password: $scope.PurreqDtl.Vendor.Password,
-                Status: 'Temporary',
-                Vendor: $scope.info1
+                businessName: $scope.PurreqDtl.Vendor.BusinessName,
+                contactPersonFirstName: $scope.PurreqDtl.Vendor.ContactPersonFirstName,
+                contactPersonLastName: $scope.PurreqDtl.Vendor.ContactPersonLastName,
+                vendorPhoneNumber: $scope.PurreqDtl.Vendor.VendorPhoneNumber,
+                email: $scope.info2,
+                companyAddress: $scope.PurreqDtl.Vendor.CompanyAddress,
+                country: $scope.PurreqDtl.Vendor.Country,
+                businessType: $scope.PurreqDtl.Vendor.BusinessType.BusinessTypeName,
+                tin: $scope.PurreqDtl.Vendor.TIN,
+                bin: $scope.PurreqDtl.Vendor.BIN,
+                generalDetailsServices: $scope.PurreqDtl.Vendor.GenaralDetailsServices,
+                userName: $scope.PurreqDtl.Vendor.UserName,
+                password: $scope.PurreqDtl.Vendor.Password,
+                status: 'Temporary',
+                vendor: $scope.info1
             }).success(function (vendorResp) {
 
-                // 2️⃣ Save Document Metadata
+                // 🔴 HARD STOP on failure
+                if (!vendorResp.success) {
+                    toastr.error(vendorResp.message);
+                    return;
+                }
+
+                // ✅ SAFE to proceed
                 $http.post('/VendorSelectionModule/VendorRegistration/AddDocument', {
                     UserId: vendorResp.user.UserID,
                     VendorId: vendorResp.user.VendorId,
@@ -926,9 +933,9 @@
                 }).success(function (docResp) {
 
                     if (docResp.ResponseCode === "S201") {
+
                         var docInfo = docResp.DistinctID[0];
 
-                        // Helper function to upload a file to the backend
                         function uploadFile(file, docType) {
                             var fileData = new FormData();
                             fileData.append('serverIP', docInfo.ServerIP);
@@ -936,7 +943,7 @@
                             fileData.append('ftpUserName', docInfo.FtpUserName);
                             fileData.append('ftpPassword', docInfo.FtpPassword);
                             fileData.append('vendorId', vendorResp.user.VendorId);
-                            fileData.append('docType', docType); // "TIN" or "BIN"
+                            fileData.append('docType', docType);
                             fileData.append('file', file);
 
                             return $.ajax({
@@ -948,22 +955,18 @@
                             });
                         }
 
-                        // Array of upload promises
                         var uploads = [];
                         if ($scope.tinFile) uploads.push(uploadFile($scope.tinFile, 'TIN'));
                         if ($scope.binFile) uploads.push(uploadFile($scope.binFile, 'BIN'));
 
-                        // Upload all files simultaneously
-                        $.when.apply($, uploads).done(function () {
-                            toastr.success("Data Saved and TIN & BIN documents uploaded successfully");
-                            $scope.tinFile = null;
-                            $scope.binFile = null;
-                            $('#TINFile').val('');
-                            $('#BINFile').val('');
-                            $scope.$apply(() => $scope.refreshPage());
-                        }).fail(function () {
-                            toastr.error("One or more file uploads failed");
-                        });
+                        $.when.apply($, uploads)
+                            .done(function () {
+                                toastr.success("Vendor registered and documents uploaded successfully");
+                                $scope.$apply(() => $scope.refreshPage());
+                            })
+                            .fail(function () {
+                                toastr.error("File upload failed");
+                            });
                     }
 
                 }).error(function () {
@@ -973,8 +976,8 @@
             }).error(function () {
                 toastr.error("Vendor registration failed");
             });
-        };
 
+        }
 
 
         $scope.AutoCompleteVendorInfo = function (vendorData) {
@@ -1004,7 +1007,7 @@
             $scope.PurreqDtl.Vendor.Email = vendor.VendorEmail || "";
             $scope.PurreqDtl.Vendor.TIN = vendor.TIN || "";
             $scope.PurreqDtl.Vendor.BIN = vendor.BIN || "";
-            $scope.PurreqDtl.Vendor.GenaralDetailsServices = vendor.GenaralDetailsServices || "";
+        
             $scope.PurreqDtl.Vendor.UserName = ""; // Default value, assuming it's entered manually
             $scope.PurreqDtl.Vendor.Password = ""; // Default value, assuming it's entered manually
             $scope.PurreqDtl.Vendor.ConfirmPassword = ""; // Default value, assuming it's entered manually
@@ -1044,7 +1047,7 @@
                 BusinessType: $scope.PurreqDtl.Vendor.BusinessType,
                 TIN: $scope.PurreqDtl.Vendor.TIN,
                 BIN: $scope.PurreqDtl.Vendor.BIN,
-                GenaralDetailsServices: $scope.PurreqDtl.Vendor.GenaralDetailsServices,
+                GeneralDetailsServices: $scope.PurreqDtl.Vendor.GenaralDetailsServices,
                 Status: 'Temporary',
                 Vendor: $scope.Vendor,
                 UserName: $scope.PurreqDtl.Vendor.UserName,

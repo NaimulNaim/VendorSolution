@@ -764,7 +764,8 @@
         $http.post('/VendorSelectionModule/VendorRegistrationUpdate/GetVendorInformation')
             .success(function (response) {
                 $scope.IndvVendorData = response.IndvVendorData;
-                $scope.PurreqDtl.Vendor.TinBinDocId = $scope.IndvVendorData.TinBinDocId || "";
+                $scope.VendorID = $scope.IndvVendorData[0].VendorID;
+                $scope.PurreqDtl.Vendor.TinBinDocId = $scope.IndvVendorData[0].TinBinDocId || "";
                 $scope.AutoCompleteVendorInfo($scope.IndvVendorData);
 
                 $http.get("/VendorSelectionModule/VendorRegistrationUpdate/GetDocsForFurtherDoc", { params: { "TinBinDocId": $scope.PurreqDtl.Vendor.TinBinDocId } })
@@ -825,7 +826,7 @@
             dwObject2.FTPUserName = row.FtpUserName;
             dwObject2.FTPPassword = row.FtpPassword;
             dwObject2.FTPDownload(row.ServerIP, (row.FileServerURL + "//" +
-                row.DocumentID + ".pdf"));
+                $scope.VendorID + ".pdf"));
             $("#DetailViewModal").modal("show");
         }
 
@@ -862,7 +863,7 @@
 
                 var isSave = DWObjectOFMakeUpdate.FTPUploadAllAsPDF(strFTPServer,
                     UpdatedItem.FileServerURL + "//" +
-                    UpdatedItem.DocumentID + ".pdf");
+                    $scope.VendorID + ".pdf");
 
                 if (isSave) {
                     $scope.loading = false;

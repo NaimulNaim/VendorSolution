@@ -62,8 +62,26 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
                 password, status, vendor, out user);
 
 
+            if (user.UserID == null)
+            {
+                message = "Username already exists";
 
-            return Json(new { user, message }, JsonRequestBehavior.AllowGet);
+
+                return Json(new
+                {
+                    success = false,
+                    message
+                }, JsonRequestBehavior.AllowGet);
+            }
+            else {
+                return Json(new
+                {
+                    success = true,
+                    user,
+                    message = "Vendor registered successfully"
+                }, JsonRequestBehavior.AllowGet);
+            }
+         
         }
 
 

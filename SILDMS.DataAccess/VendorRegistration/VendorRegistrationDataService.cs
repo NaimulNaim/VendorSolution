@@ -171,65 +171,77 @@ namespace SILDMS.DataAccess.VendorRegistration
 
 
 
-        public SecVendor_User VendorRegistrationDetailsDataService( string BusinessName, string ContactPerson, string VendorPhoneNumber, string Email,
-               string CompanyAddress, string Country, string BusinessType, string TypeOfMaterial, string TIN, string BIN, string GeneralDetailsServices, string UserName, string Password, string Status,string Vendor, out string errorNumber)
+        public SecVendor_User VendorRegistrationDetailsDataService(
+     string BusinessName,
+     string ContactPerson,
+     string VendorPhoneNumber,
+     string Email,
+     string CompanyAddress,
+     string Country,
+     string BusinessType,
+     string TypeOfMaterial,
+     string TIN,
+     string BIN,
+     string GeneralDetailsServices,
+     string UserName,
+     string Password,
+     string Status,
+     string Vendor,
+     out string errorNumber)
         {
             errorNumber = string.Empty;
-            var User=new SecVendor_User();
+            var User = new SecVendor_User();
 
-            
-            
-                var factory = new DatabaseProviderFactory();
-                var db = factory.CreateDefault() as SqlDatabase;
+            var factory = new DatabaseProviderFactory();
+            var db = factory.CreateDefault() as SqlDatabase;
 
-                using (var dbCommandWrapper = db.GetStoredProcCommand("VCMS_VendorRegData"))
-                {
-                    db.AddInParameter(dbCommandWrapper, "@BusinessName", SqlDbType.VarChar, BusinessName);
-                    db.AddInParameter(dbCommandWrapper, "@ContactPerson", SqlDbType.VarChar, ContactPerson);
-                    db.AddInParameter(dbCommandWrapper, "@VendorPhoneNumber", SqlDbType.VarChar, VendorPhoneNumber);
-                    db.AddInParameter(dbCommandWrapper, "@Email", SqlDbType.VarChar, Email);
-                    db.AddInParameter(dbCommandWrapper, "@CompanyAddress", SqlDbType.VarChar, CompanyAddress);
-                    db.AddInParameter(dbCommandWrapper, "@Country", SqlDbType.VarChar, Country);
-                    db.AddInParameter(dbCommandWrapper, "@BusinessType", SqlDbType.VarChar, BusinessType);
-                    db.AddInParameter(dbCommandWrapper, "@TypeOfMaterial", SqlDbType.VarChar, TypeOfMaterial);
-                    db.AddInParameter(dbCommandWrapper, "@TIN", SqlDbType.VarChar, TIN);
-                    db.AddInParameter(dbCommandWrapper, "@BIN", SqlDbType.VarChar, BIN);
-                    db.AddInParameter(dbCommandWrapper, "@GeneralDetailsServices", SqlDbType.VarChar, GeneralDetailsServices);
-                    db.AddInParameter(dbCommandWrapper, "@UserName", SqlDbType.VarChar, UserName);
-                    db.AddInParameter(dbCommandWrapper, "@Password", SqlDbType.VarChar, Password);
-                    db.AddInParameter(dbCommandWrapper, "@SetBy", SqlDbType.VarChar,"");
-                    db.AddInParameter(dbCommandWrapper, "@ProcStatus", SqlDbType.VarChar, Status);
-                    db.AddInParameter(dbCommandWrapper, "@Vendor", SqlDbType.VarChar, Vendor);
-                db.AddOutParameter(dbCommandWrapper, "@p_Error", DbType.Int32, 10);
+            using (var dbCommandWrapper = db.GetStoredProcCommand("VCMS_VendorRegData"))
+            {
+                // Input parameters
+                db.AddInParameter(dbCommandWrapper, "@BusinessName", SqlDbType.NVarChar, BusinessName);
+                db.AddInParameter(dbCommandWrapper, "@ContactPerson", SqlDbType.NVarChar, ContactPerson);
+                db.AddInParameter(dbCommandWrapper, "@VendorPhoneNumber", SqlDbType.NVarChar, VendorPhoneNumber);
+                db.AddInParameter(dbCommandWrapper, "@Email", SqlDbType.NVarChar, Email);
+                db.AddInParameter(dbCommandWrapper, "@CompanyAddress", SqlDbType.NVarChar, CompanyAddress);
+                db.AddInParameter(dbCommandWrapper, "@Country", SqlDbType.NVarChar, Country);
+                db.AddInParameter(dbCommandWrapper, "@BusinessType", SqlDbType.NVarChar, BusinessType);
+                db.AddInParameter(dbCommandWrapper, "@TypeOfMaterial", SqlDbType.NVarChar, TypeOfMaterial);
+                db.AddInParameter(dbCommandWrapper, "@TIN", SqlDbType.NVarChar, TIN);
+                db.AddInParameter(dbCommandWrapper, "@BIN", SqlDbType.NVarChar, BIN);
+                db.AddInParameter(dbCommandWrapper, "@GeneralDetailsServices", SqlDbType.NVarChar, GeneralDetailsServices);
+                db.AddInParameter(dbCommandWrapper, "@UserName", SqlDbType.NVarChar, UserName);
+                db.AddInParameter(dbCommandWrapper, "@Password", SqlDbType.NVarChar, Password);
+                db.AddInParameter(dbCommandWrapper, "@SetBy", SqlDbType.NVarChar, "");
+                db.AddInParameter(dbCommandWrapper, "@ProcStatus", SqlDbType.NVarChar, Status);
+                db.AddInParameter(dbCommandWrapper, "@Vendor", SqlDbType.NVarChar, Vendor);
 
+                // Output parameter
+                db.AddOutParameter(dbCommandWrapper, "@p_Error", DbType.Int32, sizeof(int));
+
+                // Execute
                 var ds = db.ExecuteDataSet(dbCommandWrapper);
 
-                    if (!db.GetParameterValue(dbCommandWrapper, "@p_Error").IsNullOrZero())
-                    {
-                        errorNumber = db.GetParameterValue(dbCommandWrapper, "@p_Error").PrefixErrorCode();
-                    }
-                    else
-                    {
-                        if (ds.Tables[0].Rows.Count > 0)
-                        {
-                            var dt = ds.Tables[0].Rows[0]; // Get the first row
-
-                            User.UserID = dt["UserID"].ToString(); // Set the UserID from the dataset
-                            User.VendorId = dt["EmployeeID"].ToString(); // Set the VendorId (EmployeeID) from the dataset
-                        }
-                        else
-                        {
-                            // Handle the case when no rows are returned, if necessary
-                            User.UserID = string.Empty;
-                            User.VendorId = string.Empty;
-                        }
-                    }
+                // Capture error code from SP
+                var spError = db.GetParameterValue(dbCommandWrapper, "@p_Error");
+                if (spError != null && spError != DBNull.Value && Convert.ToInt32(spError) != 0)
+                {
+                    errorNumber = spError.ToString(); // Could prefix or map error code if needed
+                    return User; // Early return if SP failed
                 }
 
-                return User;
-            
-            
+                // Populate user object if data exists
+                if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                {
+                    var dt = ds.Tables[0].Rows[0];
+
+                    User.UserID = dt["UserID"]?.ToString() ?? string.Empty;
+                    User.VendorId = dt["VendorID"]?.ToString() ?? string.Empty;
+                }
+            }
+
+            return User;
         }
+
 
         public SecVendor_User VendorupdateRegistrationDetailsData(string businessName, string contactPerson, string vendorPhoneNumber, string companyAddress, string country, string businessType, string tIN, string bIN, string generalDetailsServices, string status, string vendor,string UserName,string Password, out string errorNumber)
         {
