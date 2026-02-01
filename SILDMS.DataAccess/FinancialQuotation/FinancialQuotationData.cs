@@ -47,6 +47,8 @@ namespace SILDMS.DataAccess.FinancialQuotation
                         invitationList = dt1.AsEnumerable().Select(reader => new Invitation
                         {
                             Invitation_Number = reader.GetString("InvitationNumber"),
+                            RFQDate = reader.GetDateTime("InvitationSendingDate").ToString("dd/MM/yyyy"),
+                            RFQDeadline = reader.GetDateTime("RFQDeadline").ToString("dd/MM/yyyy"),
 
 
                         }).ToList();
@@ -694,6 +696,8 @@ namespace SILDMS.DataAccess.FinancialQuotation
                             quotationNo = reader.GetString("QuotationNo"),
                             InvitationNumber = reader.GetString("InvitationNumber"),
                             QuotationDate = reader.GetDateTime("SetOn").ToString("dd/MM/yyyy"),
+                            RFQDate = reader.GetDateTime("InvitationSendingDate").ToString("dd/MM/yyyy"),
+                            RFQDeadline = reader.GetDateTime("QuotationSendingLastDate").ToString("dd/MM/yyyy"),
 
 
 

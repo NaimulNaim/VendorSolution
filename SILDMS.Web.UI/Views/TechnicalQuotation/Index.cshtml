@@ -21,6 +21,10 @@
     .selected-row {
         background-color: #a4f5da !important;
     }
+    .select2-container--default .select2-search--inline .select2-search__field {
+        width: 100% !important;
+        min-width: 200px;
+    }
 </style>
 
 <div class="box box-primary box-body" ng-controller="TechnicalQuotationCtrl">
@@ -44,8 +48,8 @@
                     <button type="button" data-ng-click="Search()" class="btn btn-flat btn-primary pull-right " ng-disabled="btnSave"><i class="fa fa-search" style="padding-right: 5px"></i>Search</button>
                 </div>
                 @*<div class="btn-group pull-right" style="margin-left: 4px; margin-right: 4px;">
-                    <button type="button" data-ng-click="submit()" class="btn btn-flat btn-primary pull-right " ng-disabled="btnSave"><i class="fa fa-save" style="padding-right: 5px"></i>Submit</button>
-                </div>*@
+                        <button type="button" data-ng-click="submit()" class="btn btn-flat btn-primary pull-right " ng-disabled="btnSave"><i class="fa fa-save" style="padding-right: 5px"></i>Submit</button>
+                    </div>*@
 
 
             </div>
@@ -107,11 +111,11 @@
                     <h4 style="color:red;">No data available!</h4>
                 </div>
                 @* Master Table *@
-            <div id="PndRecomAndApprovalTable" class="table-responsive" ng-show="!flagToShow">
-                @*<h5 style="color:chocolate; font-weight:bold">No of Requisitions: {{prList[0].Row_count}}</h5>*@
-                <table id="tableId" st-table="GridDisplayCollection" st-safe-src="MaterialList" class="table table-condensed table-bordered table-striped table-hover pnlView">
+                <div id="PndRecomAndApprovalTable" class="table-responsive" ng-show="!flagToShow">
+                    @*<h5 style="color:chocolate; font-weight:bold">No of Requisitions: {{prList[0].Row_count}}</h5>*@
+                    <table id="tableId" st-table="GridDisplayCollection" st-safe-src="MaterialList" class="table table-condensed table-bordered table-striped table-hover pnlView">
 
-        
+
                         <thead>
                             <tr style="font-size: 15px;">
                                 <th colspan="7" style="text-align: left; font-weight: bold">Material List</th>
@@ -169,11 +173,11 @@
 
 
                     @*<div class="box-tools pull-right">
-                <button type="button" id="btnRefresh" data-ng-click="fetchfromgoogle()" class="btn btn-warning btn-flat pull-right" ng-disabled="loading"><i class="fa fa-refresh"></i> Fetch from Google</button>
-            </div>*@
+                            <button type="button" id="btnRefresh" data-ng-click="fetchfromgoogle()" class="btn btn-warning btn-flat pull-right" ng-disabled="loading"><i class="fa fa-refresh"></i> Fetch from Google</button>
+                        </div>*@
 
 
-            </div>
+                </div>
             </div>
         </div>
     </div>
@@ -235,7 +239,7 @@
                     <div class="col-lg-3">
                         <div class="form-group">
                             <select id="Currency" class="form-control" ng-model="TechnicalQuotation.Currency"
-                                    ng-options="ItemTypes as ItemTypes.MasterDataValue for ItemTypes in ItemTypeList track by ItemTypes.MasterDataValue " ng-required="true" style="height: 26px; font-size:smaller">
+                                    ng-options="ItemTypes as ItemTypes.MasterDataValue for ItemTypes in ItemTypeList track by ItemTypes.MasterDataValue " ng-required="true" >
 
                                 <option value="" selected style="display: none">-- Select One --</option>
 
@@ -436,8 +440,14 @@
                                 <option value="Other">Other</option>
                             </select>
                             <input type="text" ng-show="showRepresentativeOther"
-                                   ng-model="TechnicalQuotation.RepresentativeSamplePackSize" class="form-control"
+                                   ng-model="TechnicalQuotation.RepresentativeSampleOther" class="form-control"
                                    placeholder="Specify Other" style="margin-top:5px;" />
+                        </div>
+
+                        <div class="col-lg-2"><label>Representative Sample Pack Size:</label></div>
+                        <div class="col-lg-3">
+                            <input type="text" class="form-control"
+                                   ng-model="TechnicalQuotation.RepresentativeSamplePackSize">
                         </div>
                     </div>
 
@@ -463,19 +473,36 @@
                         </div>
                         <div class="col-lg-1">
                             <input id="ProductionCapacity" type="text" ng-model="TechnicalQuotation.ProdCapacity" class="form-control"
-                                   placeholder="Production Capacity" />
+                                   placeholder="Capacity" />
                         </div>
 
-                        <div class="col-lg-1">
-                            <label for="ProductionFrequency">Production Frequency:</label>
-                        </div>
-                        <div class="col-lg-1">
-                            <select id="ProductionFrequency" ng-model="TechnicalQuotation.ProductionFrequency" class="form-control">
+                        @*<div class="col-lg-2">
+            <label for="ProductionFrequency">Production Frequency:</label>
+        </div>
+        <div class="col-lg-1">
+            <select id="ProductionFrequency" ng-model="TechnicalQuotation.ProductionFrequency" class="form-control">
+                <option value="">--Select--</option>
+                <option value="Campaign">Campaign</option>
+                <option value="Regular">Regular</option>
+            </select>
+        </div>*@
+
+                        <div style="display:inline-block; font-family:inherit; font-size:14px;">
+                            <label for="ProductionFrequency" style="margin-right:5px;">
+                                Production Frequency:
+                            </label>
+                            <select id="ProductionFrequency"
+                                    ng-model="TechnicalQuotation.ProductionFrequency"
+                                    class="form-control form-control-sm"
+                                    style="display:inline-block; width:auto; min-width:120px;">
                                 <option value="">--Select--</option>
                                 <option value="Campaign">Campaign</option>
                                 <option value="Regular">Regular</option>
                             </select>
                         </div>
+
+
+
                     </div>
 
                     <!-- Row 12: Pharmacopeial Reference & Regulatory Approval -->
@@ -483,14 +510,14 @@
                         <div class="col-lg-3">
                             <label for="PharmacopeialReference">Pharmacopeial Reference:</label>
                         </div>
-
+                      
                         <div class="col-lg-3">
                             <select ui-select2="{ allowClear: true }"
                                     id="PharmacopeialReference"
                                     multiple
                                     ng-model="TechnicalQuotation.PharmacopeialReference"
                                     data-placeholder="Pharmacopeial Reference"
-                                    style="width:100%;"
+                                    style="width:100%; min-width: 200px;"
                                     class="form-control"
                                     ng-options="ref.value as ref.label for ref in pharmacopeialReferenceList">
                             </select>
@@ -524,11 +551,11 @@
                                    class="form-control" placeholder="Column Specification" />
                         </div>
                     </div>
-                    </div>
                 </div>
-
-
             </div>
+
+
+        </div>
 
 
 
@@ -716,23 +743,23 @@
                         </div>
 
                         @*<div class="col-lg-3">
-                    <select id="FAT"
-                            ng-model="TechnicalQuotation.FATAtManufacturerSite"
-                            class="form-control">
+                                <select id="FAT"
+                                        ng-model="TechnicalQuotation.FATAtManufacturerSite"
+                                        class="form-control">
 
-                        <option value="">-- Select --</option>
-                        <option value="Yes">Yes</option>
-                        <option value="No">No</option>
-                        <option value="Other">Other</option>
-                    </select>
+                                    <option value="">-- Select --</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                    <option value="Other">Other</option>
+                                </select>
 
-                    <input type="text"
-                           ng-if="TechnicalQuotation.FATAtManufacturerSite === 'Other'"
-                           ng-model="TechnicalQuotation.FATAtManufacturerSiteOther"
-                           class="form-control"
-                           placeholder="Specify Other"
-                           style="margin-top:5px;" />
-                </div>*@
+                                <input type="text"
+                                       ng-if="TechnicalQuotation.FATAtManufacturerSite === 'Other'"
+                                       ng-model="TechnicalQuotation.FATAtManufacturerSiteOther"
+                                       class="form-control"
+                                       placeholder="Specify Other"
+                                       style="margin-top:5px;" />
+                            </div>*@
 
                         <div class="col-lg-2">
                             <label for="SATScope">SAT Scope:</label>
@@ -938,11 +965,11 @@
                                    class="form-control" placeholder="Specify Other" style="margin-top:5px;" />
                         </div>
                     </div>
-</div>
                 </div>
-
-
             </div>
+
+
+        </div>
 
         <div class="row" ng-show="p===1 || p===2">
 
@@ -1124,7 +1151,9 @@
                         <thead>
                             <tr>
                                 <th class="col-lg-1 col-md-1 col-sm-1" style="text-align:center;">SL </th>
-                                <th class="col-lg-4 col-md-4 col-sm-4" style="text-align:center;">RFQ No</th>
+                                <th class="col-lg-2 col-md-2 col-sm-2" style="text-align:center;">RFQ No</th>
+                                <th class="col-lg-2 col-md-2 col-sm-2" style="text-align:center;">RFQ Date</th>
+                                <th class="col-lg-2 col-md-2 col-sm-2" style="text-align:center;">RFQ Deadline</th>
 
                                 <th class="col-lg-1 col-md-1 col-sm-1" style="text-align:center;">Action</th>
                             </tr>
@@ -1134,6 +1163,8 @@
                             <tr ng-repeat="row in InvitationDisplayedCollection">
                                 <td class="text-center">{{$index+1}}</td>
                                 <td class="" style="text-align:center;">{{row.Invitation_Number}}</td>
+                                <td class="" style="text-align:center;">{{row.RFQDate}}</td>
+                                <td class="" style="text-align:center;">{{row.RFQDeadline}}</td>
 
 
                                 <td class="text-center">
@@ -1172,10 +1203,13 @@
                             <tr>
                                 <th class="col-lg-1 col-md-1 col-sm-1" style="text-align:center">SL</th>
                                 <th class="col-lg-2 col-md-2 col-sm-2" style="text-align:center">Quotation No</th>
+                                <th class="col-lg-2 col-md-2 col-sm-2" style="text-align:center">Quotation Date</th>
                                 <th class="col-lg-2 col-md-2 col-sm-2" style="text-align:center">RFQ No</th>
-                                <th class="col-lg-2 col-md-2 col-sm-2">Quotation Date</th>
+                                <th class="col-lg-2 col-md-2 col-sm-2" style="text-align:center">RFQ Date</th>
+                                <th class="col-lg-2 col-md-2 col-sm-2" style="text-align:center">RFQ Deadline</th>
 
-                                <th class="col-lg-1 col-md-1 col-sm-1">Action</th>
+
+                                <th class="col-lg-1 col-md-1 col-sm-1" style="text-align:center">Action</th>
                             </tr>
 
                         </thead>
@@ -1183,8 +1217,11 @@
                             <tr ng-repeat="row in GridDisplayCollectionQuotation">
                                 <td class="text-center">{{$index+1}}</td>
                                 <td class="text-center">{{row.quotationNo}}</td>
-                                <td class="text-center">{{row.InvitationNumber}}</td>
                                 <td class="text-center">{{row.QuotationDate}}</td>
+                                <td class="text-center">{{row.InvitationNumber}}</td>
+                                <td class="text-center">{{row.RFQDate}}</td>
+                                <td class="text-center">{{row.RFQDeadline}}</td>
+
 
                                 <td class="text-center">
                                     <a class="btn col-center btn-sm btn-flat btn-success" data-ng-click="toggleQuotationSelect(row.InvitationNumber,row.quotationNo)">Select</a>
@@ -1505,6 +1542,7 @@
             ProductionLeadTimeUnit: "Days",
             RepresentativeSample: "",
             RepresentativeSamplePackSize: "",
+            RepresentativeSampleOther: "",
             // --- Compliance / Qualification ---
             ComplianceWith: "",
             QualificationDocuments: "",
@@ -2230,6 +2268,7 @@
                 ProductionLeadTimeUnit: "Days",
                 RepresentativeSample: "",
                 RepresentativeSamplePackSize: "",
+                RepresentativeSampleOther: "",
                 // --- Compliance / Qualification ---
                 ComplianceWith: "",
                 QualificationDocuments: "",
@@ -2467,6 +2506,7 @@
             $scope.TechnicalQuotation.Notes = data.Notes;
             $scope.TechnicalQuotation.CASNO = data.CASNO;
             $scope.TechnicalQuotation.CatalogueNo = data.CatalogueNo;
+            $scope.TechnicalQuotation.CurrentStatus = data.CurrentStatus;
 
             // --- Production ---
             $scope.TechnicalQuotation.ProdCapacity = data.ProdCapacity;
@@ -2475,15 +2515,20 @@
             $scope.TechnicalQuotation.ProductionLeadTimeUnit = data.ProductionLeadTimeUnit;
             $scope.TechnicalQuotation.RepresentativeSample = data.RepresentativeSample;
             $scope.TechnicalQuotation.RepresentativeSamplePackSize = data.RepresentativeSamplePackSize;
+            $scope.TechnicalQuotation.RepresentativeSampleOther = data.RepresentativeSampleOther;
+            $scope.showRepresentativeOther = (data.RepresentativeSample === 'Other');
 
             // --- Compliance / Qualification ---
             $scope.TechnicalQuotation.ComplianceWith = data.ComplianceWith;
             $scope.TechnicalQuotation.QualificationDocuments = data.QualificationDocuments;
             $scope.TechnicalQuotation.QualificationDocumentsOther = data.QualificationDocumentsOther;
-
+            $scope.showQualificationOther = (data.QualificationDocuments === 'OTHER');
+            
             // --- FAT / SAT / Assistance ---
             $scope.TechnicalQuotation.FATAtManufacturerSite = data.FATAtManufacturerSite;
             $scope.TechnicalQuotation.FATAtManufacturerSiteOther = data.FATAtManufacturerSiteOther;
+            $scope.showFATOther = (data.QualificationDocuments === 'OTHER');
+            
             $scope.TechnicalQuotation.SATScope = data.SATScope;
             $scope.TechnicalQuotation.AssistanceAtSite = data.AssistanceAtSite;
             $scope.TechnicalQuotation.AssistanceAtSiteOther = data.AssistanceAtSiteOther;
@@ -2503,14 +2548,20 @@
             $scope.TechnicalQuotation.ErectionOther = data.ErectionOther;
             $scope.TechnicalQuotation.Installation = data.Installation;
             $scope.TechnicalQuotation.InstallationOther = data.InstallationOther;
+            $scope.showInstallationOther = (data.Installation === 'OTHER');
+            
             $scope.TechnicalQuotation.Testing = data.Testing;
             $scope.TechnicalQuotation.TestingOther = data.TestingOther;
+            $scope.showTestingOther = (data.Testing === 'OTHER');
+     
             $scope.TechnicalQuotation.Commissioning = data.Commissioning;
             $scope.TechnicalQuotation.CommissioningOther = data.CommissioningOther;
+            $scope.showCommissioningOther = (data.Commissioning === 'OTHER');
 
             // --- Regulatory ---
             $scope.TechnicalQuotation.RegulatoryApproval = data.RegulatoryApproval;
             $scope.TechnicalQuotation.RegulatoryApprovalOther = data.RegulatoryApprovalOther;
+            $scope.showRegulatoryOther = (data.RegulatoryApproval === 'OTHER');
 
             // --- Misc ---
             $scope.TechnicalQuotation.ColumnSpecification = data.ColumnSpecification;
@@ -2524,6 +2575,8 @@
             $scope.TechnicalQuotation.Capacity = data.Capacity;
             $scope.TechnicalQuotation.CapacityExtendable = data.CapacityExtendable;
             $scope.TechnicalQuotation.CapacityExtendableOther = data.CapacityExtendableOther;
+            $scope.showCapacityExtendableOther = (data.CapacityExtendable === 'OTHER');
+            
             $scope.TechnicalQuotation.Techtype = data.Techtype;
             $scope.TechnicalQuotation.Proposal = data.Proposal;
             $scope.TechnicalQuotation.SampleDocumentID = data.SampleDocumentID;
@@ -2541,6 +2594,28 @@
                 var element = document.getElementById('PricePer');
                 element.value = (data.PricePer).toFixed(2);
                 element.dispatchEvent(new Event('change'));
+
+
+                $scope.pharmacopeialReferenceList = [
+                    { value: 'BP', label: 'BP' },
+                    { value: 'EP', label: 'EP' },
+                    { value: 'In-house', label: 'In-house' },
+                    { value: 'INN', label: 'INN' },
+                    { value: 'JP', label: 'JP' },
+                    { value: 'USP', label: 'USP' },
+                    { value: 'Other', label: 'Other' }
+                ];
+                // 2. Load data from server
+                if (data.AllPharmacopeialReference) {
+                    var arrayFromString = data.AllPharmacopeialReference.split(',');
+                    $scope.TechnicalQuotation.PharmacopeialReference = arrayFromString;
+
+                    // 3. Refresh Select2 so labels appear
+                    setTimeout(function () {
+                        $('#PharmacopeialReference').trigger('change');
+                    }, 0);
+                }
+
                 if (data.AllPharmacopeialReference) {
                     var arrayFromString = data.AllPharmacopeialReference.split(',');
                     $scope.TechnicalQuotation.PharmacopeialReference = arrayFromString;

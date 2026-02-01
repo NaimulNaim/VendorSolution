@@ -228,6 +228,7 @@ namespace SILDMS.Model.VendorSelectionModule
         // --- Sample ---
         public string RepresentativeSample { get; set; }
         public string RepresentativeSamplePackSize { get; set; }
+        public string RepresentativeSampleOther { get; set; }
 
         // --- Compliance ---
         public string ComplianceWith { get; set; }
@@ -289,7 +290,7 @@ namespace SILDMS.Model.VendorSelectionModule
         public string InstallationResponsibilityOther { get; set; }
         public string SampleAvailable { get; set; }
         public string SamplePackSize { get; set; }
-        public string PharmacopeialReference { get; set; }
+        //public string PharmacopeialReference { get; set; }
         public string AllPharmacopeialReference { get; set; }
     }
 
@@ -435,6 +436,8 @@ namespace SILDMS.Model.VendorSelectionModule
         public string ProposalType { get; set; }
         public string Fintype { get; set; }
         public string TechType { get; set; }
+        public string RFQDeadline { get; set; }
+        public string RFQDate { get; set; }
     }
 
 
@@ -445,6 +448,8 @@ namespace SILDMS.Model.VendorSelectionModule
         public string quotationNo { get; set; }
         public string InvitationNumber { get; set; }
         public string QuotationDate { get; set; }
+        public string RFQDate { get; set; }
+        public string RFQDeadline { get; set; }
     }
     public class SimplifiedMaterialInvitation
     {

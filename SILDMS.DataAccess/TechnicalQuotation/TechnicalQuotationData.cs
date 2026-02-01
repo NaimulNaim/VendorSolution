@@ -48,6 +48,9 @@ namespace SILDMS.DataAccess.TechnicalQuotation
                         invitationList = dt1.AsEnumerable().Select(reader => new Invitation
                         {
                             Invitation_Number = reader.GetString("InvitationNumber"),
+                            RFQDate = reader.GetDateTime("InvitationSendingDate").ToString("dd/MM/yyyy"),
+                            RFQDeadline = reader.GetDateTime("RFQDeadline").ToString("dd/MM/yyyy"),
+                        
 
 
                         }).ToList();
@@ -503,6 +506,7 @@ namespace SILDMS.DataAccess.TechnicalQuotation
                 db.AddInParameter(dbCommandWrapper, "@ProductionLeadTimeUnit", SqlDbType.VarChar, technicalQuotation.ProductionLeadTimeUnit);
                 db.AddInParameter(dbCommandWrapper, "@RepresentativeSample", SqlDbType.VarChar, technicalQuotation.RepresentativeSample);
                 db.AddInParameter(dbCommandWrapper, "@RepresentativeSamplePackSize", SqlDbType.VarChar, technicalQuotation.RepresentativeSamplePackSize);
+                db.AddInParameter(dbCommandWrapper, "@RepresentativeSampleOther", SqlDbType.VarChar, technicalQuotation.RepresentativeSampleOther);
 
                 // =======================
                 // Compliance / Qualification
@@ -690,6 +694,8 @@ namespace SILDMS.DataAccess.TechnicalQuotation
                             quotationNo = reader.GetString("QuotationNo"),
                             InvitationNumber = reader.GetString("InvitationNumber"),
                             QuotationDate = reader.GetDateTime("SetOn").ToString("dd/MM/yyyy"),
+                            RFQDate = reader.GetDateTime("InvitationSendingDate").ToString("dd/MM/yyyy"),
+                            RFQDeadline = reader.GetDateTime("QuotationSendingLastDate").ToString("dd/MM/yyyy"),
 
 
 
@@ -819,6 +825,7 @@ namespace SILDMS.DataAccess.TechnicalQuotation
                             QualificationDocuments = reader["QualificationDocuments"] != DBNull.Value ? reader["QualificationDocuments"].ToString() : null,
                             RepresentativeSample = reader["RepresentativeSample"] != DBNull.Value ? reader["RepresentativeSample"].ToString() : null,
                             RepresentativeSamplePackSize = reader["RepresentativeSamplePackSize"] != DBNull.Value ? reader["RepresentativeSamplePackSize"].ToString() : null,
+                            RepresentativeSampleOther = reader["RepresentativeSampleOther"] != DBNull.Value ? reader["RepresentativeSampleOther"].ToString() : null,
                             ProductionFrequency = reader["ProductionFrequency"] != DBNull.Value ? reader["ProductionFrequency"].ToString() : null,
 
                             ProdCapacity = reader["ProdCapacity"] != DBNull.Value ? reader["ProdCapacity"].ToString() : null,
@@ -834,6 +841,7 @@ namespace SILDMS.DataAccess.TechnicalQuotation
                             PenaltyClause = reader["PenealtyClause"] != DBNull.Value ? reader["PenealtyClause"].ToString() : null,
                           
                             RegulatoryApproval = reader["RegulatoryApproval"] != DBNull.Value ? reader["RegulatoryApproval"].ToString() : null,
+                            CurrentStatus = reader["CurApiStatus"] != DBNull.Value ? reader["CurApiStatus"].ToString() : null,
 
 
                             rowIndex = reader["rowIndex"] != DBNull.Value ? reader["rowIndex"].ToString() : null,
@@ -1008,6 +1016,7 @@ namespace SILDMS.DataAccess.TechnicalQuotation
                 db.AddInParameter(dbCommandWrapper, "@ProductionLeadTimeUnit", SqlDbType.VarChar, technicalQuotation.ProductionLeadTimeUnit);
                 db.AddInParameter(dbCommandWrapper, "@RepresentativeSample", SqlDbType.VarChar, technicalQuotation.RepresentativeSample);
                 db.AddInParameter(dbCommandWrapper, "@RepresentativeSamplePackSize", SqlDbType.VarChar, technicalQuotation.RepresentativeSamplePackSize);
+                db.AddInParameter(dbCommandWrapper, "@RepresentativeSampleOther", SqlDbType.VarChar, technicalQuotation.RepresentativeSampleOther);
 
                 // --- Compliance / Qualification ---
                 db.AddInParameter(dbCommandWrapper, "@ComplianceWith", SqlDbType.VarChar, technicalQuotation.ComplianceWith);
@@ -1060,6 +1069,7 @@ namespace SILDMS.DataAccess.TechnicalQuotation
                 db.AddInParameter(dbCommandWrapper, "@Techtype", SqlDbType.VarChar, technicalQuotation.Techtype);
                 db.AddInParameter(dbCommandWrapper, "@Proposal", SqlDbType.VarChar, technicalQuotation.Proposal);
                 db.AddInParameter(dbCommandWrapper, "@AllPharmacopeialReference", SqlDbType.VarChar, technicalQuotation.AllPharmacopeialReference);
+                db.AddInParameter(dbCommandWrapper, "@CurrentStatus", SqlDbType.VarChar, technicalQuotation.CurrentStatus);
 
 
 
