@@ -25,5 +25,12 @@ namespace SILDMS.Model.VendorSelectionModule
         public string ContactPersonName { get; set; }
         public string VendorID { get; set; }
         public string TinBinDocId { get; set; }
+        public string VendorPhoneNumber2 { get; set; }
+        public string CompanyProfile { get; set; }
+        public string TradeLicense { get; set; }
+        public string PartnershipDeed { get; set; }
+        public string IRC { get; set; }
+        public string IndentingLicense { get; set; }
+        public string Others { get; set; }
     }
 }

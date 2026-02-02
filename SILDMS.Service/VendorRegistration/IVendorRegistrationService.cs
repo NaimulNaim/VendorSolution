@@ -15,12 +15,22 @@ namespace SILDMS.Service.VendorRegistration
         ValidationResult RegistrationCheckService(string vendorID,string Email, out string vendor);
         ValidationResult GetVendorbyIDService(string vendorID,string Email, out List<VendorRegData> IndvVendorData);
         ValidationResult ItemVendorcheckService(string vendorID, out string vendor);
-        ValidationResult VendorupdateRegistrationDetailsService( string businessName, string contactPerson, string vendorPhoneNumber, string companyAddress, string country, string businessType, string tIN, string bIN, string generalDetailsServices, string status, string vendor,string UserName,string Password, out SecVendor_User user);
+        ValidationResult VendorupdateRegistrationDetailsService( string businessName, string contactPerson, string vendorPhoneNumber,string VendorPhoneNumber2, string companyAddress, string country, string businessType, string tIN, string bIN, string generalDetailsServices, string status, string vendor, string companyProfile,
+    string tradeLicense,
+    string partnershipDeed,
+    string irc,
+    string indentingLicense,
+    string others,string UserName,string Password, out SecVendor_User user);
         
         ValidationResult GetSupportDoc(string userID, string fromName, out List<DSM_DocProperty> docProperties);
         ValidationResult GetIdentificationAttributesForDocProperties(string userID, string selectedPropID, out List<DSM_DocPropIdentify> docPropIdentifies);
         ValidationResult AddDocument(string UserId,string vendorId, string uploaderIP, string selectedPropID, List<DocMetaValue> docMetaValues, out BPS_NewBillReturnData objDocPropIdentifies);
-        ValidationResult VendorRegistrationDetailsService(string businessName, string contactPerson, string vendorPhoneNumber, string email, string companyAddress, string country, string businessType, string typeOfMaterial, string tIN, string bIN, string generalDetailsServices, string userName, string password, string status, string vendor, out SecVendor_User user);
+        ValidationResult VendorRegistrationDetailsService(string businessName, string contactPerson, string vendorPhoneNumber, string email, string companyAddress, string country, string businessType, string typeOfMaterial, string tIN, string bIN, string generalDetailsServices, string userName, string password, string status, string vendor, string companyProfile,
+    string tradeLicense,
+    string partnershipDeed,
+    string irc,
+    string indentingLicense,
+    string others ,out SecVendor_User user);
 
         List<BusinessTypeDto> GetBusinessTypeList();
         List<BusinessNatureDto> GetBusinessNatureList();

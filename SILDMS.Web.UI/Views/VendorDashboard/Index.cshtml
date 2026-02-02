@@ -278,7 +278,7 @@
 
                                 <td class="text-center">
                                     <button class="btn btn-xs btn-info"
-                                            ng-click="selectPR(item)"
+                                            ng-click="selectPRFinancial(item)"
                                             title="Select">
                                         <i class="fa fa-info"></i>
                                     </button>
@@ -700,6 +700,32 @@
             $scope.p = 0;
             $scope.InvWiseMaterial($scope.InvitationNumber);
         }
+
+        $scope.selectPRFinancial = function (row) {
+            $scope.InvitationNumber = row.InnvitationNumber;
+            $scope.p = 0;
+            $scope.InvWiseMaterialFinancial($scope.InvitationNumber);
+        }
+
+
+        $scope.InvWiseMaterialFinancial = function (detail) {
+            $http.post('/VendorSelectionModule/FinancialQuotation/InvWiseMaterial',
+                { InvNumber: detail })
+                .success(function (response) {
+                    //$scope.flagToShow = false;
+                    //$scope.flagToShowMasterTbl = true;
+                    $scope.MaterialList = response.InvMaterialList;
+                    $scope.GridDisplayCollection = [].concat($scope.MaterialList);
+                    $scope.loading = false;
+                }).error(function () {
+                    $scope.loading = false;
+                    toastr.error('Data Loading Failed.');
+                });
+
+            $('#QuotedInvits').modal('show');
+        }
+
+
 
 
         $scope.InvWiseMaterial = function (detail) {

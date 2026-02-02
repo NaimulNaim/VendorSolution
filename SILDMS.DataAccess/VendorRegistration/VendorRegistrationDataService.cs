@@ -187,6 +187,12 @@ namespace SILDMS.DataAccess.VendorRegistration
      string Password,
      string Status,
      string Vendor,
+     string companyProfile,
+    string tradeLicense,
+    string partnershipDeed,
+    string irc,
+    string indentingLicense,
+    string others,
      out string errorNumber)
         {
             errorNumber = string.Empty;
@@ -214,6 +220,12 @@ namespace SILDMS.DataAccess.VendorRegistration
                 db.AddInParameter(dbCommandWrapper, "@SetBy", SqlDbType.NVarChar, "");
                 db.AddInParameter(dbCommandWrapper, "@ProcStatus", SqlDbType.NVarChar, Status);
                 db.AddInParameter(dbCommandWrapper, "@Vendor", SqlDbType.NVarChar, Vendor);
+                db.AddInParameter(dbCommandWrapper, "@CompanyProfile", SqlDbType.NVarChar, companyProfile);
+                db.AddInParameter(dbCommandWrapper, "@TradeLicense", SqlDbType.NVarChar, tradeLicense);
+                db.AddInParameter(dbCommandWrapper, "@PartnershipDeed", SqlDbType.NVarChar, partnershipDeed);
+                db.AddInParameter(dbCommandWrapper, "@IRC", SqlDbType.NVarChar, irc);
+                db.AddInParameter(dbCommandWrapper, "@IndentingLicense", SqlDbType.NVarChar, indentingLicense);
+                db.AddInParameter(dbCommandWrapper, "@Others", SqlDbType.NVarChar, others);
 
                 // Output parameter
                 db.AddOutParameter(dbCommandWrapper, "@p_Error", DbType.Int32, sizeof(int));
@@ -243,7 +255,7 @@ namespace SILDMS.DataAccess.VendorRegistration
         }
 
 
-        public SecVendor_User VendorupdateRegistrationDetailsData(string businessName, string contactPerson, string vendorPhoneNumber, string companyAddress, string country, string businessType, string tIN, string bIN, string generalDetailsServices, string status, string vendor,string UserName,string Password, out string errorNumber)
+        public SecVendor_User VendorupdateRegistrationDetailsData(string businessName, string contactPerson, string vendorPhoneNumber, string VendorPhoneNumber2, string companyAddress, string country, string businessType, string tIN, string bIN, string generalDetailsServices, string status,string Vendor,  string companyProfile, string tradeLicense, string partnershipDeed, string irc, string indentingLicense, string others, string UserName, string Password, out string errorNumber)
         {
             errorNumber = string.Empty;
             var User = new SecVendor_User();
@@ -257,6 +269,7 @@ namespace SILDMS.DataAccess.VendorRegistration
                     db.AddInParameter(dbCommandWrapper, "@BusinessName", SqlDbType.VarChar, businessName);
                     db.AddInParameter(dbCommandWrapper, "@ContactPerson", SqlDbType.VarChar, contactPerson);
                     db.AddInParameter(dbCommandWrapper, "@VendorPhoneNumber", SqlDbType.VarChar, vendorPhoneNumber);
+                    db.AddInParameter(dbCommandWrapper, "@VendorPhoneNumber2", SqlDbType.VarChar, VendorPhoneNumber2);
                     //db.AddInParameter(dbCommandWrapper, "@Email", SqlDbType.VarChar, Email);
                     db.AddInParameter(dbCommandWrapper, "@CompanyAddress", SqlDbType.VarChar, companyAddress);
                     db.AddInParameter(dbCommandWrapper, "@Country", SqlDbType.VarChar, country);
@@ -269,7 +282,13 @@ namespace SILDMS.DataAccess.VendorRegistration
                     db.AddInParameter(dbCommandWrapper, "@Password", SqlDbType.VarChar, Password);
                     db.AddInParameter(dbCommandWrapper, "@SetBy", SqlDbType.VarChar, "");
                     db.AddInParameter(dbCommandWrapper, "@ProcStatus", SqlDbType.VarChar, status);
-                    db.AddInParameter(dbCommandWrapper, "@Vendor", SqlDbType.VarChar, vendor);
+                    db.AddInParameter(dbCommandWrapper, "@Vendor", SqlDbType.VarChar, Vendor);
+                db.AddInParameter(dbCommandWrapper, "@CompanyProfile", SqlDbType.NVarChar, companyProfile);
+                db.AddInParameter(dbCommandWrapper, "@TradeLicense", SqlDbType.NVarChar, tradeLicense);
+                db.AddInParameter(dbCommandWrapper, "@PartnershipDeed", SqlDbType.NVarChar, partnershipDeed);
+                db.AddInParameter(dbCommandWrapper, "@IRC", SqlDbType.NVarChar, irc);
+                db.AddInParameter(dbCommandWrapper, "@IndentingLicense", SqlDbType.NVarChar, indentingLicense);
+                db.AddInParameter(dbCommandWrapper, "@Others", SqlDbType.NVarChar, others);
                 //db.AddOutParameter(dbCommandWrapper, "@p_Error", DbType.Int32, 10);
 
                 var ds = db.ExecuteDataSet(dbCommandWrapper);

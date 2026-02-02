@@ -8,14 +8,14 @@
 <div class="box box-primary box-body" ng-controller="VendorRegistrationUpdateCtrl">
     @* Header *@
     <div class="box-header with-border" style="font-family: Verdana; background: #E4E9E3; color: black; ">
-            <i class="fa fa-user"></i>
-            <h3 style="font-family: Verdana" class="box-title" ng-if="fromMenu">Update Vendor Registration</h3>
-            @*<h3 style="font-family: Verdana" class="box-title" ng-if="!fromMenu">Temporary Vendor Registration From</h3>*@
-            <div class="box-tools pull-right">
-                <button type="button" id="btnRefresh" data-ng-click="toggleRefreshTable(row)" class="btn btn-warning btn-flat pull-right" ng-disabled="loading"><i class="fa fa-refresh"></i> Refresh</button>
-                <button type="button" id="btnRefresh" data-ng-click="updateRegistration()" class="btn btn-danger" ng-disabled="loading"><i class="fa fa-edit"></i> Update</button>
-            </div>
+        <i class="fa fa-user"></i>
+        <h3 style="font-family: Verdana" class="box-title" ng-if="fromMenu">Update Vendor Registration</h3>
+        @*<h3 style="font-family: Verdana" class="box-title" ng-if="!fromMenu">Temporary Vendor Registration From</h3>*@
+        <div class="box-tools pull-right">
+            <button type="button" id="btnRefresh" data-ng-click="toggleRefreshTable(row)" class="btn btn-warning btn-flat pull-right" ng-disabled="loading"><i class="fa fa-refresh"></i> Refresh</button>
+            <button type="button" id="btnRefresh" data-ng-click="updateRegistration()" class="btn btn-danger" ng-disabled="loading"><i class="fa fa-edit"></i> Update</button>
         </div>
+    </div>
 
     @*Vendor Registration Details Table Modal*@
 
@@ -59,17 +59,49 @@
         </div>
     </div>
 
+    @*<div class="row" style="margin-top: 5px;">
+            <div class="col-lg-2" style="font-size: smaller;">
+                <label for="VendorPhoneNumber">Contact Number :<span style="color: red;"> *</span></label>
+            </div>
+            <div class="col-lg-2">
+                <input id="VendorPhoneNumber" autocomplete="off" type="text" name="VendorPhoneNumber" class="form-control" ng-model="PurreqDtl.Vendor.VendorPhoneNumber" placeholder="(+880) 00 0000 0000" style="font-size: smaller; padding: 3px 6px 3px;" required />
+            </div>
+            <div class="col-md-3">
+                <span class="center-block text-red" id="errorMessageVendorPhoneNumber" style="display: none;">Please input valid Contact Number.</span>
+            </div>
+        </div>*@
     <div class="row" style="margin-top: 5px;">
         <div class="col-lg-2" style="font-size: smaller;">
             <label for="VendorPhoneNumber">Contact Number :<span style="color: red;"> *</span></label>
         </div>
-        <div class="col-lg-2">
-            <input id="VendorPhoneNumber" autocomplete="off" type="text" name="VendorPhoneNumber" class="form-control" ng-model="PurreqDtl.Vendor.VendorPhoneNumber" placeholder="(+880) 00 0000 0000" style="font-size: smaller; padding: 3px 6px 3px;" required />
+
+        <!-- First number with + button -->
+        <div class="col-lg-2" style="display: flex; align-items: center;">
+            <input type="text" class="form-control"
+                   ng-model="PurreqDtl.Vendor.VendorPhoneNumber"
+                   placeholder="" style="flex:1;" required />
+            <button type="button" ng-if="!AddNumber"
+                    ng-click="AddAnotherNumber('add')"
+                    class="btn btn-default" style="margin-left: 5px;">
+                +
+            </button>
         </div>
-        <div class="col-md-3">
-            <span class="center-block text-red" id="errorMessageVendorPhoneNumber" style="display: none;">Please input valid Contact Number.</span>
+
+        <!-- Second number with - button -->
+        <div class="col-lg-2" ng-if="AddNumber" style="display: flex; align-items: center;">
+            <input type="text" class="form-control"
+                   ng-model="PurreqDtl.Vendor.VendorPhoneNumber2"
+                   placeholder="" style="flex:1;" required />
+            <button type="button" ng-click="AddAnotherNumber('remove')"
+                    class="btn btn-default" style="margin-left: 5px;">
+                -
+            </button>
         </div>
     </div>
+
+
+
+
 
     <div class="row" style="margin-top: 5px;">
         <div class="col-lg-2" style="font-size: smaller;">
@@ -94,7 +126,75 @@
             <span class="center-block text-red" id="errorMessageBIN" style="display: none;">Please input valid BIN</span>
         </div>
     </div>
+    <div class="row" style="margin-top: 5px;">
+        <div class="col-lg-2" style="font-size: smaller;">
+            <label for="CompanyProfile">Company Profile :</label>
+        </div>
+        <div class="col-lg-4">
+            <input id="CompanyProfile" type="text" autocomplete="off" class="form-control"
+                   ng-model="PurreqDtl.Vendor.CompanyProfile" placeholder=""
+                   style="font-size: smaller; padding: 3px 6px 3px;" />
+        </div>
+    </div>
 
+    <!-- Trade License -->
+    <div class="row" style="margin-top: 5px;">
+        <div class="col-lg-2" style="font-size: smaller;">
+            <label for="TradeLicense">Trade License :</label>
+        </div>
+        <div class="col-lg-4">
+            <input id="TradeLicense" type="text" autocomplete="off" class="form-control"
+                   ng-model="PurreqDtl.Vendor.TradeLicense" placeholder=""
+                   style="font-size: smaller; padding: 3px 6px 3px;" />
+        </div>
+    </div>
+
+    <!-- Partnership Deed / Agencyship -->
+    <div class="row" style="margin-top: 5px;">
+        <div class="col-lg-2" style="font-size: smaller;">
+            <label for="PartnershipDeed">Partnership Deed / Agencyship :</label>
+        </div>
+        <div class="col-lg-4">
+            <input id="PartnershipDeed" type="text" autocomplete="off" class="form-control"
+                   ng-model="PurreqDtl.Vendor.PartnershipDeed" placeholder=""
+                   style="font-size: smaller; padding: 3px 6px 3px;" />
+        </div>
+    </div>
+
+    <!-- Import Registration Certificate (IRC) -->
+    <div class="row" style="margin-top: 5px;">
+        <div class="col-lg-2" style="font-size: smaller;">
+            <label for="IRC">Import Registration Certificate :</label>
+        </div>
+        <div class="col-lg-4">
+            <input id="IRC" type="text" autocomplete="off" class="form-control"
+                   ng-model="PurreqDtl.Vendor.IRC" placeholder=""
+                   style="font-size: smaller; padding: 3px 6px 3px;" />
+        </div>
+    </div>
+
+    <!-- Indenting License -->
+    <div class="row" style="margin-top: 5px;">
+        <div class="col-lg-2" style="font-size: smaller;">
+            <label for="IndentingLicense">Indenting License :</label>
+        </div>
+        <div class="col-lg-4">
+            <input id="IndentingLicense" type="text" autocomplete="off" class="form-control"
+                   ng-model="PurreqDtl.Vendor.IndentingLicense" placeholder=""
+                   style="font-size: smaller; padding: 3px 6px 3px;" />
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 5px;">
+        <div class="col-lg-2" style="font-size: smaller;">
+            <label for="Others">Others :</label>
+        </div>
+        <div class="col-lg-4">
+            <input id="Others" type="text" autocomplete="off" class="form-control"
+                   ng-model="PurreqDtl.Vendor.Others" placeholder=""
+                   style="font-size: smaller; padding: 3px 6px 3px;" />
+        </div>
+    </div>
 
 
     <div class="row" style="margin-top: 5px;">
@@ -134,13 +234,13 @@
 
     @*<div class="row" style="margin-top: 5px;">
 
-        <div class="col-lg-1">
-            <button id="btnSaveMasterupdate" type="button" class="btn btn-success saveBtn pull-left" data-dismiss="modal" title="Submit" ng-click="updateRegistration()">
-                <i class="fa fa-save"></i> Update Registration
-            </button>
-        </div>
+            <div class="col-lg-1">
+                <button id="btnSaveMasterupdate" type="button" class="btn btn-success saveBtn pull-left" data-dismiss="modal" title="Submit" ng-click="updateRegistration()">
+                    <i class="fa fa-save"></i> Update Registration
+                </button>
+            </div>
 
-    </div>*@
+        </div>*@
 
 
 
@@ -382,31 +482,31 @@
 
 
     @*<div id="viewerModal" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-                    <h3 class="modal-title">Image Viewer</h3>
-                </div>
-
-                <div class="modal-body">
-                    <div class="box-body">
-                        <button class="btn btn-flat btn-sm btn-default" data-ng-click="ZoomIn()"> Zoom In</button>
-                        <button class="btn btn-flat btn-sm btn-default" data-ng-click="ZoomOut()"> Zoom Out</button>
-
-                        <div id="dwtLargeViewer_single" class="box-body"></div>
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                        <h3 class="modal-title">Image Viewer</h3>
                     </div>
-                </div>
 
-                <div class="modal-footer">
-                    <div class="col-sm-12 col-md-12 col-lg-12">
-                        <div class="form-group">
+                    <div class="modal-body">
+                        <div class="box-body">
+                            <button class="btn btn-flat btn-sm btn-default" data-ng-click="ZoomIn()"> Zoom In</button>
+                            <button class="btn btn-flat btn-sm btn-default" data-ng-click="ZoomOut()"> Zoom Out</button>
+
+                            <div id="dwtLargeViewer_single" class="box-body"></div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            <div class="form-group">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>*@
+        </div>*@
 
 
 
@@ -450,6 +550,7 @@
                 ContactPersonLastName: "",
                 Email: "",
                 VendorPhoneNumber: "",
+                VendorPhoneNumber2:"",
                 TIN: "",
                 BIN: "",
                 CompanyAddress: "",
@@ -458,9 +559,26 @@
                 Password: "",
                 ConfirmPassword: "",
                 VendorId: "",
-                TinBinDocId: ""
+                TinBinDocId: "",
+                CompanyProfile: "",
+                TradeLicense: "",
+                PartnershipDeed: "",
+                IRC: "",
+                IndentingLicense: "",
+                Others: ""
             }
         }
+        $scope.AddNumber = false;
+
+        $scope.AddAnotherNumber = function (action) {
+            if (action === 'add') {
+                $scope.AddNumber = true;
+            } else if (action === 'remove') {
+                $scope.AddNumber = false;
+                $scope.PurreqDtl.Vendor.VendorPhoneNumber2 = '';
+            }
+        };
+
 
         //#region Twain Code
         var dwObject;
@@ -922,11 +1040,22 @@
                 $scope.PurreqDtl.Vendor.ContactPersonLastName = "";
             }
             $scope.PurreqDtl.Vendor.VendorPhoneNumber = vendor.VendorPhoneNumber || "";
+            $scope.PurreqDtl.Vendor.VendorPhoneNumber2 = vendor.VendorPhoneNumber2 || "";
+
+            // Automatically show second input if VendorPhoneNumber2 exists
+            $scope.AddNumber = !!$scope.PurreqDtl.Vendor.VendorPhoneNumber2;
             $scope.PurreqDtl.Vendor.GenaralDetailsServices = vendor.GenaralDetailsServices || "";
             $scope.PurreqDtl.Vendor.Email = vendor.VendorEmail || "";
             $scope.PurreqDtl.Vendor.TIN = vendor.TIN || "";
             $scope.PurreqDtl.Vendor.BIN = vendor.BIN || "";
-            $scope.PurreqDtl.Vendor.GenaralDetailsServices = vendor.GenaralDetailsServices || "";
+            $scope.PurreqDtl.Vendor.CompanyProfile = vendor.CompanyProfile || "";
+            $scope.PurreqDtl.Vendor.TradeLicense = vendor.TradeLicense || "";
+            $scope.PurreqDtl.Vendor.PartnershipDeed = vendor.PartnershipDeed || "";
+            $scope.PurreqDtl.Vendor.IRC = vendor.IRC || "";
+            $scope.PurreqDtl.Vendor.IndentingLicense = vendor.IndentingLicense || "";
+            $scope.PurreqDtl.Vendor.Others = vendor.Others || "";
+
+ 
             $scope.PurreqDtl.Vendor.UserName = ""; // Default value, assuming it's entered manually
             $scope.PurreqDtl.Vendor.Password = ""; // Default value, assuming it's entered manually
             $scope.PurreqDtl.Vendor.ConfirmPassword = ""; // Default value, assuming it's entered manually
@@ -963,16 +1092,24 @@
                 ContactPersonFirstName: $scope.PurreqDtl.Vendor.ContactPersonFirstName,
                 ContactPersonLastName: $scope.PurreqDtl.Vendor.ContactPersonLastName,
                 VendorPhoneNumber: $scope.PurreqDtl.Vendor.VendorPhoneNumber,
+                VendorPhoneNumber2: $scope.PurreqDtl.Vendor.VendorPhoneNumber2,
                 CompanyAddress: $scope.PurreqDtl.Vendor.CompanyAddress,
 
                 Country: $scope.PurreqDtl.Vendor.Country,
                 BusinessType: $scope.PurreqDtl.Vendor.BusinessType,
 
                 TIN: $scope.PurreqDtl.Vendor.TIN,
-                BIN: $scope.PurreqDtl.Vendor.BIN,
-                GenaralDetailsServices: $scope.PurreqDtl.Vendor.GenaralDetailsServices,
+                BIN: $scope.PurreqDtl.Vendor.BIN, 
+                GeneralDetailsServices: $scope.PurreqDtl.Vendor.GenaralDetailsServices,
                 Status: 'Temporary',
                 Vendor: $scope.PurreqDtl.Vendor.VendorId,
+                companyProfile: $scope.PurreqDtl.Vendor.CompanyProfile,
+                tradeLicense: $scope.PurreqDtl.Vendor.TradeLicense,
+                partnershipDeed: $scope.PurreqDtl.Vendor.PartnershipDeed,
+                irc: $scope.PurreqDtl.Vendor.IRC,
+                indentingLicense: $scope.PurreqDtl.Vendor.IndentingLicense,
+                others: $scope.PurreqDtl.Vendor.Others,
+               
                 UserName: "",
                 Password: "",
                

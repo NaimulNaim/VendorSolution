@@ -35,8 +35,8 @@
                     <input id="BusinessName" autocomplete="off" type="text" name="BusinessName" class="form-control" ng-model="PurreqDtl.Vendor.BusinessName" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
                 </div>
                 @*<div class="col-md-3">
-                    <span class="center-block text-red" id="errorMessageBusinessName" style="display: none;">Please input valid Business Name.</span>
-                </div>*@
+                <span class="center-block text-red" id="errorMessageBusinessName" style="display: none;">Please input valid Business Name.</span>
+            </div>*@
 
                 <!-- Business Type -->
                 <div class="col-lg-2">
@@ -45,15 +45,15 @@
                     </div>
                 </div>
 
-            <div class="col-lg-4">
-                <select class="form-control"
-                        ng-model="PurreqDtl.Vendor.BusinessType"
-                        ng-options="bt as bt.BusinessTypeName for bt in BusinessTypeList track by bt.BusinessTypeID">
-                    <option value="">-- Select Business Type --</option>
-                </select>
-               
-               
-            </div>
+                <div class="col-lg-4">
+                    <select class="form-control"
+                            ng-model="PurreqDtl.Vendor.BusinessType"
+                            ng-options="bt as bt.BusinessTypeName for bt in BusinessTypeList track by bt.BusinessTypeID">
+                        <option value="">-- Select Business Type --</option>
+                    </select>
+
+
+                </div>
 
 
 
@@ -105,47 +105,6 @@
 
 
 
-            <!-- TIN -->
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2" style="font-size: smaller;">
-                    <label for="TIN">TIN :</label>
-                </div>
-                <div class="col-lg-2">
-                    <input id="TIN" type="text" autocomplete="off" name="TIN" class="form-control" ng-model="PurreqDtl.Vendor.TIN" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
-                </div>
-                @*<div class="col-md-3">
-                    <span class="center-block text-red" id="errorMessageTIN" style="display: none;">Please input valid TIN</span>
-                </div>*@
-
-                <div class="col-lg-4">
-                    <input type="file"
-                           id="TINFile"
-                           accept=".pdf"
-                           onchange="angular.element(this).scope().fileSelected(this, 'TIN')" />
-
-                </div>
-
-            </div>
-
-
-            <!-- BIN -->
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2" style="font-size: smaller;">
-                    <label for="BIN">BIN :</label>
-                </div>
-                <div class="col-lg-2">
-                    <input id="BIN" autocomplete="off" type="text" name="BIN" class="form-control" ng-model="PurreqDtl.Vendor.BIN" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
-                </div>
-                @*<div class="col-md-3">
-                    <span class="center-block text-red" id="errorMessageBIN" style="display: none;">Please input valid BIN</span>
-                </div>*@
-                <div class="col-lg-4">
-                    <input type="file"
-                           id="BINFile"
-                           accept=".pdf"
-                           onchange="angular.element(this).scope().fileSelected(this, 'BIN')" />
-                </div>
-            </div>
 
             @*  Company Address *@
             <div class="row" style="margin-top: 5px;">
@@ -182,6 +141,177 @@
                     <input id="GeneralDetails" autocomplete="off" type="text" name="GeneralDetails" class="form-control" ng-model="PurreqDtl.Vendor.GenaralDetailsServices" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
                 </div>
             </div>
+
+
+            <!-- TIN -->
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-2" style="font-size: smaller;">
+                    <label for="TIN">TIN :</label>
+                </div>
+                <div class="col-lg-2">
+                    <input id="TIN" type="text" autocomplete="off" name="TIN" class="form-control" ng-model="PurreqDtl.Vendor.TIN" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
+                </div>
+                @*<div class="col-md-3">
+                <span class="center-block text-red" id="errorMessageTIN" style="display: none;">Please input valid TIN</span>
+            </div>*@
+
+                <div class="col-lg-4">
+                    <input type="file"
+                           id="TINFile"
+                           accept=".pdf"
+                           onchange="angular.element(this).scope().fileSelected(this, 'TIN')" />
+
+                </div>
+
+            </div>
+
+
+            <!-- BIN -->
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-2" style="font-size: smaller;">
+                    <label for="BIN">BIN :</label>
+                </div>
+                <div class="col-lg-2">
+                    <input id="BIN" autocomplete="off" type="text" name="BIN" class="form-control" ng-model="PurreqDtl.Vendor.BIN" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
+                </div>
+                @*<div class="col-md-3">
+                <span class="center-block text-red" id="errorMessageBIN" style="display: none;">Please input valid BIN</span>
+            </div>*@
+                <div class="col-lg-4">
+                    <input type="file"
+                           id="BINFile"
+                           accept=".pdf"
+                           onchange="angular.element(this).scope().fileSelected(this, 'BIN')" />
+                </div>
+            </div>
+
+
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-2" style="font-size: smaller;">
+                    <label>Company Profile :</label>
+                </div>
+                <div class="col-lg-2">
+                    <input id="CompanyProfile" autocomplete="off" type="text" name="BIN" class="form-control" ng-model="PurreqDtl.Vendor.CompanyProfile" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
+                </div>
+                <div class="col-lg-4">
+                    <input type="file"
+                           accept=".pdf"
+                           onchange="angular.element(this).scope().fileSelected(this, 'CompanyProfile')" />
+                </div>
+            </div>
+
+            <!-- Trade License -->
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-2" style="font-size: smaller;">
+                    <label>Trade License :</label>
+                </div>
+                <div class="col-lg-2">
+                    <input type="text"
+                           class="form-control"
+                           ng-model="PurreqDtl.Vendor.TradeLicense"
+                           placeholder="Optional"
+                           style="font-size: smaller; padding: 3px 6px;" />
+                </div>
+                <div class="col-lg-4">
+                    <input type="file"
+                           accept=".pdf"
+                           onchange="angular.element(this).scope().fileSelected(this, 'TradeLicense')" />
+                </div>
+            </div>
+
+            <!-- Partnership Deed / Agencyship -->
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-2" style="font-size: smaller;">
+                    <label>Partnership Deed / Agencyship :</label>
+                </div>
+                <div class="col-lg-2">
+                    <input type="text"
+                           class="form-control"
+                           ng-model="PurreqDtl.Vendor.PartnershipDeed"
+                           placeholder="Optional"
+                           style="font-size: smaller; padding: 3px 6px;" />
+                </div>
+                <div class="col-lg-4">
+                    <input type="file"
+                           accept=".pdf"
+                           onchange="angular.element(this).scope().fileSelected(this, 'PartnershipDeed')" />
+                </div>
+            </div>
+
+            <!-- Import Registration Certificate -->
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-2" style="font-size: smaller;">
+                    <label>Import Registration Certificate :</label>
+                </div>
+                <div class="col-lg-2">
+                    <input type="text"
+                           class="form-control"
+                           ng-model="PurreqDtl.Vendor.IRC"
+                           placeholder="Optional"
+                           style="font-size: smaller; padding: 3px 6px;" />
+                </div>
+                <div class="col-lg-4">
+                    <input type="file"
+                           accept=".pdf"
+                           onchange="angular.element(this).scope().fileSelected(this, 'IRC')" />
+                </div>
+            </div>
+
+            <!-- Indenting License -->
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-2" style="font-size: smaller;">
+                    <label>Indenting License :</label>
+                </div>
+                <div class="col-lg-2">
+                    <input type="text"
+                           class="form-control"
+                           ng-model="PurreqDtl.Vendor.IndentingLicense"
+                           placeholder="Optional"
+                           style="font-size: smaller; padding: 3px 6px;" />
+                </div>
+                <div class="col-lg-4">
+                    <input type="file"
+                           accept=".pdf"
+                           onchange="angular.element(this).scope().fileSelected(this, 'IndentingLicense')" />
+                </div>
+            </div>
+
+            <!-- Others -->
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-2" style="font-size: smaller;">
+                    <label>Others :</label>
+                </div>
+                <div class="col-lg-2">
+                    <input type="text"
+                           class="form-control"
+                           ng-model="PurreqDtl.Vendor.Others"
+                           placeholder="Optional"
+                           style="font-size: smaller; padding: 3px 6px;" />
+                </div>
+
+                <div class="col-lg-4">
+                    <input type="file"
+                           accept=".pdf"
+                           onchange="angular.element(this).scope().fileSelected(this, 'Others')" />
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             @*User Name*@
             <div class="row" style="margin-top: 5px;">
@@ -285,8 +415,8 @@
                     <input id="BusinessName" autocomplete="off" type="text" name="BusinessName" class="form-control" ng-model="PurreqDtl.Vendor.BusinessName" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
                 </div>
                 @*<div class="col-md-3">
-                    <span class="center-block text-red" id="errorMessageBusinessName" style="display: none;">Please input valid Business Name.</span>
-                </div>*@
+                <span class="center-block text-red" id="errorMessageBusinessName" style="display: none;">Please input valid Business Name.</span>
+            </div>*@
 
 
                 <div class="col-lg-2">
@@ -349,8 +479,8 @@
                     <input id="TIN" type="text" autocomplete="off" name="TIN" class="form-control" ng-model="PurreqDtl.Vendor.TIN" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
                 </div>
                 @*<div class="col-md-3">
-                    <span class="center-block text-red" id="errorMessageTIN" style="display: none;">Please input valid TIN</span>
-                </div>*@
+                <span class="center-block text-red" id="errorMessageTIN" style="display: none;">Please input valid TIN</span>
+            </div>*@
                 <div class="col-lg-4">
                     <input type="file"
                            id="TINFile"
@@ -370,8 +500,8 @@
                     <input id="BIN" autocomplete="off" type="text" name="BIN" class="form-control" ng-model="PurreqDtl.Vendor.BIN" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
                 </div>
                 @*<div class="col-md-3">
-                    <span class="center-block text-red" id="errorMessageBIN" style="display: none;">Please input valid BIN</span>
-                </div>*@
+                <span class="center-block text-red" id="errorMessageBIN" style="display: none;">Please input valid BIN</span>
+            </div>*@
 
                 <div class="col-lg-4">
                     <input type="file"
@@ -380,6 +510,118 @@
                            onchange="angular.element(this).scope().fileSelected(this, 'BIN')" />
                 </div>
             </div>
+
+
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-2" style="font-size: smaller;">
+                    <label>Company Profile :</label>
+                </div>
+                <div class="col-lg-2">
+                    <input id="CompanyProfile" autocomplete="off" type="text" name="BIN" class="form-control" ng-model="PurreqDtl.Vendor.CompanyProfile" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
+                </div>
+                <div class="col-lg-4">
+                    <input type="file"
+                           accept=".pdf"
+                           onchange="angular.element(this).scope().fileSelected(this, 'CompanyProfile')" />
+                </div>
+            </div>
+
+            <!-- Trade License -->
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-2" style="font-size: smaller;">
+                    <label>Trade License :</label>
+                </div>
+                <div class="col-lg-2">
+                    <input type="text"
+                           class="form-control"
+                           ng-model="PurreqDtl.Vendor.TradeLicense"
+                           placeholder="Optional"
+                           style="font-size: smaller; padding: 3px 6px;" />
+                </div>
+                <div class="col-lg-4">
+                    <input type="file"
+                           accept=".pdf"
+                           onchange="angular.element(this).scope().fileSelected(this, 'TradeLicense')" />
+                </div>
+            </div>
+
+            <!-- Partnership Deed / Agencyship -->
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-2" style="font-size: smaller;">
+                    <label>Partnership Deed / Agencyship :</label>
+                </div>
+                <div class="col-lg-2">
+                    <input type="text"
+                           class="form-control"
+                           ng-model="PurreqDtl.Vendor.PartnershipDeed"
+                           placeholder="Optional"
+                           style="font-size: smaller; padding: 3px 6px;" />
+                </div>
+                <div class="col-lg-4">
+                    <input type="file"
+                           accept=".pdf"
+                           onchange="angular.element(this).scope().fileSelected(this, 'PartnershipDeed')" />
+                </div>
+            </div>
+
+            <!-- Import Registration Certificate -->
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-2" style="font-size: smaller;">
+                    <label>Import Registration Certificate :</label>
+                </div>
+                <div class="col-lg-2">
+                    <input type="text"
+                           class="form-control"
+                           ng-model="PurreqDtl.Vendor.IRC"
+                           placeholder="Optional"
+                           style="font-size: smaller; padding: 3px 6px;" />
+                </div>
+                <div class="col-lg-4">
+                    <input type="file"
+                           accept=".pdf"
+                           onchange="angular.element(this).scope().fileSelected(this, 'IRC')" />
+                </div>
+            </div>
+
+            <!-- Indenting License -->
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-2" style="font-size: smaller;">
+                    <label>Indenting License :</label>
+                </div>
+                <div class="col-lg-2">
+                    <input type="text"
+                           class="form-control"
+                           ng-model="PurreqDtl.Vendor.IndentingLicense"
+                           placeholder="Optional"
+                           style="font-size: smaller; padding: 3px 6px;" />
+                </div>
+                <div class="col-lg-4">
+                    <input type="file"
+                           accept=".pdf"
+                           onchange="angular.element(this).scope().fileSelected(this, 'IndentingLicense')" />
+                </div>
+            </div>
+
+            <!-- Others -->
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-2" style="font-size: smaller;">
+                    <label>Others :</label>
+                </div>
+                <div class="col-lg-2">
+                    <input type="text"
+                           class="form-control"
+                           ng-model="PurreqDtl.Vendor.Others"
+                           placeholder="Optional"
+                           style="font-size: smaller; padding: 3px 6px;" />
+                </div>
+
+                <div class="col-lg-4">
+                    <input type="file"
+                           accept=".pdf"
+                           onchange="angular.element(this).scope().fileSelected(this, 'Others')" />
+                </div>
+            </div>
+
 
             @*  Company Address *@
             <div class="row" style="margin-top: 5px;">
@@ -554,7 +796,13 @@
                 Password: "",
                 ConfirmPassword: "",
                 BusinessTypeName: "",
-                Country: ""
+                Country: "",
+                CompanyProfile: "",
+                TradeLicense: "",
+                PartnershipDeed: "",
+                IRC: "",
+                IndentingLicense: "",
+                Others: ""
             }
         }
 
@@ -891,8 +1139,27 @@
             if (input.files && input.files[0]) {
                 if (type === 'TIN') {
                     $scope.tinFile = input.files[0];
+
                 } else if (type === 'BIN') {
                     $scope.binFile = input.files[0];
+
+                } else if (type === 'CompanyProfile') {
+                    $scope.companyProfileFile = input.files[0];
+
+                } else if (type === 'TradeLicense') {
+                    $scope.tradeLicenseFile = input.files[0];
+
+                } else if (type === 'PartnershipDeed') {
+                    $scope.partnershipDeedFile = input.files[0];
+
+                }  else if (type === 'ImportRegistration') {
+                    $scope.importRegistrationFile = input.files[0];
+
+                } else if (type === 'IndentingLicense') {
+                    $scope.indentingLicenseFile = input.files[0];
+
+                } else if (type === 'Others') {
+                    $scope.othersFile = input.files[0];
                 }
             }
         };
@@ -931,7 +1198,13 @@
                 userName: $scope.PurreqDtl.Vendor.UserName,
                 password: $scope.PurreqDtl.Vendor.Password,
                 status: 'Temporary',
-                vendor: $scope.info1
+                vendor: $scope.info1,
+                companyProfile: $scope.PurreqDtl.Vendor.CompanyProfile,
+                tradeLicense: $scope.PurreqDtl.Vendor.TradeLicense,
+                partnershipDeed: $scope.PurreqDtl.Vendor.PartnershipDeed,
+                irc: $scope.PurreqDtl.Vendor.IRC,
+                indentingLicense: $scope.PurreqDtl.Vendor.IndentingLicense,
+                others: $scope.PurreqDtl.Vendor.Others
             }).success(function (vendorResp) {
 
                 // 🔴 HARD STOP on failure
@@ -974,6 +1247,26 @@
                         var uploads = [];
                         if ($scope.tinFile) uploads.push(uploadFile($scope.tinFile, 'TIN'));
                         if ($scope.binFile) uploads.push(uploadFile($scope.binFile, 'BIN'));
+                        if ($scope.companyProfileFile)
+                            uploads.push(uploadFile($scope.companyProfileFile, 'CompanyProfile'));
+
+                        if ($scope.tradeLicenseFile)
+                            uploads.push(uploadFile($scope.tradeLicenseFile, 'TradeLicense'));
+
+                        if ($scope.partnershipDeedFile)
+                            uploads.push(uploadFile($scope.partnershipDeedFile, 'PartnershipDeed'));
+
+                
+
+                        if ($scope.importRegistrationFile)
+                            uploads.push(uploadFile($scope.importRegistrationFile, 'ImportRegistration'));
+
+                        if ($scope.indentingLicenseFile)
+                            uploads.push(uploadFile($scope.indentingLicenseFile, 'IndentingLicense'));
+
+                      
+                        if ($scope.othersFile)
+                            uploads.push(uploadFile($scope.othersFile, 'Others'));
 
                         $.when.apply($, uploads)
                             .done(function () {

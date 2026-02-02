@@ -48,7 +48,12 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
     string businessName, string contactPersonFirstName, string contactPersonLastName, string vendorPhoneNumber,
     string email, string companyAddress, string country, string businessType, string typeOfMaterial,
     string tin, string bin, string generalDetailsServices, string userName, string password,
-    string status, string vendor)
+    string status, string vendor, string companyProfile,
+    string tradeLicense,
+    string partnershipDeed,
+    string irc,
+    string indentingLicense,
+    string others)
         {
             string respStatus = string.Empty, message = string.Empty;
             var user = new SecVendor_User();
@@ -59,7 +64,9 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
             var result = _vendorRegistrationService.VendorRegistrationDetailsService(
                 businessName, contactPerson, vendorPhoneNumber, email, companyAddress, country,
                 businessType, typeOfMaterial, tin, bin, generalDetailsServices, userName,
-                password, status, vendor, out user);
+                password, status, vendor,
+        companyProfile, tradeLicense, partnershipDeed, irc, indentingLicense, others, // new
+        out user);
 
 
             if (user.UserID == null)
@@ -121,8 +128,13 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
 
         [HttpPost]
 
-        public async Task<dynamic> VendorupdateRegistrationDetails(string BusinessName, string ContactPersonFirstName, string ContactPersonLastName, string VendorPhoneNumber,
-           string CompanyAddress, string Country, string BusinessType, string TIN, string BIN, string GeneralDetailsServices, string Status, string Vendor, string UserName = null, string Password = null)
+        public async Task<dynamic> VendorupdateRegistrationDetails(string BusinessName, string ContactPersonFirstName, string ContactPersonLastName, string VendorPhoneNumber,string VendorPhoneNumber2,
+           string CompanyAddress, string Country, string BusinessType, string TIN, string BIN, string GeneralDetailsServices, string Status, string Vendor,  string companyProfile,
+    string tradeLicense,
+    string partnershipDeed,
+    string irc,
+    string indentingLicense,
+    string others, string UserName = null, string Password = null)
         {
             string resp_status = string.Empty, message = string.Empty;
             string ContactPerson = $"{ContactPersonFirstName} {ContactPersonLastName}";
@@ -137,8 +149,8 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
                 UserName = "";
                 Password = "";
             }
-            var result = _vendorRegistrationService.VendorupdateRegistrationDetailsService(BusinessName, ContactPerson, VendorPhoneNumber,
-                 CompanyAddress, Country, BusinessType, TIN, BIN, GeneralDetailsServices, Status, Vendor, UserName, Password, out user);
+            var result = _vendorRegistrationService.VendorupdateRegistrationDetailsService(BusinessName, ContactPerson, VendorPhoneNumber, VendorPhoneNumber2,
+                 CompanyAddress, Country, BusinessType, TIN, BIN, GeneralDetailsServices, Status, Vendor, companyProfile, tradeLicense, partnershipDeed, irc, indentingLicense, others, UserName, Password, out user);
 
             return Json(new { user, message }, JsonRequestBehavior.AllowGet);
         }
@@ -260,6 +272,37 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
 
 
         [HttpPost]
+        //public async Task<ActionResult> UploadOtherFiles(
+        //string serverIP,
+        //int ftpPort,
+        //string ftpUserName,
+        //string ftpPassword,
+        //string vendorId,
+        //string docType)
+        //{
+        //    HttpPostedFileBase file = Request.Files["file"];
+
+        //    string folder = docType == "TIN"
+        //        ? "chqDivision/PharmaceuticalsDivision/VendorDocuments/SuportingDocuments/TIN"
+        //        : "chqDivision/PharmaceuticalsDivision/VendorDocuments/SuportingDocuments/BIN";
+
+        //    string ftpPath = $"ftp://{serverIP}:{ftpPort}/{folder}/{vendorId}.pdf";
+
+        //    FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ftpPath);
+        //    request.Credentials = new NetworkCredential(ftpUserName, ftpPassword);
+        //    request.Method = WebRequestMethods.Ftp.UploadFile;
+        //    request.UseBinary = true;
+
+        //    using (var stream = request.GetRequestStream())
+        //    {
+        //        await file.InputStream.CopyToAsync(stream);
+        //    }
+
+        //    return new HttpStatusCodeResult(200);
+        //}
+
+
+
         public async Task<ActionResult> UploadOtherFiles(
     string serverIP,
     int ftpPort,
@@ -269,25 +312,139 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
     string docType)
         {
             HttpPostedFileBase file = Request.Files["file"];
+            if (file == null || file.ContentLength == 0)
+                return new HttpStatusCodeResult(400, "No file uploaded");
 
-            string folder = docType == "TIN"
-                ? "chqDivision/PharmaceuticalsDivision/VendorDocuments/SuportingDocuments/TIN"
-                : "chqDivision/PharmaceuticalsDivision/VendorDocuments/SuportingDocuments/BIN";
+            // Determine folder path based on docType (compatible with C# 7.3)
+            string folder;
+            switch (docType)
+            {
+                case "TIN":
+                    folder = "chqDivision/PharmaceuticalsDivision/VendorDocuments/SuportingDocuments/TIN";
+                    break;
+                case "BIN":
+                    folder = "chqDivision/PharmaceuticalsDivision/VendorDocuments/SuportingDocuments/BIN";
+                    break;
+                case "CompanyProfile":
+                    folder = "chqDivision/PharmaceuticalsDivision/VendorDocuments/SuportingDocuments/CompanyProfile";
+                    break;
+                case "TradeLicense":
+                    folder = "chqDivision/PharmaceuticalsDivision/VendorDocuments/SuportingDocuments/TradeLicense";
+                    break;
+                case "PartnershipDeed":
+                    folder = "chqDivision/PharmaceuticalsDivision/VendorDocuments/SuportingDocuments/PartnershipDeed";
+                    break;
+             
+                case "IndentingLicense":
+                    folder = "chqDivision/PharmaceuticalsDivision/VendorDocuments/SuportingDocuments/IndentingLicense";
+                    break;
+                case "ImportRegistration":
+                    folder = "chqDivision/PharmaceuticalsDivision/VendorDocuments/SuportingDocuments/ImportRegistration";
+                    break;
+                case "Others":
+                    folder = "chqDivision/PharmaceuticalsDivision/VendorDocuments/SuportingDocuments/Others";
+                    break;
+                default:
+                    throw new ArgumentException("Invalid document type", nameof(docType));
+            }
 
             string ftpPath = $"ftp://{serverIP}:{ftpPort}/{folder}/{vendorId}.pdf";
 
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ftpPath);
-            request.Credentials = new NetworkCredential(ftpUserName, ftpPassword);
-            request.Method = WebRequestMethods.Ftp.UploadFile;
-            request.UseBinary = true;
-
-            using (var stream = request.GetRequestStream())
+            try
             {
-                await file.InputStream.CopyToAsync(stream);
-            }
+                FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ftpPath);
+                request.Credentials = new NetworkCredential(ftpUserName, ftpPassword);
+                request.Method = WebRequestMethods.Ftp.UploadFile;
+                request.UseBinary = true;
 
-            return new HttpStatusCodeResult(200);
+                using (var stream = request.GetRequestStream())
+                {
+                    await file.InputStream.CopyToAsync(stream);
+                }
+
+                return new HttpStatusCodeResult(200);
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(500, $"Error uploading file: {ex.Message}");
+            }
         }
+
+
+
+
+
+
+
+        //    public async Task<ActionResult> UploadOtherFiles(
+        //string serverIP,
+        //int ftpPort,
+        //string ftpUserName,
+        //string ftpPassword,
+        //string vendorId,
+        //string docType)
+        //    {
+        //        if (Request.Files.Count == 0)
+        //            return new HttpStatusCodeResult(400, "No file uploaded");
+
+        //        HttpPostedFileBase file = Request.Files["file"];
+
+        //        if (file == null || file.ContentLength == 0)
+        //            return new HttpStatusCodeResult(400, "Empty file");
+
+        //        // Resolve folder safely
+        //        string folder = GetDocumentFolder(docType);
+
+        //        // Always encode FTP path correctly
+        //        string ftpPath = $"ftp://{serverIP}:{ftpPort}/{folder}/{vendorId}.pdf";
+
+        //        var request = (FtpWebRequest)WebRequest.Create(ftpPath);
+        //        request.Credentials = new NetworkCredential(ftpUserName, ftpPassword);
+        //        request.Method = WebRequestMethods.Ftp.UploadFile;
+        //        request.UseBinary = true;
+        //        request.KeepAlive = false;
+
+        //        using (var requestStream = await request.GetRequestStreamAsync())
+        //        {
+        //            await file.InputStream.CopyToAsync(requestStream);
+        //        }
+
+        //        using (var response = (FtpWebResponse)await request.GetResponseAsync())
+        //        {
+        //            // optional logging
+        //        }
+
+        //        return new HttpStatusCodeResult(200);
+        //    }
+
+        //    private string GetDocumentFolder(string docType)
+        //    {
+        //        string basePath = "chqDivision/PharmaceuticalsDivision/VendorDocuments/SuportingDocuments";
+
+        //        switch (docType)
+        //        {
+        //            case "TIN":
+        //                return $"{basePath}/TIN";
+        //            case "BIN":
+        //                return $"{basePath}/BIN";
+        //            case "CompanyProfile":
+        //                return $"{basePath}/CompanyProfile";
+        //            case "TradeLicense":
+        //                return $"{basePath}/TradeLicense";
+        //            case "PartnershipDeed":
+        //                return $"{basePath}/PartnershipDeed";
+        //            case "Agencyship":
+        //                return $"{basePath}/Agencyship";
+        //            case "ImportRegistration":
+        //                return $"{basePath}/ImportRegistration";
+        //            case "IndentingLicense":
+        //                return $"{basePath}/IndentingLicense";
+        //            case "Others":
+        //                return $"{basePath}/Others";
+        //            default:
+        //                throw new Exception($"Invalid document type: {docType}");
+        //        }
+        //    }
 
 
         [HttpGet]
