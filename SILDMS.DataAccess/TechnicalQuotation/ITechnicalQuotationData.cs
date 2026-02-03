@@ -29,6 +29,6 @@ namespace SILDMS.DataAccess.TechnicalQuotation
         List<Item> ItemlistData(out string errorNumber);
 
         List<Sys_MasterData> GetAllItemTypes(string masterDataType, out string _errorNumber);
-
+        bool DeleteTechQuotwiseDetailsData(string techQuotationItemID, out string errorNumber);
     }
 }

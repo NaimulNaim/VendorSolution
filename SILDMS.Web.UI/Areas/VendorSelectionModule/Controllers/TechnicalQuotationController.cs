@@ -556,6 +556,38 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
             return Json(new { ItemList, Msg = "" }, JsonRequestBehavior.AllowGet);
         }
 
+        [Authorize]
+        [HttpPost]
+        public async Task<dynamic> DeleteTechquot(string TechQuotationItemID)
+        {
+            bool isDeleted = false;
+
+            await Task.Run(() =>
+                _technicalQuotationService.DeleteTechQuotwiseDetailsService(
+                    TechQuotationItemID, out isDeleted)
+            );
+
+            if (isDeleted)
+            {
+                respStatus.Message = "Data Deleted Successfully";
+                return Json(new
+                {
+                    Success = true,
+                    respStatus,
+                    Msg = ""
+                }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                respStatus.Message = "Error Found";
+                return Json(new
+                {
+                    Success = false,
+                    respStatus,
+                    Msg = ""
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
 
 
 

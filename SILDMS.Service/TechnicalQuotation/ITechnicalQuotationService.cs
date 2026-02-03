@@ -30,5 +30,6 @@ namespace SILDMS.Service.TechnicalQuotation
         ValidationResult GetMaterialDocStatus(out DSM_Documents document, out bool docStatus, string materialCode,string BiddingID,string VendorCode);
         ValidationResult UpdateExtensionByDocIdService(string documentID, string extension, out string iD);
         ValidationResult ItemlistService(out List<Item> itemList);
+        ValidationResult DeleteTechQuotwiseDetailsService(string techQuotationItemID, out bool isDeleted);
     }
 }

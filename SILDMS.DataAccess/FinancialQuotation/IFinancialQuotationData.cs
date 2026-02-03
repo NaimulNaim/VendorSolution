@@ -27,5 +27,7 @@ namespace SILDMS.DataAccess.FinancialQuotation
         DSM_Documents GetMaterialDocStatus(out bool docStatus, string materialCode, out string errorNumber);
         string UpdateExtensionByDocIdData(string documentID, string extension, out string errorNumber);
         List<Item> ItemlistData(out string errorNumber);
+     
+        bool DeleteFinquot(string finanQuotationItemID, out string errorNumber);
     }
 }

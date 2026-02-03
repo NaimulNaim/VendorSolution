@@ -154,9 +154,20 @@
 
 
                                 <td class="col-lg-1 col-md-1 col-sm-1" style="text-align:center">
-                                    <button ng-click="DetailItem(row,$index+1)">
+                                    <button ng-click="DetailItem(row, $index + 1)"
+                                            ng-class="{
+        'btn btn-success': row.Action === 'A',
+        'btn btn-warning': row.Action !== 'A'
+    }">
                                         {{ row.Action === 'A' ? 'Add' : 'Edit' }}
                                     </button>
+                                    <button ng-if="row.TechQuotationItemID"
+                                            ng-click="openDeleteModal(row, $index)"
+                                            class="btn btn-danger btn-sm"
+                                            style="margin-left:5px">
+                                        Delete
+                                    </button>
+
 
                                 </td>
 
@@ -194,18 +205,18 @@
                 <!-- Row 1: Item / Molecule Name & Manufacturer Name -->
                 <div class="row">
                     <div class="col-lg-3">
-                        <label for="MoleculeName">Item / Molecule Name:</label>
+                        <label for="MoleculeName">Item / Molecule Name:<span class="text-danger">*</span></label>
                     </div>
                     <div class="col-lg-3">
-                        <input id="MoleculeName" type="text" ng-model="TechnicalQuotation.MoleculeName" class="form-control"
+                        <input id="MoleculeName" type="text" ng-model="TechnicalQuotation.MoleculeName" ng-required="true" class="form-control"
                                placeholder="Material Name" />
                     </div>
 
                     <div class="col-lg-2">
-                        <label for="ManufacturerName">Manufacturer Name:</label>
+                        <label for="ManufacturerName">Manufacturer Name:<span class="text-danger">*</span></label>
                     </div>
                     <div class="col-lg-2">
-                        <input id="ManufacturerName" type="text" ng-model="TechnicalQuotation.Manufacturer" class="form-control"
+                        <input id="ManufacturerName" type="text" ng-model="TechnicalQuotation.Manufacturer" ng-required="true" class="form-control"
                                placeholder="Manufacturer Name" />
                     </div>
                 </div>
@@ -239,7 +250,7 @@
                     <div class="col-lg-3">
                         <div class="form-group">
                             <select id="Currency" class="form-control" ng-model="TechnicalQuotation.Currency"
-                                    ng-options="ItemTypes as ItemTypes.MasterDataValue for ItemTypes in ItemTypeList track by ItemTypes.MasterDataValue " ng-required="true" >
+                                    ng-options="ItemTypes as ItemTypes.MasterDataValue for ItemTypes in ItemTypeList track by ItemTypes.MasterDataValue " ng-required="true">
 
                                 <option value="" selected style="display: none">-- Select One --</option>
 
@@ -477,15 +488,15 @@
                         </div>
 
                         @*<div class="col-lg-2">
-            <label for="ProductionFrequency">Production Frequency:</label>
-        </div>
-        <div class="col-lg-1">
-            <select id="ProductionFrequency" ng-model="TechnicalQuotation.ProductionFrequency" class="form-control">
-                <option value="">--Select--</option>
-                <option value="Campaign">Campaign</option>
-                <option value="Regular">Regular</option>
-            </select>
-        </div>*@
+                                <label for="ProductionFrequency">Production Frequency:</label>
+                            </div>
+                            <div class="col-lg-1">
+                                <select id="ProductionFrequency" ng-model="TechnicalQuotation.ProductionFrequency" class="form-control">
+                                    <option value="">--Select--</option>
+                                    <option value="Campaign">Campaign</option>
+                                    <option value="Regular">Regular</option>
+                                </select>
+                            </div>*@
 
                         <div style="display:inline-block; font-family:inherit; font-size:14px;">
                             <label for="ProductionFrequency" style="margin-right:5px;">
@@ -510,7 +521,7 @@
                         <div class="col-lg-3">
                             <label for="PharmacopeialReference">Pharmacopeial Reference:</label>
                         </div>
-                      
+
                         <div class="col-lg-3">
                             <select ui-select2="{ allowClear: true }"
                                     id="PharmacopeialReference"
@@ -566,10 +577,10 @@
                 <!-- Row 1: Item Name & Manufacturer Part No -->
                 <div class="row">
                     <div class="col-lg-3">
-                        <label for="ItemName">Item Name:</label>
+                        <label for="ItemName">Item Name:<span class="text-danger">*</span></label>
                     </div>
                     <div class="col-lg-3">
-                        <input id="ItemName" type="text" ng-model="TechnicalQuotation.ItemName" class="form-control"
+                        <input id="ItemName" type="text" ng-model="TechnicalQuotation.ItemName" ng-required="true" class="form-control"
                                placeholder="Material Name" />
                     </div>
 
@@ -585,10 +596,10 @@
                 <!-- Row 2: Manufacturer Name & Site Address -->
                 <div class="row">
                     <div class="col-lg-3">
-                        <label for="ManufacturerName">Manufacturer Name:</label>
+                        <label for="ManufacturerName">Manufacturer Name:<span class="text-danger">*</span></label>
                     </div>
                     <div class="col-lg-3">
-                        <input id="ManufacturerName" type="text" ng-model="TechnicalQuotation.Manufacturer" class="form-control"
+                        <input id="ManufacturerName" type="text" ng-model="TechnicalQuotation.Manufacturer" ng-required="true" class="form-control"
                                placeholder="Manufacturer Name" />
                     </div>
 
@@ -1306,6 +1317,33 @@
 
 
 
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">Confirm Delete</h5>
+                </div>
+
+                <div class="modal-body text-center">
+                    Are you sure you want to delete this item?
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-secondary"
+                            ng-click="cancelDelete()">
+                        Cancel
+                    </button>
+
+                    <button class="btn btn-danger"
+                            ng-click="confirmDelete()">
+                        Delete
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
 
 
 
@@ -1909,9 +1947,11 @@
         $scope.Update = function () {
 
          
-                if ($scope.p===1) {
+            if ($scope.p === 1) {
+                if ($scope.TechnicalQuotation.PharmacopeialReference) {
                     $scope.TechnicalQuotation.AllPharmacopeialReference = $scope.TechnicalQuotation.PharmacopeialReference.join(',');
                 }
+            }
 
             
 
@@ -1980,19 +2020,45 @@
 
         $scope.Post = function () {
             var DocIDsCounter = 0;
-            $scope.loading = true;
-            $timeout(function () {
-            $scope.TechnicalQuotation.rowIndex = $scope.MaterialInvitation.rowIndex;
+           
 
             if ($scope.TechnicalQuotation.techtype === 'SPARES') {
                 $scope.TechnicalQuotation.YearOfManufacturing = $scope.formatDate($('#YearOfManufacturing').val());
+
+                if ($("#ItemName").val() == "") {
+                    toastr.error("ItemName is required.");
+                    return;
+                }
+                if ($("#ManufacturerName").val() == "") {
+                    toastr.error("Manufacturer Name is required.");
+                    return;
+                }
+
+
+
+
             }
             else {
                 if ($scope.TechnicalQuotation.PharmacopeialReference) {
                     $scope.TechnicalQuotation.AllPharmacopeialReference = $scope.TechnicalQuotation.PharmacopeialReference.join(',');
                 }
-                
+
+                if ($("#MoleculeName").val() == "") {
+                    toastr.error("MoleculeName is required.");
+                    return;
+                }
+                if ($("#ManufacturerName").val() == "") {
+                    toastr.error("Manufacturer Name is required.");
+                    return;
+                }
+
+
+                $scope.loading = true;
             }
+            $timeout(function () {
+            $scope.TechnicalQuotation.rowIndex = $scope.MaterialInvitation.rowIndex;
+
+            
 
             $scope.TechnicalQuotation.Proposal = $scope.proposal;
             $scope.TechnicalQuotation.techtype = $scope.techtype;
@@ -2634,7 +2700,62 @@
         };
 
 
+        $scope.openDeleteModal = function (row, index) {
+            $scope.deleteRow = row;
+            $scope.deleteIndex = index;
+            $('#deleteConfirmModal').modal('show');
+        };
 
+        $scope.cancelDelete = function () {
+            $scope.deleteRow = null;
+            $scope.deleteIndex = null;
+            $('#deleteConfirmModal').modal('hide');
+        };
+
+        $scope.confirmDelete = function () {
+            $scope.DeleteItem($scope.deleteRow, $scope.deleteIndex);
+            $('#deleteConfirmModal').modal('hide');
+        };
+
+
+        $scope.DeleteItem = function (deleterow, deleteindex) {
+
+            if (!deleterow || !deleterow.TechQuotationItemID) return; // safety
+
+            $("#btnSaveDoc").prop("disabled", true);
+
+            $http.post('/VendorSelectionModule/TechnicalQuotation/DeleteTechquot',
+                { TechQuotationItemID: deleterow.TechQuotationItemID })
+                .then(function (response) {
+                    var data = response.data;
+
+                    if (data && data.Success) {
+                        // ✅ show success message
+                        toastr.success(data.respStatus.Message || 'Deleted successfully');
+
+                        // Delay table refresh so user can see the toast
+                        setTimeout(function () {
+                            $scope.$apply(function () {
+                                $scope.toggleRefreshTable();
+                            });
+                        }, 1000);
+
+                        // remove row from UI
+                       
+
+                    } else {
+                        // ❌ show error message
+                        alert((data && data.respStatus ? data.respStatus.Message : '') || 'Delete failed.');
+                    }
+
+                })
+                .catch(function () {
+                    alert('Error occurred while deleting the item.');
+                })
+                .finally(function () {
+                    $("#btnSaveDoc").prop("disabled", false);
+                });
+        };
 
 
 
@@ -3603,59 +3724,125 @@
 
 
         $scope.checkAndFormat = function (id) {
-            CheckPositive(id);
+          /*  CheckPositive(id);*/
             $scope.FormatDigits(id, 13);
         };
 
+        //$scope.FormatDigits = function (txtVendor, lmt) {
+        //    if (!IsPositiveNumber($("#" + txtVendor).val())) {
+        //        $("#" + txtVendor).val('');
+        //    }
+        //    else if (isNaN($("#" + txtVendor).val())) {
+        //        $("#" + txtVendor).val('');
+        //    }
+        //    else {
+        //        var d = $("#" + txtVendor).val().split('.');
+        //        if ((d[0].length > (lmt - 0))) {
+        //            $("#" + txtVendor).val("");
+        //            $("#btnSaveDoc").prop("disabled", true);
+        //            return;
+        //        }
+        //        else {
+        //            $("#btnSaveDoc").prop("disabled", false);
+        //            $("#" + txtVendor).val(($("#" + txtVendor).val() - 0).toFixed(2));
+        //        }
+        //    }
+
+        //}
+
         $scope.FormatDigits = function (txtVendor, lmt) {
-            if (!IsPositiveNumber($("#" + txtVendor).val())) {
+
+            var val = $("#" + txtVendor).val();
+
+            // empty or non-numeric → reject
+            if (val === '' || isNaN(val)) {
                 $("#" + txtVendor).val('');
-            }
-            else if (isNaN($("#" + txtVendor).val())) {
-                $("#" + txtVendor).val('');
-            }
-            else {
-                var d = $("#" + txtVendor).val().split('.');
-                if ((d[0].length > (lmt - 0))) {
-                    $("#" + txtVendor).val("");
-                    $("#btnSaveDoc").prop("disabled", true);
-                    return;
-                }
-                else {
-                    $("#btnSaveDoc").prop("disabled", false);
-                    $("#" + txtVendor).val(($("#" + txtVendor).val() - 0).toFixed(2));
-                }
+                $("#btnSaveDoc").prop("disabled", true);
+                return;
             }
 
-        }
+            val = Number(val);
+
+            // negative numbers → reject (0 allowed)
+            if (val < 0) {
+                $("#" + txtVendor).val('');
+                $("#btnSaveDoc").prop("disabled", true);
+                return;
+            }
+
+            var d = val.toString().split('.');
+            if (d[0].length > lmt) {
+                $("#" + txtVendor).val('');
+                $("#btnSaveDoc").prop("disabled", true);
+                return;
+            }
+
+            // valid: includes 0
+            $("#btnSaveDoc").prop("disabled", false);
+            $("#" + txtVendor).val(val.toFixed(2));
+        };
+
+
+
+
 
         $scope.checkAndFormat2 = function (id) {
-            CheckPositive(id);
+          /*  CheckPositive(id);*/
             $scope.FormatDigits2(id, 13);
         };
 
+        //$scope.FormatDigits2 = function (txtVendor, lmt) {
+        //    if (!IsPositiveNumber($("#" + txtVendor).val())) {
+        //        $("#" + txtVendor).val('');
+        //    }
+        //    else if (isNaN($("#" + txtVendor).val())) {
+        //        $("#" + txtVendor).val('');
+        //    }
+        //    else {
+        //        var d = $("#" + txtVendor).val().split('.');
+        //        if ((d[0].length > (lmt - 0))) {
+        //            $("#" + txtVendor).val("");
+        //            $("#btnSaveDoc").prop("disabled", true);
+        //            return;
+        //        }
+        //        else {
+        //            $("#btnSaveDoc").prop("disabled", false);
+        //            $("#" + txtVendor).val(($("#" + txtVendor).val() - 0).toFixed(3));
+        //        }
+        //    }
+
+        //}
         $scope.FormatDigits2 = function (txtVendor, lmt) {
-            if (!IsPositiveNumber($("#" + txtVendor).val())) {
+
+            var val = $("#" + txtVendor).val();
+
+            // empty or non-numeric → reject
+            if (val === '' || isNaN(val)) {
                 $("#" + txtVendor).val('');
-            }
-            else if (isNaN($("#" + txtVendor).val())) {
-                $("#" + txtVendor).val('');
-            }
-            else {
-                var d = $("#" + txtVendor).val().split('.');
-                if ((d[0].length > (lmt - 0))) {
-                    $("#" + txtVendor).val("");
-                    $("#btnSaveDoc").prop("disabled", true);
-                    return;
-                }
-                else {
-                    $("#btnSaveDoc").prop("disabled", false);
-                    $("#" + txtVendor).val(($("#" + txtVendor).val() - 0).toFixed(3));
-                }
+                $("#btnSaveDoc").prop("disabled", true);
+                return;
             }
 
-        }
+            val = Number(val);
 
+            // negative numbers → reject (0 allowed)
+            if (val < 0) {
+                $("#" + txtVendor).val('');
+                $("#btnSaveDoc").prop("disabled", true);
+                return;
+            }
+
+            var d = val.toString().split('.');
+            if (d[0].length > lmt) {
+                $("#" + txtVendor).val('');
+                $("#btnSaveDoc").prop("disabled", true);
+                return;
+            }
+
+            // valid number (including 0)
+            $("#btnSaveDoc").prop("disabled", false);
+            $("#" + txtVendor).val(val.toFixed(3));
+        };
 
         $scope.formatMaterialCode = function (materialCode) {
             return materialCode.replace(/^0+/, '');
@@ -3767,9 +3954,9 @@
 
 
 
-        //$scope.toggleRefreshTable = function (row) {
-        //    window.location.href = "/VendorSelectionModule/TechnicalQuotation";
-        //};
+        $scope.toggleRefreshTable = function (row) {
+            window.location.href = "/VendorSelectionModule/TechnicalQuotation";
+        };
 
         $scope.formatDate = function (date) {
 

@@ -1318,5 +1318,35 @@ namespace SILDMS.DataAccess.FinancialQuotation
             return itemList;
         }
 
+        public bool DeleteFinquot(string finanQuotationItemID, out string errorNumber)
+        {
+            errorNumber = string.Empty;
+            bool isDeleted = false;
+
+            var factory = new DatabaseProviderFactory();
+            var db = factory.CreateDefault() as SqlDatabase;
+
+            using (var dbCommandWrapper = db.GetStoredProcCommand("VCMS_DeleteFinquot"))
+            {
+                // INPUT parameter (same pattern as above)
+                db.AddInParameter(dbCommandWrapper, "@finanQuotationItemID", SqlDbType.VarChar, finanQuotationItemID);
+                db.AddOutParameter(dbCommandWrapper, "@p_Error", DbType.Int32, 10);
+                // Execute SP
+                db.ExecuteNonQuery(dbCommandWrapper);
+
+                if (!db.GetParameterValue(dbCommandWrapper, "@p_Error").IsNullOrZero())
+                {
+                    errorNumber = db
+                        .GetParameterValue(dbCommandWrapper, "@p_Error")
+                        .PrefixErrorCode();
+                }
+                else
+                {
+                    isDeleted = true;
+                }
+            }
+
+            return isDeleted;
+        }
     }
 }

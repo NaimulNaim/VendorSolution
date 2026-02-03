@@ -1279,10 +1279,36 @@ namespace SILDMS.DataAccess.TechnicalQuotation
             return itemTypes;
         }
 
+        public bool DeleteTechQuotwiseDetailsData(string techQuotationItemID, out string errorNumber)
+        {
+            errorNumber = string.Empty;
+            bool isDeleted = false;
 
+            var factory = new DatabaseProviderFactory();
+            var db = factory.CreateDefault() as SqlDatabase;
 
+            using (var dbCommandWrapper = db.GetStoredProcCommand("VCMS_DeleteTechQuotMaterialDetail"))
+            {
+                // INPUT parameter (same pattern as above)
+                db.AddInParameter(dbCommandWrapper, "@techQuotationItemID", SqlDbType.VarChar, techQuotationItemID);
+                db.AddOutParameter(dbCommandWrapper, "@p_Error", DbType.Int32, 10);
+                // Execute SP
+                db.ExecuteNonQuery(dbCommandWrapper);
 
+                if (!db.GetParameterValue(dbCommandWrapper, "@p_Error").IsNullOrZero())
+                {
+                    errorNumber = db
+                        .GetParameterValue(dbCommandWrapper, "@p_Error")
+                        .PrefixErrorCode();
+                }
+                else
+                {
+                    isDeleted = true;
+                }
+            }
 
+            return isDeleted;
+        }
 
     }
 }

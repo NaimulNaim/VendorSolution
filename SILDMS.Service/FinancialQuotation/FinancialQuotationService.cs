@@ -150,5 +150,14 @@ namespace SILDMS.Service.FinancialQuotation
                 ? new ValidationResult(_errorNumber, _localizationService.GetResource(_errorNumber))
                 : ValidationResult.Success;
         }
+
+        public ValidationResult DeleteFinquot(string finanQuotationItemID, out bool isDeleted)
+        {
+            isDeleted = _financialQuotationData.DeleteFinquot(finanQuotationItemID, out _errorNumber);
+
+            return _errorNumber.Length > 0
+                ? new ValidationResult(_errorNumber, _localizationService.GetResource(_errorNumber))
+                : ValidationResult.Success;
+        }
     }
 }

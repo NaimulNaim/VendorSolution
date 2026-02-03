@@ -29,5 +29,6 @@ namespace SILDMS.Service.FinancialQuotation
         ValidationResult GetMaterialDocStatus(out DSM_Documents document, out bool docStatus, string materialCode);
         ValidationResult UpdateExtensionByDocIdService(string documentID, string extension, out string iD);
         ValidationResult ItemlistService(out List<Item> itemList);
+        ValidationResult DeleteFinquot(string finanQuotationItemID, out bool isDeleted);
     }
 }

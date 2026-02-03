@@ -157,6 +157,14 @@ namespace SILDMS.Service.TechnicalQuotation
                 ValidationResult.Success;
         }
 
+        public ValidationResult DeleteTechQuotwiseDetailsService(string techQuotationItemID, out bool isDeleted)
+        {
+            isDeleted = _technicalQuotationData.DeleteTechQuotwiseDetailsData(techQuotationItemID, out _errorNumber);
+
+            return _errorNumber.Length > 0
+                ? new ValidationResult(_errorNumber, _localizationService.GetResource(_errorNumber))
+                : ValidationResult.Success;
+        }
     }
 }
 

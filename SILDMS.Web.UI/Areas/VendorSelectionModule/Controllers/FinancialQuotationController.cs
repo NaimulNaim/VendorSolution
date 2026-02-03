@@ -466,6 +466,39 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
             return Json(new { ItemList, Msg = "" }, JsonRequestBehavior.AllowGet);
         }
 
+        [Authorize]
+        [HttpPost]
+        public async Task<dynamic> DeleteFinquot(string FinanQuotationItemID)
+        {
+            bool isDeleted = false;
+
+            await Task.Run(() =>
+                _financialQuotationService.DeleteFinquot(
+                    FinanQuotationItemID, out isDeleted)
+            );
+
+            if (isDeleted)
+            {
+                respStatus.Message = "Data Deleted Successfully";
+                return Json(new
+                {
+                    Success = true,
+                    respStatus,
+                    Msg = ""
+                }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                respStatus.Message = "Error Found";
+                return Json(new
+                {
+                    Success = false,
+                    respStatus,
+                    Msg = ""
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
 
     }
 }
