@@ -61,7 +61,7 @@
 
     <div class="box-body " style="margin: 1%; padding: 5px 10px 10px 10px;" data-ng-disabled="">
         <div class="row">
-            <div class="col-lg-3 ">
+            <div class="col-lg-2">
                 <div class="form-group">
                     <label for="InvitationNumber">RFQ No :</label>
                 </div>
@@ -83,7 +83,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-3 " ng-if="Quotation">
+            <div class="col-lg-2" ng-if="Quotation">
                 <div class="form-group">
                     <label for="QuotationNumber">Quotation No :</label>
                 </div>
@@ -153,7 +153,7 @@
                                 @*<td class="col-lg-1 col-md-1 col-sm-1">{{row.MatInvType}}</td>*@
 
 
-                                <td class="col-lg-1 col-md-1 col-sm-1" style="text-align:center">
+                                <td class="col-lg-2 col-md-2 col-sm-2" style="text-align:center">
                                     <button ng-click="DetailItem(row, $index + 1)"
                                             ng-class="{
         'btn btn-success': row.Action === 'A',
