@@ -225,7 +225,7 @@
             // Get the encrypted values for VendorId and Email
             //var encryptedVendorId = queryParams.get('VendorId');
             //var encryptedEmail = queryParams.get('Email');
-            var vendorId = decodeURIComponent(queryParams.get('VendorId'));
+            var BiddingID = decodeURIComponent(queryParams.get('BiddingID'));
             var email = decodeURIComponent(queryParams.get('Email'));
 
 
@@ -235,13 +235,13 @@
 
 
             // Ensure parameters are present and encoded before using them
-            if (vendorId && email) {
+            if (BiddingID && email) {
                 // Set the "tempRegisterLink" href with both parameters
                 var tempRegisterLink = document.getElementById("tempRegisterLink");
                 if (tempRegisterLink) {
                     /*   tempRegisterLink.href = "/VendorSelectionModule/TemporaryRegistration?VendorId=" + vendorId + "&Email=" + email;*/
-                    console.log(`/VendorSelectionModule/VendorRegistration/?VendorId=${vendorId}&Email=${email}`);
-                    tempRegisterLink.href = `/VendorSelectionModule/TemporaryRegistration?VendorId=${vendorId}&Email=${email}`;
+                    console.log(`/VendorSelectionModule/VendorRegistration/?BiddingID=${BiddingID}&Email=${email}`);
+                    tempRegisterLink.href = `/VendorSelectionModule/TemporaryRegistration?BiddingID=${BiddingID}&Email=${email}`;
                 }
 
                 // Define the Register function
@@ -249,7 +249,7 @@
 
                     /*window.location = "/VendorSelectionModule/VendorRegistration/?VendorId=" + vendorId + "&Email=" + email;*/
 
-                    window.location = `/VendorSelectionModule/VendorRegistration/?VendorId=${vendorId}&Email=${email}`;
+                    window.location = `/VendorSelectionModule/VendorRegistration/?BiddingID=${BiddingID}&Email=${email}`;
 
                 };
             } else {

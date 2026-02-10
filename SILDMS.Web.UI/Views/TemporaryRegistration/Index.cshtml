@@ -1021,20 +1021,20 @@
 
 
        
-        var encryptedVendorId = decodeURIComponent(queryParams.get('VendorId'));
+        var encryptedBiddingID = decodeURIComponent(queryParams.get('BiddingID'));
         var encryptedEmail = decodeURIComponent(queryParams.get('Email'));
         console.log(encryptedEmail);
-        encryptedVendorId = encryptedVendorId.replace(/ /g, '+');
+        encryptedBiddingID = encryptedBiddingID.replace(/ /g, '+');
         encryptedEmail = encryptedEmail.replace(/ /g, '+');
         // Decrypt the parameters
-        if (encryptedVendorId && encryptedEmail) {
-            $scope.info1 = $scope.decrypt(encryptedVendorId);
+        if (encryptedBiddingID && encryptedEmail) {
+            $scope.info1 = $scope.decrypt(encryptedBiddingID);
             $scope.info2 = $scope.decrypt(encryptedEmail);
 
-            console.log("Decrypted Vendor ID: ", $scope.info1);
+            console.log("Decrypted Bidding ID: ", $scope.info1);
             console.log("Decrypted Email: ", $scope.info2);
         } else {
-            console.error("VendorId or Email parameter is missing in the URL.");
+            console.error("Bidding or Email parameter is missing in the URL.");
         }
 
 
@@ -1061,7 +1061,7 @@
 
             $http.post('/VendorSelectionModule/VendorRegistration/RegistrationCheck',
                 {
-                    VendorID: $scope.info1,
+                    Vendor: $scope.info1,
                     Email: $scope.info2
 })
                 .success(function (response) {
