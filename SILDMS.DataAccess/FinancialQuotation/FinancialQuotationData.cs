@@ -101,6 +101,8 @@ namespace SILDMS.DataAccess.FinancialQuotation
                             //MatInvType = reader.GetString("MatInvType"),
 
                             invitationNumber = reader.GetString("InvitationNumber"),
+                            RFQDeadline = reader.GetDateTime("QuotationSendingLastDate"),
+                            RFQDeadlineString = reader.GetDateTime("QuotationSendingLastDate").ToString("dd/MM/yyyy"),
                             InvitationID = reader.GetString("InvitationID"),
                             BiddingItemVendorID = reader.GetString("BiddingVendorID"),
                             VendorID = reader.GetString("VendorID"),
@@ -513,11 +515,15 @@ namespace SILDMS.DataAccess.FinancialQuotation
                 db.AddInParameter(dbCommandWrapper, "@VAT", SqlDbType.VarChar, financialQuotationDetail.VAT);
                 db.AddInParameter(dbCommandWrapper, "@Tax", SqlDbType.VarChar, financialQuotationDetail.Tax);
                 db.AddInParameter(dbCommandWrapper, "@Freight", SqlDbType.Decimal, financialQuotationDetail.Freight ?? (object)DBNull.Value);
+                db.AddInParameter(dbCommandWrapper, "@FreightPer", SqlDbType.VarChar, financialQuotationDetail.FreightPer);
                 db.AddInParameter(dbCommandWrapper, "@Discount", SqlDbType.Decimal, financialQuotationDetail.Discount ?? (object)DBNull.Value);
+
+                db.AddInParameter(dbCommandWrapper, "@DiscountPer", SqlDbType.VarChar, financialQuotationDetail.DiscountPer);
                 db.AddInParameter(dbCommandWrapper, "@OrderHandlingCharges", SqlDbType.Decimal, financialQuotationDetail.OrderHandlingCharges ?? (object)DBNull.Value);
                 db.AddInParameter(dbCommandWrapper, "@PackingCharges", SqlDbType.Decimal, financialQuotationDetail.PackingCharges ?? (object)DBNull.Value);
                 db.AddInParameter(dbCommandWrapper, "@SundryCharges", SqlDbType.Decimal, financialQuotationDetail.SundryCharges ?? (object)DBNull.Value);
                 db.AddInParameter(dbCommandWrapper, "@DeliveryCharge", SqlDbType.Decimal, financialQuotationDetail.DeliveryCharge ?? (object)DBNull.Value);
+                db.AddInParameter(dbCommandWrapper, "@DeliveryPer", SqlDbType.VarChar, financialQuotationDetail.DeliveryPer);
 
                 // =======================
                 // Quantity Information
@@ -836,11 +842,14 @@ namespace SILDMS.DataAccess.FinancialQuotation
                             Per = reader["Per"] != DBNull.Value ? Convert.ToDecimal(reader["Per"]) : 0,
 
                             Freight = reader["Freight"] != DBNull.Value ? Convert.ToDecimal(reader["Freight"]) : (decimal?)null,
+                            FreightPer = reader["FreightPer"] != DBNull.Value ? Convert.ToString(reader["FreightPer"]) : "",
                             Discount = reader["Discount"] != DBNull.Value ? Convert.ToDecimal(reader["Discount"]) : (decimal?)null,
+                            DiscountPer = reader["DiscountPer"] != DBNull.Value ? Convert.ToString(reader["DiscountPer"]):"",
                             OrderHandlingCharges = reader["OrderHandlingCharges"] != DBNull.Value ? Convert.ToDecimal(reader["OrderHandlingCharges"]) : (decimal?)null,
                             PackingCharges = reader["PackingCharges"] != DBNull.Value ? Convert.ToDecimal(reader["PackingCharges"]) : (decimal?)null,
                             SundryCharges = reader["SundryCharges"] != DBNull.Value ? Convert.ToDecimal(reader["SundryCharges"]) : (decimal?)null,
                             DeliveryCharge = reader["DeliveryCharge"] != DBNull.Value ? Convert.ToDecimal(reader["DeliveryCharge"]) : (decimal?)null,
+                            DeliveryPer = reader["DeliveryPer"] != DBNull.Value ? Convert.ToString(reader["DeliveryPer"]) : "",
 
                             // =====================
                             // Currency & Tax
@@ -1040,11 +1049,14 @@ namespace SILDMS.DataAccess.FinancialQuotation
                 db.AddInParameter(dbCommandWrapper, "@VAT", SqlDbType.VarChar, financialQuotationDetail.VAT);
                 db.AddInParameter(dbCommandWrapper, "@Tax", SqlDbType.VarChar, financialQuotationDetail.Tax);
                 db.AddInParameter(dbCommandWrapper, "@Freight", SqlDbType.Decimal, financialQuotationDetail.Freight ?? (object)DBNull.Value);
+                db.AddInParameter(dbCommandWrapper, "@FreightPer", SqlDbType.VarChar, financialQuotationDetail.FreightPer ?? (object)DBNull.Value);
                 db.AddInParameter(dbCommandWrapper, "@Discount", SqlDbType.Decimal, financialQuotationDetail.Discount ?? (object)DBNull.Value);
+                db.AddInParameter(dbCommandWrapper, "@DiscountPer", SqlDbType.VarChar, financialQuotationDetail.DiscountPer ?? (object)DBNull.Value);
                 db.AddInParameter(dbCommandWrapper, "@OrderHandlingCharges", SqlDbType.Decimal, financialQuotationDetail.OrderHandlingCharges ?? (object)DBNull.Value);
                 db.AddInParameter(dbCommandWrapper, "@PackingCharges", SqlDbType.Decimal, financialQuotationDetail.PackingCharges ?? (object)DBNull.Value);
                 db.AddInParameter(dbCommandWrapper, "@SundryCharges", SqlDbType.Decimal, financialQuotationDetail.SundryCharges ?? (object)DBNull.Value);
                 db.AddInParameter(dbCommandWrapper, "@DeliveryCharge", SqlDbType.Decimal, financialQuotationDetail.DeliveryCharge ?? (object)DBNull.Value);
+                db.AddInParameter(dbCommandWrapper, "@DeliveryPer", SqlDbType.VarChar, financialQuotationDetail.DeliveryPer ?? (object)DBNull.Value);
 
                 // =======================
                 // Quantity Information

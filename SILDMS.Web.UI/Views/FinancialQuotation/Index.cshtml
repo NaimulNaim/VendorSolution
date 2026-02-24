@@ -147,9 +147,9 @@
                         </thead>
                         <tbody>
                             <tr id="rowID" ng-repeat="row in GridDisplayCollection" style="height:20px; font-size:13px;" ng-class="{'selected-row': row.selected}">
-                                <td class="col-lg-1 col-md-1 col-sm-1" style="text-align:center">{{formatMaterialCode(row.materialCode)}}</td>
+                                <td class="col-lg-2 col-md-2 col-sm-2" style="text-align:center">{{formatMaterialCode(row.materialCode)}}</td>
                                 <td class="col-lg-4 col-md-4 col-sm-4">{{row.materialName}}</td>
-                                <td class="col-lg-1 col-md-1 col-sm-1" style="text-align:right">{{row.MaterialQuantity| number:3}}</td>
+                                <td class="col-lg-2 col-md-2 col-sm-2" style="text-align:right">{{row.MaterialQuantity| number:3}}</td>
                                 <td class="col-lg-1 col-md-1 col-sm-1" style="text-align:center">{{row.Unit}}</td>
                                 <td class="col-lg-1 col-md-1 col-sm-1 text-center">
                                     <button type="button"
@@ -283,9 +283,15 @@
                             </select>
                         </div>
                         <div class="col-lg-3"><label>Freight:</label></div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-2" style="padding-right:0px;">
                             <input type="number" class="form-control" id="Freight" ng-model="FinancialQuotationDetail.Freight"
                                    ng-blur="checkAndFormat('Freight')" />
+                        </div>
+                        <div class="col-lg-1" style="padding-left:0px;">
+                            <select class="form-control" ng-model="FinancialQuotationDetail.FreightPer">
+                                <option value="P">%</option>
+                                <option value="A">Amount</option>
+                            </select>
                         </div>
                     </div>
 
@@ -416,8 +422,14 @@
                     </div>
                     <div ng-show="showOptional">
                         <div class="row mt-2">
-                            <div class="col-lg-2"><label>Discount:</label></div>
-                            <div class="col-lg-1"><input type="number" class="form-control" ng-model="FinancialQuotationDetail.Discount" min="0.01" /></div>
+                            <div class="col-lg-3"><label>Discount:</label></div>
+                            <div class="col-lg-2"><input type="number" class="form-control" ng-model="FinancialQuotationDetail.Discount" min="0.01" /></div>
+                            <div class="col-lg-1" style="padding-left:0px;">
+                                <select class="form-control" ng-model="FinancialQuotationDetail.DiscountPer">
+                                    <option value="P">%</option>
+                                    <option value="A">Amount</option>
+                                </select>
+                            </div>
                             <div class="col-lg-2"><label>Order Handling Charges:</label></div>
                             <div class="col-lg-1"><input type="number" class="form-control" ng-model="FinancialQuotationDetail.OrderHandlingCharges" /></div>
 
@@ -578,16 +590,17 @@
 
                 <!-- VAT / Taxes -->
                 <div class="row mt-2">
-                    <div class="col-lg-3"><label>VAT<span class="text-danger">*</span></label></div>
+
+                    <div class="col-lg-3"><label>Quotation Qty<span class="text-danger">*</span></label></div>
                     <div class="col-lg-3">
-                        <select class="form-control"
-                                ng-model="FinancialQuotationDetail.VAT"
-                                ng-required="true">
-                            <option value="">--Select--</option>
-                            <option value="Included">Included</option>
-                            <option value="Excluded">Excluded</option>
-                        </select>
+                        <input type="text"
+                               class="form-control text-right"
+                               ng-model="FinancialQuotationDetail.QuotationQty"
+                               three-decimals
+                               onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46">
                     </div>
+
+
 
                     <div class="col-lg-3"><label>Taxes</label></div>
                     <div class="col-lg-3">
@@ -602,14 +615,7 @@
 
                 <!-- Quotation Qty -->
                 <div class="row mt-2">
-                    <div class="col-lg-3"><label>Quotation Qty<span class="text-danger">*</span></label></div>
-                    <div class="col-lg-3">
-                        <input type="text"
-                               class="form-control text-right"
-                               ng-model="FinancialQuotationDetail.QuotationQty"
-                               three-decimals
-                               onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46">
-                    </div>
+
 
                     <div class="col-lg-3"><label>Quotation Qty Unit<span class="text-danger">*</span></label></div>
                     <div class="col-lg-3">
@@ -618,6 +624,18 @@
                                 ng-required="true"
                                 ng-options="i.Item_Code for i in ItemList">
                             <option value="" style="display:none">---</option>
+                        </select>
+                    </div>
+
+
+                    <div class="col-lg-3"><label>VAT<span class="text-danger">*</span></label></div>
+                    <div class="col-lg-3">
+                        <select class="form-control"
+                                ng-model="FinancialQuotationDetail.VAT"
+                                ng-required="true">
+                            <option value="">--Select--</option>
+                            <option value="Included">Included</option>
+                            <option value="Excluded">Excluded</option>
                         </select>
                     </div>
                 </div>
@@ -729,10 +747,30 @@
 
                     <div class="row mt-2">
                         <div class="col-lg-3"><label>Discount</label></div>
-                        <div class="col-lg-3"><input type="number" class="form-control" ng-model="FinancialQuotationDetail.Discount"></div>
+                        @*<div class="col-lg-3"><input type="number" class="form-control" ng-model="FinancialQuotationDetail.Discount"></div>*@
+
+                        <div class="col-lg-2" style="padding-right:0px;">
+
+                            <input type="number" class="form-control" ng-model="FinancialQuotationDetail.Discount" id="Discount1" placeholder="Enter discount"
+                                    ng-blur="checkAndFormat('Discount1')">
+                        </div>
+                        <div class="col-lg-1" style="padding-left:0px;">
+                            <select class="form-control" ng-model="FinancialQuotationDetail.DiscountPer">
+                                <option value="P">%</option>
+                                <option value="A">Amount</option>
+                            </select>
+                        </div>
+
 
                         <div class="col-lg-3"><label>Delivery Charge</label></div>
-                        <div class="col-lg-3"><input type="number" class="form-control" ng-model="FinancialQuotationDetail.DeliveryCharge"></div>
+                        <div class="col-lg-2"  style="padding-right:0px;"><input type="number" class="form-control" id="DeliveryCharge1" ng-model="FinancialQuotationDetail.DeliveryCharge"
+                                                                                   ng-blur="checkAndFormat('DeliveryCharge1')"></div>
+                        <div class="col-lg-1" style="padding-left:0px;">
+                            <select class="form-control" ng-model="FinancialQuotationDetail.DeliveryPer">
+                                <option value="P">%</option>
+                                <option value="A">Amount</option>
+                            </select>
+                        </div>
                     </div>
 
                     <div class="row mt-2">
@@ -1367,6 +1405,10 @@
             Tax: "",
             Freight: null,
             Discount: null,
+            DiscountPer: '',
+            DeliveryPer: '',
+            FreightPer:'',
+
             OrderHandlingCharges: null,
             PackingCharges: null,
             SundryCharges: null,
@@ -1627,6 +1669,7 @@
 
         $scope.toggleInvitationSelect = function (Invitation_Number) {
             $scope.InvitationNumber = Invitation_Number;
+            
             //$scope.proposal = proposal;
             //$scope.Fintype = Fintype;
             $scope.p = 0;
@@ -2322,11 +2365,13 @@
 
             $scope.FinancialQuotationDetail.Per = data.Per;
 
-            $scope.FinancialQuotationDetail.Discount = data.Discount;
+            //$scope.FinancialQuotationDetail.Discount = data.Discount;
+            $scope.FinancialQuotationDetail.DiscountPer = data.DiscountPer;
             $scope.FinancialQuotationDetail.OrderHandlingCharges = data.OrderHandlingCharges;
             $scope.FinancialQuotationDetail.PackingCharges = data.PackingCharges;
             $scope.FinancialQuotationDetail.SundryCharges = data.SundryCharges;
-            $scope.FinancialQuotationDetail.DeliveryCharge = data.DeliveryCharge;
+           /* $scope.FinancialQuotationDetail.DeliveryCharge = data.DeliveryCharge;*/
+            $scope.FinancialQuotationDetail.DeliveryPer = data.DeliveryPer;
 
             // =====================
             // Currency & Tax
@@ -2390,6 +2435,7 @@
             $scope.FinancialQuotationDetail.Fintype = data.Fintype;
             $scope.FinancialQuotationDetail.SampleDocumentID = data.SampleDocumentID;
             $scope.FinancialQuotationDetail.Fintype = data.Fintype;
+            $scope.FinancialQuotationDetail.FreightPer = data.FreightPer;
 
             if (data.Fintype === 'DOMESTIC') {
 
@@ -2416,6 +2462,7 @@
                 setValue('price', data.Price);
 
                 $scope.FinancialQuotationDetail.Freight = data.Freight;
+             
                 setValue('Freight', data.Freight);
                 $scope.FinancialQuotationDetail.Discount = data.Discount;
                 setValue('Discount', data.Discount);
@@ -2641,6 +2688,26 @@
                 $scope.FinancialQuotationDetail.Subcontractor = 'No';
                 $scope.FinancialQuotationDetail.SubcontractorDetails = '';
                 $scope.FinancialQuotationDetail.DeliveryLocation = row.DeliveryLocation;
+                //var timestamp = parseInt(row.RFQDeadline.replace(/\/Date\((\d+)\)\//, '$1'), 10);
+                //var d = new Date(timestamp);
+                //$scope.FinancialQuotationDetail.QuotationValidity = row.RFQDeadlineString;
+
+
+                function formatDateDDMMYYYY(date) {
+                    var d = new Date(date);
+                    var day = ('0' + d.getDate()).slice(-2);
+                    var month = ('0' + (d.getMonth() + 1)).slice(-2);
+                    var year = d.getFullYear();
+                    return day + '/' + month + '/' + year;
+                }
+                var baseDate;
+                var parts = row.RFQDeadlineString.split('/');
+                if (parts.length === 3) {
+                    baseDate = new Date(parts[2], parts[1] - 1, parts[0]);
+                }
+
+                baseDate.setDate(baseDate.getDate() + 30); // add 30 days
+                $scope.FinancialQuotationDetail.QuotationValidity = formatDateDDMMYYYY(baseDate);
 
 
                 // If you have dropdown objects (like ItemList / IncotermsList), resolve to object:

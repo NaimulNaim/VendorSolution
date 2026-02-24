@@ -1061,7 +1061,7 @@
 
             $http.post('/VendorSelectionModule/VendorRegistration/RegistrationCheck',
                 {
-                    Vendor: $scope.info1,
+                    VendorID: $scope.info1,
                     Email: $scope.info2
 })
                 .success(function (response) {
@@ -1164,7 +1164,136 @@
             }
         };
 
+        //$scope.RegistrationVendor = function () {
+        //    var selectedPropID = [];
+
+        //    angular.forEach($scope.docPropertyForSpecificDocType, function (item) {
+        //        if (item.DocClassification === "Required") {
+        //            item.IsSelected = true;
+        //            selectedPropID.push(item.DocPropertyID);
+        //        }
+        //    });
+
+        //    if ($scope.PurreqDtl.Vendor.Password !== $scope.PurreqDtl.Vendor.ConfirmPassword) {
+        //        toastr.error("Passwords do not match");
+        //        return;
+        //    }
+
+        //    // Show loading indicator
+        //    $scope.loading = true;
+
+        //    // 1️⃣ Save Vendor
+        //    $http.post('/VendorSelectionModule/VendorRegistration/VendorRegistrationDetails', {
+        //        businessName: $scope.PurreqDtl.Vendor.BusinessName,
+        //        contactPersonFirstName: $scope.PurreqDtl.Vendor.ContactPersonFirstName,
+        //        contactPersonLastName: $scope.PurreqDtl.Vendor.ContactPersonLastName,
+        //        vendorPhoneNumber: $scope.PurreqDtl.Vendor.VendorPhoneNumber,
+        //        email: $scope.info2,
+        //        companyAddress: $scope.PurreqDtl.Vendor.CompanyAddress,
+        //        country: $scope.PurreqDtl.Vendor.Country,
+        //        businessType: $scope.PurreqDtl.Vendor.BusinessType.BusinessTypeName,
+        //        tin: $scope.PurreqDtl.Vendor.TIN,
+        //        bin: $scope.PurreqDtl.Vendor.BIN,
+        //        generalDetailsServices: $scope.PurreqDtl.Vendor.GenaralDetailsServices,
+        //        userName: $scope.PurreqDtl.Vendor.UserName,
+        //        password: $scope.PurreqDtl.Vendor.Password,
+        //        status: 'Temporary',
+        //        vendor: $scope.info1,
+        //        companyProfile: $scope.PurreqDtl.Vendor.CompanyProfile,
+        //        tradeLicense: $scope.PurreqDtl.Vendor.TradeLicense,
+        //        partnershipDeed: $scope.PurreqDtl.Vendor.PartnershipDeed,
+        //        irc: $scope.PurreqDtl.Vendor.IRC,
+        //        indentingLicense: $scope.PurreqDtl.Vendor.IndentingLicense,
+        //        others: $scope.PurreqDtl.Vendor.Others
+        //    }).success(function (vendorResp) {
+
+        //        // 🔴 HARD STOP on failure
+        //        if (!vendorResp.success) {
+        //            toastr.error(vendorResp.message);
+        //            return;
+        //        }
+
+        //        // ✅ SAFE to proceed
+        //        $http.post('/VendorSelectionModule/VendorRegistration/AddDocument', {
+        //            UserId: vendorResp.user.UserID,
+        //            VendorId: vendorResp.user.VendorId,
+        //            _selectedPropID: selectedPropID.join(),
+        //            _docMetaValues: $scope.docPropIdentityGridData
+        //        }).success(function (docResp) {
+
+        //            if (docResp.ResponseCode === "S201") {
+
+        //                var docInfo = docResp.DistinctID[0];
+
+        //                function uploadFile(file, docType) {
+        //                    var fileData = new FormData();
+        //                    fileData.append('serverIP', docInfo.ServerIP);
+        //                    fileData.append('ftpPort', docInfo.ServerPort);
+        //                    fileData.append('ftpUserName', docInfo.FtpUserName);
+        //                    fileData.append('ftpPassword', docInfo.FtpPassword);
+        //                    fileData.append('vendorId', vendorResp.user.VendorId);
+        //                    fileData.append('docType', docType);
+        //                    fileData.append('file', file);
+
+        //                    return $.ajax({
+        //                        url: '/VendorSelectionModule/VendorRegistration/UploadOtherFiles',
+        //                        type: 'POST',
+        //                        data: fileData,
+        //                        contentType: false,
+        //                        processData: false
+        //                    });
+        //                }
+
+        //                var uploads = [];
+        //                if ($scope.tinFile) uploads.push(uploadFile($scope.tinFile, 'TIN'));
+        //                if ($scope.binFile) uploads.push(uploadFile($scope.binFile, 'BIN'));
+        //                if ($scope.companyProfileFile)
+        //                    uploads.push(uploadFile($scope.companyProfileFile, 'CompanyProfile'));
+
+        //                if ($scope.tradeLicenseFile)
+        //                    uploads.push(uploadFile($scope.tradeLicenseFile, 'TradeLicense'));
+
+        //                if ($scope.partnershipDeedFile)
+        //                    uploads.push(uploadFile($scope.partnershipDeedFile, 'PartnershipDeed'));
+
+
+
+        //                if ($scope.importRegistrationFile)
+        //                    uploads.push(uploadFile($scope.importRegistrationFile, 'ImportRegistration'));
+
+        //                if ($scope.indentingLicenseFile)
+        //                    uploads.push(uploadFile($scope.indentingLicenseFile, 'IndentingLicense'));
+
+
+        //                if ($scope.othersFile)
+        //                    uploads.push(uploadFile($scope.othersFile, 'Others'));
+
+        //                $.when.apply($, uploads)
+        //                    .done(function () {
+        //                        toastr.success("Vendor registered and documents uploaded successfully");
+        //                        $scope.$apply(() => $scope.refreshPage());
+        //                    })
+        //                    .fail(function () {
+        //                        toastr.error("File upload failed");
+        //                    });
+        //            }
+
+        //        }).error(function () {
+        //            $scope.loading = false;
+        //            toastr.error("Document metadata save failed");
+        //        });
+
+        //    }).error(function () {
+        //        $scope.loading = false;
+        //        toastr.error("Vendor registration failed");
+        //    });
+
+        //}
+
+
+
         $scope.RegistrationVendor = function () {
+
             var selectedPropID = [];
 
             angular.forEach($scope.docPropertyForSpecificDocType, function (item) {
@@ -1179,7 +1308,6 @@
                 return;
             }
 
-            // Show loading indicator
             $scope.loading = true;
 
             // 1️⃣ Save Vendor
@@ -1205,90 +1333,105 @@
                 irc: $scope.PurreqDtl.Vendor.IRC,
                 indentingLicense: $scope.PurreqDtl.Vendor.IndentingLicense,
                 others: $scope.PurreqDtl.Vendor.Others
-            }).success(function (vendorResp) {
+            })
 
-                // 🔴 HARD STOP on failure
-                if (!vendorResp.success) {
-                    toastr.error(vendorResp.message);
-                    return;
-                }
+                .then(function (vendorResp) {
 
-                // ✅ SAFE to proceed
-                $http.post('/VendorSelectionModule/VendorRegistration/AddDocument', {
-                    UserId: vendorResp.user.UserID,
-                    VendorId: vendorResp.user.VendorId,
-                    _selectedPropID: selectedPropID.join(),
-                    _docMetaValues: $scope.docPropIdentityGridData
-                }).success(function (docResp) {
-
-                    if (docResp.ResponseCode === "S201") {
-
-                        var docInfo = docResp.DistinctID[0];
-
-                        function uploadFile(file, docType) {
-                            var fileData = new FormData();
-                            fileData.append('serverIP', docInfo.ServerIP);
-                            fileData.append('ftpPort', docInfo.ServerPort);
-                            fileData.append('ftpUserName', docInfo.FtpUserName);
-                            fileData.append('ftpPassword', docInfo.FtpPassword);
-                            fileData.append('vendorId', vendorResp.user.VendorId);
-                            fileData.append('docType', docType);
-                            fileData.append('file', file);
-
-                            return $.ajax({
-                                url: '/VendorSelectionModule/VendorRegistration/UploadOtherFiles',
-                                type: 'POST',
-                                data: fileData,
-                                contentType: false,
-                                processData: false
-                            });
-                        }
-
-                        var uploads = [];
-                        if ($scope.tinFile) uploads.push(uploadFile($scope.tinFile, 'TIN'));
-                        if ($scope.binFile) uploads.push(uploadFile($scope.binFile, 'BIN'));
-                        if ($scope.companyProfileFile)
-                            uploads.push(uploadFile($scope.companyProfileFile, 'CompanyProfile'));
-
-                        if ($scope.tradeLicenseFile)
-                            uploads.push(uploadFile($scope.tradeLicenseFile, 'TradeLicense'));
-
-                        if ($scope.partnershipDeedFile)
-                            uploads.push(uploadFile($scope.partnershipDeedFile, 'PartnershipDeed'));
-
-                
-
-                        if ($scope.importRegistrationFile)
-                            uploads.push(uploadFile($scope.importRegistrationFile, 'ImportRegistration'));
-
-                        if ($scope.indentingLicenseFile)
-                            uploads.push(uploadFile($scope.indentingLicenseFile, 'IndentingLicense'));
-
-                      
-                        if ($scope.othersFile)
-                            uploads.push(uploadFile($scope.othersFile, 'Others'));
-
-                        $.when.apply($, uploads)
-                            .done(function () {
-                                toastr.success("Vendor registered and documents uploaded successfully");
-                                $scope.$apply(() => $scope.refreshPage());
-                            })
-                            .fail(function () {
-                                toastr.error("File upload failed");
-                            });
+                    if (!vendorResp.data.success) {
+                        toastr.error(vendorResp.data.message);
+                        return Promise.reject();
                     }
 
-                }).error(function () {
+                    var userId = vendorResp.data.user.UserID;
+                    var vendorId = vendorResp.data.user.VendorId;
+
+                    // 2️⃣ Save Document Metadata
+                    return $http.post('/VendorSelectionModule/VendorRegistration/AddDocument', {
+                        UserId: userId,
+                        VendorId: vendorId,
+                        _selectedPropID: selectedPropID.join(),
+                        _docMetaValues: $scope.docPropIdentityGridData
+                    }).then(function (docResp) {
+
+                        if (docResp.data.ResponseCode !== "S201") {
+                            toastr.error("Document metadata save failed");
+                            return Promise.reject();
+                        }
+
+                        return {
+                            docInfo: docResp.data.DistinctID[0],
+                            vendorId: vendorId
+                        };
+                    });
+                })
+
+                .then(function (context) {
+
+                    if (!context) return;
+
+                    var uploads = [];
+
+                    function uploadFile(file, docType) {
+
+                        var fileData = new FormData();
+                        fileData.append('serverIP', context.docInfo.ServerIP);
+                        fileData.append('ftpPort', context.docInfo.ServerPort);
+                        fileData.append('ftpUserName', context.docInfo.FtpUserName);
+                        fileData.append('ftpPassword', context.docInfo.FtpPassword);
+                        fileData.append('vendorId', context.vendorId);
+                        fileData.append('docType', docType);
+                        fileData.append('file', file);
+
+                        return $http.post(
+                            '/VendorSelectionModule/VendorRegistration/UploadOtherFiles',
+                            fileData,
+                            {
+                                transformRequest: angular.identity,
+                                headers: { 'Content-Type': undefined }
+                            }
+                        );
+                    }
+
+                    // Optional uploads
+                    if ($scope.tinFile) uploads.push(uploadFile($scope.tinFile, 'TIN'));
+                    if ($scope.binFile) uploads.push(uploadFile($scope.binFile, 'BIN'));
+                    if ($scope.companyProfileFile) uploads.push(uploadFile($scope.companyProfileFile, 'CompanyProfile'));
+                    if ($scope.tradeLicenseFile) uploads.push(uploadFile($scope.tradeLicenseFile, 'TradeLicense'));
+                    if ($scope.partnershipDeedFile) uploads.push(uploadFile($scope.partnershipDeedFile, 'PartnershipDeed'));
+                    if ($scope.importRegistrationFile) uploads.push(uploadFile($scope.importRegistrationFile, 'ImportRegistration'));
+                    if ($scope.indentingLicenseFile) uploads.push(uploadFile($scope.indentingLicenseFile, 'IndentingLicense'));
+                    if ($scope.othersFile) uploads.push(uploadFile($scope.othersFile, 'Others'));
+
+                    // 🔥 Critical: Handle empty upload array explicitly
+                    if (uploads.length === 0) {
+                        toastr.success("Vendor registered successfully");
+                        $scope.refreshPage();
+                        return;
+                    }
+
+                    // If files exist → wait for all
+                    return Promise.all(uploads)
+                        .then(function () {
+                            toastr.success("Vendor registered and documents uploaded successfully");
+                            $scope.refreshPage();
+                        })
+                        .catch(function () {
+                            toastr.error("File upload failed");
+                        });
+                })
+
+                .catch(function () {
+                    // Already handled specific errors above
+                })
+
+                .finally(function () {
                     $scope.loading = false;
-                    toastr.error("Document metadata save failed");
                 });
+        };
 
-            }).error(function () {
-                $scope.loading = false;
-                toastr.error("Vendor registration failed");
-            });
 
-        }
+
+
 
         $scope.AutoCompleteVendorInfo = function (vendorData) {
             if (!vendorData || !Array.isArray(vendorData) || vendorData.length === 0) {

@@ -391,7 +391,9 @@ namespace SILDMS.Model.VendorSelectionModule
         public string VAT { get; set; }
         public string Tax { get; set; }
         public decimal? Freight { get; set; }
+        public string FreightPer { get; set; }
         public decimal? Discount { get; set; }
+        public string DiscountPer { get; set; }
 
         public decimal? OrderHandlingCharges { get; set; }
 
@@ -400,6 +402,7 @@ namespace SILDMS.Model.VendorSelectionModule
         public decimal? SundryCharges { get; set; }
 
         public decimal? DeliveryCharge { get; set; }
+        public string DeliveryPer { get; set; }
 
         public string Fintype { get; set; } 
         public string SampleDocumentID { get; set; }
@@ -575,6 +578,8 @@ namespace SILDMS.Model.VendorSelectionModule
         public string Fintype { get; set; }
         public string Proposal { get; set; }
         public string DeliveryLocation { get; set; }
+        public DateTime RFQDeadline { get; set; }
+        public string RFQDeadlineString { get; set; }
     }
 
 
