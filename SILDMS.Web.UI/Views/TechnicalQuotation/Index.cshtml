@@ -243,12 +243,12 @@
                 <!-- Row 3: Currency & R&D Price -->
                 <div class="row">
                     <div class="col-lg-3">
-                        <div class="form-group">
+                     
                             <label for="Currency">Currency :</label>
-                        </div>
+                    
                     </div>
                     <div class="col-lg-3">
-                        <div class="form-group">
+                       
                             <select id="Currency" class="form-control" ng-model="TechnicalQuotation.Currency"
                                     ng-options="ItemTypes as ItemTypes.MasterDataValue for ItemTypes in ItemTypeList track by ItemTypes.MasterDataValue " ng-required="true">
 
@@ -257,7 +257,7 @@
 
                             </select>
 
-                        </div>
+                   
                     </div>
 
                     <div class="col-lg-2">
@@ -282,17 +282,17 @@
                     </div>
 
                     <div class="col-lg-2">
-                        <label for="PricePer">Price Per:</label>
+                        <label for="PricePer">Price Per Unit:</label>
                     </div>
-                    <div class="col-lg-1">
+                    <div class="col-lg-1"style="padding-right:0px;">
                         <input id="PricePer" type="number" ng-model="TechnicalQuotation.PricePer" class="form-control"
                                placeholder="1" />
                     </div>
 
-                    <div class="col-lg-1">
+                    @*<div class="col-lg-1">
                         <label for="PriceUnit">Price Unit:</label>
-                    </div>
-                    <div class="col-lg-1">
+                    </div>*@
+                    <div class="col-lg-1" style="padding-left:0px;">
                         <select class="form-control" id="PriceUnit"
                                 ng-model="TechnicalQuotation.PriceUnit"
                                 ng-options="Item.Item_Code as Item.Item_Code for Item in ItemList track by Item.Item_Code">
@@ -307,21 +307,22 @@
                         <label for="MinOrderQty">Minimum Order Qty:</label>
                     </div>
                     <div class="col-lg-3">
-                        <input id="MinOrderQty" type="number" ng-model="TechnicalQuotation.MinOrderQty" class="form-control"
-                               ng-blur="checkAndFormat2('MinOrderQty')"
+                        <input id="MinOrderQty" type="text" style="text-align:right;" ng-model="TechnicalQuotation.MinOrderQty" class="form-control"
+                                                                                        three-decimals
+onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46"
                                placeholder="Minimum Order Qty" />
                     </div>
 
                     <div class="col-lg-2">
                         <label for="ShelfLife">Shelf Life:</label>
                     </div>
-                    <div class="col-lg-2">
+                    <div class="col-lg-1" style="padding-right:0px;">
                         <div class="input-group">
                             <input id="ShelfLife" type="number" ng-model="TechnicalQuotation.ShelfLifeValue" class="form-control"
                                    placeholder="Shelf Life" />
                         </div>
                     </div>
-                    <div class="col-lg-1">
+                    <div class="col-lg-1" style="padding-left:0px;">
                         <select ng-model="TechnicalQuotation.ShelfLifeUnit" class="form-control">
                             <option value="Days">Days</option>
                             <option value="Months">Months</option>
@@ -400,13 +401,13 @@
                         <div class="col-lg-3">
                             <label for="ProductionLeadTime">Production Lead Time:</label>
                         </div>
-                        <div class="col-lg-2">
-                            <div class="input-group">
-                                <input id="ProductionLeadTime" type="number" ng-model="TechnicalQuotation.ProductionLeadTimeValue"
-                                       class="form-control" placeholder="Lead Time" />
-                            </div>
+                        <div class="col-lg-2" style="padding-right:0px;">
+
+                            <input id="ProductionLeadTime" type="number" ng-model="TechnicalQuotation.ProductionLeadTimeValue"
+                                   class="form-control" placeholder="Lead Time" />
+
                         </div>
-                        <div class="col-lg-1">
+                        <div class="col-lg-1" style="padding-left:0px;">
                             <select ng-model="TechnicalQuotation.ProductionLeadTimeUnit" class="form-control">
                                 <option value="Days">Days</option>
                                 <option value="Months">Months</option>
@@ -415,33 +416,33 @@
                         </div>
 
 
-                    </div>
-
-                    <!-- Row 9: Commercial & Minimum Pack Size -->
-                    <div class="row">
-                        <div class="col-lg-3">
+                        <div class="col-lg-2">
                             <label for="CommercialPackSize">Commercial Pack Size:</label>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-2">
                             <input id="CommercialPackSize" type="text" ng-model="TechnicalQuotation.CommercialPackSize"
                                    class="form-control" placeholder="Commercial Pack Size" />
                         </div>
 
-                        <div class="col-lg-2">
+
+
+                    </div>
+
+                    <!-- Row 9: Commercial & Minimum Pack Size -->
+                    <div class="row">
+
+                        <div class="col-lg-3">
                             <label for="MinPackSize">Minimum Pack Size:</label>
                         </div>
-                        <div class="col-lg-2">
+                        <div class="col-lg-3">
                             <input id="MinPackSize" type="text" ng-model="TechnicalQuotation.MinPack" class="form-control"
                                    placeholder="Minimum Pack Size" />
                         </div>
-                    </div>
 
-                    <!-- Row 10: Representative Sample -->
-                    <div class="row">
-                        <div class="col-lg-3">
+                        <div class="col-lg-2">
                             <label for="RepresentativeSample">Representative Sample:</label>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-2">
                             <select id="RepresentativeSample" ng-model="TechnicalQuotation.RepresentativeSample"
                                     ng-change="showRepresentativeOther = (TechnicalQuotation.RepresentativeSample === 'Other')"
                                     class="form-control">
@@ -454,20 +455,24 @@
                                    ng-model="TechnicalQuotation.RepresentativeSampleOther" class="form-control"
                                    placeholder="Specify Other" style="margin-top:5px;" />
                         </div>
+                    </div>
 
-                        <div class="col-lg-2"><label>Representative Sample Pack Size:</label></div>
+                    <!-- Row 10: Representative Sample -->
+                   
+
+                    <!-- Row 11: Current Production Status & Production Capacity -->
+                    <div class="row">
+                        <div class="col-lg-3"><label>Representative Sample Pack Size:</label></div>
                         <div class="col-lg-3">
                             <input type="text" class="form-control"
                                    ng-model="TechnicalQuotation.RepresentativeSamplePackSize">
                         </div>
-                    </div>
 
-                    <!-- Row 11: Current Production Status & Production Capacity -->
-                    <div class="row">
-                        <div class="col-lg-3">
+
+                        <div class="col-lg-2">
                             <label for="CurrentProductionStatus">Current Production Status:</label>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-2">
                             <select id="CurrentProductionStatus"
                                     ng-model="TechnicalQuotation.CurrentStatus"
                                     class="form-control">
@@ -479,41 +484,32 @@
                             </select>
                         </div>
 
-                        <div class="col-lg-2">
+
+
+
+
+
+                    </div>
+                    <div class="row">
+
+                        <div class="col-lg-3">
                             <label for="ProductionCapacity">Production Capacity:</label>
                         </div>
-                        <div class="col-lg-1">
+                        <div class="col-lg-3">
                             <input id="ProductionCapacity" type="text" ng-model="TechnicalQuotation.ProdCapacity" class="form-control"
                                    placeholder="Capacity" />
                         </div>
 
-                        @*<div class="col-lg-2">
-                                <label for="ProductionFrequency">Production Frequency:</label>
-                            </div>
-                            <div class="col-lg-1">
-                                <select id="ProductionFrequency" ng-model="TechnicalQuotation.ProductionFrequency" class="form-control">
-                                    <option value="">--Select--</option>
-                                    <option value="Campaign">Campaign</option>
-                                    <option value="Regular">Regular</option>
-                                </select>
-                            </div>*@
-
-                        <div style="display:inline-block; font-family:inherit; font-size:14px;">
-                            <label for="ProductionFrequency" style="margin-right:5px;">
-                                Production Frequency:
-                            </label>
-                            <select id="ProductionFrequency"
-                                    ng-model="TechnicalQuotation.ProductionFrequency"
-                                    class="form-control form-control-sm"
-                                    style="display:inline-block; width:auto; min-width:120px;">
+                        <div class="col-lg-2">
+                            <label for="ProductionFrequency">Production Frequency:</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <select id="ProductionFrequency" ng-model="TechnicalQuotation.ProductionFrequency" class="form-control">
                                 <option value="">--Select--</option>
                                 <option value="Campaign">Campaign</option>
                                 <option value="Regular">Regular</option>
                             </select>
                         </div>
-
-
-
                     </div>
 
                     <!-- Row 12: Pharmacopeial Reference & Regulatory Approval -->
@@ -1360,7 +1356,37 @@
 
 <script type="text/javascript">
 
+    app.directive('threeDecimals', function () {
+        return {
+            require: 'ngModel',
+            link: function (scope, element, attrs, ngModelController) {
+                // Remove the $parsers that convert to number
+                // Let the model value stay as string
 
+                ngModelController.$formatters.push(function (modelValue) {
+                    if (modelValue === null || modelValue === undefined || modelValue === '') {
+                        return '';
+                    }
+                    // Convert to number, format, then return as string
+                    var num = parseFloat(modelValue);
+                    return isNaN(num) ? modelValue : num.toFixed(3);
+                });
+
+                element.on('blur', function () {
+                    var value = element.val();
+                    if (value !== '') {
+                        var num = parseFloat(value);
+                        if (!isNaN(num)) {
+                            var formatted = num.toFixed(3);
+                            element.val(formatted);
+                            ngModelController.$setViewValue(formatted);
+                            ngModelController.$render();
+                        }
+                    }
+                });
+            }
+        };
+    });
 
     app.controller('TechnicalQuotationCtrl', function ($scope, $http, $timeout) {
 
@@ -1554,17 +1580,17 @@
             Supplier: "",
             LocalPartner: "",
             // --- Pricing ---
-            RDPrice: 0,
-            CommercialPrice: 0,
+            RDPrice: null,
+            CommercialPrice: null,
             PricePer: 1,
             PriceUnit: { Item_Code: "", Item_Name: "" },
             Currency: { MasterDataID: "", MasterDataValue: "" },
             // --- Order / Shelf / Storage ---
-            MinOrderQty: 0,
+            MinOrderQty: null,
             OrderQtyUnit: "",
             CommercialPackSize: "",
             MinPack: "",
-            ShelfLifeValue: 0,
+            ShelfLifeValue: null,
             ShelfLifeUnit: "Days",
             StorageCondition: "",
             // --- References / Notes ---
@@ -1576,7 +1602,7 @@
             CurrentStatus: "",
             ProdCapacity: "",
             ProductionFrequency: "",
-            ProductionLeadTimeValue: 0,
+            ProductionLeadTimeValue: null,
             ProductionLeadTimeUnit: "Days",
             RepresentativeSample: "",
             RepresentativeSamplePackSize: "",
@@ -1616,7 +1642,7 @@
             ModelVersion: "",
             CountryOrigin: "",
             YearOfManufacturing: "",
-            ProductLifeCycleValue: 0,
+            ProductLifeCycleValue: null,
             ProductLifeCycleUnit: "Days",
             Capacity: "",
             CapacityExtendable: "",
@@ -2308,17 +2334,17 @@
                 Supplier: "",
                 LocalPartner: "",
                 // --- Pricing ---
-                RDPrice: 0,
-                CommercialPrice: 0,
+                RDPrice: null,
+                CommercialPrice: null,
                 PricePer: 1,
                 PriceUnit: { Item_Code: "", Item_Name: "" },
                 Currency: { MasterDataID: "", MasterDataValue: "" },
                 // --- Order / Shelf / Storage ---
-                MinOrderQty: 0,
+                MinOrderQty: null,
                 OrderQtyUnit: "",
                 CommercialPackSize: "",
                 MinPack: "",
-                ShelfLifeValue: 0,
+                ShelfLifeValue: null,
                 ShelfLifeUnit: "Days",
                 StorageCondition: "",
                 // --- References / Notes ---
@@ -2330,7 +2356,7 @@
                 CurrentStatus: "",
                 ProdCapacity: "",
                 ProductionFrequency: "",
-                ProductionLeadTimeValue: 0,
+                ProductionLeadTimeValue: null,
                 ProductionLeadTimeUnit: "Days",
                 RepresentativeSample: "",
                 RepresentativeSamplePackSize: "",
@@ -2370,7 +2396,7 @@
                 ModelVersion: "",
                 CountryOrigin: "",
                 YearOfManufacturing: "",
-                ProductLifeCycleValue: 0,
+                ProductLifeCycleValue: null,
                 ProductLifeCycleUnit: "Days",
                 Capacity: "",
                 CapacityExtendable: "",
@@ -2649,18 +2675,17 @@
 
             if ($scope.p === 1) {
                 $scope.TechnicalQuotation.RDPrice = data.RDPrice;
-                var element = document.getElementById('RDPrice');
-                element.value = (data.RDPrice).toFixed(2);
-                element.dispatchEvent(new Event('change'));
-                $scope.TechnicalQuotation.CommercialPrice = data.CommercialPrice;
-                var element = document.getElementById('CommercialPrice');
-                element.value = (data.CommercialPrice).toFixed(2);
-                element.dispatchEvent(new Event('change'));
-                $scope.TechnicalQuotation.PricePer = data.PricePer;
-                var element = document.getElementById('PricePer');
-                element.value = (data.PricePer).toFixed(2);
-                element.dispatchEvent(new Event('change'));
+             
+                setValue('RDPrice', data.RDPrice);
 
+               
+
+                $scope.TechnicalQuotation.CommercialPrice = data.CommercialPrice;
+
+                setValue('CommercialPrice', data.CommercialPrice);
+              
+                $scope.TechnicalQuotation.PricePer = data.PricePer;
+                setValue('PricePer', data.PricePer);
 
                 $scope.pharmacopeialReferenceList = [
                     { value: 'BP', label: 'BP' },
@@ -2698,6 +2723,18 @@
 
 
         };
+
+        function setValue(id, value) {
+            var element = document.getElementById(id);
+            if (!element) return;
+
+            var safeValue = (value !== null && value !== undefined)
+                ? Number(value).toFixed(2)
+                : '0.00';
+
+            element.value = safeValue;
+            element.dispatchEvent(new Event('change'));
+        }
 
 
         $scope.openDeleteModal = function (row, index) {
