@@ -25,6 +25,19 @@
         width: 100% !important;
         min-width: 200px;
     }
+
+    .col-lg-3 {
+        padding-right: 5px;
+        padding-left: 30px;
+    }
+
+    .btn-table {
+        font-size: 12px !important;
+        padding: 1px 5px !important;
+        line-height: 1 !important;
+        height: 20px;
+        border-radius: 3px;
+    }
 </style>
 
 <div class="box box-primary box-body" ng-controller="TechnicalQuotationCtrl">
@@ -105,7 +118,7 @@
 
 
     <div style=" margin: 1%; background-color: #f0f0f0; box-shadow: 2px 2px 5px #888888; padding: 0px 10px 0px 10px;" ng-show="flagToShowMasterTbl">
-        <div class="row">
+ 
             <div class="col-sm-12 col-md-12 col-lg-12" style="padding: 11px;">
                 <div ng-if="flagToShow" style="text-align:center">
                     <h4 style="color:red;">No data available!</h4>
@@ -133,42 +146,34 @@
                         <tbody>
                             <tr id="rowID" ng-repeat="row in GridDisplayCollection" style="height:20px; font-size:13px;" ng-class="{'selected-row': row.selected}">
 
-                                <td class="col-lg-1 col-md-1 col-sm-1" style="text-align:center">{{formatMaterialCode(row.materialCode)}}</td>
+                                <td class="col-lg-2 col-md-2 col-sm-2" style="text-align:center">{{formatMaterialCode(row.materialCode)}}</td>
                                 <td class="col-lg-4 col-md-4 col-sm-4">{{row.materialName}}</td>
-                                <td class="col-lg-1 col-md-1 col-sm-1" style="text-align:right">{{row.MaterialQuantity| number:3}}</td>
+                                <td class="col-lg-2 col-md-2 col-sm-2" style="text-align:right">{{row.MaterialQuantity| number:3}}</td>
                                 <td class="col-lg-1 col-md-1 col-sm-1" style="text-align:center">{{row.Unit}}</td>
                                 <td class="col-lg-1 col-md-1 col-sm-1 text-center">
                                     <button type="button"
-                                            class="button-detail"
+                                            class="btn btn-info btn-table"
                                             ng-click="AddDocument(row)"
-                                            data-dismiss="modal"
-                                            title="Show detail"
                                             ng-show="row.sampleDocId">
                                         Details <i class="fa fa-eye"></i>
                                     </button>
                                 </td>
 
-
-
-                                @*<td class="col-lg-1 col-md-1 col-sm-1">{{row.MatInvType}}</td>*@
-
-
-                                <td class="col-lg-2 col-md-2 col-sm-2" style="text-align:center">
+                                <td class="col-lg-2 col-md-2 col-sm-2 text-center">
                                     <button ng-click="DetailItem(row, $index + 1)"
                                             ng-class="{
-        'btn btn-success': row.Action === 'A',
-        'btn btn-warning': row.Action !== 'A'
-    }">
+                                                      'btn btn-success btn-table': row.Action === 'A',
+                                                      'btn btn-warning btn-table': row.Action !== 'A'
+                                                      }">
                                         {{ row.Action === 'A' ? 'Add' : 'Edit' }}
                                     </button>
+
                                     <button ng-if="row.TechQuotationItemID"
                                             ng-click="openDeleteModal(row, $index)"
-                                            class="btn btn-danger btn-sm"
-                                            style="margin-left:5px">
+                                            class="btn btn-danger btn-table"
+                                            style="margin-left:4px">
                                         Delete
                                     </button>
-
-
                                 </td>
 
                             </tr>
@@ -186,799 +191,826 @@
                     @*<div class="box-tools pull-right">
                             <button type="button" id="btnRefresh" data-ng-click="fetchfromgoogle()" class="btn btn-warning btn-flat pull-right" ng-disabled="loading"><i class="fa fa-refresh"></i> Fetch from Google</button>
                         </div>*@
-
-
-                </div>
             </div>
         </div>
     </div>
 
     <div style=" margin: 1%; background-color: #f0f0f0; box-shadow: 2px 2px 5px #888888; padding: 0px 10px 0px 10px;" ng-show="TechnicalQuote">
 
-        <div class=" row" style=" margin: 1%;">
+        <!--<div class=" row" style=" margin: 1%;">-->
             @*Technical Quotation of Item {{Material}}*@
-        </div>
+        <!--</div>-->
 
-        <div class="row" ng-show="p===1" @*style="background: #9ebdc7; padding: 11px; border-radius: 10px; border: 2px solid #b7ced5; "*@>
-            <div class="col-sm-12 col-md-12 col-lg-12" style="padding:11px; margin-left:15px; margin-right:15px;">
+        <div class="row" ng-show="p===1" style="padding:11px; border-radius:10px; border:2px solid #b7ced5; background:#f8f9fa;">
+            @*<div class="col-sm-12 col-md-12 col-lg-12" style="padding:11px; margin-left:15px; margin-right:15px;">*@
 
-                <!-- Row 1: Item / Molecule Name & Manufacturer Name -->
-                <div class="row">
-                    <div class="col-lg-3">
-                        <label for="MoleculeName">Item / Molecule Name:<span class="text-danger">*</span></label>
-                    </div>
-                    <div class="col-lg-3">
-                        <input id="MoleculeName" type="text" ng-model="TechnicalQuotation.MoleculeName" ng-required="true" class="form-control"
-                               placeholder="Material Name" />
-                    </div>
-
-                    <div class="col-lg-2">
-                        <label for="ManufacturerName">Manufacturer Name:<span class="text-danger">*</span></label>
-                    </div>
-                    <div class="col-lg-2">
-                        <input id="ManufacturerName" type="text" ng-model="TechnicalQuotation.Manufacturer" ng-required="true" class="form-control"
-                               placeholder="Manufacturer Name" />
-                    </div>
+            <!-- Row 1: Item / Molecule Name & Manufacturer Name -->
+            <div class="row">
+                <div class="col-lg-3">
+                    <label for="MoleculeName">Item / Molecule Name:<span class="text-danger">*</span></label>
+                </div>
+                <div class="col-lg-3" style="padding-left:0px;">
+                    <input id="MoleculeName" type="text" ng-model="TechnicalQuotation.MoleculeName" ng-required="true" class="form-control"
+                           placeholder="Material Name" />
                 </div>
 
-                <!-- Row 2: Manufacturer Site Address & Supplier Name -->
-                <div class="row">
-                    <div class="col-lg-3">
-                        <label for="ManufacturerAddress">Manufacturer Site Address:</label>
-                    </div>
-                    <div class="col-lg-3">
-                        <input id="ManufacturerAddress" type="text" ng-model="TechnicalQuotation.ManufactureAddress"
-                               class="form-control" placeholder="Site Address" />
-                    </div>
+                <div class="col-lg-3">
+                    <label for="ManufacturerName">Manufacturer Name:<span class="text-danger">*</span></label>
+                </div>
+                <div class="col-lg-3" style="padding-left:0px;">
+                    <input id="ManufacturerName" type="text" ng-model="TechnicalQuotation.Manufacturer" ng-required="true" class="form-control"
+                           placeholder="Manufacturer Name" />
+                </div>
+            </div>
 
-                    <div class="col-lg-2">
-                        <label for="SupplierName">Supplier Name:</label>
-                    </div>
-                    <div class="col-lg-2">
-                        <input id="SupplierName" type="text" ng-model="TechnicalQuotation.Supplier" class="form-control"
-                               placeholder="Supplier Name" />
-                    </div>
+            <!-- Row 2: Manufacturer Site Address & Supplier Name -->
+            <div class="row">
+                <div class="col-lg-3">
+                    <label for="ManufacturerAddress">Manufacturer Site Address:</label>
+                </div>
+                <div class="col-lg-3" style="padding-left:0px;">
+                    <input id="ManufacturerAddress" type="text" ng-model="TechnicalQuotation.ManufactureAddress"
+                           class="form-control" placeholder="Site Address" />
                 </div>
 
-                <!-- Row 3: Currency & R&D Price -->
-                <div class="row">
-                    <div class="col-lg-3">
-                     
-                            <label for="Currency">Currency :</label>
-                    
-                    </div>
-                    <div class="col-lg-3">
-                       
-                            <select id="Currency" class="form-control" ng-model="TechnicalQuotation.Currency"
-                                    ng-options="ItemTypes as ItemTypes.MasterDataValue for ItemTypes in ItemTypeList track by ItemTypes.MasterDataValue " ng-required="true">
+                <div class="col-lg-3">
+                    <label for="SupplierName">Supplier Name:</label>
+                </div>
+                <div class="col-lg-3" style="padding-left:0px;">
+                    <input id="SupplierName" type="text" ng-model="TechnicalQuotation.Supplier" class="form-control"
+                           placeholder="Supplier Name" />
+                </div>
+            </div>
 
-                                <option value="" selected style="display: none">-- Select One --</option>
+            <!-- Row 3: Currency & R&D Price -->
+            <div class="row">
+                <div class="col-lg-3">
+
+                    <label for="Currency">Currency :</label>
+
+                </div>
+                <div class="col-lg-3" style="padding-left:0px;">
+
+                    <select id="Currency" class="form-control" ng-model="TechnicalQuotation.Currency"
+                            ng-options="ItemTypes as ItemTypes.MasterDataValue for ItemTypes in ItemTypeList track by ItemTypes.MasterDataValue " ng-required="true">
+
+                        <option value="" selected style="display: none">-- Select One --</option>
 
 
-                            </select>
+                    </select>
 
+
+                </div>
+
+                <div class="col-lg-3">
+                    <label for="RDPrice">R&D Price:</label>
+                </div>
+                <div class="col-lg-3" style="padding-left:0px;">
+                    <input id="RDPrice" type="number" ng-model="TechnicalQuotation.RDPrice" class="form-control"
+                           ng-blur="checkAndFormat('RDPrice')"
+                           placeholder="R&D Price" />
+                </div>
+            </div>
+
+            <!-- Row 4: Commercial Price & Price Per / Unit -->
+            <div class="row">
+                <div class="col-lg-3">
+                    <label for="CommercialPrice">Commercial Price:</label>
+                </div>
+                <div class="col-lg-3" style="padding-left:0px;">
+                    <input id="CommercialPrice" type="number" ng-model="TechnicalQuotation.CommercialPrice"
+                           ng-blur="checkAndFormat('CommercialPrice')"
+                           class="form-control" placeholder="Commercial Price" />
+                </div>
+
+                <div class="col-lg-3">
+                    <label for="PricePer">Price Per Unit:</label>
+                </div>
+                <div class="col-lg-2" style="padding-right:0px;padding-left:0px;">
+                    <input id="PricePer" type="number" ng-model="TechnicalQuotation.PricePer" class="form-control"
+                           placeholder="1" />
+                </div>
+
+                @*<div class="col-lg-1">
+                <label for="PriceUnit">Price Unit:</label>
+            </div>*@
+                <div class="col-lg-1" style="padding-left:0px;padding-right:5px;">
+                    <select class="form-control" id="PriceUnit"
+                            ng-model="TechnicalQuotation.PriceUnit"
+                            ng-options="Item.Item_Code as Item.Item_Code for Item in ItemList track by Item.Item_Code">
+                    </select>
+
+                </div>
+            </div>
+
+            <!-- Row 5: Minimum Order Qty & Shelf Life -->
+            <div class="row">
+                <div class="col-lg-3">
+                    <label for="MinOrderQty">Minimum Order Qty:</label>
+                </div>
+                <div class="col-lg-3" style="padding-left:0px;">
+                    <input id="MinOrderQty" type="text" style="text-align:right;" ng-model="TechnicalQuotation.MinOrderQty" class="form-control"
+                           three-decimals
+                           onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46"
+                           placeholder="Minimum Order Qty" />
+                </div>
+
+                <div class="col-lg-3">
+                    <label for="ShelfLife">Shelf Life:</label>
+                </div>
+                <div class="col-lg-2" style="padding-right: 0px; padding-left: 0px;">
+                  
+                        <input id="ShelfLife" type="number" ng-model="TechnicalQuotation.ShelfLifeValue" class="form-control"
+                               placeholder="Shelf Life" />
                    
+                </div>
+                <div class="col-lg-1" style="padding-left:0px;padding-right:5px;">
+                    <select ng-model="TechnicalQuotation.ShelfLifeUnit" class="form-control">
+                        <option value="Days">Days</option>
+                        <option value="Months">Months</option>
+                        <option value="Years">Years</option>
+                    </select>
+                </div>
+            </div>
+
+
+            <!-- Row 6: Storage Condition & Reference Customer List -->
+            <div class="row">
+                <div class="col-lg-3">
+                    <label for="StorageCondition">Storage Condition:</label>
+                </div>
+                <div class="col-lg-3" style="padding-left:0px;">
+                    <input id="StorageCondition" type="text" ng-model="TechnicalQuotation.StorageCondition"
+                           class="form-control" placeholder="Storage Condition" />
+                </div>
+
+                <div class="col-lg-3">
+                    <label for="ReferenceCustomer">Reference Customer List:</label>
+                </div>
+                <div class="col-lg-3" style="padding-left:0px;">
+                    <input id="ReferenceCustomer" type="text" ng-model="TechnicalQuotation.Reference" class="form-control"
+                           placeholder="Reference Customer List" />
+                </div>
+            </div>
+
+            <!-- Row 7: Notes, CAS No, Catalogue No -->
+            <div class="row">
+                <div class="col-lg-3">
+                    <label for="Notes">Notes:</label>
+                </div>
+                <div class="col-lg-3" style="padding-left:0px;">
+                    <input id="Notes" type="text" ng-model="TechnicalQuotation.Notes" class="form-control" placeholder="Notes" />
+                </div>
+
+
+
+
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-lg-12">
+                    <button type="button" class="btn btn-link"
+                            ng-click="showOptional = !showOptional">
+                        {{ showOptional ? 'Hide Additional Details' : 'Show Additional Details' }}
+                    </button>
+                </div>
+            </div>
+
+            <div ng-show="showOptional">
+
+
+
+                <div class="row">
+                    <div class="col-lg-3">
+                        <label for="CASNo">CAS No:</label>
+                    </div>
+                    <div class="col-lg-3" style="padding-left:0px;">
+                        <input id="CASNo" type="text" ng-model="TechnicalQuotation.CASNO" class="form-control" placeholder="CAS No" />
                     </div>
 
-                    <div class="col-lg-2">
-                        <label for="RDPrice">R&D Price:</label>
+                    <div class="col-lg-3">
+                        <label for="CatalogueNo">Catalogue No:</label>
                     </div>
-                    <div class="col-lg-2">
-                        <input id="RDPrice" type="number" ng-model="TechnicalQuotation.RDPrice" class="form-control"
-                               ng-blur="checkAndFormat('RDPrice')"
-                               placeholder="R&D Price" />
+
+                    <div class="col-lg-3" style="padding-left:0px;">
+                        <input id="CatalogueNo" type="text" ng-model="TechnicalQuotation.CatalogueNo" class="form-control"
+                               placeholder="Catalogue No" />
                     </div>
                 </div>
 
-                <!-- Row 4: Commercial Price & Price Per / Unit -->
+                <!-- Row 8: Production Lead Time -->
                 <div class="row">
                     <div class="col-lg-3">
-                        <label for="CommercialPrice">Commercial Price:</label>
+                        <label for="ProductionLeadTime">Production Lead Time:</label>
                     </div>
-                    <div class="col-lg-3">
-                        <input id="CommercialPrice" type="number" ng-model="TechnicalQuotation.CommercialPrice"
-                               ng-blur="checkAndFormat('CommercialPrice')"
-                               class="form-control" placeholder="Commercial Price" />
-                    </div>
+                    <div class="col-lg-2" style="padding-right: 0px; padding-left: 0px;">
 
-                    <div class="col-lg-2">
-                        <label for="PricePer">Price Per Unit:</label>
-                    </div>
-                    <div class="col-lg-1"style="padding-right:0px;">
-                        <input id="PricePer" type="number" ng-model="TechnicalQuotation.PricePer" class="form-control"
-                               placeholder="1" />
-                    </div>
-
-                    @*<div class="col-lg-1">
-                        <label for="PriceUnit">Price Unit:</label>
-                    </div>*@
-                    <div class="col-lg-1" style="padding-left:0px;">
-                        <select class="form-control" id="PriceUnit"
-                                ng-model="TechnicalQuotation.PriceUnit"
-                                ng-options="Item.Item_Code as Item.Item_Code for Item in ItemList track by Item.Item_Code">
-                        </select>
+                        <input id="ProductionLeadTime" type="number" ng-model="TechnicalQuotation.ProductionLeadTimeValue"
+                               class="form-control" placeholder="Lead Time" />
 
                     </div>
-                </div>
-
-                <!-- Row 5: Minimum Order Qty & Shelf Life -->
-                <div class="row">
-                    <div class="col-lg-3">
-                        <label for="MinOrderQty">Minimum Order Qty:</label>
-                    </div>
-                    <div class="col-lg-3">
-                        <input id="MinOrderQty" type="text" style="text-align:right;" ng-model="TechnicalQuotation.MinOrderQty" class="form-control"
-                                                                                        three-decimals
-onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46"
-                               placeholder="Minimum Order Qty" />
-                    </div>
-
-                    <div class="col-lg-2">
-                        <label for="ShelfLife">Shelf Life:</label>
-                    </div>
-                    <div class="col-lg-1" style="padding-right:0px;">
-                        <div class="input-group">
-                            <input id="ShelfLife" type="number" ng-model="TechnicalQuotation.ShelfLifeValue" class="form-control"
-                                   placeholder="Shelf Life" />
-                        </div>
-                    </div>
-                    <div class="col-lg-1" style="padding-left:0px;">
-                        <select ng-model="TechnicalQuotation.ShelfLifeUnit" class="form-control">
+                    <div class="col-lg-1" style="padding-left:0px;padding-right:5px;">
+                        <select ng-model="TechnicalQuotation.ProductionLeadTimeUnit" class="form-control">
                             <option value="Days">Days</option>
                             <option value="Months">Months</option>
                             <option value="Years">Years</option>
                         </select>
                     </div>
+
+
+                    <div class="col-lg-3">
+                        <label for="CommercialPackSize">Commercial Pack Size:</label>
+                    </div>
+                    <div class="col-lg-3" style="padding-left:0px;">
+                        <input id="CommercialPackSize" type="text" ng-model="TechnicalQuotation.CommercialPackSize"
+                               class="form-control" placeholder="Commercial Pack Size" />
+                    </div>
+
+
+
                 </div>
 
-
-                <!-- Row 6: Storage Condition & Reference Customer List -->
+                <!-- Row 9: Commercial & Minimum Pack Size -->
                 <div class="row">
+
                     <div class="col-lg-3">
-                        <label for="StorageCondition">Storage Condition:</label>
+                        <label for="MinPackSize">Minimum Pack Size:</label>
                     </div>
-                    <div class="col-lg-3">
-                        <input id="StorageCondition" type="text" ng-model="TechnicalQuotation.StorageCondition"
-                               class="form-control" placeholder="Storage Condition" />
+                    <div class="col-lg-3" style="padding-left:0px;">
+                        <input id="MinPackSize" type="text" ng-model="TechnicalQuotation.MinPack" class="form-control"
+                               placeholder="Minimum Pack Size" />
                     </div>
 
-                    <div class="col-lg-2">
-                        <label for="ReferenceCustomer">Reference Customer List:</label>
+                    <div class="col-lg-3">
+                        <label for="RepresentativeSample">Representative Sample:</label>
                     </div>
-                    <div class="col-lg-2">
-                        <input id="ReferenceCustomer" type="text" ng-model="TechnicalQuotation.Reference" class="form-control"
-                               placeholder="Reference Customer List" />
+                    <div class="col-lg-3" style="padding-left:0px;">
+                        <select id="RepresentativeSample" ng-model="TechnicalQuotation.RepresentativeSample"
+                                ng-change="showRepresentativeOther = (TechnicalQuotation.RepresentativeSample === 'Other')"
+                                class="form-control">
+                            <option value="">--Select--</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <input type="text" ng-show="showRepresentativeOther"
+                               ng-model="TechnicalQuotation.RepresentativeSampleOther" class="form-control"
+                               placeholder="Specify Other" style="margin-top:5px;" />
                     </div>
                 </div>
 
-                <!-- Row 7: Notes, CAS No, Catalogue No -->
+                <!-- Row 10: Representative Sample -->
+                <!-- Row 11: Current Production Status & Production Capacity -->
                 <div class="row">
+                    <div class="col-lg-3"><label>Representative Sample Pack Size:</label></div>
+                    <div class="col-lg-3" style="padding-left:0px;">
+                        <input type="text" class="form-control"
+                               ng-model="TechnicalQuotation.RepresentativeSamplePackSize">
+                    </div>
+
+
                     <div class="col-lg-3">
-                        <label for="Notes">Notes:</label>
+                        <label for="CurrentProductionStatus">Current Production Status:</label>
                     </div>
-                    <div class="col-lg-3">
-                        <input id="Notes" type="text" ng-model="TechnicalQuotation.Notes" class="form-control" placeholder="Notes" />
+                    <div class="col-lg-3" style="padding-left:0px;">
+                        <select id="CurrentProductionStatus"
+                                ng-model="TechnicalQuotation.CurrentStatus"
+                                class="form-control">
+                            <option value="">--Select--</option>
+                            <option value="Commercialized">Commercialized</option>
+                            <option value="Under Validation">Under Validation</option>
+                            <option value="R&D Stage">R&D Stage</option>
+                            <option value="Wish List">Wish List</option>
+                        </select>
                     </div>
+
+
 
 
 
 
                 </div>
-
-                <div class="row mt-3">
-                    <div class="col-lg-12">
-                        <button type="button" class="btn btn-link"
-                                ng-click="showOptional = !showOptional">
-                            {{ showOptional ? 'Hide Additional Details' : 'Show Additional Details' }}
-                        </button>
-                    </div>
-                </div>
-
-                <div ng-show="showOptional">
-
-
-
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <label for="CASNo">CAS No:</label>
-                        </div>
-                        <div class="col-lg-3">
-                            <input id="CASNo" type="text" ng-model="TechnicalQuotation.CASNO" class="form-control" placeholder="CAS No" />
-                        </div>
-
-                        <div class="col-lg-2">
-                            <label for="CatalogueNo">Catalogue No:</label>
-                        </div>
-
-                        <div class="col-lg-2">
-                            <input id="CatalogueNo" type="text" ng-model="TechnicalQuotation.CatalogueNo" class="form-control"
-                                   placeholder="Catalogue No" />
-                        </div>
-                    </div>
-
-                    <!-- Row 8: Production Lead Time -->
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <label for="ProductionLeadTime">Production Lead Time:</label>
-                        </div>
-                        <div class="col-lg-2" style="padding-right:0px;">
-
-                            <input id="ProductionLeadTime" type="number" ng-model="TechnicalQuotation.ProductionLeadTimeValue"
-                                   class="form-control" placeholder="Lead Time" />
-
-                        </div>
-                        <div class="col-lg-1" style="padding-left:0px;">
-                            <select ng-model="TechnicalQuotation.ProductionLeadTimeUnit" class="form-control">
-                                <option value="Days">Days</option>
-                                <option value="Months">Months</option>
-                                <option value="Years">Years</option>
-                            </select>
-                        </div>
-
-
-                        <div class="col-lg-2">
-                            <label for="CommercialPackSize">Commercial Pack Size:</label>
-                        </div>
-                        <div class="col-lg-2">
-                            <input id="CommercialPackSize" type="text" ng-model="TechnicalQuotation.CommercialPackSize"
-                                   class="form-control" placeholder="Commercial Pack Size" />
-                        </div>
-
-
-
-                    </div>
-
-                    <!-- Row 9: Commercial & Minimum Pack Size -->
-                    <div class="row">
-
-                        <div class="col-lg-3">
-                            <label for="MinPackSize">Minimum Pack Size:</label>
-                        </div>
-                        <div class="col-lg-3">
-                            <input id="MinPackSize" type="text" ng-model="TechnicalQuotation.MinPack" class="form-control"
-                                   placeholder="Minimum Pack Size" />
-                        </div>
-
-                        <div class="col-lg-2">
-                            <label for="RepresentativeSample">Representative Sample:</label>
-                        </div>
-                        <div class="col-lg-2">
-                            <select id="RepresentativeSample" ng-model="TechnicalQuotation.RepresentativeSample"
-                                    ng-change="showRepresentativeOther = (TechnicalQuotation.RepresentativeSample === 'Other')"
-                                    class="form-control">
-                                <option value="">--Select--</option>
-                                <option value="Yes">Yes</option>
-                                <option value="No">No</option>
-                                <option value="Other">Other</option>
-                            </select>
-                            <input type="text" ng-show="showRepresentativeOther"
-                                   ng-model="TechnicalQuotation.RepresentativeSampleOther" class="form-control"
-                                   placeholder="Specify Other" style="margin-top:5px;" />
-                        </div>
-                    </div>
-
-                    <!-- Row 10: Representative Sample -->
-                   
-
-                    <!-- Row 11: Current Production Status & Production Capacity -->
-                    <div class="row">
-                        <div class="col-lg-3"><label>Representative Sample Pack Size:</label></div>
-                        <div class="col-lg-3">
-                            <input type="text" class="form-control"
-                                   ng-model="TechnicalQuotation.RepresentativeSamplePackSize">
-                        </div>
-
-
-                        <div class="col-lg-2">
-                            <label for="CurrentProductionStatus">Current Production Status:</label>
-                        </div>
-                        <div class="col-lg-2">
-                            <select id="CurrentProductionStatus"
-                                    ng-model="TechnicalQuotation.CurrentStatus"
-                                    class="form-control">
-                                <option value="">--Select--</option>
-                                <option value="Commercialized">Commercialized</option>
-                                <option value="Under Validation">Under Validation</option>
-                                <option value="R&D Stage">R&D Stage</option>
-                                <option value="Wish List">Wish List</option>
-                            </select>
-                        </div>
-
-
-
-
-
-
-                    </div>
-                    <div class="row">
-
-                        <div class="col-lg-3">
-                            <label for="ProductionCapacity">Production Capacity:</label>
-                        </div>
-                        <div class="col-lg-3">
-                            <input id="ProductionCapacity" type="text" ng-model="TechnicalQuotation.ProdCapacity" class="form-control"
-                                   placeholder="Capacity" />
-                        </div>
-
-                        <div class="col-lg-2">
-                            <label for="ProductionFrequency">Production Frequency:</label>
-                        </div>
-                        <div class="col-lg-2">
-                            <select id="ProductionFrequency" ng-model="TechnicalQuotation.ProductionFrequency" class="form-control">
-                                <option value="">--Select--</option>
-                                <option value="Campaign">Campaign</option>
-                                <option value="Regular">Regular</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Row 12: Pharmacopeial Reference & Regulatory Approval -->
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <label for="PharmacopeialReference">Pharmacopeial Reference:</label>
-                        </div>
-
-                        <div class="col-lg-3">
-                            <select ui-select2="{ allowClear: true }"
-                                    id="PharmacopeialReference"
-                                    multiple
-                                    ng-model="TechnicalQuotation.PharmacopeialReference"
-                                    data-placeholder="Pharmacopeial Reference"
-                                    style="width:100%; min-width: 200px;"
-                                    class="form-control"
-                                    ng-options="ref.value as ref.label for ref in pharmacopeialReferenceList">
-                            </select>
-                        </div>
-
-                        <div class="col-lg-2">
-                            <label for="RegulatoryApproval">Regulatory Approval:</label>
-                        </div>
-                        <div class="col-lg-2">
-                            <select id="RegulatoryApproval" ng-model="TechnicalQuotation.RegulatoryApproval"
-                                    ng-change="showRegulatoryOther = (TechnicalQuotation.RegulatoryApproval === 'OTHER')"
-                                    class="form-control">
-
-                                <option value="">--Select--</option>
-                                <option value="FDA">US FDA</option>
-                                <option value="CEP">CEP</option>
-                                <option value="OTHER">Other</option>
-                            </select>
-                            <input type="text" ng-show="showRegulatoryOther" ng-model="TechnicalQuotation.RegulatoryApprovalOther"
-                                   class="form-control" placeholder="Specify Other" style="margin-top:5px;" />
-                        </div>
-                    </div>
-
-                    <!-- Row 13: Column Specification -->
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <label for="ColumnSpecification">Column Specification:</label>
-                        </div>
-                        <div class="col-lg-3">
-                            <input id="ColumnSpecification" type="text" ng-model="TechnicalQuotation.ColumnSpecification"
-                                   class="form-control" placeholder="Column Specification" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
-
-
-
-
-        <div class="row" ng-show="p===2" @*style="background: #9ebdc7; padding: 11px; border-radius: 10px; border: 2px solid #b7ced5; "*@>
-            <div class="col-sm-12 col-md-12 col-lg-12" style="padding:11px; margin-left:15px; margin-right:15px;">
-
-                <!-- Row 1: Item Name & Manufacturer Part No -->
                 <div class="row">
+
                     <div class="col-lg-3">
-                        <label for="ItemName">Item Name:<span class="text-danger">*</span></label>
+                        <label for="ProductionCapacity">Production Capacity:</label>
                     </div>
-                    <div class="col-lg-3">
-                        <input id="ItemName" type="text" ng-model="TechnicalQuotation.ItemName" ng-required="true" class="form-control"
-                               placeholder="Material Name" />
+                    <div class="col-lg-3" style="padding-left:0px;">
+                        <input id="ProductionCapacity" type="text" ng-model="TechnicalQuotation.ProdCapacity" class="form-control"
+                               placeholder="Capacity" />
                     </div>
 
-                    <div class="col-lg-2">
-                        <label for="ManufacturerPart">Manufacturer Part No:</label>
-                    </div>
-                    <div class="col-lg-2">
-                        <input id="ManufacturerPart" type="text" ng-model="TechnicalQuotation.ManufacturerPart" class="form-control"
-                               placeholder="Manufacturer Part No" />
-                    </div>
-                </div>
-
-                <!-- Row 2: Manufacturer Name & Site Address -->
-                <div class="row">
                     <div class="col-lg-3">
-                        <label for="ManufacturerName">Manufacturer Name:<span class="text-danger">*</span></label>
+                        <label for="ProductionFrequency">Production Frequency:</label>
                     </div>
-                    <div class="col-lg-3">
-                        <input id="ManufacturerName" type="text" ng-model="TechnicalQuotation.Manufacturer" ng-required="true" class="form-control"
-                               placeholder="Manufacturer Name" />
-                    </div>
-
-                    <div class="col-lg-2">
-                        <label for="ManufactureAddress">Manufacturer Site Address:</label>
-                    </div>
-                    <div class="col-lg-2">
-                        <input id="ManufactureAddress" type="text" ng-model="TechnicalQuotation.ManufactureAddress" class="form-control"
-                               placeholder="Site Address" />
-                    </div>
-                </div>
-
-                <!-- Row 3: Model/Version & Country of Origin -->
-                <div class="row">
-                    <div class="col-lg-3">
-                        <label for="ModelVersion">Model / Version:</label>
-                    </div>
-                    <div class="col-lg-3">
-                        <input id="ModelVersion" type="text" ng-model="TechnicalQuotation.ModelVersion" class="form-control"
-                               placeholder="Model / Version" />
-                    </div>
-
-                    <div class="col-lg-2">
-                        <label for="CountryOrigin">Country of Origin:</label>
-                    </div>
-                    <div class="col-lg-2">
-                        <select id="CountryOrigin" class="form-control" ng-model="TechnicalQuotation.CountryOrigin"
-                                ng-options="country.CountryCode as country.CountryName for country in CountryList">
-                            <option value="">--Select Country--</option>
+                    <div class="col-lg-3" style="padding-left:0px;">
+                        <select id="ProductionFrequency" ng-model="TechnicalQuotation.ProductionFrequency" class="form-control">
+                            <option value="">--Select--</option>
+                            <option value="Campaign">Campaign</option>
+                            <option value="Regular">Regular</option>
                         </select>
                     </div>
                 </div>
 
-                <!-- Row 4: Year of Manufacturing & Product Life Cycle -->
+                <!-- Row 12: Pharmacopeial Reference & Regulatory Approval -->
                 <div class="row">
                     <div class="col-lg-3">
-                        <label for="YearOfManufacturing">Year of Manufacturing:</label>
+                        <label for="PharmacopeialReference">Pharmacopeial Reference:</label>
                     </div>
+
+                    <div class="col-lg-3" style="padding-left:0px;">
+                        <select ui-select2="{ allowClear: true }"
+                                id="PharmacopeialReference"
+                                multiple
+                                ng-model="TechnicalQuotation.PharmacopeialReference"
+                                data-placeholder="Pharmacopeial Reference"
+                                style="width:100%; min-width: 200px;"
+                                class="form-control"
+                                ng-options="ref.value as ref.label for ref in pharmacopeialReferenceList">
+                        </select>
+                    </div>
+
                     <div class="col-lg-3">
+                        <label for="RegulatoryApproval">Regulatory Approval:</label>
+                    </div>
+                    <div class="col-lg-3" style="padding-left:0px;">
+                        <select id="RegulatoryApproval" ng-model="TechnicalQuotation.RegulatoryApproval"
+                                ng-change="showRegulatoryOther = (TechnicalQuotation.RegulatoryApproval === 'OTHER')"
+                                class="form-control">
+
+                            <option value="">--Select--</option>
+                            <option value="FDA">US FDA</option>
+                            <option value="CEP">CEP</option>
+                            <option value="OTHER">Other</option>
+                        </select>
+                        <input type="text" ng-show="showRegulatoryOther" ng-model="TechnicalQuotation.RegulatoryApprovalOther"
+                               class="form-control" placeholder="Specify Other" style="margin-top:5px;" />
+                    </div>
+                </div>
+
+                <!-- Row 13: Column Specification -->
+                <div class="row">
+                    <div class="col-lg-3">
+                        <label for="ColumnSpecification">Column Specification:</label>
+                    </div>
+                    <div class="col-lg-3" style="padding-left:0px;">
+                        <input id="ColumnSpecification" type="text" ng-model="TechnicalQuotation.ColumnSpecification"
+                               class="form-control" placeholder="Column Specification" />
+                    </div>
+                </div>
+
+
+
+
+            </div>
+            <br />
+            <div class="btn-group pull-right" style=" margin-right: 5px;">
+                <button type="submit" id="btnSubmit1" ng-if="MaterialInvitation.TechQuotationItemID!='' " ng-click=" Update()" class="btn btn-primary btn-flat">Update Quotation</button>
+                <button type="submit" id="btnSubmit" ng-if="MaterialInvitation.TechQuotationItemID==''" ng-click=" Post()" class="btn btn-primary btn-flat">Save Quotation</button>
+            </div>
+        </div>
+
+
+     
+
+
+
+
+        <div class="row" ng-show="p===2" style="padding:11px; border-radius:10px; border:2px solid #b7ced5; background:#f8f9fa;">
+            @*<div class="col-sm-12 col-md-12 col-lg-12" style="padding:11px; margin-left:15px; margin-right:15px;">*@
+
+            <!-- Row 1: Item Name & Manufacturer Part No -->
+            <div class="row">
+                <div class="col-lg-3">
+                    <label for="ItemName">Item Name:<span class="text-danger">*</span></label>
+                </div>
+                <div class="col-lg-3" style="padding-left:0px;">
+                    <input id="ItemName" type="text" ng-model="TechnicalQuotation.ItemName" ng-required="true" class="form-control"
+                           placeholder="Material Name" />
+                </div>
+
+                <div class="col-lg-3">
+                    <label for="ManufacturerName">Manufacturer Name:<span class="text-danger">*</span></label>
+                </div>
+                <div class="col-lg-3" style="padding-left:0px;">
+                    <input id="ManufacturerName" type="text" ng-model="TechnicalQuotation.Manufacturer" ng-required="true" class="form-control"
+                           placeholder="Manufacturer Name" />
+                </div>
+
+
+
+
+
+               
+            </div>
+
+            <!-- Row 2: Manufacturer Name & Site Address -->
+            <div class="row">
+
+                <div class="col-lg-3">
+                    <label for="ManufacturerPart">Manufacturer Part No:</label>
+                </div>
+                <div class="col-lg-3" style="padding-left:0px;">
+                    <input id="ManufacturerPart" type="text" ng-model="TechnicalQuotation.ManufacturerPart" class="form-control"
+                           placeholder="Manufacturer Part No" />
+                </div>
+
+                <div class="col-lg-3">
+                    <label for="ManufactureAddress">Manufacturer Site Address:</label>
+                </div>
+                <div class="col-lg-3" style="padding-left:0px;">
+                    <input id="ManufactureAddress" type="text" ng-model="TechnicalQuotation.ManufactureAddress" class="form-control"
+                           placeholder="Site Address" />
+                </div>
+            </div>
+
+            <!-- Row 3: Model/Version & Country of Origin -->
+            <div class="row">
+                <div class="col-lg-3">
+                    <label for="ModelVersion">Model / Version:</label>
+                </div>
+                <div class="col-lg-3" style="padding-left:0px;">
+                    <input id="ModelVersion" type="text" ng-model="TechnicalQuotation.ModelVersion" class="form-control"
+                           placeholder="Model / Version" />
+                </div>
+
+                <div class="col-lg-3">
+                    <label for="CountryOrigin">Country of Origin:</label>
+                </div>
+                <div class="col-lg-3" style="padding-left:0px;">
+                    <select id="CountryOrigin" class="form-control" ng-model="TechnicalQuotation.CountryOrigin"
+                            ng-options="country.CountryCode as country.CountryName for country in CountryList">
+                        <option value="">--Select Country--</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Row 4: Year of Manufacturing & Product Life Cycle -->
+            <div class="row">
+                <div class="col-lg-3">
+                    <label for="YearOfManufacturing">Year of Manufacturing:</label>
+                </div>
+                <div class="col-lg-3" style="padding-left:0px;">
+
+                    <input type="text"
+                           class="DatePicker form-control" id="YearOfManufacturing" ng-model="TechnicalQuotation.YearOfManufacturing" placeholder="DD/MM/YYYY" ng-required="true" />
+                </div>
+
+
+
+                <div class="col-lg-3">
+                    <label for="ProductLifeCycle">Product Life Cycle:</label>
+                </div>
+                <div class="col-lg-2" style="padding-left:0px;padding-right:0px;">
+                   
+                        <input id="ProductLifeCycle" type="number" ng-model="TechnicalQuotation.ProductLifeCycleValue"
+                               class="form-control" placeholder="Life Cycle" />
+                  
+                </div>
+                <div class="col-lg-1" style="padding-left:0px;padding-right:5px;">
+                    <select ng-model="TechnicalQuotation.ProductLifeCycleUnit" class="form-control">
+                        <option value="Days">Days</option>
+                        <option value="Months">Months</option>
+                        <option value="Years">Years</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Row 5: Supplier & Local Agent -->
+            <div class="row">
+                <div class="col-lg-3" >
+                    <label for="SupplierName">Supplier Name:</label>
+                </div>
+                <div class="col-lg-3" style="padding-left:0px;">
+                    <input id="SupplierName" type="text" ng-model="TechnicalQuotation.Supplier" class="form-control"
+                           placeholder="Supplier Name" />
+                </div>
+
+                <div class="col-lg-3">
+                    <label for="LocalAgent">Local Agent Name:</label>
+                </div>
+                <div class="col-lg-3" style="padding-left:0px;">
+                    <input id="LocalAgent" type="text" ng-model="TechnicalQuotation.LocalPartner" class="form-control"
+                           placeholder="Local Agent Name" />
+                </div>
+            </div>
+
+            <!-- Row 6: Reference Customer & Notes -->
+            <div class="row">
+                <div class="col-lg-3">
+                    <label for="ReferenceCustomer">Reference Customer List:</label>
+                </div>
+                <div class="col-lg-3" style="padding-left:0px;">
+                    <input id="ReferenceCustomer" type="text" ng-model="TechnicalQuotation.Reference" class="form-control"
+                           placeholder="Reference Customer" />
+                </div>
+
+                <div class="col-lg-3">
+                    <label for="Notes">Notes:</label>
+                </div>
+                <div class="col-lg-3" style="padding-left:0px;">
+                    <input id="Notes" type="text" ng-model="TechnicalQuotation.Notes" class="form-control" placeholder="Notes" />
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-lg-12">
+                    <button type="button" class="btn btn-link"
+                            ng-click="showOptional = !showOptional">
+                        {{ showOptional ? 'Hide Additional Details' : 'Show Additional Details' }}
+                    </button>
+                </div>
+            </div>
+
+            <div ng-show="showOptional">
+                <!-- Row 7: Capacity & Capacity Extendable -->
+                <div class="row">
+                    <div class="col-lg-3">
+                        <label for="Capacity">Capacity:</label>
+                    </div>
+                    <div class="col-lg-3" style="padding-left:0px;">
+                        <input id="Capacity" type="text" ng-model="TechnicalQuotation.Capacity" class="form-control"
+                               placeholder="Capacity" />
+                    </div>
+
+                    <div class="col-lg-3">
+                        <label for="CapacityExtendable">Capacity Extendable:</label>
+                    </div>
+                    <div class="col-lg-3" style="padding-left:0px;">
+                        <select id="CapacityExtendable" ng-model="TechnicalQuotation.CapacityExtendable" class="form-control"
+                                ng-change="showCapacityExtendableOther = (TechnicalQuotation.CapacityExtendable === 'OTHER')">
+                            <option value="">--Select--</option>
+                            <option value="YES">Yes</option>
+                            <option value="NO">No</option>
+                            <option value="OTHER">Other</option>
+                        </select>
+                        <input type="text" ng-show="showCapacityExtendableOther" ng-model="TechnicalQuotation.CapacityExtendableOther"
+                               class="form-control" placeholder="Specify Other" style="margin-top:5px;" />
+                    </div>
+                </div>
+
+                <!-- Row 8: FAT at Manufacturer's Site -->
+                <div class="row">
+                    <div class="col-lg-3">
+                        <label for="FAT">FAT at Manufacturer's Site:</label>
+                    </div>
+                    <div class="col-lg-3" style="padding-left:0px;">
+                        <select id="FAT" ng-model="TechnicalQuotation.FATAtManufacturerSite" class="form-control"
+                                ng-change="showFATOther = (TechnicalQuotation.FATAtManufacturerSite === 'OTHER')">
+                            <option value="">--Select--</option>
+                            <option value="YES">Yes</option>
+                            <option value="NO">No</option>
+                            <option value="OTHER">Other</option>
+                        </select>
+                        <input type="text" ng-show="showFATOther" ng-model="TechnicalQuotation.FATAtManufacturerSiteOther"
+                               class="form-control" placeholder="Specify Other" style="margin-top:5px;" />
+                    </div>
+
+                    @*<div class="col-lg-3">
+                    <select id="FAT"
+                            ng-model="TechnicalQuotation.FATAtManufacturerSite"
+                            class="form-control">
+
+                        <option value="">-- Select --</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                        <option value="Other">Other</option>
+                    </select>
+
+                    <input type="text"
+                           ng-if="TechnicalQuotation.FATAtManufacturerSite === 'Other'"
+                           ng-model="TechnicalQuotation.FATAtManufacturerSiteOther"
+                           class="form-control"
+                           placeholder="Specify Other"
+                           style="margin-top:5px;" />
+                </div>*@
+
+                    <div class="col-lg-3">
+                        <label for="SATScope">SAT Scope:</label>
+                    </div>
+                    <div class="col-lg-3" style="padding-left:0px;">
+                        <input id="SATScope" type="text" ng-model="TechnicalQuotation.SATScope" class="form-control" placeholder="SAT Scope" />
+                    </div>
+                </div>
+
+                <!-- Row 9: Assistance at Site -->
+                <div class="row">
+                    <div class="col-lg-3">
+                        <label for="AssistanceAtSite">Assistance at Site:</label>
+                    </div>
+
+                    <div class="col-lg-3" style="padding-left:0px;">
+                        <select id="AssistanceAtSite"
+                                ng-model="TechnicalQuotation.AssistanceAtSite"
+                                class="form-control">
+
+                            <option value="">-- Select --</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                            <option value="Other">Other</option>
+                        </select>
 
                         <input type="text"
-                               class="DatePicker form-control" id="YearOfManufacturing" ng-model="TechnicalQuotation.YearOfManufacturing" placeholder="DD/MM/YYYY" ng-required="true" />
+                               ng-if="TechnicalQuotation.AssistanceAtSite === 'Other'"
+                               ng-model="TechnicalQuotation.AssistanceAtSiteOther"
+                               class="form-control"
+                               placeholder="Specify Other"
+                               style="margin-top:5px;" />
                     </div>
+                </div>
 
 
-
-                    <div class="col-lg-2">
-                        <label for="ProductLifeCycle">Product Life Cycle:</label>
+                <!-- Row 10: Compliance With & Qualification Documents -->
+                <div class="row">
+                    <div class="col-lg-3">
+                        <label for="ComplianceWith">Compliance With:</label>
                     </div>
-                    <div class="col-lg-1">
-                        <div class="input-group">
-                            <input id="ProductLifeCycle" type="number" ng-model="TechnicalQuotation.ProductLifeCycleValue"
-                                   class="form-control" placeholder="Life Cycle" />
-                        </div>
-                    </div>
-                    <div class="col-lg-1">
-                        <select ng-model="TechnicalQuotation.ProductLifeCycleUnit" class="form-control">
-                            <option value="Days">Days</option>
-                            <option value="Months">Months</option>
-                            <option value="Years">Years</option>
+                    <div class="col-lg-3" style="padding-left:0px;">
+                        <select id="ComplianceWith" ng-model="TechnicalQuotation.ComplianceWith" class="form-control">
+                            <option value="">--select--</option>
+                            <option value="GMP">GMP</option>
+                            <option value="WHO_GMP">WHO GMP</option>
+                            <option value="EU_GMP">EU GMP</option>
+                            <option value="FDA">US FDA</option>
+                            <option value="ISO">International Standard (ISO)</option>
                         </select>
                     </div>
+
+                    <div class="col-lg-3">
+                        <label for="QualificationDocuments">Qualification Documents:</label>
+                    </div>
+                    <div class="col-lg-3" style="padding-left:0px;">
+                        <select id="QualificationDocuments" ng-model="TechnicalQuotation.QualificationDocuments"
+                                ng-change="showQualificationOther = (TechnicalQuotation.QualificationDocuments === 'OTHER')"
+                                class="form-control">
+                            <option value="">-- Select --</option>
+                            <option value="DQ">DQ</option>
+                            <option value="IQ">IQ</option>
+                            <option value="OQ">OQ</option>
+                            <option value="PQ">PQ</option>
+                            <option value="OTHER">Others</option>
+                        </select>
+                        <input type="text" ng-show="showQualificationOther" ng-model="TechnicalQuotation.QualificationDocumentsOther"
+                               class="form-control" placeholder="Specify Other" style="margin-top:5px;" />
+                    </div>
                 </div>
 
-                <!-- Row 5: Supplier & Local Agent -->
+                <!-- Row 11: Utilities Requirement, Safety Features, Energy Efficiency -->
                 <div class="row">
                     <div class="col-lg-3">
-                        <label for="SupplierName">Supplier Name:</label>
+                        <label for="UtilitiesRequirement">Utilities Requirement:</label>
                     </div>
-                    <div class="col-lg-3">
-                        <input id="SupplierName" type="text" ng-model="TechnicalQuotation.Supplier" class="form-control"
-                               placeholder="Supplier Name" />
+                    <div class="col-lg-3" style="padding-left:0px;">
+                        <input id="UtilitiesRequirement" type="text" ng-model="TechnicalQuotation.UtilitiesRequirement"
+                               class="form-control" placeholder="Utilities Requirement" />
                     </div>
 
-                    <div class="col-lg-2">
-                        <label for="LocalAgent">Local Agent Name:</label>
+                    <div class="col-lg-3">
+                        <label for="SafetyFeatures">Safety Features:</label>
                     </div>
-                    <div class="col-lg-2">
-                        <input id="LocalAgent" type="text" ng-model="TechnicalQuotation.LocalPartner" class="form-control"
-                               placeholder="Local Agent Name" />
+                    <div class="col-lg-3" style="padding-left:0px;">
+                        <input id="SafetyFeatures" type="text" ng-model="TechnicalQuotation.SafetyFeatures"
+                               class="form-control" placeholder="Safety Features" />
                     </div>
                 </div>
 
-                <!-- Row 6: Reference Customer & Notes -->
                 <div class="row">
                     <div class="col-lg-3">
-                        <label for="ReferenceCustomer">Reference Customer List:</label>
+                        <label for="EnergyEfficiencyFeatures">Energy Efficiency Features:</label>
+                    </div>
+                    <div class="col-lg-3" style="padding-left:0px;">
+                        <input id="EnergyEfficiencyFeatures" type="text" ng-model="TechnicalQuotation.EnergyEfficiencyFeatures"
+                               class="form-control" placeholder="Energy Efficiency Features" />
+                    </div>
+
+                    <div class="col-lg-3">
+                        <label for="Servicing">Servicing:</label>
+                    </div>
+                    <div class="col-lg-3" style="padding-left:0px;">
+                        <select id="Servicing" ng-model="TechnicalQuotation.SparesServicing" class="form-control">
+                            <option value="">--Select--</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+
+
+                </div>
+
+                <!-- Row 12: Servicing, Scope Confirmation -->
+                <div class="row">
+
+
+                    <div class="col-lg-3">
+                        <label for="ScopeConfirmation">Scope Confirmation:</label>
+                    </div>
+                    <div class="col-lg-3" style="padding-left:0px;">
+                        <select id="ScopeConfirmation" ng-model="TechnicalQuotation.ScopeConfirmation" class="form-control">
+                            <option value="">--Select--</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
                     </div>
                     <div class="col-lg-3">
-                        <input id="ReferenceCustomer" type="text" ng-model="TechnicalQuotation.Reference" class="form-control"
-                               placeholder="Reference Customer" />
+                        <label for="ScopeDeviationRemarks">Scope Deviation Remarks:</label>
+                    </div>
+                    <div class="col-lg-3" style="padding-left:0px;">
+                        <input id="ScopeDeviationRemarks" type="text" ng-model="TechnicalQuotation.ScopeDeviationRemarks"
+                               class="form-control" placeholder="Scope Deviation Remarks" />
                     </div>
 
-                    <div class="col-lg-2">
-                        <label for="Notes">Notes:</label>
-                    </div>
-                    <div class="col-lg-2">
-                        <input id="Notes" type="text" ng-model="TechnicalQuotation.Notes" class="form-control" placeholder="Notes" />
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-lg-12">
-                        <button type="button" class="btn btn-link"
-                                ng-click="showOptional = !showOptional">
-                            {{ showOptional ? 'Hide Additional Details' : 'Show Additional Details' }}
-                        </button>
-                    </div>
                 </div>
 
-                <div ng-show="showOptional">
-                    <!-- Row 7: Capacity & Capacity Extendable -->
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <label for="Capacity">Capacity:</label>
-                        </div>
-                        <div class="col-lg-3">
-                            <input id="Capacity" type="text" ng-model="TechnicalQuotation.Capacity" class="form-control"
-                                   placeholder="Capacity" />
-                        </div>
+                <!-- Row 13: Scope Deviation Remarks -->
+                @*<div class="row">
+                    
+                </div>*@
 
-                        <div class="col-lg-2">
-                            <label for="CapacityExtendable">Capacity Extendable:</label>
-                        </div>
-                        <div class="col-lg-2">
-                            <select id="CapacityExtendable" ng-model="TechnicalQuotation.CapacityExtendable" class="form-control"
-                                    ng-change="showCapacityExtendableOther = (TechnicalQuotation.CapacityExtendable === 'OTHER')">
-                                <option value="">--Select--</option>
-                                <option value="YES">Yes</option>
-                                <option value="NO">No</option>
-                                <option value="OTHER">Other</option>
-                            </select>
-                            <input type="text" ng-show="showCapacityExtendableOther" ng-model="TechnicalQuotation.CapacityExtendableOther"
-                                   class="form-control" placeholder="Specify Other" style="margin-top:5px;" />
-                        </div>
+                <!-- Row 14: Responsibility Matrix -->
+                <div class="row">
+                    <div class="col-lg-3">
+                        <label for="Erection">Erection:</label>
+                    </div>
+                    <div class="col-lg-3" style="padding-left:0px;">
+                        <select id="Erection" ng-model="TechnicalQuotation.Erection"
+                                ng-change="showErectionOther = (TechnicalQuotation.Erection === 'OTHER')" class="form-control">
+                            <option value="">--Select--</option>
+                            <option value="SUPPLIER">Supplier</option>
+                            <option value="SQUARE">SQUARE</option>
+                            <option value="BOTH">Both</option>
+                            <option value="OTHER">Other</option>
+                        </select>
+                        <input type="text" ng-show="showErectionOther" ng-model="TechnicalQuotation.ErectionOther"
+                               class="form-control" placeholder="Specify Other" style="margin-top:5px;" />
                     </div>
 
-                    <!-- Row 8: FAT at Manufacturer's Site -->
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <label for="FAT">FAT at Manufacturer's Site:</label>
-                        </div>
-                        <div class="col-lg-3">
-                            <select id="FAT" ng-model="TechnicalQuotation.FATAtManufacturerSite" class="form-control"
-                                    ng-change="showFATOther = (TechnicalQuotation.FATAtManufacturerSite === 'OTHER')">
-                                <option value="">--Select--</option>
-                                <option value="YES">Yes</option>
-                                <option value="NO">No</option>
-                                <option value="OTHER">Other</option>
-                            </select>
-                            <input type="text" ng-show="showFATOther" ng-model="TechnicalQuotation.FATAtManufacturerSiteOther"
-                                   class="form-control" placeholder="Specify Other" style="margin-top:5px;" />
-                        </div>
-
-                        @*<div class="col-lg-3">
-                                <select id="FAT"
-                                        ng-model="TechnicalQuotation.FATAtManufacturerSite"
-                                        class="form-control">
-
-                                    <option value="">-- Select --</option>
-                                    <option value="Yes">Yes</option>
-                                    <option value="No">No</option>
-                                    <option value="Other">Other</option>
-                                </select>
-
-                                <input type="text"
-                                       ng-if="TechnicalQuotation.FATAtManufacturerSite === 'Other'"
-                                       ng-model="TechnicalQuotation.FATAtManufacturerSiteOther"
-                                       class="form-control"
-                                       placeholder="Specify Other"
-                                       style="margin-top:5px;" />
-                            </div>*@
-
-                        <div class="col-lg-2">
-                            <label for="SATScope">SAT Scope:</label>
-                        </div>
-                        <div class="col-lg-2">
-                            <input id="SATScope" type="text" ng-model="TechnicalQuotation.SATScope" class="form-control" placeholder="SAT Scope" />
-                        </div>
+                    <div class="col-lg-3">
+                        <label for="Installation">Installation:</label>
                     </div>
-
-                    <!-- Row 9: Assistance at Site -->
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <label for="AssistanceAtSite">Assistance at Site:</label>
-                        </div>
-
-                        <div class="col-lg-3">
-                            <select id="AssistanceAtSite"
-                                    ng-model="TechnicalQuotation.AssistanceAtSite"
-                                    class="form-control">
-
-                                <option value="">-- Select --</option>
-                                <option value="Yes">Yes</option>
-                                <option value="No">No</option>
-                                <option value="Other">Other</option>
-                            </select>
-
-                            <input type="text"
-                                   ng-if="TechnicalQuotation.AssistanceAtSite === 'Other'"
-                                   ng-model="TechnicalQuotation.AssistanceAtSiteOther"
-                                   class="form-control"
-                                   placeholder="Specify Other"
-                                   style="margin-top:5px;" />
-                        </div>
-                    </div>
-
-
-                    <!-- Row 10: Compliance With & Qualification Documents -->
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <label for="ComplianceWith">Compliance With:</label>
-                        </div>
-                        <div class="col-lg-3">
-                            <select id="ComplianceWith" ng-model="TechnicalQuotation.ComplianceWith" class="form-control">
-                                <option value="">--select--</option>
-                                <option value="GMP">GMP</option>
-                                <option value="WHO_GMP">WHO GMP</option>
-                                <option value="EU_GMP">EU GMP</option>
-                                <option value="FDA">US FDA</option>
-                                <option value="ISO">International Standard (ISO)</option>
-                            </select>
-                        </div>
-
-                        <div class="col-lg-2">
-                            <label for="QualificationDocuments">Qualification Documents:</label>
-                        </div>
-                        <div class="col-lg-2">
-                            <select id="QualificationDocuments" ng-model="TechnicalQuotation.QualificationDocuments"
-                                    ng-change="showQualificationOther = (TechnicalQuotation.QualificationDocuments === 'OTHER')"
-                                    class="form-control">
-                                <option value="">-- Select --</option>
-                                <option value="DQ">DQ</option>
-                                <option value="IQ">IQ</option>
-                                <option value="OQ">OQ</option>
-                                <option value="PQ">PQ</option>
-                                <option value="OTHER">Others</option>
-                            </select>
-                            <input type="text" ng-show="showQualificationOther" ng-model="TechnicalQuotation.QualificationDocumentsOther"
-                                   class="form-control" placeholder="Specify Other" style="margin-top:5px;" />
-                        </div>
-                    </div>
-
-                    <!-- Row 11: Utilities Requirement, Safety Features, Energy Efficiency -->
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <label for="UtilitiesRequirement">Utilities Requirement:</label>
-                        </div>
-                        <div class="col-lg-3">
-                            <input id="UtilitiesRequirement" type="text" ng-model="TechnicalQuotation.UtilitiesRequirement"
-                                   class="form-control" placeholder="Utilities Requirement" />
-                        </div>
-
-                        <div class="col-lg-2">
-                            <label for="SafetyFeatures">Safety Features:</label>
-                        </div>
-                        <div class="col-lg-2">
-                            <input id="SafetyFeatures" type="text" ng-model="TechnicalQuotation.SafetyFeatures"
-                                   class="form-control" placeholder="Safety Features" />
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <label for="EnergyEfficiencyFeatures">Energy Efficiency Features:</label>
-                        </div>
-                        <div class="col-lg-3">
-                            <input id="EnergyEfficiencyFeatures" type="text" ng-model="TechnicalQuotation.EnergyEfficiencyFeatures"
-                                   class="form-control" placeholder="Energy Efficiency Features" />
-                        </div>
-                    </div>
-
-                    <!-- Row 12: Servicing, Scope Confirmation -->
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <label for="Servicing">Servicing:</label>
-                        </div>
-                        <div class="col-lg-3">
-                            <select id="Servicing" ng-model="TechnicalQuotation.SparesServicing" class="form-control">
-                                <option value="">--Select--</option>
-                                <option value="Yes">Yes</option>
-                                <option value="No">No</option>
-                            </select>
-                        </div>
-
-                        <div class="col-lg-2">
-                            <label for="ScopeConfirmation">Scope Confirmation:</label>
-                        </div>
-                        <div class="col-lg-2">
-                            <select id="ScopeConfirmation" ng-model="TechnicalQuotation.ScopeConfirmation" class="form-control">
-                                <option value="">--Select--</option>
-                                <option value="Yes">Yes</option>
-                                <option value="No">No</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Row 13: Scope Deviation Remarks -->
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <label for="ScopeDeviationRemarks">Scope Deviation Remarks:</label>
-                        </div>
-                        <div class="col-lg-3">
-                            <input id="ScopeDeviationRemarks" type="text" ng-model="TechnicalQuotation.ScopeDeviationRemarks"
-                                   class="form-control" placeholder="Scope Deviation Remarks" />
-                        </div>
-                    </div>
-
-                    <!-- Row 14: Responsibility Matrix -->
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <label for="Erection">Erection:</label>
-                        </div>
-                        <div class="col-lg-3">
-                            <select id="Erection" ng-model="TechnicalQuotation.Erection"
-                                    ng-change="showErectionOther = (TechnicalQuotation.Erection === 'OTHER')" class="form-control">
-                                <option value="">--Select--</option>
-                                <option value="SUPPLIER">Supplier</option>
-                                <option value="SQUARE">SQUARE</option>
-                                <option value="BOTH">Both</option>
-                                <option value="OTHER">Other</option>
-                            </select>
-                            <input type="text" ng-show="showErectionOther" ng-model="TechnicalQuotation.ErectionOther"
-                                   class="form-control" placeholder="Specify Other" style="margin-top:5px;" />
-                        </div>
-
-                        <div class="col-lg-2">
-                            <label for="Installation">Installation:</label>
-                        </div>
-                        <div class="col-lg-3">
-                            <select id="Installation" ng-model="TechnicalQuotation.Installation"
-                                    ng-change="showInstallationOther = (TechnicalQuotation.Installation === 'OTHER')" class="form-control">
-                                <option value="">--select--</option>
-                                <option value="SUPPLIER">Supplier</option>
-                                <option value="SQUARE">SQUARE</option>
-                                <option value="BOTH">Both</option>
-                                <option value="OTHER">Other</option>
-                            </select>
-                            <input type="text" ng-show="showInstallationOther" ng-model="TechnicalQuotation.InstallationOther"
-                                   class="form-control" placeholder="Specify Other" style="margin-top:5px;" />
-                        </div>
-                    </div>
-
-                    <!-- Row 15: Testing & Commissioning -->
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <label for="Testing">Testing:</label>
-                        </div>
-                        <div class="col-lg-3">
-                            <select id="Testing" ng-model="TechnicalQuotation.Testing"
-                                    ng-change="showTestingOther = (TechnicalQuotation.Testing === 'OTHER')" class="form-control">
-                                <option value="">--select--</option>
-                                <option value="SUPPLIER">Supplier</option>
-                                <option value="SQUARE">SQUARE</option>
-                                <option value="BOTH">Both</option>
-                                <option value="OTHER">Other</option>
-                            </select>
-                            <input type="text" ng-show="showTestingOther" ng-model="TechnicalQuotation.TestingOther"
-                                   class="form-control" placeholder="Specify Other" style="margin-top:5px;" />
-                        </div>
-
-                        <div class="col-lg-2">
-                            <label for="Commissioning">Commissioning:</label>
-                        </div>
-                        <div class="col-lg-3">
-                            <select id="Commissioning" ng-model="TechnicalQuotation.Commissioning"
-                                    ng-change="showCommissioningOther = (TechnicalQuotation.Commissioning === 'OTHER')" class="form-control">
-                                <option value="">--select--</option>
-                                <option value="SUPPLIER">Supplier</option>
-                                <option value="SQUARE">SQUARE</option>
-                                <option value="BOTH">Both</option>
-                                <option value="OTHER">Other</option>
-                            </select>
-                            <input type="text" ng-show="showCommissioningOther" ng-model="TechnicalQuotation.CommissioningOther"
-                                   class="form-control" placeholder="Specify Other" style="margin-top:5px;" />
-                        </div>
+                    <div class="col-lg-3"  style="padding-left:0px;">
+                        <select id="Installation" ng-model="TechnicalQuotation.Installation"
+                                ng-change="showInstallationOther = (TechnicalQuotation.Installation === 'OTHER')" class="form-control">
+                            <option value="">--select--</option>
+                            <option value="SUPPLIER">Supplier</option>
+                            <option value="SQUARE">SQUARE</option>
+                            <option value="BOTH">Both</option>
+                            <option value="OTHER">Other</option>
+                        </select>
+                        <input type="text" ng-show="showInstallationOther" ng-model="TechnicalQuotation.InstallationOther"
+                               class="form-control" placeholder="Specify Other" style="margin-top:5px;" />
                     </div>
                 </div>
+
+                <!-- Row 15: Testing & Commissioning -->
+                <div class="row">
+                    <div class="col-lg-3">
+                        <label for="Testing">Testing:</label>
+                    </div>
+                    <div class="col-lg-3" style="padding-left:0px;">
+                        <select id="Testing" ng-model="TechnicalQuotation.Testing"
+                                ng-change="showTestingOther = (TechnicalQuotation.Testing === 'OTHER')" class="form-control">
+                            <option value="">--select--</option>
+                            <option value="SUPPLIER">Supplier</option>
+                            <option value="SQUARE">SQUARE</option>
+                            <option value="BOTH">Both</option>
+                            <option value="OTHER">Other</option>
+                        </select>
+                        <input type="text" ng-show="showTestingOther" ng-model="TechnicalQuotation.TestingOther"
+                               class="form-control" placeholder="Specify Other" style="margin-top:5px;" />
+                    </div>
+
+                    <div class="col-lg-3">
+                        <label for="Commissioning">Commissioning:</label>
+                    </div>
+                    <div class="col-lg-3" style="padding-left:0px;">
+                        <select id="Commissioning" ng-model="TechnicalQuotation.Commissioning"
+                                ng-change="showCommissioningOther = (TechnicalQuotation.Commissioning === 'OTHER')" class="form-control">
+                            <option value="">--select--</option>
+                            <option value="SUPPLIER">Supplier</option>
+                            <option value="SQUARE">SQUARE</option>
+                            <option value="BOTH">Both</option>
+                            <option value="OTHER">Other</option>
+                        </select>
+                        <input type="text" ng-show="showCommissioningOther" ng-model="TechnicalQuotation.CommissioningOther"
+                               class="form-control" placeholder="Specify Other" style="margin-top:5px;" />
+                    </div>
+                </div>
+
+
+
+
+
             </div>
-
-
+            <br />
+            <div class="btn-group pull-right" style=" margin-right: 5px;">
+                <button type="submit" id="btnSubmit1" ng-if="MaterialInvitation.TechQuotationItemID!='' " ng-click=" Update()" class="btn btn-primary btn-flat">Update Quotation</button>
+                <button type="submit" id="btnSubmit" ng-if="MaterialInvitation.TechQuotationItemID==''" ng-click=" Post()" class="btn btn-primary btn-flat">Save Quotation</button>
+            </div>
         </div>
 
-        <div class="row" ng-show="p===1 || p===2">
+
+
+
+        @*<div class="row" ng-show="p===1 || p===2">
 
             <div class="btn-group pull-right" style=" margin-right: 70px;">
 
@@ -986,12 +1018,12 @@ onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charC
                 <button type="submit" id="btnSubmit" ng-if="MaterialInvitation.TechQuotationItemID==''" ng-click=" Post()" class="btn btn-primary btn-flat">Quotation Save</button>
 
 
-                @*<button type="button" data-ng-click="ConfirmVision()" class="form-control" ng-disabled="btnConfirm"><i class="fa fa-plus" style="padding-right: 5px"></i>Add Item</button>*@
+      
             </div>
 
 
 
-        </div>
+        </div>*@
 
 
 
@@ -1165,6 +1197,22 @@ onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charC
                                 <th class="col-lg-1 col-md-1 col-sm-1" style="text-align:center;">Action</th>
                             </tr>
 
+                            <tr>
+                                <th></th>
+                                <th>
+                                    <input st-search="Invitation_Number" placeholder="RFQ No" class="input-sm form-control" type="search" style="text-align:center;" data-ng-disabled="" />
+                                </th>
+
+                                <th>
+                                    <input st-search="RFQDate" placeholder="RFQ Date" class="input-sm form-control" type="search" style="text-align:center;" data-ng-disabled="" />
+                                </th>
+
+
+                                <th> <input st-search="RFQDeadline" placeholder="RFQ Deadline" class="input-sm form-control" type="search" style="text-align:center;" data-ng-disabled="" /></th>
+                                <th></th>
+
+                            </tr>
+
                         </thead>
                         <tbody>
                             <tr ng-repeat="row in InvitationDisplayedCollection">
@@ -1217,6 +1265,28 @@ onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charC
 
 
                                 <th class="col-lg-1 col-md-1 col-sm-1" style="text-align:center">Action</th>
+                            </tr>
+
+                            <tr>
+                                <th></th>
+                                <th>
+                                    <input st-search="quotationNo" placeholder="Quotation No" class="input-sm form-control" type="search" style="text-align:center;" data-ng-disabled="" />
+                                </th>
+
+                                <th>
+                                    <input st-search="QuotationDate" placeholder="Quotation Date" class="input-sm form-control" type="search" style="text-align:center;" data-ng-disabled="" />
+                                </th>
+
+
+                                <th> <input st-search="InvitationNumber" placeholder="RFQ No" class="input-sm form-control" type="search" style="text-align:center;" data-ng-disabled="" /></th>
+                                <th>
+                                    <input st-search="RFQDate" placeholder="RFQ Date" class="input-sm form-control" type="search" style="text-align:center;" data-ng-disabled="" />
+                                </th>
+
+
+                                <th> <input st-search="RFQDeadline" placeholder="RFQ Deadline" class="input-sm form-control" type="search" style="text-align:center;" data-ng-disabled="" /></th>
+                                <th></th>
+
                             </tr>
 
                         </thead>
