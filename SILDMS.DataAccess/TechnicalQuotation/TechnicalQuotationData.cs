@@ -480,7 +480,7 @@ namespace SILDMS.DataAccess.TechnicalQuotation
                 // =======================
                 // Order / Shelf / Storage
                 // =======================
-                db.AddInParameter(dbCommandWrapper, "@MinOrderQty", SqlDbType.Int, technicalQuotation.MinOrderQty);
+                db.AddInParameter(dbCommandWrapper, "@MinOrderQty", SqlDbType.Decimal, technicalQuotation.MinOrderQty);
                 db.AddInParameter(dbCommandWrapper, "@OrderQtyUnit", SqlDbType.VarChar, string.IsNullOrEmpty(technicalQuotation.OrderQtyUnit) ? (object)DBNull.Value : technicalQuotation.OrderQtyUnit);
                 db.AddInParameter(dbCommandWrapper, "@CommercialPackSize", SqlDbType.VarChar, technicalQuotation.CommercialPackSize);
                 db.AddInParameter(dbCommandWrapper, "@MinPack", SqlDbType.VarChar, technicalQuotation.MinPack);
@@ -815,7 +815,7 @@ namespace SILDMS.DataAccess.TechnicalQuotation
                             PriceUnit = reader["PriceUnit"] != DBNull.Value
         ? new Item { Item_Code = reader["PriceUnit"].ToString() }
         : null,
-                            MinOrderQty = reader["MinOrderQty"] != DBNull.Value ? Convert.ToInt32(reader["MinOrderQty"]) : (int?)null,
+                            MinOrderQty = reader["MinOrderQty"] != DBNull.Value ? Convert.ToDecimal(reader["MinOrderQty"]) : (decimal?)null,
                             OrderQtyUnit = reader["OrderQtyUnit"] != DBNull.Value ? reader["OrderQtyUnit"].ToString() : null,
                             ProductionLeadTimeValue = reader["ProductionLeadTimeValue"] != DBNull.Value ? Convert.ToInt32(reader["ProductionLeadTimeValue"]) : (int?)null,
 
@@ -995,7 +995,7 @@ namespace SILDMS.DataAccess.TechnicalQuotation
 
 
                 // --- Order / Shelf / Storage ---
-                db.AddInParameter(dbCommandWrapper, "@MinOrderQty", SqlDbType.Int, technicalQuotation.MinOrderQty);
+                db.AddInParameter(dbCommandWrapper, "@MinOrderQty", SqlDbType.Decimal, technicalQuotation.MinOrderQty);
                 db.AddInParameter(dbCommandWrapper, "@OrderQtyUnit", SqlDbType.VarChar, technicalQuotation.OrderQtyUnit);
                 db.AddInParameter(dbCommandWrapper, "@CommercialPackSize", SqlDbType.VarChar, technicalQuotation.CommercialPackSize);
                 db.AddInParameter(dbCommandWrapper, "@MinPack", SqlDbType.VarChar, technicalQuotation.MinPack);

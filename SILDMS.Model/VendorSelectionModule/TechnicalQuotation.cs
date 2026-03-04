@@ -202,7 +202,7 @@ namespace SILDMS.Model.VendorSelectionModule
         public MasterData Currency { get; set; }
 
         // --- Order / Pack ---
-        public int? MinOrderQty { get; set; }
+        public decimal? MinOrderQty { get; set; }
         public string OrderQtyUnit { get; set; }
         public string CommercialPackSize { get; set; }
         public string MinPack { get; set; }
