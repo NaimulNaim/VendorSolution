@@ -540,7 +540,7 @@
                                 <input type="text"
                                        class="form-control text-end"
                                        style="font-size:1.5rem; font-weight:bold;"
-                                       ng-value="calculateTotalPrice(FinancialQuotationDetail)"
+                                       ng-value="calculateTotalPrice(FinancialQuotationDetail) | number:3"
                                        readonly>
                             </div>
                         </div>
@@ -990,7 +990,7 @@
                                 <input type="text"
                                        class="form-control text-end"
                                        style="font-size:1.5rem; font-weight:bold;"
-                                       ng-value="calculateTotalPrice(FinancialQuotationDetail)"
+                                       ng-value="calculateTotalPrice(FinancialQuotationDetail) | number:3"
                                        readonly>
                             </div>
                         </div>
@@ -1662,33 +1662,38 @@
 
 <script type="text/javascript">
 
-    app.directive('threeDecimals', function () {
+    app.directive('threeDecimals', function ($filter) {
         return {
             require: 'ngModel',
             link: function (scope, element, attrs, ngModelController) {
-                // Remove the $parsers that convert to number
-                // Let the model value stay as string
 
+                // Format model value → display (commas + 3 decimals)
                 ngModelController.$formatters.push(function (modelValue) {
                     if (modelValue === null || modelValue === undefined || modelValue === '') {
                         return '';
                     }
-                    // Convert to number, format, then return as string
                     var num = parseFloat(modelValue);
-                    return isNaN(num) ? modelValue : num.toFixed(3);
+                    return isNaN(num) ? modelValue : $filter('number')(num, 3);
                 });
 
+                // On blur: format what the user typed
                 element.on('blur', function () {
-                    var value = element.val();
+                    var value = element.val().replace(/,/g, ''); // strip commas before parsing
                     if (value !== '') {
                         var num = parseFloat(value);
                         if (!isNaN(num)) {
-                            var formatted = num.toFixed(3);
+                            var formatted = $filter('number')(num, 3); // e.g. 10,000.000
                             element.val(formatted);
-                            ngModelController.$setViewValue(formatted);
+                            ngModelController.$setViewValue(value); // keep model as plain number string
                             ngModelController.$render();
                         }
                     }
+                });
+
+                // On focus: strip commas so user can type freely
+                element.on('focus', function () {
+                    var value = element.val().replace(/,/g, '');
+                    element.val(value);
                 });
             }
         };

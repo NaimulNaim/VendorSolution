@@ -4,760 +4,699 @@
     Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
 }
 
+<style>
+    /* ── Section card ── */
+    .reg-card {
+        background: #fff;
+        border: 1px solid #dce1e7;
+        border-radius: 6px;
+        box-shadow: 0 2px 8px rgba(0,0,0,.08);
+        padding: 24px 28px;
+        margin-top: 16px;
+    }
+
+    /* ── Section divider headings ── */
+    .section-heading {
+        font-family: Verdana, sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        color: #6c757d;
+        border-bottom: 2px solid #e4e9e3;
+        padding-bottom: 6px;
+        margin: 20px 0 14px;
+    }
+    .section-heading:first-of-type { margin-top: 4px; }
+
+    /* ── Uniform label column ── */
+    .field-label {
+/*        font-family: Verdana, sans-serif;*/
+        font-size: smaller;
+        font-weight: 600;
+        color: #444;
+        padding-top: 7px;
+        text-align: right;
+    }
+   @@media (min-width: 1200px) {
+    .col-lg-2 {
+        width: 22.666667%;
+    }
+}
+
+    /* ── Required star ── */
+    .req { color: #c0392b; margin-left: 2px; }
+
+    /* ── Inputs ── */
+    .reg-card .form-control {
+        font-size: 12px;
+        height: 32px;
+        padding: 4px 8px;
+        border-radius: 4px;
+        border: 1px solid #ccd0d5;
+        transition: border-color .2s, box-shadow .2s;
+    }
+    .reg-card .form-control:focus {
+        border-color: #5d9b5e;
+        box-shadow: 0 0 0 3px rgba(93,155,94,.15);
+        outline: none;
+    }
+    .reg-card select.form-control { height: 32px; }
+
+    /* ── File input ── */
+    .file-wrap {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 6px;
+    }
+    .file-wrap input[type="file"] {
+        font-size: 11px;
+        color: #555;
+    }
+
+    /* ── Form rows ── */
+    .form-row-item {
+        margin-bottom: 5px;
+    }
+
+    /* ── Already registered banner ── */
+    .already-registered {
+        background: #fff8f0;
+        border: 1px solid #f0c070;
+        border-left: 4px solid #e67e22;
+        border-radius: 4px;
+        padding: 16px 20px;
+        margin-top: 16px;
+        font-family: Verdana, sans-serif;
+    }
+    .already-registered h4 {
+        margin: 0;
+        font-size: 14px;
+        color: #7d4e00;
+    }
+
+    .small-modal {
+        width: 350px;
+    }
+    /* ── Page header bar ── */
+    .box-header.with-border {
+        background: #e4e9e3 !important;
+        border-bottom: 2px solid #c8d4c6;
+    }
+    .box-header .box-title {
+        font-family: Verdana, sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        color: #2c3e2d;
+    }
+
+    /* ── Submit button row ── */
+    .btn-submit-row {
+        border-top: 1px solid #e4e9e3;
+        padding-top: 16px;
+        margin-top: 20px;
+        display: flex;
+        justify-content: flex-end;
+    }
+    .btn-submit-row .btn {
+        font-size: 12px;
+        padding: 7px 20px;
+        border-radius: 4px;
+    }
+
+    /* ── Error messages ── */
+    .field-error {
+        font-size: 11px;
+        color: #c0392b;
+        margin-top: 3px;
+        display: none;
+    }
+
+    /* ── Check-email confirmation ── */
+    .email-confirm {
+        text-align: center;
+        padding: 48px 0;
+        font-family: Verdana, sans-serif;
+        color: #2c3e2d;
+    }
+    .email-confirm i {
+        font-size: 48px;
+        color: #5d9b5e;
+        margin-bottom: 12px;
+        display: block;
+    }
+</style>
 
 <div class="box box-primary box-body" ng-controller="VendorRegistrationCtrl">
-    @* Header *@
 
-    <div class="box-header with-border" style="font-family: Verdana; background: #E4E9E3; color: black; ">
+    <!-- ── Page Header ── -->
+    <div class="box-header with-border">
         <i class="fa fa-user"></i>
-        <h3 style="font-family: Verdana" class="box-title" ng-if="fromMenu">Temporary Vendor Registration</h3>
-        <h3 style="font-family: Verdana" class="box-title" ng-if="!fromMenu">Temporary Vendor Registration</h3>
+        <h3 class="box-title">Temporary Vendor Registration</h3>
         <div class="box-tools pull-right">
-            <button type="button" id="btnRefresh" data-ng-click="toggleRefreshTable(row)" class="btn btn-warning btn-flat pull-right" ng-disabled="loading"><i class="fa fa-refresh"></i> Refresh</button>
+            <button type="button" id="btnRefresh"
+                    data-ng-click="toggleRefreshTable(row)"
+                    class="btn btn-warning btn-flat btn-sm"
+                    ng-disabled="loading">
+                <i class="fa fa-refresh"></i> Refresh
+            </button>
         </div>
+
+
+        <!-- ══════════════════════════════════════
+         PANEL 1 — Main entry (p==1)
+    ══════════════════════════════════════ -->
+        <div class="col-sm-12" id="EntryHolderDiv" ng-show="p==1">
+
+            <!-- ─── q=1 : New Registration ─── -->
+            <div class="reg-card" ng-show="q === 1">
+                <p style="font-family:Verdana;font-size:12px;color:#555;margin-bottom:4px;">
+                    Register your business and provide all required details below.
+                </p>
+
+                <!-- ── Business Info ── -->
+                <div class="section-heading"></div>
+
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">
+                        Business Name <span class="req">*</span>
+                    </div>
+                    <div class="col-lg-4 col-md-5">
+                        <input id="BusinessName" autocomplete="off" type="text" name="BusinessName"
+                               class="form-control" ng-model="PurreqDtl.Vendor.BusinessName" required />
+                    </div>
+                </div>
+
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">Business Type</div>
+                    <div class="col-lg-4 col-md-5">
+                        <select class="form-control"
+                                ng-model="PurreqDtl.Vendor.BusinessType"
+                                ng-options="bt as bt.BusinessTypeName for bt in BusinessTypeList track by bt.BusinessTypeID">
+                            <option value="">-- Select Business Type --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">Country</div>
+                    <div class="col-lg-4 col-md-5">
+                        <select class="form-control"
+                                ng-model="PurreqDtl.Vendor.Country"
+                                ng-options="c.CountryID as c.CountryName for c in CountryList">
+                            <option value="">-- Select Country --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">Company Address</div>
+                    <div class="col-lg-6 col-md-7">
+                        <input autocomplete="off" type="text" name="CompanyAddress"
+                               class="form-control" ng-model="PurreqDtl.Vendor.CompanyAddress" />
+                    </div>
+                </div>
+
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">General Details of Services / Goods</div>
+                    <div class="col-lg-6 col-md-7">
+                        <input autocomplete="off" type="text" name="GeneralDetails"
+                               class="form-control" ng-model="PurreqDtl.Vendor.GenaralDetailsServices" />
+                    </div>
+                </div>
+
+
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">Contact Person</div>
+                    <div class="col-lg-2 col-md-3">
+                        <input autocomplete="off" type="text" class="form-control"
+                               ng-model="PurreqDtl.Vendor.ContactPersonFirstName" placeholder="First Name" />
+                    </div>
+                    <div class="col-lg-2 col-md-3">
+                        <input autocomplete="off" type="text" class="form-control"
+                               ng-model="PurreqDtl.Vendor.ContactPersonLastName" placeholder="Last Name" />
+                    </div>
+                </div>
+
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">
+                        Contact Number <span class="req">*</span>
+                    </div>
+                    <div class="col-lg-3 col-md-4">
+                        <input autocomplete="off" type="text" class="form-control"
+                               ng-model="PurreqDtl.Vendor.VendorPhoneNumber" placeholder="(+880) 00 0000 0000" />
+                        <span class="field-error" id="errorMessageVendorPhoneNumber">Please input a valid Contact Number.</span>
+                    </div>
+                </div>
+
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">
+                        Email <span class="req">*</span>
+                    </div>
+                    <div class="col-lg-3 col-md-4">
+                        <input type="email" autocomplete="off" class="form-control"
+                               ng-model="PurreqDtl.Vendor.Email" placeholder="yourname@example.com" />
+                        <span class="field-error" id="errorMessageEmail">Please input a valid Email.</span>
+                    </div>
+                </div>
+
+                <!-- ── Documents ── -->
+                <!-- helper macro rendered as repeated rows -->
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">TIN</div>
+                    <div class="col-lg-2 col-md-3">
+                        <input type="text" class="form-control" ng-model="PurreqDtl.Vendor.TIN" />
+                    </div>
+                    <div class="col-lg-4 col-md-4">
+                        <div class="file-wrap">
+                            <input type="file" id="TINFile" accept=".pdf"
+                                   onchange="angular.element(this).scope().fileSelected(this,'TIN')" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">BIN</div>
+                    <div class="col-lg-2 col-md-3">
+                        <input type="text" class="form-control" ng-model="PurreqDtl.Vendor.BIN" />
+                    </div>
+                    <div class="col-lg-4 col-md-4">
+                        <div class="file-wrap">
+                            <input type="file" id="BINFile" accept=".pdf"
+                                   onchange="angular.element(this).scope().fileSelected(this,'BIN')" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">Company Profile</div>
+                    <div class="col-lg-2 col-md-3">
+                        <input type="text" class="form-control" ng-model="PurreqDtl.Vendor.CompanyProfile" />
+                    </div>
+                    <div class="col-lg-4 col-md-4">
+                        <div class="file-wrap">
+                            <input type="file" accept=".pdf"
+                                   onchange="angular.element(this).scope().fileSelected(this,'CompanyProfile')" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">Trade License</div>
+                    <div class="col-lg-2 col-md-3">
+                        <input type="text" class="form-control" ng-model="PurreqDtl.Vendor.TradeLicense" placeholder="Optional" />
+                    </div>
+                    <div class="col-lg-4 col-md-4">
+                        <div class="file-wrap">
+                            <input type="file" accept=".pdf"
+                                   onchange="angular.element(this).scope().fileSelected(this,'TradeLicense')" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">Partnership Deed / Agencyship</div>
+                    <div class="col-lg-2 col-md-3">
+                        <input type="text" class="form-control" ng-model="PurreqDtl.Vendor.PartnershipDeed" placeholder="Optional" />
+                    </div>
+                    <div class="col-lg-4 col-md-4">
+                        <div class="file-wrap">
+                            <input type="file" accept=".pdf"
+                                   onchange="angular.element(this).scope().fileSelected(this,'PartnershipDeed')" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">Import Registration Certificate</div>
+                    <div class="col-lg-2 col-md-3">
+                        <input type="text" class="form-control" ng-model="PurreqDtl.Vendor.IRC" placeholder="Optional" />
+                    </div>
+                    <div class="col-lg-4 col-md-4">
+                        <div class="file-wrap">
+                            <input type="file" accept=".pdf"
+                                   onchange="angular.element(this).scope().fileSelected(this,'IRC')" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">Indenting License</div>
+                    <div class="col-lg-2 col-md-3">
+                        <input type="text" class="form-control" ng-model="PurreqDtl.Vendor.IndentingLicense" placeholder="Optional" />
+                    </div>
+                    <div class="col-lg-4 col-md-4">
+                        <div class="file-wrap">
+                            <input type="file" accept=".pdf"
+                                   onchange="angular.element(this).scope().fileSelected(this,'IndentingLicense')" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">Others</div>
+                    <div class="col-lg-2 col-md-3">
+                        <input type="text" class="form-control" ng-model="PurreqDtl.Vendor.Others" placeholder="Optional" />
+                    </div>
+                    <div class="col-lg-4 col-md-4">
+                        <div class="file-wrap">
+                            <input type="file" accept=".pdf"
+                                   onchange="angular.element(this).scope().fileSelected(this,'Others')" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── Credentials ── -->
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">
+                        User Name <span class="req">*</span>
+                    </div>
+                    <div class="col-lg-3 col-md-4">
+                        <input autocomplete="off" type="text" class="form-control"
+                               ng-model="PurreqDtl.Vendor.UserName" />
+                        <span class="field-error" id="errorMessageUserName">Please input a valid User Name.</span>
+                    </div>
+                </div>
+
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">
+                        Password <span class="req">*</span>
+                    </div>
+                    <div class="col-lg-3 col-md-4">
+                        <input autocomplete="off" type="password" class="form-control"
+                               ng-model="PurreqDtl.Vendor.Password" />
+                        <span class="field-error" id="errorMessagePassword">Please input a valid Password.</span>
+                    </div>
+                </div>
+
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">
+                        Confirm Password <span class="req">*</span>
+                    </div>
+                    <div class="col-lg-3 col-md-4">
+                        <input autocomplete="off" type="password" class="form-control"
+                               ng-model="PurreqDtl.Vendor.ConfirmPassword" />
+                    </div>
+                </div>
+
+                <!-- ── Submit ── -->
+                <div class="btn-submit-row">
+                    <button id="btnSaveMasterInitial" type="button"
+                            class="btn btn-success"
+                            data-dismiss="modal"
+                            title="Submit"
+                            ng-click="ValidationCheck()">
+                        <i class="fa fa-save"></i>&nbsp; Submit Registration
+                    </button>
+                </div>
+            </div><!-- /q=1 -->
+            <!-- ─── q=2 : Already Registered ─── -->
+            <div class="already-registered" ng-show="q==2">
+                <h4><i class="fa fa-info-circle"></i>&nbsp; Already Registered — Please login with your credentials.</h4>
+            </div>
+
+            <!-- ─── q=3 : Update Registration ─── -->
+            <div class="reg-card" ng-show="q === 3">
+                <p style="font-family:Verdana;font-size:12px;color:#555;margin-bottom:4px;">
+                    Update your registration information below.
+                </p>
+
+                <!-- ── Business Info ── -->
+                <div class="section-heading">Business Information</div>
+
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">
+                        Business Name <span class="req">*</span>
+                    </div>
+                    <div class="col-lg-4 col-md-5">
+                        <input autocomplete="off" type="text" class="form-control"
+                               ng-model="PurreqDtl.Vendor.BusinessName" required />
+                    </div>
+                    <div class="col-lg-2 col-md-2 field-label">Business Type</div>
+                    <div class="col-lg-3 col-md-4">
+                        <select class="form-control"
+                                ng-model="PurreqDtl.Vendor.BusinessTypeName"
+                                ng-options="bt.BusinessTypeID as bt.BusinessTypeName for bt in BusinessTypeList">
+                            <option value="">-- Select Business Type --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">Company Address</div>
+                    <div class="col-lg-6 col-md-7">
+                        <input autocomplete="off" type="text" class="form-control"
+                               ng-model="PurreqDtl.Vendor.CompanyAddress" />
+                    </div>
+                </div>
+
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">Details of Services / Goods</div>
+                    <div class="col-lg-6 col-md-7">
+                        <input autocomplete="off" type="text" class="form-control"
+                               ng-model="PurreqDtl.Vendor.GenaralDetailsServices" />
+                    </div>
+                </div>
+
+                <!-- ── Contact Info ── -->
+                <div class="section-heading">Contact Information</div>
+
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">Contact Person</div>
+                    <div class="col-lg-2 col-md-3">
+                        <input autocomplete="off" type="text" class="form-control"
+                               ng-model="PurreqDtl.Vendor.ContactPersonFirstName" placeholder="First Name" />
+                    </div>
+                    <div class="col-lg-2 col-md-3">
+                        <input autocomplete="off" type="text" class="form-control"
+                               ng-model="PurreqDtl.Vendor.ContactPersonLastName" placeholder="Last Name" />
+                    </div>
+                </div>
+
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">
+                        Contact Number <span class="req">*</span>
+                    </div>
+                    <div class="col-lg-3 col-md-4">
+                        <input autocomplete="off" type="text" class="form-control"
+                               ng-model="PurreqDtl.Vendor.VendorPhoneNumber" placeholder="(+880) 00 0000 0000" />
+                    </div>
+                </div>
+
+                <!-- ── Documents ── -->
+                <div class="section-heading">Documents <small style="font-weight:400;text-transform:none;font-size:11px;color:#999;">(PDF only)</small></div>
+
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">TIN</div>
+                    <div class="col-lg-2 col-md-3">
+                        <input type="text" class="form-control" ng-model="PurreqDtl.Vendor.TIN" />
+                    </div>
+                    <div class="col-lg-4 col-md-4">
+                        <div class="file-wrap">
+                            <input type="file" id="TINFile" accept=".pdf"
+                                   onchange="angular.element(this).scope().fileSelected(this,'TIN')" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">BIN</div>
+                    <div class="col-lg-2 col-md-3">
+                        <input type="text" class="form-control" ng-model="PurreqDtl.Vendor.BIN" />
+                    </div>
+                    <div class="col-lg-4 col-md-4">
+                        <div class="file-wrap">
+                            <input type="file" id="BINFile" accept=".pdf"
+                                   onchange="angular.element(this).scope().fileSelected(this,'BIN')" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">Company Profile</div>
+                    <div class="col-lg-2 col-md-3">
+                        <input type="text" class="form-control" ng-model="PurreqDtl.Vendor.CompanyProfile" />
+                    </div>
+                    <div class="col-lg-4 col-md-4">
+                        <div class="file-wrap">
+                            <input type="file" accept=".pdf"
+                                   onchange="angular.element(this).scope().fileSelected(this,'CompanyProfile')" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">Trade License</div>
+                    <div class="col-lg-2 col-md-3">
+                        <input type="text" class="form-control" ng-model="PurreqDtl.Vendor.TradeLicense" placeholder="Optional" />
+                    </div>
+                    <div class="col-lg-4 col-md-4">
+                        <div class="file-wrap">
+                            <input type="file" accept=".pdf"
+                                   onchange="angular.element(this).scope().fileSelected(this,'TradeLicense')" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">Partnership Deed / Agencyship</div>
+                    <div class="col-lg-2 col-md-3">
+                        <input type="text" class="form-control" ng-model="PurreqDtl.Vendor.PartnershipDeed" placeholder="Optional" />
+                    </div>
+                    <div class="col-lg-4 col-md-4">
+                        <div class="file-wrap">
+                            <input type="file" accept=".pdf"
+                                   onchange="angular.element(this).scope().fileSelected(this,'PartnershipDeed')" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">Import Registration Certificate</div>
+                    <div class="col-lg-2 col-md-3">
+                        <input type="text" class="form-control" ng-model="PurreqDtl.Vendor.IRC" placeholder="Optional" />
+                    </div>
+                    <div class="col-lg-4 col-md-4">
+                        <div class="file-wrap">
+                            <input type="file" accept=".pdf"
+                                   onchange="angular.element(this).scope().fileSelected(this,'IRC')" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">Indenting License</div>
+                    <div class="col-lg-2 col-md-3">
+                        <input type="text" class="form-control" ng-model="PurreqDtl.Vendor.IndentingLicense" placeholder="Optional" />
+                    </div>
+                    <div class="col-lg-4 col-md-4">
+                        <div class="file-wrap">
+                            <input type="file" accept=".pdf"
+                                   onchange="angular.element(this).scope().fileSelected(this,'IndentingLicense')" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">Others</div>
+                    <div class="col-lg-2 col-md-3">
+                        <input type="text" class="form-control" ng-model="PurreqDtl.Vendor.Others" placeholder="Optional" />
+                    </div>
+                    <div class="col-lg-4 col-md-4">
+                        <div class="file-wrap">
+                            <input type="file" accept=".pdf"
+                                   onchange="angular.element(this).scope().fileSelected(this,'Others')" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── Credentials ── -->
+                <div class="section-heading">Account Credentials</div>
+
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">
+                        User Name <span class="req">*</span>
+                    </div>
+                    <div class="col-lg-3 col-md-4">
+                        <input autocomplete="off" type="text" class="form-control"
+                               ng-model="PurreqDtl.Vendor.UserName" />
+                        <span class="field-error" id="errorMessageUserName2">Please input a valid User Name.</span>
+                    </div>
+                </div>
+
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">
+                        Password <span class="req">*</span>
+                    </div>
+                    <div class="col-lg-3 col-md-4">
+                        <input autocomplete="off" type="password" class="form-control"
+                               ng-model="PurreqDtl.Vendor.Password" />
+                        <span class="field-error" id="errorMessagePassword2">Please input a valid Password.</span>
+                    </div>
+                </div>
+
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">
+                        Confirm Password <span class="req">*</span>
+                    </div>
+                    <div class="col-lg-3 col-md-4">
+                        <input autocomplete="off" type="password" class="form-control"
+                               ng-model="PurreqDtl.Vendor.ConfirmPassword" />
+                    </div>
+                </div>
+
+                <!-- ── Submit ── -->
+                <div class="btn-submit-row">
+                    <button id="btnSaveMasterupdate" type="button"
+                            class="btn btn-success"
+                            data-dismiss="modal"
+                            title="Submit"
+                            ng-click="updateRegistration()">
+                        <i class="fa fa-save"></i>&nbsp; Update Registration
+                    </button>
+                </div>
+            </div><!-- /q=3 -->
+
+        </div><!-- /p=1 -->
+
+        <!-- ══════════════════════════════════════
+         PANEL 2 — Check email (p===2)
+    ══════════════════════════════════════ -->
+        <div class="col-sm-12" ng-show="p===2">
+            <div class="email-confirm">
+                <i class="fa fa-envelope-o"></i>
+                <h3>Please check your email to log in.</h3>
+            </div>
+        </div>
+
+
     </div>
 
-  
-    <div class="col-sm-12 col-md-12 col-lg-12" id="EntryHolderDiv" ng-show="p==1">
-        <div style="margin: 1%; background-color: #F0F0F0; box-shadow: 2px 2px 5px #888888; padding: 10px 10px 10px 10px;" ng-show="q === 1">
-            <div style="height: 30px; margin-bottom:1%">
-                <p style="font-family: Verdana; position: center;  bottom: 5px;">Register your business and please provide all required details to register your business with us</p>
-            </div>
+ 
 
-            <!-- Bussiness Name -->
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2">
-                    <div class="form-group" style="font-size: smaller;">
-                        <label for="BusinessName">Business Name :<span style="color: red;"> *</span></label>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <input id="BusinessName" autocomplete="off" type="text" name="BusinessName" class="form-control" ng-model="PurreqDtl.Vendor.BusinessName" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
-                </div>
-                @*<div class="col-md-3">
-                <span class="center-block text-red" id="errorMessageBusinessName" style="display: none;">Please input valid Business Name.</span>
-            </div>*@
+    <!-- ── Confirm Modal ── -->
+    <div class="modal fade" id="ConfirmModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document" style="width:350px;">
+            <div class="modal-content">
 
-                <!-- Business Type -->
-                <div class="col-lg-2">
-                    <div class="form-group" style="font-size: smaller;">
-                        <label for="BusinessType">Business Type :</label>
-                    </div>
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                    <h4 class="modal-title">Confirm Action</h4>
                 </div>
 
-                <div class="col-lg-4">
-                    <select class="form-control"
-                            ng-model="PurreqDtl.Vendor.BusinessType"
-                            ng-options="bt as bt.BusinessTypeName for bt in BusinessTypeList track by bt.BusinessTypeID">
-                        <option value="">-- Select Business Type --</option>
-                    </select>
-
-
+                <div class="modal-body text-center">
+                    <p>Are you sure you want to save this registration?</p>
                 </div>
 
+                <div class="modal-footer text-center">
+                    <button type="button" class="btn btn-success"
+                            data-dismiss="modal"
+                            ng-click="RegistrationVendor()">
+                        <i class="fa fa-check"></i> Confirm
+                    </button>
 
-
-            </div>
-
-
-            <!-- Contact Person -->
-            <div class="row" style="margin-top: 5px;">
-
-                <div class="col-lg-2 col-md-2 col-sm-2" style="font-size: smaller;">
-                    <label for="ContactPerson">Contact Person :</label>
-                </div>
-                <div class="col-lg-2 col-md-2 col-sm-2">
-                    <input id="FirstName" autocomplete="off" type="text" name="FirstName" class="form-control" ng-model="PurreqDtl.Vendor.ContactPersonFirstName" placeholder="First Name" style="font-size: smaller; padding: 3px 6px 3px;" required />
-                </div>
-                <div class="col-lg-2 col-md-2 col-sm-2">
-                    <input id="LastName" autocomplete="off" type="text" name="LastName" class="form-control" ng-model="PurreqDtl.Vendor.ContactPersonLastName" placeholder="Last Name" style="font-size: smaller; padding: 3px 6px 3px;" required />
-                </div>
-                <div class="col-md-3">
-                    <span class="center-block text-red" id="errorMessageContactPerson" style="display: none;">Please input valid ContactPerson.</span>
-                </div>
-            </div>
-
-            <!-- Contact Number -->
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2" style="font-size: smaller;">
-                    <label for="VendorPhoneNumber">Contact Number :<span style="color: red;"> *</span></label>
-                </div>
-                <div class="col-lg-2">
-                    <input id="VendorPhoneNumber" autocomplete="off" type="text" name="VendorPhoneNumber" class="form-control" ng-model="PurreqDtl.Vendor.VendorPhoneNumber" placeholder="(+880) 00 0000 0000" style="font-size: smaller; padding: 3px 6px 3px;" required />
-                </div>
-                <div class="col-md-3">
-                    <span class="center-block text-red" id="errorMessageVendorPhoneNumber" style="display: none;">Please input valid Contact Number.</span>
-                </div>
-            </div>
-
-            <!-- Email -->
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2" style="font-size: smaller;">
-                    <label for="Email">Email :<span style="color: red;"> *</span></label>
-                </div>
-                <div class="col-lg-2">
-                    <input id="Email" type="email" autocomplete="off" name="Email" class="form-control" ng-model="PurreqDtl.Vendor.Email" placeholder="yourname@gmail.com" style="font-size: smaller; padding: 3px 6px 3px;" required />
-                </div>
-                <div class="col-md-3">
-                    <span class="center-block text-red" id="errorMessageEmail" style="display: none;">Please input valid Email.</span>
-                </div>
-            </div>
-
-
-
-
-            @*  Company Address *@
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2" style="font-size: smaller;">
-                    <label for="CompanyAddress">Company Address :</label>
-                </div>
-                <div class="col-lg-4">
-                    <input id="CompanyAddress" autocomplete="off" type="text" name="CompanyAddress" class="form-control" ng-model="PurreqDtl.Vendor.CompanyAddress" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
-                </div>
-
-                <!-- Country -->
-                <div class="col-lg-2">
-                    <div class="form-group" style="font-size: smaller;">
-                        <label for="Country">Country :</label>
-                    </div>
-                </div>
-
-                <div class="col-lg-3">
-                    <select class="form-control"
-                            ng-model="PurreqDtl.Vendor.Country"
-                            ng-options="c.CountryID as c.CountryName for c in CountryList">
-                        <option value="">-- Select Country --</option>
-                    </select>
-                </div>
-
-
-            </div>
-            <!-- General Details of Services/ Goods -->
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2" style="font-size: smaller;">
-                    <label for="GeneralDetails">General Details of Services/ Goods :</label>
-                </div>
-                <div class="col-lg-4">
-                    <input id="GeneralDetails" autocomplete="off" type="text" name="GeneralDetails" class="form-control" ng-model="PurreqDtl.Vendor.GenaralDetailsServices" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
-                </div>
-            </div>
-
-
-            <!-- TIN -->
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2" style="font-size: smaller;">
-                    <label for="TIN">TIN :</label>
-                </div>
-                <div class="col-lg-2">
-                    <input id="TIN" type="text" autocomplete="off" name="TIN" class="form-control" ng-model="PurreqDtl.Vendor.TIN" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
-                </div>
-                @*<div class="col-md-3">
-                <span class="center-block text-red" id="errorMessageTIN" style="display: none;">Please input valid TIN</span>
-            </div>*@
-
-                <div class="col-lg-4">
-                    <input type="file"
-                           id="TINFile"
-                           accept=".pdf"
-                           onchange="angular.element(this).scope().fileSelected(this, 'TIN')" />
-
-                </div>
-
-            </div>
-
-
-            <!-- BIN -->
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2" style="font-size: smaller;">
-                    <label for="BIN">BIN :</label>
-                </div>
-                <div class="col-lg-2">
-                    <input id="BIN" autocomplete="off" type="text" name="BIN" class="form-control" ng-model="PurreqDtl.Vendor.BIN" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
-                </div>
-                @*<div class="col-md-3">
-                <span class="center-block text-red" id="errorMessageBIN" style="display: none;">Please input valid BIN</span>
-            </div>*@
-                <div class="col-lg-4">
-                    <input type="file"
-                           id="BINFile"
-                           accept=".pdf"
-                           onchange="angular.element(this).scope().fileSelected(this, 'BIN')" />
-                </div>
-            </div>
-
-
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2" style="font-size: smaller;">
-                    <label>Company Profile :</label>
-                </div>
-                <div class="col-lg-2">
-                    <input id="CompanyProfile" autocomplete="off" type="text" name="BIN" class="form-control" ng-model="PurreqDtl.Vendor.CompanyProfile" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
-                </div>
-                <div class="col-lg-4">
-                    <input type="file"
-                           accept=".pdf"
-                           onchange="angular.element(this).scope().fileSelected(this, 'CompanyProfile')" />
-                </div>
-            </div>
-
-            <!-- Trade License -->
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2" style="font-size: smaller;">
-                    <label>Trade License :</label>
-                </div>
-                <div class="col-lg-2">
-                    <input type="text"
-                           class="form-control"
-                           ng-model="PurreqDtl.Vendor.TradeLicense"
-                           placeholder="Optional"
-                           style="font-size: smaller; padding: 3px 6px;" />
-                </div>
-                <div class="col-lg-4">
-                    <input type="file"
-                           accept=".pdf"
-                           onchange="angular.element(this).scope().fileSelected(this, 'TradeLicense')" />
-                </div>
-            </div>
-
-            <!-- Partnership Deed / Agencyship -->
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2" style="font-size: smaller;">
-                    <label>Partnership Deed / Agencyship :</label>
-                </div>
-                <div class="col-lg-2">
-                    <input type="text"
-                           class="form-control"
-                           ng-model="PurreqDtl.Vendor.PartnershipDeed"
-                           placeholder="Optional"
-                           style="font-size: smaller; padding: 3px 6px;" />
-                </div>
-                <div class="col-lg-4">
-                    <input type="file"
-                           accept=".pdf"
-                           onchange="angular.element(this).scope().fileSelected(this, 'PartnershipDeed')" />
-                </div>
-            </div>
-
-            <!-- Import Registration Certificate -->
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2" style="font-size: smaller;">
-                    <label>Import Registration Certificate :</label>
-                </div>
-                <div class="col-lg-2">
-                    <input type="text"
-                           class="form-control"
-                           ng-model="PurreqDtl.Vendor.IRC"
-                           placeholder="Optional"
-                           style="font-size: smaller; padding: 3px 6px;" />
-                </div>
-                <div class="col-lg-4">
-                    <input type="file"
-                           accept=".pdf"
-                           onchange="angular.element(this).scope().fileSelected(this, 'IRC')" />
-                </div>
-            </div>
-
-            <!-- Indenting License -->
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2" style="font-size: smaller;">
-                    <label>Indenting License :</label>
-                </div>
-                <div class="col-lg-2">
-                    <input type="text"
-                           class="form-control"
-                           ng-model="PurreqDtl.Vendor.IndentingLicense"
-                           placeholder="Optional"
-                           style="font-size: smaller; padding: 3px 6px;" />
-                </div>
-                <div class="col-lg-4">
-                    <input type="file"
-                           accept=".pdf"
-                           onchange="angular.element(this).scope().fileSelected(this, 'IndentingLicense')" />
-                </div>
-            </div>
-
-            <!-- Others -->
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2" style="font-size: smaller;">
-                    <label>Others :</label>
-                </div>
-                <div class="col-lg-2">
-                    <input type="text"
-                           class="form-control"
-                           ng-model="PurreqDtl.Vendor.Others"
-                           placeholder="Optional"
-                           style="font-size: smaller; padding: 3px 6px;" />
-                </div>
-
-                <div class="col-lg-4">
-                    <input type="file"
-                           accept=".pdf"
-                           onchange="angular.element(this).scope().fileSelected(this, 'Others')" />
-                </div>
-            </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            @*User Name*@
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2" style="font-size: smaller;">
-                    <label for="UserName">User Name :<span style="color: red;"> *</span></label>
-                </div>
-                <div class="col-lg-4">
-                    <input id="UserName" autocomplete="off" type="text" name="UserName" class="form-control" ng-model="PurreqDtl.Vendor.UserName" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
-                </div>
-                <div class="col-md-3">
-                    <span class="center-block text-red" id="errorMessageUserName" style="display: none;">Please input valid User Name</span>
-                </div>
-            </div>
-
-            @*Password*@
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2" style="font-size: smaller;">
-                    <label for="Password">Password :<span style="color: red;"> *</span></label>
-                </div>
-                <div class="col-lg-4">
-                    <input id="Password" autocomplete="off" type="text" name="Password" class="form-control" ng-model="PurreqDtl.Vendor.Password" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
-                </div>
-                <div class="col-md-3">
-                    <span class="center-block text-red" id="errorMessagePassword" style="display: none;">Please input valid Password</span>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2" style="font-size: smaller;">
-                    <label for="ConfirmPassword">Confirm Password :<span style="color: red;"> *</span></label>
-                </div>
-                <div class="col-lg-4">
-                    <input id="ConfirmPassword" autocomplete="off" type="text" name="ConfirmPassword" class="form-control" ng-model="PurreqDtl.Vendor.ConfirmPassword" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
-                </div>
-
-                <div class="col-lg-4" style="margin-top: 10px;">
-                </div>
-            </div>
-            <br />
-
-
-
-
-
-
-            @* button save*@
-            <div class="row">
-
-                <div class="col-lg-9">
-
-                </div>
-
-
-                <div class="col-lg-1">
-                    <button id="btnSaveMasterInitial" type="button" class="btn btn-success saveBtn pull-left" data-dismiss="modal" title="Submit" ng-click="ValidationCheck()">
-                        <i class="fa fa-save"></i> Submit Registration
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">
+                        <i class="fa fa-times"></i> Cancel
                     </button>
                 </div>
 
             </div>
         </div>
-
-        <div style="margin: 1%; background-color: #F0F0F0; box-shadow: 2px 2px 5px #888888; padding: 10px;"
-             ng-show="q==2">
-
-            <div style="height: 30px; margin-bottom:1%">
-                <h3 style="font-family: Verdana; text-align:center;">
-                    <span style="color: red; font-weight: bold;">
-                        (Already registered)
-                    </span>
-                    Please login with your credentials.
-                </h3>
-            </div>
-
-        </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <div style="margin: 1%; background-color: #F0F0F0; box-shadow: 2px 2px 5px #888888; padding: 10px 10px 10px 10px;" ng-show="q === 3">
-            <div style="height: 30px; margin-bottom:1%">
-                <p style="font-family: Verdana; position: center;  bottom: 5px;">Update your Information</p>
-            </div>
-
-            <!-- Bussiness Name -->
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2">
-                    <div class="form-group" style="font-size: smaller;">
-                        <label for="BusinessName">Business Name :<span style="color: red;"> *</span></label>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <input id="BusinessName" autocomplete="off" type="text" name="BusinessName" class="form-control" ng-model="PurreqDtl.Vendor.BusinessName" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
-                </div>
-                @*<div class="col-md-3">
-                <span class="center-block text-red" id="errorMessageBusinessName" style="display: none;">Please input valid Business Name.</span>
-            </div>*@
-
-
-                <div class="col-lg-2">
-                    <div class="form-group" style="font-size: smaller;">
-                        <label for="BusinessType">Business Type :</label>
-                    </div>
-                </div>
-
-                <div class="col-lg-3">
-                    <select class="form-control"
-                            ng-model="PurreqDtl.Vendor.BusinessTypeName"
-                            ng-options="bt.BusinessTypeID as bt.BusinessTypeName for bt in BusinessTypeList">
-                        <option value="">-- Select Business Type --</option>
-                    </select>
-                </div>
-
-
-            </div>
-
-
-            <!-- Contact Person -->
-            <div class="row" style="margin-top: 5px;">
-
-                <div class="col-lg-2 col-md-2 col-sm-2" style="font-size: smaller;">
-                    <label for="ContactPerson">Contact Person :</label>
-                </div>
-                <div class="col-lg-2 col-md-2 col-sm-2">
-                    <input id="FirstName" autocomplete="off" type="text" name="FirstName" class="form-control" ng-model="PurreqDtl.Vendor.ContactPersonFirstName" placeholder="First Name" style="font-size: smaller; padding: 3px 6px 3px;" required />
-                </div>
-                <div class="col-lg-2 col-md-2 col-sm-2">
-                    <input id="LastName" autocomplete="off" type="text" name="LastName" class="form-control" ng-model="PurreqDtl.Vendor.ContactPersonLastName" placeholder="Last Name" style="font-size: smaller; padding: 3px 6px 3px;" required />
-                </div>
-                <div class="col-md-3">
-                    <span class="center-block text-red" id="errorMessageContactPerson" style="display: none;">Please input valid ContactPerson.</span>
-                </div>
-            </div>
-
-            <!-- Contact Number -->
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2" style="font-size: smaller;">
-                    <label for="VendorPhoneNumber">Contact Number :<span style="color: red;"> *</span></label>
-                </div>
-                <div class="col-lg-2">
-                    <input id="VendorPhoneNumber" autocomplete="off" type="text" name="VendorPhoneNumber" class="form-control" ng-model="PurreqDtl.Vendor.VendorPhoneNumber" placeholder="(+880) 00 0000 0000" style="font-size: smaller; padding: 3px 6px 3px;" required />
-                </div>
-                <div class="col-md-3">
-                    <span class="center-block text-red" id="errorMessageVendorPhoneNumber" style="display: none;">Please input valid Contact Number.</span>
-                </div>
-            </div>
-
-
-
-
-            <!-- TIN -->
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2" style="font-size: smaller;">
-                    <label for="TIN">TIN :</label>
-                </div>
-                <div class="col-lg-2">
-                    <input id="TIN" type="text" autocomplete="off" name="TIN" class="form-control" ng-model="PurreqDtl.Vendor.TIN" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
-                </div>
-                @*<div class="col-md-3">
-                <span class="center-block text-red" id="errorMessageTIN" style="display: none;">Please input valid TIN</span>
-            </div>*@
-                <div class="col-lg-4">
-                    <input type="file"
-                           id="TINFile"
-                           accept=".pdf"
-                           onchange="angular.element(this).scope().fileSelected(this, 'TIN')" />
-
-                </div>
-            </div>
-
-
-            <!-- BIN -->
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2" style="font-size: smaller;">
-                    <label for="BIN">BIN :</label>
-                </div>
-                <div class="col-lg-2">
-                    <input id="BIN" autocomplete="off" type="text" name="BIN" class="form-control" ng-model="PurreqDtl.Vendor.BIN" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
-                </div>
-                @*<div class="col-md-3">
-                <span class="center-block text-red" id="errorMessageBIN" style="display: none;">Please input valid BIN</span>
-            </div>*@
-
-                <div class="col-lg-4">
-                    <input type="file"
-                           id="BINFile"
-                           accept=".pdf"
-                           onchange="angular.element(this).scope().fileSelected(this, 'BIN')" />
-                </div>
-            </div>
-
-
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2" style="font-size: smaller;">
-                    <label>Company Profile :</label>
-                </div>
-                <div class="col-lg-2">
-                    <input id="CompanyProfile" autocomplete="off" type="text" name="BIN" class="form-control" ng-model="PurreqDtl.Vendor.CompanyProfile" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
-                </div>
-                <div class="col-lg-4">
-                    <input type="file"
-                           accept=".pdf"
-                           onchange="angular.element(this).scope().fileSelected(this, 'CompanyProfile')" />
-                </div>
-            </div>
-
-            <!-- Trade License -->
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2" style="font-size: smaller;">
-                    <label>Trade License :</label>
-                </div>
-                <div class="col-lg-2">
-                    <input type="text"
-                           class="form-control"
-                           ng-model="PurreqDtl.Vendor.TradeLicense"
-                           placeholder="Optional"
-                           style="font-size: smaller; padding: 3px 6px;" />
-                </div>
-                <div class="col-lg-4">
-                    <input type="file"
-                           accept=".pdf"
-                           onchange="angular.element(this).scope().fileSelected(this, 'TradeLicense')" />
-                </div>
-            </div>
-
-            <!-- Partnership Deed / Agencyship -->
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2" style="font-size: smaller;">
-                    <label>Partnership Deed / Agencyship :</label>
-                </div>
-                <div class="col-lg-2">
-                    <input type="text"
-                           class="form-control"
-                           ng-model="PurreqDtl.Vendor.PartnershipDeed"
-                           placeholder="Optional"
-                           style="font-size: smaller; padding: 3px 6px;" />
-                </div>
-                <div class="col-lg-4">
-                    <input type="file"
-                           accept=".pdf"
-                           onchange="angular.element(this).scope().fileSelected(this, 'PartnershipDeed')" />
-                </div>
-            </div>
-
-            <!-- Import Registration Certificate -->
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2" style="font-size: smaller;">
-                    <label>Import Registration Certificate :</label>
-                </div>
-                <div class="col-lg-2">
-                    <input type="text"
-                           class="form-control"
-                           ng-model="PurreqDtl.Vendor.IRC"
-                           placeholder="Optional"
-                           style="font-size: smaller; padding: 3px 6px;" />
-                </div>
-                <div class="col-lg-4">
-                    <input type="file"
-                           accept=".pdf"
-                           onchange="angular.element(this).scope().fileSelected(this, 'IRC')" />
-                </div>
-            </div>
-
-            <!-- Indenting License -->
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2" style="font-size: smaller;">
-                    <label>Indenting License :</label>
-                </div>
-                <div class="col-lg-2">
-                    <input type="text"
-                           class="form-control"
-                           ng-model="PurreqDtl.Vendor.IndentingLicense"
-                           placeholder="Optional"
-                           style="font-size: smaller; padding: 3px 6px;" />
-                </div>
-                <div class="col-lg-4">
-                    <input type="file"
-                           accept=".pdf"
-                           onchange="angular.element(this).scope().fileSelected(this, 'IndentingLicense')" />
-                </div>
-            </div>
-
-            <!-- Others -->
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2" style="font-size: smaller;">
-                    <label>Others :</label>
-                </div>
-                <div class="col-lg-2">
-                    <input type="text"
-                           class="form-control"
-                           ng-model="PurreqDtl.Vendor.Others"
-                           placeholder="Optional"
-                           style="font-size: smaller; padding: 3px 6px;" />
-                </div>
-
-                <div class="col-lg-4">
-                    <input type="file"
-                           accept=".pdf"
-                           onchange="angular.element(this).scope().fileSelected(this, 'Others')" />
-                </div>
-            </div>
-
-
-            @*  Company Address *@
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2" style="font-size: smaller;">
-                    <label for="CompanyAddress">Company Address :</label>
-                </div>
-                <div class="col-lg-4">
-                    <input id="CompanyAddress" autocomplete="off" type="text" name="CompanyAddress" class="form-control" ng-model="PurreqDtl.Vendor.CompanyAddress" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
-                </div>
-            </div>
-            <!-- General Details of Services/ Goods -->
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2" style="font-size: smaller;">
-                    <label for="GeneralDetails">Details of Services/ Goods :</label>
-                </div>
-                <div class="col-lg-4">
-                    <input id="GeneralDetails" autocomplete="off" type="text" name="GeneralDetails" class="form-control" ng-model="PurreqDtl.Vendor.GenaralDetailsServices" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
-                </div>
-            </div>
-
-            @*User Name*@
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2" style="font-size: smaller;">
-                    <label for="UserName">User Name :<span style="color: red;"> *</span></label>
-                </div>
-                <div class="col-lg-4">
-                    <input id="UserName" autocomplete="off" type="text" name="UserName" class="form-control" ng-model="PurreqDtl.Vendor.UserName" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
-                </div>
-                <div class="col-md-3">
-                    <span class="center-block text-red" id="errorMessageUserName" style="display: none;">Please input valid User Name</span>
-                </div>
-            </div>
-
-            @*Password*@
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2" style="font-size: smaller;">
-                    <label for="Password">Password :<span style="color: red;"> *</span></label>
-                </div>
-                <div class="col-lg-4">
-                    <input id="Password" autocomplete="off" type="text" name="Password" class="form-control" ng-model="PurreqDtl.Vendor.Password" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
-                </div>
-                <div class="col-md-3">
-                    <span class="center-block text-red" id="errorMessagePassword" style="display: none;">Please input valid Password</span>
-                </div>
-            </div>
-
-            @*Confirm Password*@
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-2" style="font-size: smaller;">
-                    <label for="ConfirmPassword">Confirm Password :<span style="color: red;"> *</span></label>
-                </div>
-                <div class="col-lg-4">
-                    <input id="ConfirmPassword" autocomplete="off" type="text" name="ConfirmPassword" class="form-control" ng-model="PurreqDtl.Vendor.ConfirmPassword" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
-                </div>
-            </div>
-
-            @*Password*@
-
-
-            @*Confirm Password*@
-
-
-
-
-            <div class="row" style="margin-top: 5px;">
-
-
-                @* button save*@
-                <div class="col-lg-1">
-                    <button id="btnSaveMasterupdate" type="button" class="btn btn-success saveBtn pull-left" data-dismiss="modal" title="Submit" ng-click="updateRegistration()">
-                        <i class="fa fa-save"></i> User Creation
-                    </button>
-                </div>
-
-            </div>
-
-        </div>
-
-
     </div>
 
-    <div class="col-sm-12 col-md-12 col-lg-12" ng-show="p===2">
-         
-
-         
-
-
-         <div style="height: 30px; margin-bottom:1%">
-             <h3 style="font-family: Verdana; position: center; text-align:center;  bottom: 5px;">Please check your Email to login</h3>
- </div>
-        </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    @*Save / Delete Modal*@
-    <div class="modal fade" id="ConfirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="position: fixed; top: 38%; left: 50%; transform: translate(-38%, -50%); background: rgba(0,0,0,0) !important ">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content" style="border-radius: 5px; width: 456px; height: 185px;">
-                <div class="modal-header" style="height: 46px;">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" style="height:30px;" id="myModalLabel">Confirm your Action</h4>
-                </div>
-                <div class="modal-body" style="height:80px;">
-                    <h5 class="modal-title" style="height:30px;" id="myModalLabel">Are you sure to Save</h5>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" id="btnSaveMaster" class="btn button-custom" style="color: white; background-color: darkgreen;" data-dismiss="modal" ng-click="RegistrationVendor()">Confirm</button>
-                    <button type="button" class="btn button-custom" data-dismiss="modal" style="color: white; background-color: darkred;">Cancel</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
+    <!-- ── Loading overlay ── -->
     <div id="mydiv" ng-show="loading">
         <div class="overlay">
-            <i class="fa fa-refresh fa-spin"></i>Loading...
+            <i class="fa fa-refresh fa-spin"></i> Loading...
         </div>
     </div>
 
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
-
 
 <script type="text/javascript">
 
@@ -781,7 +720,7 @@
 
         $scope.PurreqDtl = {
             Vendor: {
-                BusinessType: { BusinessTypeID: "", BusinessTypeName:""},
+                BusinessType: { BusinessTypeID: "", BusinessTypeName: "" },
                 BusinessName: "",
                 ContactPerson: "",
                 ContactPersonFirstName: "",
@@ -820,7 +759,7 @@
 
 
 
-     
+
         var selectedPropID = new Array();
 
         $http.get('/VendorSelectionModule/VendorRegistration/GetSupportDoc')
@@ -900,7 +839,7 @@
 
 
         $scope.ValidationCheck = function () {
-            // Required fields validation
+           //  Required fields validation
             var errors = [];
 
             if (!$scope.PurreqDtl.Vendor.BusinessName || $scope.PurreqDtl.Vendor.BusinessName.trim() === "") {
@@ -1020,7 +959,7 @@
         //var encryptedEmail = queryParams.get('Email');
 
 
-       
+
         var encryptedBiddingID = decodeURIComponent(queryParams.get('BiddingID'));
         var encryptedEmail = decodeURIComponent(queryParams.get('Email'));
         console.log(encryptedEmail);
@@ -1063,7 +1002,7 @@
                 {
                     VendorID: $scope.info1,
                     Email: $scope.info2
-})
+                })
                 .success(function (response) {
                     $scope.Vendor = response.Vendor;
 
@@ -1104,7 +1043,7 @@
                                 }
                                 else {
                                     $scope.q = 2;
-                            
+
 
 
 
@@ -1128,7 +1067,7 @@
                 });
 
 
-       
+
 
         }
 
@@ -1152,7 +1091,7 @@
                 } else if (type === 'PartnershipDeed') {
                     $scope.partnershipDeedFile = input.files[0];
 
-                }  else if (type === 'ImportRegistration') {
+                } else if (type === 'ImportRegistration') {
                     $scope.importRegistrationFile = input.files[0];
 
                 } else if (type === 'IndentingLicense') {
@@ -1460,7 +1399,7 @@
             $scope.PurreqDtl.Vendor.Email = vendor.VendorEmail || "";
             $scope.PurreqDtl.Vendor.TIN = vendor.TIN || "";
             $scope.PurreqDtl.Vendor.BIN = vendor.BIN || "";
-        
+
             $scope.PurreqDtl.Vendor.UserName = ""; // Default value, assuming it's entered manually
             $scope.PurreqDtl.Vendor.Password = ""; // Default value, assuming it's entered manually
             $scope.PurreqDtl.Vendor.ConfirmPassword = ""; // Default value, assuming it's entered manually
@@ -1625,7 +1564,7 @@
         $scope.loadBusinessNature();
         $scope.LoadCountryList();
 
-       
+
 
         //--------------utilities
 
@@ -1634,6 +1573,10 @@
                 window.location = "/SecurityModule/Account/Login";// Reload the current page
             }, 2000); // 2000 milliseconds = 3 seconds
         }
+
+        $scope.toggleRefreshTable = function (row) {
+            location.reload();
+        };
 
     });
 </script>
