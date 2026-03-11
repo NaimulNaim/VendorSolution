@@ -264,8 +264,7 @@
                                 <input type="text"
                                        class="form-control text-right"
                                        ng-model="FinancialQuotationDetail.QuotationQty"
-                                       three-decimals
-                                       onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46">
+                                       three-decimals>
                             </div>
                             <div class="col-lg-2" style="padding-left: 0px;padding-right:5px;">
                                 <select class="form-control"
@@ -793,8 +792,7 @@
                                 <input type="text"
                                        class="form-control text-right"
                                        ng-model="FinancialQuotationDetail.QuotationQty"
-                                       three-decimals
-                                       onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46">
+                                       three-decimals>
                             </div>
                             <div class="col-lg-2" style="padding-left: 0px;padding-right:5px;">
                                 <select class="form-control"
@@ -1667,7 +1665,7 @@
             require: 'ngModel',
             link: function (scope, element, attrs, ngModelController) {
 
-                // Format model value → display (commas + 3 decimals)
+                // Model → View: format with commas when model changes programmatically
                 ngModelController.$formatters.push(function (modelValue) {
                     if (modelValue === null || modelValue === undefined || modelValue === '') {
                         return '';
@@ -1676,24 +1674,60 @@
                     return isNaN(num) ? modelValue : $filter('number')(num, 3);
                 });
 
-                // On blur: format what the user typed
-                element.on('blur', function () {
-                    var value = element.val().replace(/,/g, ''); // strip commas before parsing
-                    if (value !== '') {
-                        var num = parseFloat(value);
-                        if (!isNaN(num)) {
-                            var formatted = $filter('number')(num, 3); // e.g. 10,000.000
-                            element.val(formatted);
-                            ngModelController.$setViewValue(value); // keep model as plain number string
-                            ngModelController.$render();
-                        }
-                    }
+                // View → Model: strip commas, save as plain number
+                ngModelController.$parsers.push(function (viewValue) {
+                    if (!viewValue) return viewValue;
+                    var clean = viewValue.toString().replace(/,/g, '');
+                    var num = parseFloat(clean);
+                    return isNaN(num) ? 0 : num;
                 });
 
-                // On focus: strip commas so user can type freely
-                element.on('focus', function () {
+                // Real-time formatting as user types
+                element.on('input', function () {
+                    var raw = element.val();
+
+                    // Only allow digits and one decimal point
+                    raw = raw.replace(/[^0-9.]/g, '');
+
+                    // Prevent multiple decimal points
+                    var parts = raw.split('.');
+                    if (parts.length > 2) {
+                        raw = parts[0] + '.' + parts.slice(1).join('');
+                    }
+
+                    // Limit to 3 decimal places while typing
+                    if (parts[1] !== undefined && parts[1].length > 3) {
+                        raw = parts[0] + '.' + parts[1].substring(0, 3);
+                    }
+
+                    // Add commas to integer part only
+                    var intPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                    var formatted = parts.length === 2 ? intPart + '.' + (parts[1] || '') : intPart;
+
+                    // Save cursor position
+                    var cursorPos = element[0].selectionStart;
+                    var oldLen = element.val().length;
+
+                    element.val(formatted);
+
+                    // Adjust cursor for added/removed commas
+                    var newLen = formatted.length;
+                    var newCursor = cursorPos + (newLen - oldLen);
+                    element[0].setSelectionRange(newCursor, newCursor);
+
+                    // Update model with plain number
+                    ngModelController.$setViewValue(raw.replace(/,/g, ''));
+                    ngModelController.$commitViewValue();
+                });
+
+                // Blur: finalize with full 3 decimal places e.g. 10,000.000
+                element.on('blur', function () {
                     var value = element.val().replace(/,/g, '');
-                    element.val(value);
+                    var num = parseFloat(value);
+                    if (!isNaN(num) && value !== '') {
+                        element.val($filter('number')(num, 3));
+                        ngModelController.$setViewValue(num);
+                    }
                 });
             }
         };
