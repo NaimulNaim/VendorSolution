@@ -266,7 +266,7 @@
                 <div class="row form-row-item">
                     <div class="col-lg-2 col-md-3 field-label">TIN</div>
                     <div class="col-lg-2 col-md-3">
-                        <input type="text" class="form-control" ng-model="PurreqDtl.Vendor.TIN" />
+                        <input type="text" class="form-control" ng-model="PurreqDtl.Vendor.TIN" placeholder="Optional" />
                     </div>
                     <div class="col-lg-4 col-md-4">
                         <div class="file-wrap">
@@ -279,7 +279,7 @@
                 <div class="row form-row-item">
                     <div class="col-lg-2 col-md-3 field-label">BIN</div>
                     <div class="col-lg-2 col-md-3">
-                        <input type="text" class="form-control" ng-model="PurreqDtl.Vendor.BIN" />
+                        <input type="text" class="form-control" ng-model="PurreqDtl.Vendor.BIN" placeholder="Optional" />
                     </div>
                     <div class="col-lg-4 col-md-4">
                         <div class="file-wrap">
@@ -292,7 +292,7 @@
                 <div class="row form-row-item">
                     <div class="col-lg-2 col-md-3 field-label">Company Profile</div>
                     <div class="col-lg-2 col-md-3">
-                        <input type="text" class="form-control" ng-model="PurreqDtl.Vendor.CompanyProfile" />
+                        <input type="text" class="form-control" ng-model="PurreqDtl.Vendor.CompanyProfile" placeholder="Optional" />
                     </div>
                     <div class="col-lg-4 col-md-4">
                         <div class="file-wrap">
@@ -870,14 +870,14 @@
                 errors.push("Passwords do not match");
             }
 
-            // Optional fields validation - only validate if provided
-            if ($scope.PurreqDtl.Vendor.TIN && $scope.PurreqDtl.Vendor.TIN.trim() !== "" && !$scope.tinFile) {
-                errors.push("Please upload TIN document");
-            }
+            //// Optional fields validation - only validate if provided
+            //if ($scope.PurreqDtl.Vendor.TIN && $scope.PurreqDtl.Vendor.TIN.trim() !== "" && !$scope.tinFile) {
+            //    errors.push("Please upload TIN document");
+            //}
 
-            if ($scope.PurreqDtl.Vendor.BIN && $scope.PurreqDtl.Vendor.BIN.trim() !== "" && !$scope.binFile) {
-                errors.push("Please upload BIN document");
-            }
+            //if ($scope.PurreqDtl.Vendor.BIN && $scope.PurreqDtl.Vendor.BIN.trim() !== "" && !$scope.binFile) {
+            //    errors.push("Please upload BIN document");
+            //}
 
             if (errors.length > 0) {
                 toastr.error(errors.join("<br>"));
