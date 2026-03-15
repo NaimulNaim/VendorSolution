@@ -164,11 +164,11 @@
     <!-- Import Registration Certificate (IRC) -->
     <div class="row" style="margin-top: 5px;">
         <div class="col-lg-2" style="font-size: smaller;">
-            <label for="IRC">Import Registration Certificate :</label>
+            <label for="ImportRegistration">Import Registration Certificate :</label>
         </div>
         <div class="col-lg-4">
-            <input id="IRC" type="text" autocomplete="off" class="form-control"
-                   ng-model="PurreqDtl.Vendor.IRC" placeholder=""
+            <input id="ImportRegistration" type="text" autocomplete="off" class="form-control"
+                   ng-model="PurreqDtl.Vendor.ImportRegistration" placeholder=""
                    style="font-size: smaller; padding: 3px 6px 3px;" />
         </div>
     </div>
@@ -563,7 +563,7 @@
                 CompanyProfile: "",
                 TradeLicense: "",
                 PartnershipDeed: "",
-                IRC: "",
+                ImportRegistration: "",
                 IndentingLicense: "",
                 Others: ""
             }
@@ -1051,7 +1051,7 @@
             $scope.PurreqDtl.Vendor.CompanyProfile = vendor.CompanyProfile || "";
             $scope.PurreqDtl.Vendor.TradeLicense = vendor.TradeLicense || "";
             $scope.PurreqDtl.Vendor.PartnershipDeed = vendor.PartnershipDeed || "";
-            $scope.PurreqDtl.Vendor.IRC = vendor.IRC || "";
+            $scope.PurreqDtl.Vendor.ImportRegistration = vendor.IRC || "";
             $scope.PurreqDtl.Vendor.IndentingLicense = vendor.IndentingLicense || "";
             $scope.PurreqDtl.Vendor.Others = vendor.Others || "";
 
@@ -1106,7 +1106,7 @@
                 companyProfile: $scope.PurreqDtl.Vendor.CompanyProfile,
                 tradeLicense: $scope.PurreqDtl.Vendor.TradeLicense,
                 partnershipDeed: $scope.PurreqDtl.Vendor.PartnershipDeed,
-                irc: $scope.PurreqDtl.Vendor.IRC,
+                irc: $scope.PurreqDtl.Vendor.ImportRegistration,
                 indentingLicense: $scope.PurreqDtl.Vendor.IndentingLicense,
                 others: $scope.PurreqDtl.Vendor.Others,
                

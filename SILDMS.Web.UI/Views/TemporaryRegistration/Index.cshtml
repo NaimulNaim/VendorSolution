@@ -296,7 +296,7 @@
                     </div>
                     <div class="col-lg-4 col-md-4">
                         <div class="file-wrap">
-                            <input type="file" accept=".pdf"
+                            <input type="file" id="CompanyProfile" accept=".pdf"
                                    onchange="angular.element(this).scope().fileSelected(this,'CompanyProfile')" />
                         </div>
                     </div>
@@ -309,7 +309,7 @@
                     </div>
                     <div class="col-lg-4 col-md-4">
                         <div class="file-wrap">
-                            <input type="file" accept=".pdf"
+                            <input type="file" id="TradeLicense" accept=".pdf"
                                    onchange="angular.element(this).scope().fileSelected(this,'TradeLicense')" />
                         </div>
                     </div>
@@ -322,7 +322,7 @@
                     </div>
                     <div class="col-lg-4 col-md-4">
                         <div class="file-wrap">
-                            <input type="file" accept=".pdf"
+                            <input type="file" id="PartnershipDeed" accept=".pdf"
                                    onchange="angular.element(this).scope().fileSelected(this,'PartnershipDeed')" />
                         </div>
                     </div>
@@ -331,12 +331,12 @@
                 <div class="row form-row-item">
                     <div class="col-lg-2 col-md-3 field-label">Import Registration Certificate</div>
                     <div class="col-lg-2 col-md-3">
-                        <input type="text" class="form-control" ng-model="PurreqDtl.Vendor.IRC" placeholder="Optional" />
+                        <input type="text" class="form-control" ng-model="PurreqDtl.Vendor.ImportRegistration" placeholder="Optional" />
                     </div>
                     <div class="col-lg-4 col-md-4">
                         <div class="file-wrap">
-                            <input type="file" accept=".pdf"
-                                   onchange="angular.element(this).scope().fileSelected(this,'IRC')" />
+                            <input type="file" id="ImportRegistration" accept=".pdf"
+                                   onchange="angular.element(this).scope().fileSelected(this,'ImportRegistration')" />
                         </div>
                     </div>
                 </div>
@@ -348,7 +348,7 @@
                     </div>
                     <div class="col-lg-4 col-md-4">
                         <div class="file-wrap">
-                            <input type="file" accept=".pdf"
+                            <input type="file" id="IndentingLicense" accept=".pdf"
                                    onchange="angular.element(this).scope().fileSelected(this,'IndentingLicense')" />
                         </div>
                     </div>
@@ -361,7 +361,7 @@
                     </div>
                     <div class="col-lg-4 col-md-4">
                         <div class="file-wrap">
-                            <input type="file" accept=".pdf"
+                            <input type="file"  id="Others" accept=".pdf"
                                    onchange="angular.element(this).scope().fileSelected(this,'Others')" />
                         </div>
                     </div>
@@ -520,7 +520,7 @@
                     </div>
                     <div class="col-lg-4 col-md-4">
                         <div class="file-wrap">
-                            <input type="file" accept=".pdf"
+                            <input type="file" id="CompanyProfile"  accept=".pdf"
                                    onchange="angular.element(this).scope().fileSelected(this,'CompanyProfile')" />
                         </div>
                     </div>
@@ -533,7 +533,7 @@
                     </div>
                     <div class="col-lg-4 col-md-4">
                         <div class="file-wrap">
-                            <input type="file" accept=".pdf"
+                            <input type="file" id="TradeLicense" accept=".pdf"
                                    onchange="angular.element(this).scope().fileSelected(this,'TradeLicense')" />
                         </div>
                     </div>
@@ -546,7 +546,7 @@
                     </div>
                     <div class="col-lg-4 col-md-4">
                         <div class="file-wrap">
-                            <input type="file" accept=".pdf"
+                            <input type="file" id="PartnershipDeed" accept=".pdf"
                                    onchange="angular.element(this).scope().fileSelected(this,'PartnershipDeed')" />
                         </div>
                     </div>
@@ -555,12 +555,12 @@
                 <div class="row form-row-item">
                     <div class="col-lg-2 col-md-3 field-label">Import Registration Certificate</div>
                     <div class="col-lg-2 col-md-3">
-                        <input type="text" class="form-control" ng-model="PurreqDtl.Vendor.IRC" placeholder="Optional" />
+                        <input type="text" class="form-control" ng-model="PurreqDtl.Vendor.ImportRegistration" placeholder="Optional" />
                     </div>
                     <div class="col-lg-4 col-md-4">
                         <div class="file-wrap">
-                            <input type="file" accept=".pdf"
-                                   onchange="angular.element(this).scope().fileSelected(this,'IRC')" />
+                            <input type="file" id="ImportRegistration" accept=".pdf"
+                                   onchange="angular.element(this).scope().fileSelected(this,'ImportRegistration')" />
                         </div>
                     </div>
                 </div>
@@ -572,7 +572,7 @@
                     </div>
                     <div class="col-lg-4 col-md-4">
                         <div class="file-wrap">
-                            <input type="file" accept=".pdf"
+                            <input type="file" id="IndentingLicense" accept=".pdf"
                                    onchange="angular.element(this).scope().fileSelected(this,'IndentingLicense')" />
                         </div>
                     </div>
@@ -585,7 +585,7 @@
                     </div>
                     <div class="col-lg-4 col-md-4">
                         <div class="file-wrap">
-                            <input type="file" accept=".pdf"
+                            <input type="file" id="Others" accept=".pdf"
                                    onchange="angular.element(this).scope().fileSelected(this,'Others')" />
                         </div>
                     </div>
@@ -739,7 +739,7 @@
                 CompanyProfile: "",
                 TradeLicense: "",
                 PartnershipDeed: "",
-                IRC: "",
+                ImportRegistration: "",
                 IndentingLicense: "",
                 Others: ""
             }
@@ -871,13 +871,32 @@
             }
 
             //// Optional fields validation - only validate if provided
-            //if ($scope.PurreqDtl.Vendor.TIN && $scope.PurreqDtl.Vendor.TIN.trim() !== "" && !$scope.tinFile) {
-            //    errors.push("Please upload TIN document");
-            //}
+            if ($scope.PurreqDtl.Vendor.TIN && $scope.PurreqDtl.Vendor.TIN.trim() !== "" && !$scope.tinFile) {
+                errors.push("Please upload TIN document");
+            }
 
-            //if ($scope.PurreqDtl.Vendor.BIN && $scope.PurreqDtl.Vendor.BIN.trim() !== "" && !$scope.binFile) {
-            //    errors.push("Please upload BIN document");
-            //}
+            if ($scope.PurreqDtl.Vendor.BIN && $scope.PurreqDtl.Vendor.BIN.trim() !== "" && !$scope.binFile) {
+                errors.push("Please upload BIN document");
+            }
+            if ($scope.PurreqDtl.Vendor.CompanyProfile && $scope.PurreqDtl.Vendor.CompanyProfile.trim() !== "" && !$scope.companyProfileFile) {
+                errors.push("Please upload CompanyProfile document");
+            }
+            if ($scope.PurreqDtl.Vendor.TradeLicense && $scope.PurreqDtl.Vendor.TradeLicense.trim() !== "" && !$scope.tradeLicenseFile) {
+                errors.push("Please upload TradeLicense document");
+            }
+            if ($scope.PurreqDtl.Vendor.PartnershipDeed && $scope.PurreqDtl.Vendor.PartnershipDeed.trim() !== "" && !$scope.partnershipDeedFile) {
+                errors.push("Please upload PartnershipDeed document");
+            }
+            if ($scope.PurreqDtl.Vendor.ImportRegistration && $scope.PurreqDtl.Vendor.ImportRegistration.trim() !== "" && !$scope.importRegistrationFile) {
+                errors.push("Please upload ImportRegistration document");
+            }
+            if ($scope.PurreqDtl.Vendor.IndentingLicense && $scope.PurreqDtl.Vendor.IndentingLicense.trim() !== "" && !$scope.indentingLicenseFile) {
+                errors.push("Please upload IndentingLicense document");
+            }
+            if ($scope.PurreqDtl.Vendor.Others && $scope.PurreqDtl.Vendor.Others.trim() !== "" && !$scope.othersFile) {
+                errors.push("Please upload Others document");
+            }
+
 
             if (errors.length > 0) {
                 toastr.error(errors.join("<br>"));
@@ -1073,6 +1092,12 @@
 
         $scope.tinFile = null;
         $scope.binFile = null;
+        $scope.companyProfileFile = null;
+        $scope.tradeLicenseFile = null;
+        $scope.partnershipDeedFile = null;
+        $scope.importRegistrationFile = null;
+        $scope.indentingLicenseFile = null;
+        $scope.othersFile = null;
 
         $scope.fileSelected = function (input, type) {
             if (input.files && input.files[0]) {
@@ -1269,7 +1294,7 @@
                 companyProfile: $scope.PurreqDtl.Vendor.CompanyProfile,
                 tradeLicense: $scope.PurreqDtl.Vendor.TradeLicense,
                 partnershipDeed: $scope.PurreqDtl.Vendor.PartnershipDeed,
-                irc: $scope.PurreqDtl.Vendor.IRC,
+                irc: $scope.PurreqDtl.Vendor.ImportRegistration,
                 indentingLicense: $scope.PurreqDtl.Vendor.IndentingLicense,
                 others: $scope.PurreqDtl.Vendor.Others
             })
