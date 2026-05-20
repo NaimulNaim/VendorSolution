@@ -763,6 +763,7 @@ namespace SILDMS.DataAccess.FinancialQuotation
 
                             sampleDocId = reader.GetString("DocumentID"),
                             SampleDocumentID = reader.GetString("SampleDocId"),
+                            LowestNetUnitPrice = reader.GetString("LowestNetUnitPrice"),
                             Action = "E",
 
 
@@ -928,7 +929,7 @@ namespace SILDMS.DataAccess.FinancialQuotation
                             Fintype = reader["FinType"] as string,
 
                             SampleDocumentID = reader["SampleDocId"] as string
-
+                 
 
                         }).ToList();
                     }

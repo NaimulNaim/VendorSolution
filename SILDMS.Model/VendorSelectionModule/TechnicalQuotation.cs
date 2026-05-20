@@ -411,6 +411,7 @@ namespace SILDMS.Model.VendorSelectionModule
         public string QuotationNo { get; set; }
         public string InvitationNumber { get; set; }
         public string DeliveryLocation { get; set; }
+        public string LowestNetUnitPrice { get; set; }
     }
 
     // Supporting class for MasterData objects
@@ -580,6 +581,7 @@ namespace SILDMS.Model.VendorSelectionModule
         public string DeliveryLocation { get; set; }
         public DateTime RFQDeadline { get; set; }
         public string RFQDeadlineString { get; set; }
+        public string LowestNetUnitPrice { get; set; }
     }
 
 

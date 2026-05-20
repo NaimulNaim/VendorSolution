@@ -130,6 +130,23 @@
                         </div>*@
                 </div>
             </div>
+            <div class="col-lg-4"></div>
+            <div class="col-lg-2" ng-if="Quotation">
+                <div class="form-group">
+                    <label for="LowestPrice">Lowest Quoted Price </label>
+                </div>
+            </div>
+            <div class="col-lg-2" ng-if="Quotation">
+                <div class="form-group">
+                    <input id="LowestPriceNo" name="LowestPriceNo" type="text" data-ng-model="lowestPrice"  class="form-control text-right"
+                           placeholder="LowestPrice No" ng-readonly="true" />
+                    @*<div ng-show="masterDataFrm.$submitted || masterDataFrm.UDCode.$touched">
+                            <span ng-show="masterDataFrm.UDCode.$error.required" class="label label-danger">Please enter UD Code</span>
+                        </div>*@
+                </div>
+            </div>
+
+            
 
         </div>
 
@@ -377,7 +394,8 @@
                                     </label>
                                     <input type="number"
                                            class="form-control text-end"
-                                           min="1"
+                                          
+                                      
                                            ng-model="FinancialQuotationDetail.Per"
                                            ng-init="FinancialQuotationDetail.Per=1">
                                 </div>
@@ -474,7 +492,7 @@
 
                         <!-- Tax -->
                         <div class="row mb-3">
-                            <div class="col-lg-6"><label>Taxes(If Applicable)</label></div>
+                            <div class="col-lg-6"><label>Additional Taxes (If Applicable)</label></div>
                             <div class="col-lg-6" style="padding-left:0px;padding-right:5px;">
                                 <select class="form-control"
                                         ng-model="FinancialQuotationDetail.Tax">
@@ -865,6 +883,7 @@
                  for ItemTypes in ItemTypeList
                  track by ItemTypes.MasterDataValue"
                                         ng-required="true"
+                                        ng-disabled="true"
                                         style="height: 26px; font-size:smaller">
 
                                     <option value="" selected style="display:none">
@@ -900,7 +919,7 @@
                                     </label>
                                     <input type="number"
                                            class="form-control text-end"
-                                           min="1"
+                                          
                                            ng-model="FinancialQuotationDetail.Per"
                                            ng-init="FinancialQuotationDetail.Per=1">
                                 </div>
@@ -2956,6 +2975,7 @@
             $scope.FinancialQuotationDetail.QuotationID = data.QuotationID;
             $scope.FinancialQuotationDetail.QuotationNo = data.QuotationNo;
             $scope.FinancialQuotationDetail.InvitationNumber = data.InvitationNumber;
+         
 
             // =====================
             // Quantities
@@ -3266,7 +3286,16 @@
         $scope.DetailItem = function (row) {
             console.log(row);
 
+
+            angular.forEach($scope.GridDisplayCollection, function (item) {
+                item.selected = false;
+            });
+
+            // Step 2: Select only the clicked row
             row.selected = true;
+
+
+       
 
 
             dwObject.RemoveAllImages();
@@ -4180,6 +4209,8 @@
                     $scope.flagToShowMasterTbl = true;
                     $scope.MaterialList = response.AllQuotation;
 
+                    $scope.lowestPrice = $scope.MaterialList[0].LowestNetUnitPrice;
+
                     $scope.GridDisplayCollection = [].concat($scope.MaterialList);
 
 
@@ -4639,6 +4670,15 @@
         $scope.toggleRefreshTable = function (row) {
             window.location.href = "/VendorSelectionModule/FinancialQuotation";
         };
+
+
+        $scope.$watch('FinancialQuotationDetail.Per', function (newVal) {
+            if (newVal !== undefined && newVal !== null) {
+                if (newVal < 0.01) {
+                    $scope.FinancialQuotationDetail.Per = 0.01;
+                }
+            }
+        });
 
     })
 </script>
