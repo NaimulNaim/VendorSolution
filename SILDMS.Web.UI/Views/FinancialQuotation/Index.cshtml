@@ -131,12 +131,12 @@
                 </div>
             </div>
             <div class="col-lg-4"></div>
-            <div class="col-lg-2" ng-if="Quotation">
+            <div class="col-lg-2" ng-if="Quotation && lowestshowstatus">
                 <div class="form-group">
                     <label for="LowestPrice">Lowest Quoted Price </label>
                 </div>
             </div>
-            <div class="col-lg-2" ng-if="Quotation">
+            <div class="col-lg-2" ng-if="Quotation && lowestshowstatus">
                 <div class="form-group">
                     <input id="LowestPriceNo" name="LowestPriceNo" type="text" data-ng-model="lowestPrice"  class="form-control text-right"
                            placeholder="LowestPrice No" ng-readonly="true" />
@@ -1554,7 +1554,7 @@
 
 
                                 <td class="text-center">
-                                    <a class="btn col-center btn-sm btn-flat btn-success" data-ng-click="toggleQuotationSelect(row.InvitationNumber,row.quotationNo)">Select</a>
+                                    <a class="btn col-center btn-sm btn-flat btn-success" data-ng-click="toggleQuotationSelect(row.InvitationNumber,row.quotationNo,row.RFQDeadline)">Select</a>
                                 </td>
                             </tr>
                         </tbody>
@@ -2344,10 +2344,23 @@
                 )
                     .success(function (response) {
 
+                        //if (response.respStatus.Message === 'Data Updated Successfully') {
+                        //    toastr.success(response.respStatus.Message);
+                        //    $scope.p = 0;
+                        //    $scope.Refresh();
+                        //} else {
+                        //    toastr.error(response.respStatus.Message);
+                        //}
+
                         if (response.respStatus.Message === 'Data Updated Successfully') {
+
                             toastr.success(response.respStatus.Message);
-                            $scope.p = 0;
-                            $scope.reset();
+
+                            $timeout(function () {
+                                $scope.p = 0;
+                                $scope.Refresh();
+                            }, 200);
+
                         } else {
                             toastr.error(response.respStatus.Message);
                         }
@@ -4196,9 +4209,31 @@
         }
 
 
+        $scope.lowestshowstatus = 0;
+
+        $scope.toggleQuotationSelect = function (InvitationNumber, quotationNo, RFQDeadline) {
+           
+            $scope.RFQDeadline = RFQDeadline;
 
 
-        $scope.toggleQuotationSelect = function (InvitationNumber, quotationNo) {
+            var parts = $scope.RFQDeadline.split('/');
+
+            // dd/MM/yyyy
+            var deadlineDate = new Date(
+                parseInt(parts[2]),     // year
+                parseInt(parts[1]) - 1, // month (0-based)
+                parseInt(parts[0])      // day
+            );
+            // Convert both dates to Date objects
+           
+            var currentDate = new Date();
+
+            // Optional: remove time part if you only want date comparison
+            deadlineDate.setHours(0, 0, 0, 0);
+            currentDate.setHours(0, 0, 0, 0);
+
+            // Set status
+            $scope.lowestshowstatus = deadlineDate >= currentDate ? 1 : 0;
 
             $scope.Quotation = quotationNo;
             $scope.InvitationNumber = InvitationNumber;
@@ -4581,9 +4616,9 @@
                 params[keyValue[0]] = decodeURIComponent(keyValue[1]);
             });
 
-            if (params.InvitationNumber && params.QuotationNo) {
+            if (params.InvitationNumber && params.QuotationNo && params.QuotationSendingDeadline) {
                 // All 3 parameters exist → call Financial quotation select
-                $scope.toggleQuotationSelect(params.InvitationNumber, params.QuotationNo);
+                $scope.toggleQuotationSelect(params.InvitationNumber, params.QuotationNo, params.QuotationSendingDeadline);
             } else if (params.InvitationNumber) {
                 // Only InvitationNumber → call Invitation select
                 $scope.toggleInvitationSelect(params.InvitationNumber);

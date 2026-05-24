@@ -559,7 +559,7 @@
                                 <th style="color:black" rowspan="2">Quotation No</th>
                                 <th style="color:black" rowspan="2">Quotation Date</th>
                                 <th style="color:black" rowspan="2">RFQ Deadline</th>
-                                <th style="color:black"  colspan="2">Action</thstyle="color:black">
+                                <th style="color:black"  colspan="2">Action</th>
                             </tr>
                             <tr>
                                 <th style="color:black">Tech</th>
@@ -586,7 +586,7 @@
                                 </td>
                                 <td class="text-center">
                                     <a ng-if="item.FinanQuotationItemID"
-                                       ng-href="/VendorSelectionModule/FinancialQuotation?InvitationNumber={{item.InnvitationNumber}}&QuotationNo={{item.QuotationNo}}"
+                                       ng-href="/VendorSelectionModule/FinancialQuotation?InvitationNumber={{item.InnvitationNumber}}&QuotationNo={{item.QuotationNo}} &QuotationSendingDeadline={{formatDatetest(item.QuotationlastDt)}}"
                                        class="btn btn-xs btn-success"
                                        style=" background-color: #B9CBE9 !important;
                                                border-color: #B9CBE9 !important;
