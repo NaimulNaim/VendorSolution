@@ -1025,7 +1025,7 @@
                 .success(function (response) {
                     $scope.Vendor = response.Vendor;
 
-                    if (response.Vendor === "") {
+                    if ($scope.Vendor === "") {
                         $scope.q = 1;
                     }
                     else {
@@ -1033,18 +1033,18 @@
 
 
                         $http.post('/VendorSelectionModule/VendorRegistration/ItemVendorcheck',
-                            { VendorID: response.Vendor })
+                            { VendorID: $scope.Vendor })
                             .success(function (response) {
                                 $scope.Vendor2 = response.Vendor2;
 
-                                if (response.Vendor2 === "") {
+                                if ($scope.Vendor2 === "") {
                                     $scope.q = 3;
 
 
 
                                     $http.post('/VendorSelectionModule/VendorRegistration/GetVendorbyID',
                                         {
-                                            VendorID: $scope.info1,
+                                            VendorID: $scope.Vendor,
                                             Email: $scope.info2
                                         })
                                         .success(function (response) {
