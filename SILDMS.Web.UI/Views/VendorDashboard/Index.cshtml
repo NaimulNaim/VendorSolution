@@ -577,7 +577,7 @@
         ng-href="/VendorSelectionModule/TechnicalQuotation?InvitationNumber={{item.InnvitationNumber}}&QuotationNo={{item.QuotationNo}}"
         class="btn btn-xs btn-primary" style="background-color:#FCB788">TQ</a>*@
                                     <a ng-if="item.TechQuotationItemID"
-                                       ng-href="/VendorSelectionModule/TechnicalQuotation?InvitationNumber={{item.InnvitationNumber}}&QuotationNo={{item.QuotationNo}}"
+                                       ng-href="/VendorSelectionModule/TechnicalQuotation?InvitationNumber={{item.InnvitationNumber}}&QuotationNo={{item.QuotationNo}} &QuotationSendingDeadline={{formatDatetest(item.QuotationlastDt)}}"
                                         class="btn btn-xs btn-success"
                                         style=" background-color: #FCB788 !important;
                                         border-color: #FCB788 !important; 
