@@ -471,7 +471,7 @@
                             <tr ng-repeat="item in invitationTecnicalList">
                                 <td class="text-center" ng-style="item.TotalItem == 0 ? {'cursor':'not-allowed'} : {'cursor':'pointer'}">
                                     <a ng-if="item.TotalItem != 0"
-                                       ng-href="/VendorSelectionModule/TechnicalQuotation?InvitationNumber={{item.InnvitationNumber}}"
+                                       ng-href="/VendorSelectionModule/TechnicalQuotation?InvitationNumber={{item.InnvitationNumber}} &QuotationSendingDeadline={{formatDatetest(item.QuotationlastDt)}}""
                                        class="text-primary">{{item.InnvitationNumber}}</a>
                                     <span ng-if="item.TotalItem == 0" class="text-muted">{{item.InnvitationNumber}}</span>
                                 </td>
@@ -518,7 +518,7 @@
                             <tr ng-repeat="item in invitationFinanList">
                                 <td class="text-center" ng-style="item.TotalItem == 0 ? {'cursor':'not-allowed'} : {'cursor':'pointer'}">
                                     <a ng-if="item.TotalItem != 0"
-                                       ng-href="/VendorSelectionModule/FinancialQuotation?InvitationNumber={{item.InnvitationNumber}}"
+                                       ng-href="/VendorSelectionModule/FinancialQuotation?InvitationNumber={{item.InnvitationNumber}} &QuotationSendingDeadline={{formatDatetest(item.QuotationlastDt)}}"
                                        class="text-primary">{{item.InnvitationNumber}}</a>
                                     <span ng-if="item.TotalItem == 0" class="text-muted">{{item.InnvitationNumber}}</span>
                                 </td>

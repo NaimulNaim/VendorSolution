@@ -1524,7 +1524,7 @@
 
 
                                 <td class="text-center">
-                                    <a class="btn col-center btn-sm btn-flat btn-success" data-ng-click="toggleInvitationSelect(row.Invitation_Number)">Select</a>
+                                    <a class="btn col-center btn-sm btn-flat btn-success" data-ng-click="toggleInvitationSelect(row.Invitation_Number,row.RFQDeadline)">Select</a>
                                 </td>
                             </tr>
                         </tbody>
@@ -2159,7 +2159,29 @@
         $scope.p = 0;
 
 
-        $scope.toggleInvitationSelect = function (Invitation_Number) {
+        $scope.toggleInvitationSelect = function (Invitation_Number, RFQDeadline) {
+
+            $scope.RFQDeadline = RFQDeadline;
+
+
+            var parts = $scope.RFQDeadline.split('/');
+
+            // dd/MM/yyyy
+            var deadlineDate = new Date(
+                parseInt(parts[2]),     // year
+                parseInt(parts[1]) - 1, // month (0-based)
+                parseInt(parts[0])      // day
+            );
+            // Convert both dates to Date objects
+
+            var currentDate = new Date();
+
+            // Optional: remove time part if you only want date comparison
+            deadlineDate.setHours(0, 0, 0, 0);
+            currentDate.setHours(0, 0, 0, 0);
+
+            // Set status
+            $scope.lowestshowstatus = deadlineDate >= currentDate ? 1 : 0;
             $scope.InvitationNumber = Invitation_Number;
             
             //$scope.proposal = proposal;
@@ -4663,9 +4685,9 @@
             if (params.InvitationNumber && params.QuotationNo && params.QuotationSendingDeadline) {
                 // All 3 parameters exist → call Financial quotation select
                 $scope.toggleQuotationSelect(params.InvitationNumber, params.QuotationNo, params.QuotationSendingDeadline);
-            } else if (params.InvitationNumber) {
+            } else if (params.InvitationNumber && params.QuotationSendingDeadline) {
                 // Only InvitationNumber → call Invitation select
-                $scope.toggleInvitationSelect(params.InvitationNumber);
+                $scope.toggleInvitationSelect(params.InvitationNumber, params.QuotationSendingDeadline);
             }
         }
 
