@@ -516,7 +516,7 @@
                     <div class="col-lg-3 col-md-4">
                         <input type="email"
                                autocomplete="off"
-                               class="form-control"
+                               class="form-control" ng-readonly="SAP_Status == 2"
                                ng-model="PurreqDtl.Vendor.Email"
                                placeholder="yourname@example.com" />
                         <span class="field-error" id="errorMessageEmail2">
@@ -1069,6 +1069,7 @@
                                         })
                                         .success(function (response) {
                                             $scope.IndvVendorData = response.IndvVendorData;
+                                            $scope.SAP_Status = $scope.IndvVendorData[0].SAP_Status;
                                             $scope.AutoCompleteVendorInfo($scope.IndvVendorData);
                                             $scope.loading = false;
                                         }).error(function () {

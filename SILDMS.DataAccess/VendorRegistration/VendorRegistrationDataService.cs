@@ -110,7 +110,8 @@ namespace SILDMS.DataAccess.VendorRegistration
                                 TIN = row["TIN"] != DBNull.Value ? row["TIN"].ToString() : null,
                                 BIN = row["BIN"] != DBNull.Value ? row["BIN"].ToString() : null,
                                 Country = row["Country"] != DBNull.Value ? row["Country"].ToString() : null,
-                                GenaralDetailsServices = row["DetailsOfService"] != DBNull.Value ? row["DetailsOfService"].ToString() : null
+                                GenaralDetailsServices = row["DetailsOfService"] != DBNull.Value ? row["DetailsOfService"].ToString() : null,
+                                SAP_Status = row["Status"] != DBNull.Value ? row["Status"].ToString() : null,
                             };
                             vendorData.Add(vendor);
                         }
