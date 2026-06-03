@@ -32,5 +32,6 @@ namespace SILDMS.Model.VendorSelectionModule
         public string IRC { get; set; }
         public string IndentingLicense { get; set; }
         public string Others { get; set; }
+        public string SAP_Status { get; set; }
     }
 }
