@@ -53,7 +53,9 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
     string partnershipDeed,
     string irc,
     string indentingLicense,
-    string others)
+    string others,
+    string EstablishedYear,
+    string TradeLicenseValidity)
         {
             string respStatus = string.Empty, message = string.Empty;
             var user = new SecVendor_User();
@@ -65,7 +67,7 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
                 businessName, contactPerson, vendorPhoneNumber, email, companyAddress, country,
                 businessType, typeOfMaterial, tin, bin, generalDetailsServices, userName,
                 password, status, vendor,
-        companyProfile, tradeLicense, partnershipDeed, irc, indentingLicense, others, // new
+        companyProfile, tradeLicense, partnershipDeed, irc, indentingLicense, others, EstablishedYear, TradeLicenseValidity, // new
         out user);
 
 

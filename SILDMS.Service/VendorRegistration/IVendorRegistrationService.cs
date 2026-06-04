@@ -30,7 +30,7 @@ namespace SILDMS.Service.VendorRegistration
     string partnershipDeed,
     string irc,
     string indentingLicense,
-    string others ,out SecVendor_User user);
+    string others ,string EstablishedYear,string TradeLicenseValidity, out SecVendor_User user);
 
         List<BusinessTypeDto> GetBusinessTypeList();
         List<BusinessNatureDto> GetBusinessNatureList();

@@ -218,8 +218,30 @@
                     </div>
                 </div>
 
+
+
                 <div class="row form-row-item">
-                    <div class="col-lg-2 col-md-3 field-label">General Details of Services / Goods</div>
+                    <div class="col-lg-2 col-md-3 field-label">
+                        Established Year
+                    </div>
+
+                    <div class="col-lg-6 col-md-7">
+                        <input id="EstablishedYear"
+                               name="EstablishedYear"
+                               readonly
+                               type="text"
+                               class="DatePicker form-control"
+                               placeholder="DD/MM/YYYY"
+                               ng-model="PurreqDtl.Vendor.EstablishedYear"
+                               style="background-color:#ffffff; text-align:center" />
+                    </div>
+                </div>
+
+
+
+
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">Services / Goods Details</div>
                     <div class="col-lg-6 col-md-7">
                         <input autocomplete="off" type="text" name="GeneralDetails"
                                class="form-control" ng-model="PurreqDtl.Vendor.GenaralDetailsServices" />
@@ -314,6 +336,23 @@
                         </div>
                     </div>
                 </div>
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">
+                        Trade License Validity
+                    </div>
+
+                    <div class="col-lg-6 col-md-7">
+                        <input id="TradeLicenseValidity"
+                               name="TradeLicenseValidity"
+                               readonly
+                               type="text"
+                               class="DatePicker form-control"
+                               placeholder="DD/MM/YYYY"
+                               ng-model="PurreqDtl.Vendor.TradeLicenseValidity"
+                               style="background-color:#ffffff; text-align:center" />
+                    </div>
+                </div>
+
 
                 <div class="row form-row-item">
                     <div class="col-lg-2 col-md-3 field-label">Partnership Deed / Agencyship</div>
@@ -433,6 +472,7 @@
                     <div class="col-lg-4 col-md-5">
                         <input autocomplete="off" type="text"
                                class="form-control"
+                               readonly
                                ng-model="PurreqDtl.Vendor.BusinessName"
                                required />
                     </div>
@@ -470,7 +510,25 @@
                 </div>
 
                 <div class="row form-row-item">
-                    <div class="col-lg-2 col-md-3 field-label">General Details of Services / Goods</div>
+                    <div class="col-lg-2 col-md-3 field-label">
+                        Established Year
+                    </div>
+
+                    <div class="col-lg-6 col-md-7">
+                        <input id="EstablishedYear"
+                               name="EstablishedYear"
+                               readonly
+                               type="text"
+                               class="DatePicker form-control"
+                               placeholder="DD/MM/YYYY"
+                               ng-model="PurreqDtl.Vendor.EstablishedYear"
+                               style="background-color:#ffffff; text-align:center" />
+                    </div>
+                </div>
+
+
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">Services / Goods Details</div>
                     <div class="col-lg-6 col-md-7">
                         <input autocomplete="off" type="text"
                                class="form-control"
@@ -596,6 +654,23 @@
                                    accept=".pdf"
                                    onchange="angular.element(this).scope().fileSelected(this,'TradeLicense')" />
                         </div>
+                    </div>
+                </div>
+
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">
+                        Trade License Validity
+                    </div>
+
+                    <div class="col-lg-6 col-md-7">
+                        <input id="TradeLicenseValidity"
+                               name="TradeLicenseValidity"
+                               readonly
+                               type="text"
+                               class="DatePicker form-control"
+                               placeholder="DD/MM/YYYY"
+                               ng-model="PurreqDtl.Vendor.TradeLicenseValidity"
+                               style="background-color:#ffffff; text-align:center" />
                     </div>
                 </div>
 
@@ -832,7 +907,11 @@
                 PartnershipDeed: "",
                 ImportRegistration: "",
                 IndentingLicense: "",
-                Others: ""
+                Others: "",
+                TradeLicenseValidity: "",
+                EstablishedYear: "",
+
+
             }
         }
 
@@ -1168,6 +1247,9 @@
 
             $scope.loading = true;
 
+            $scope.PurreqDtl.Vendor.EstablishedYear = $scope.formatDate($('#EstablishedYear').val());
+            $scope.PurreqDtl.Vendor.TradeLicenseValidity = $scope.formatDate($('#TradeLicenseValidity').val());
+
             // 1️⃣ Save Vendor
             $http.post('/VendorSelectionModule/VendorRegistration/VendorRegistrationDetails', {
                 businessName: $scope.PurreqDtl.Vendor.BusinessName,
@@ -1190,7 +1272,9 @@
                 partnershipDeed: $scope.PurreqDtl.Vendor.PartnershipDeed,
                 irc: $scope.PurreqDtl.Vendor.ImportRegistration,
                 indentingLicense: $scope.PurreqDtl.Vendor.IndentingLicense,
-                others: $scope.PurreqDtl.Vendor.Others
+                others: $scope.PurreqDtl.Vendor.Others,
+                EstablishedYear: $scope.PurreqDtl.Vendor.EstablishedYear,
+                TradeLicenseValidity: $scope.PurreqDtl.Vendor.TradeLicenseValidity,
             })
 
                 .then(function (vendorResp) {

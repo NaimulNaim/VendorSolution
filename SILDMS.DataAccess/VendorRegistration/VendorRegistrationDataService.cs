@@ -194,6 +194,8 @@ namespace SILDMS.DataAccess.VendorRegistration
     string irc,
     string indentingLicense,
     string others,
+    string EstablishedYear,
+    string TradeLicenseValidity,
      out string errorNumber)
         {
             errorNumber = string.Empty;
@@ -227,6 +229,8 @@ namespace SILDMS.DataAccess.VendorRegistration
                 db.AddInParameter(dbCommandWrapper, "@IRC", SqlDbType.NVarChar, irc);
                 db.AddInParameter(dbCommandWrapper, "@IndentingLicense", SqlDbType.NVarChar, indentingLicense);
                 db.AddInParameter(dbCommandWrapper, "@Others", SqlDbType.NVarChar, others);
+                db.AddInParameter(dbCommandWrapper, "@EstablishedYear", SqlDbType.NVarChar, EstablishedYear);
+                db.AddInParameter(dbCommandWrapper, "@TradeLicenseValidity", SqlDbType.NVarChar, TradeLicenseValidity);
 
                 // Output parameter
                 db.AddOutParameter(dbCommandWrapper, "@p_Error", DbType.Int32, sizeof(int));

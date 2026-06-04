@@ -20,7 +20,8 @@ namespace SILDMS.DataAccess.VendorRegistration
     string partnershipDeed,
     string irc,
     string indentingLicense,
-    string others, out string _errorNumber);
+    string others, string EstablishedYear,
+    string TradeLicenseValidity, out string _errorNumber);
         SecVendor_User VendorupdateRegistrationDetailsData(string businessName, string contactPerson, string vendorPhoneNumber,string VendorPhoneNumber2, string companyAddress, string country, string businessType, string tIN, string bIN, string generalDetailsServices, string status, string vendor, string companyProfile,
     string tradeLicense,
     string partnershipDeed,

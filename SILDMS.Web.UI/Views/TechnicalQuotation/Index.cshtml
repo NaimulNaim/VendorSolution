@@ -40,15 +40,24 @@
     }
 
 
-    .readonly-mode {
+    .readonly-mode input,
+    .readonly-mode select,
+    .readonly-mode textarea
+    {
         pointer-events: none;
-        opacity: 0.8;
+        background-color: #f8f9fa !important;
     }
 
-        .readonly-mode button,
-        .readonly-mode .btn {
-            pointer-events: none;
-        }
+    .readonly-mode .select2-container {
+        pointer-events: none;
+        opacity: 0.8;
+        background-color: #f8f9fa !important;
+    }
+
+    /*.readonly-mode button,
+    .readonly-mode .btn {
+        pointer-events: none;
+    }*/
 </style>
 
 <div class="box box-primary box-body" ng-controller="TechnicalQuotationCtrl">
@@ -2118,7 +2127,77 @@
                 }
             }
 
-            
+
+
+
+            var hasUploadedFiles = $("#FileUpload1").get(0).files.length > 0;
+            var hasScannerDocs = (typeof dwObject !== 'undefined' &&
+                dwObject.HowManyImagesInBuffer > 0);
+
+            if (!$scope.MaterialInvitation.SampleDocumentID) {
+
+                if (!hasUploadedFiles && !hasScannerDocs) {
+
+                    // No document attached, update quotation directly
+                    SaveQuotation();
+
+                } else {
+
+                    // Save document first, then update quotation
+                    $scope.SaveDocumentOnly(function () {
+                        SaveQuotation();
+                    });
+                }
+            }
+            else {
+
+                // Existing document, update document then quotation
+                $scope.UpdateDocument();
+
+                SaveQuotation();
+
+            }
+
+
+
+
+
+
+
+
+
+
+
+            //$http.post('/VendorSelectionModule/TechnicalQuotation/SaveTechQuotwiseDetails',
+
+            //    { technicalQuotation: $scope.TechnicalQuotation }
+            //)
+            //    .success(function (response) {
+            //        $scope.response = response.respStatus.Message;
+
+            //        if ($scope.response === 'Data Updated Successfully') {
+            //            $scope.p = 0;
+            //            $scope.reset();
+            //            toastr.success($scope.response);
+
+            //        }
+            //        else {
+            //            toastr.error($scope.response);
+            //        }
+
+            //    });
+            //$scope.UpdateDocument();
+           
+
+            //console.log($scope.TechnicalQuotation);
+         
+        }
+
+
+
+
+
+        function SaveQuotation() {
 
             $http.post('/VendorSelectionModule/TechnicalQuotation/SaveTechQuotwiseDetails',
 
@@ -2138,12 +2217,114 @@
                     }
 
                 });
-            $scope.UpdateDocument();
-           
-
-            console.log($scope.TechnicalQuotation);
-         
+               
         }
+
+
+
+
+
+
+        $scope.SaveDocumentOnly = function (callback) {
+
+            var fileUpload = $("#FileUpload1").get(0);
+            var files = fileUpload.files || [];
+
+            var validFiles = [];
+
+            angular.forEach(files, function (file) {
+                validFiles.push(file);
+            });
+
+            $scope.BillReceiveModel.Extensions =
+                (files.length > 0)
+                    ? validFiles.map(f => f.name.split('.').pop().toLowerCase()).join(',') + ',.pdf'
+                    : '.pdf';
+
+            if (typeof dwObject !== 'undefined' &&
+                dwObject.HowManyImagesInBuffer === 0 &&
+                files.length === 0) {
+
+                $scope.loading = false;
+                toastr.error("There are no documents.");
+                return;
+            }
+
+            $http.post('/VendorSelectionModule/TechnicalQuotation/AddDocumentInfo', {
+                _modelDocumentsInfo: $scope.BillReceiveModel
+            }).then(function (response) {
+
+                if (response.data.ResponseCode !== "S201") return;
+
+                var doc = response.data.DistinctID[0];
+
+                $scope.TechnicalQuotation.SampleDocumentID = doc.BillReceiveID;
+
+                var otherFilesDone = (files.length === 0);
+                var scannerDone = false;   // 🔥 FIX #1
+
+                function checkDone() {
+                    if (otherFilesDone && scannerDone) {
+                        if (callback) callback();
+                    }
+                }
+
+                // =========================
+                // SCANNER UPLOAD (FIXED)
+                // =========================
+
+                if (typeof dwObject !== 'undefined' &&
+                    dwObject.HowManyImagesInBuffer > 0) {
+
+                    var safeFileName = doc.BillReceiveID.replace(/\//g, '_');
+
+                    dwObject.FTPPort = doc.ServerPort;
+                    dwObject.FTPUserName = doc.FtpUserName;
+                    dwObject.FTPPassword = doc.FtpPassword;
+
+                    var strFTPServer = doc.ServerIP;
+
+                    // REQUIRED LOOP (state sync)
+                    for (var i = 0; i < dwObject.HowManyImagesInBuffer; i++) {
+                        dwObject.SelectedImagesCount = i + 1;
+                        dwObject.SetSelectedImageIndex(i, i);
+                    }
+
+                    var isUploaded = dwObject.FTPUploadAsMultiPagePDF(
+                        strFTPServer,
+                        doc.FileServerUrl + "/" + safeFileName + ".pdf"
+                    );
+
+                    if (isUploaded) {
+
+                        console.log("Scanner uploaded");
+
+                        dwObject.RemoveAllSelectedImages();
+
+                        toastr.success("Scanner PDF uploaded successfully");
+
+                        scannerDone = true;   // 🔥 FIX #2
+                        checkDone();          // 🔥 FIX #3
+
+                    } else {
+
+                        toastr.error("Scanner PDF upload failed");
+                    }
+
+                } else {
+
+                    scannerDone = true;
+                    checkDone();
+                }
+
+            });
+        };
+
+
+
+
+
+
 
 
         //function calculateCompressionRatio(totalSize, maxSize) {
@@ -2233,19 +2414,46 @@
             console.log('TechnicalQuotation:', $scope.TechnicalQuotation);
 
             // Check if document already exists
-            if (!$scope.MaterialInvitation.SampleDocumentID) {
-                console.log('No document ID, saving document first...');
-                // Document doesn't exist, save it first
-                $scope.SaveTechnicalDocumentAndSubmit();
-            } else {
-                console.log('Document ID exists, updating and submitting...');
-                // Document exists, directly update and submit
-                $scope.UpdateDocument();
-                $scope.myarray.push($scope.MaterialInvitation);
-                $scope.myarray2.push($scope.TechnicalQuotation);
-                $scope.reset();
-                $scope.p = 0;
+            //if (!$scope.MaterialInvitation.SampleDocumentID) {
+            //    console.log('No document ID, saving document first...');
+            //    // Document doesn't exist, save it first
+            //    $scope.SaveTechnicalDocumentAndSubmit();
+            //} else {
+            //    console.log('Document ID exists, updating and submitting...');
+            //    // Document exists, directly update and submit
+            //    $scope.UpdateDocument();
+            //    $scope.myarray.push($scope.MaterialInvitation);
+            //    $scope.myarray2.push($scope.TechnicalQuotation);
+            //    $scope.reset();
+            //    $scope.p = 0;
+                //    }
+
+
+
+                var hasUploadedFiles = $("#FileUpload1").get(0).files.length > 0;
+                var hasScannerDocs = (typeof dwObject !== 'undefined' &&
+                    dwObject.HowManyImagesInBuffer > 0);
+
+                if (!$scope.TechnicalQuotation.SampleDocumentID) {
+
+                    // No document attached at all
+                    if (!hasUploadedFiles && !hasScannerDocs) {
+                        console.log('No documents found, submitting quotation directly...');
+                        $scope.submit();
+                        $scope.p = 0;
+                        return;
+                    }
+
+                    console.log('Documents found, saving document first...');
+                    $scope.SaveTechnicalDocumentAndSubmit();
                 }
+                else {
+                    console.log('Document ID exists, submitting directly...');
+                    $scope.submit();
+                    $scope.p = 0;
+                }
+
+
             }, 0);
         };
 
@@ -2369,18 +2577,82 @@
                         }
 
                         // Step 3: Upload Scanner PDF
-                        if (typeof dwObject !== 'undefined' && dwObject.HowManyImagesInBuffer > 0) {
+                        //if (typeof dwObject !== 'undefined' && dwObject.HowManyImagesInBuffer > 0) {
+                        //    console.log('Starting scanner PDF upload...');
+
+                        //    var strFTPServer = response.data.DistinctID[0].ServerIP;
+
+                        //    if (strFTPServer == "" || strFTPServer == null) {
+                        //        toastr.error("FTP Server is not assigned");
+                        //        $scope.loading = false;
+                        //        return;
+                        //    }
+
+                        //    if (dwObject.CurrentImageIndexInBuffer == "-1") {
+                        //        toastr.error("No document found for upload");
+                        //        $scope.loading = false;
+                        //        return;
+                        //    }
+
+                        //    dwObject.FTPPort = response.data.DistinctID[0].ServerPort;
+                        //    dwObject.FTPUserName = response.data.DistinctID[0].FtpUserName;
+                        //    dwObject.FTPPassword = response.data.DistinctID[0].FtpPassword;
+
+                        //    var uploadStatus = 0;
+                        //    dwObject.SelectedImagesCount = 0;
+
+                        //    for (var i = 0; i <= dwObject.HowManyImagesInBuffer - 1; i++) {
+                        //        if (dwObject.HowManyImagesInBuffer - 1 == i) {
+                        //            var isSave = dwObject.FTPUploadAsMultiPagePDF(
+                        //                strFTPServer,
+                        //                response.data.DistinctID[0].FileServerUrl + "//" + response.data.DistinctID[0].BillReceiveID + ".pdf"
+                        //            );
+
+                        //            if (isSave) {
+                        //                console.log('Scanner PDF uploaded successfully');
+                        //                dwObject.RemoveAllSelectedImages();
+                        //                dwObject.RemoveImage(0);
+                        //                i = -1;
+                        //                uploadStatus = 1;
+                        //                toastr.success("Scanner PDF uploaded successfully");
+
+                        //                scannerPDFComplete = true;
+                        //                checkAllUploadsComplete();
+                        //            } else {
+                        //                toastr.error("Scanner PDF upload failed");
+                        //                break;
+                        //            }
+                        //        } else {
+                        //            dwObject.SelectedImagesCount = i + 1;
+                        //            dwObject.SetSelectedImageIndex(i, i);
+                        //        }
+                        //    }
+
+                        //    if (uploadStatus === 1) {
+                        //        console.log('Scanner PDF upload completed');
+                        //    }
+                        //} else {
+                        //    console.log('No scanner images to upload');
+                        //    scannerPDFComplete = true;
+                        //    checkAllUploadsComplete();
+                        //}
+
+
+
+                        if (typeof dwObject !== 'undefined' &&
+                            dwObject.HowManyImagesInBuffer > 0) {
+
                             console.log('Starting scanner PDF upload...');
 
                             var strFTPServer = response.data.DistinctID[0].ServerIP;
 
-                            if (strFTPServer == "" || strFTPServer == null) {
+                            if (!strFTPServer) {
                                 toastr.error("FTP Server is not assigned");
                                 $scope.loading = false;
                                 return;
                             }
 
-                            if (dwObject.CurrentImageIndexInBuffer == "-1") {
+                            if (dwObject.CurrentImageIndexInBuffer === "-1") {
                                 toastr.error("No document found for upload");
                                 $scope.loading = false;
                                 return;
@@ -2390,44 +2662,71 @@
                             dwObject.FTPUserName = response.data.DistinctID[0].FtpUserName;
                             dwObject.FTPPassword = response.data.DistinctID[0].FtpPassword;
 
+                            var safeFileName = response.data.DistinctID[0].BillReceiveID
+                                .replace(/\//g, '_');
+
+                            var totalImages = dwObject.HowManyImagesInBuffer;
+
+                            // ==============================
+                            // STEP 1: LOCK ALL IMAGES FIRST
+                            // ==============================
+                            for (var i = 0; i < totalImages; i++) {
+                                dwObject.SelectedImagesCount = i + 1;
+                                dwObject.SetSelectedImageIndex(i, i);
+                            }
+
+                            // ==============================
+                            // STEP 2: ENSURE STABLE BUFFER
+                            // ==============================
+                            dwObject.SelectedImagesCount = totalImages;
+
                             var uploadStatus = 0;
-                            dwObject.SelectedImagesCount = 0;
 
-                            for (var i = 0; i <= dwObject.HowManyImagesInBuffer - 1; i++) {
-                                if (dwObject.HowManyImagesInBuffer - 1 == i) {
-                                    var isSave = dwObject.FTPUploadAsMultiPagePDF(
-                                        strFTPServer,
-                                        response.data.DistinctID[0].FileServerUrl + "//" + response.data.DistinctID[0].BillReceiveID + ".pdf"
-                                    );
+                            // ==============================
+                            // STEP 3: SINGLE UPLOAD ONLY
+                            // ==============================
+                            var isSave = dwObject.FTPUploadAsMultiPagePDF(
+                                strFTPServer,
+                                response.data.DistinctID[0].FileServerUrl + "//" +
+                                safeFileName + ".pdf"
+                            );
 
-                                    if (isSave) {
-                                        console.log('Scanner PDF uploaded successfully');
-                                        dwObject.RemoveAllSelectedImages();
-                                        dwObject.RemoveImage(0);
-                                        i = -1;
-                                        uploadStatus = 1;
-                                        toastr.success("Scanner PDF uploaded successfully");
+                            if (isSave) {
 
-                                        scannerPDFComplete = true;
-                                        checkAllUploadsComplete();
-                                    } else {
-                                        toastr.error("Scanner PDF upload failed");
-                                        break;
-                                    }
-                                } else {
-                                    dwObject.SelectedImagesCount = i + 1;
-                                    dwObject.SetSelectedImageIndex(i, i);
-                                }
+                                console.log('Scanner PDF uploaded successfully');
+
+                                // CLEANUP SAFE (DO NOT use RemoveImage)
+                                dwObject.RemoveAllSelectedImages();
+
+                                uploadStatus = 1;
+                                toastr.success("Scanner PDF uploaded successfully");
+
+                                scannerPDFComplete = true;
+                                checkAllUploadsComplete();
+
+                            } else {
+
+                                toastr.error("Scanner PDF upload failed");
                             }
 
                             if (uploadStatus === 1) {
                                 console.log('Scanner PDF upload completed');
                             }
+
                         } else {
+
                             console.log('No scanner images to upload');
                             scannerPDFComplete = true;
                             checkAllUploadsComplete();
                         }
+
+
+
+
+
+
+
+
                     }
                 }, function (error) {
                     console.error('Error sending document info', error);
@@ -2949,6 +3248,15 @@
                 $scope.MaterialInvitation.SampleDocumentID = row.SampleDocumentID;
                 $scope.MaterialInvitation.TechQuotationItemID = row.TechQuotationItemID;
                 $scope.MaterialInvitation.VendorID = row.VendorID;
+
+                //Added Newly////////////////////////////////////////////
+                $scope.BillReceiveModel.invitationNumber = row.invitationNumber;
+                $scope.BillReceiveModel.InvitationID = row.InvitationID;
+                $scope.BillReceiveModel.BiddingItemVendorID = row.BiddingItemVendorID;
+                $scope.BillReceiveModel.VendorID = row.VendorID;
+                $scope.BillReceiveModel.materialCode = row.materialCode;
+                $scope.BillReceiveModel.materialName = row.materialName;
+                ///////////////////////////////////////////////////////////////////////////////
                 $http.post('/VendorSelectionModule/TechnicalQuotation/TechQuotwiseDetails',
                     { TechQuotationItemID: row.TechQuotationItemID })
                     .success(function (response) {
@@ -3295,10 +3603,10 @@
             //DWObject.FTPDownload($scope.data.ServerIP, ($scope.data.FileServerUrl + "//" +
             //    $scope.data.DocumentID + ".pdf"));
 
-
+            var safeFileName = $scope.MaterialInvitation.SampleDocumentID.replace(/\//g, '_');
             dwObject.FTPDownload($scope.Server.ServerIP,
                 $scope.Server.FileServerURL + "//" +
-                $scope.MaterialInvitation.SampleDocumentID + ".pdf");
+                safeFileName + ".pdf");
 
 
         }
