@@ -180,6 +180,7 @@ namespace SILDMS.DataAccess.VendorRegistration
      string CompanyAddress,
      string Country,
      string BusinessType,
+     string BusinessNature,
      string TypeOfMaterial,
      string TIN,
      string BIN,
@@ -214,6 +215,7 @@ namespace SILDMS.DataAccess.VendorRegistration
                 db.AddInParameter(dbCommandWrapper, "@CompanyAddress", SqlDbType.NVarChar, CompanyAddress);
                 db.AddInParameter(dbCommandWrapper, "@Country", SqlDbType.NVarChar, Country);
                 db.AddInParameter(dbCommandWrapper, "@BusinessType", SqlDbType.NVarChar, BusinessType);
+                db.AddInParameter(dbCommandWrapper, "@BusinessNature", SqlDbType.NVarChar, BusinessNature);
                 db.AddInParameter(dbCommandWrapper, "@TypeOfMaterial", SqlDbType.NVarChar, TypeOfMaterial);
                 db.AddInParameter(dbCommandWrapper, "@TIN", SqlDbType.NVarChar, TIN);
                 db.AddInParameter(dbCommandWrapper, "@BIN", SqlDbType.NVarChar, BIN);

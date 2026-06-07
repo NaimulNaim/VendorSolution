@@ -46,7 +46,7 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
 
         public async Task<dynamic> VendorRegistrationDetails(
     string businessName, string contactPersonFirstName, string contactPersonLastName, string vendorPhoneNumber,
-    string email, string companyAddress, string country, string businessType, string typeOfMaterial,
+    string email, string companyAddress, string country, string businessType,string businessNature, string typeOfMaterial,
     string tin, string bin, string generalDetailsServices, string userName, string password,
     string status, string vendor, string companyProfile,
     string tradeLicense,
@@ -65,7 +65,7 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
             // Call the service method with correct casing and parameter passing
             var result = _vendorRegistrationService.VendorRegistrationDetailsService(
                 businessName, contactPerson, vendorPhoneNumber, email, companyAddress, country,
-                businessType, typeOfMaterial, tin, bin, generalDetailsServices, userName,
+                businessType, businessNature, typeOfMaterial, tin, bin, generalDetailsServices, userName,
                 password, status, vendor,
         companyProfile, tradeLicense, partnershipDeed, irc, indentingLicense, others, EstablishedYear, TradeLicenseValidity, // new
         out user);

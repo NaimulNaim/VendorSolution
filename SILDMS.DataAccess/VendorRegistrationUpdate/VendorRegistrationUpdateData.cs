@@ -100,6 +100,12 @@ namespace SILDMS.DataAccess.VendorRegistrationUpdate
                             {
                                 VendorID = row["VendorID"] != DBNull.Value ? row["VendorID"].ToString() : null,
                                 BusinessName = row["VendorBussinessName"] != DBNull.Value ? row["VendorBussinessName"].ToString() : null,
+
+                                BusinessType = row["BusinessType"] != DBNull.Value ? row["BusinessType"].ToString() : null,
+                                BusinessNature = row["BusinessNature"] != DBNull.Value ? row["BusinessNature"].ToString() : null,
+                                EstablishedYear = row["EstablishedYear"] != DBNull.Value ? row["EstablishedYear"].ToString() : null,
+                                TradeLicenseValidity = row["TLValidity"] != DBNull.Value ? row["TLValidity"].ToString() : null,
+
                                 VendorPhoneNumber = row["VendorPhoneNumber"] != DBNull.Value ? row["VendorPhoneNumber"].ToString() : null,
                                 VendorPhoneNumber2 = row["VendorPhoneNumber2"] != DBNull.Value ? row["VendorPhoneNumber2"].ToString() : null,
                                 VendorEmail = row["VendorEmail"] != DBNull.Value ? row["VendorEmail"].ToString() : null,

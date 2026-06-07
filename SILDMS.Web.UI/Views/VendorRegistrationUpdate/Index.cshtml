@@ -17,6 +17,12 @@
         </div>
     </div>
 
+    @*Vendor Registration Details Table Modal*@
+
+
+
+
+
 
 
 
@@ -37,6 +43,104 @@
 
     </div>
 
+    @*<div class="row" style="margin-top: 5px;">
+            <div class="col-lg-2">Business Type</div>
+            <div class="col-lg-4">
+                <select class="form-control"
+                        ng-model="PurreqDtl.Vendor.BusinessType"
+                        ng-options="bt as bt.BusinessTypeName for bt in BusinessTypeList track by bt.BusinessTypeID">
+                    <option value="">-- Select Business Type --</option>
+                </select>
+            </div>
+        </div>*@
+
+    <div class="row" style="margin-top: 5px;">
+        <div class="col-lg-2">
+            <div class="form-group" style="font-size: smaller;">
+                <label for="BusinessType">Business Type :</label>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <select class="form-control"
+                    ng-model="PurreqDtl.Vendor.BusinessType"
+                    ng-options="bt as bt.BusinessTypeName for bt in BusinessTypeList track by bt.BusinessTypeID"
+                    style="font-size: smaller; padding: 3px 6px 3px;">
+                <option value="">-- Select Business Type --</option>
+            </select>
+        </div>
+
+
+    </div>
+
+
+    <div class="row" style="margin-top: 5px;">
+        <div class="col-lg-2">
+            <div class="form-group" style="font-size: smaller;">
+                <label for="Country">Country :</label>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <select class="form-control"
+                    ng-model="PurreqDtl.Vendor.Country"
+                    ng-options="c.CountryID as c.CountryName for c in CountryList"
+                    style="font-size: smaller; padding: 3px 6px 3px;">
+                <option value="">-- Select Country --</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 5px;">
+        <div class="col-lg-2">
+            <div class="form-group" style="font-size: smaller;">
+                <label for="CompanyAddress">Company Address :</label>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <input autocomplete="off"
+                   type="text"
+                   id="CompanyAddress"
+                   class="form-control"
+                   ng-model="PurreqDtl.Vendor.CompanyAddress"
+                   style="font-size: smaller; padding: 3px 6px 3px;" />
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 5px;">
+        <div class="col-lg-2">
+            <div class="form-group" style="font-size: smaller;">
+                <label for="EstablishedYear">Established Year :</label>
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <input id="EstablishedYear"
+                   name="EstablishedYear"
+                   readonly
+                   type="text"
+                   class="DatePicker form-control"
+                   placeholder="DD/MM/YYYY"
+                   ng-model="PurreqDtl.Vendor.EstablishedYear"
+                   style="background-color:#ffffff; text-align:center; font-size: smaller;" />
+        </div>
+    </div>
+
+
+    <div class="row" style="margin-top: 5px;">
+        <div class="col-lg-2" style="font-size: smaller;">
+            <label for="GeneralDetails">Services/ Goods Details :</label>
+        </div>
+        <div class="col-lg-4">
+            <input id="GeneralDetails" autocomplete="off" type="text" name="GeneralDetails" class="form-control" ng-model="PurreqDtl.Vendor.GenaralDetailsServices" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
+        </div>
+    </div>
+
+
+
+
+
+
+
+
     <div class="row" style="margin-top: 5px;">
 
         <div class="col-lg-2 col-md-2 col-sm-2" style="font-size: smaller;">
@@ -53,6 +157,17 @@
         </div>
     </div>
 
+    @*<div class="row" style="margin-top: 5px;">
+            <div class="col-lg-2" style="font-size: smaller;">
+                <label for="VendorPhoneNumber">Contact Number :<span style="color: red;"> *</span></label>
+            </div>
+            <div class="col-lg-2">
+                <input id="VendorPhoneNumber" autocomplete="off" type="text" name="VendorPhoneNumber" class="form-control" ng-model="PurreqDtl.Vendor.VendorPhoneNumber" placeholder="(+880) 00 0000 0000" style="font-size: smaller; padding: 3px 6px 3px;" required />
+            </div>
+            <div class="col-md-3">
+                <span class="center-block text-red" id="errorMessageVendorPhoneNumber" style="display: none;">Please input valid Contact Number.</span>
+            </div>
+        </div>*@
     <div class="row" style="margin-top: 5px;">
         <div class="col-lg-2" style="font-size: smaller;">
             <label for="VendorPhoneNumber">Contact Number :<span style="color: red;"> *</span></label>
@@ -132,6 +247,25 @@
         </div>
     </div>
 
+    <div class="row" style="margin-top: 5px;">
+        <div class="col-lg-2">
+            <div class="form-group" style="font-size: smaller;">
+                <label for="TradeLicenseValidity">Trade License Validity :</label>
+            </div>
+        </div>
+
+        <div class="col-lg-2">
+            <input id="TradeLicenseValidity"
+                   name="TradeLicenseValidity"
+                   readonly
+                   type="text"
+                   class="DatePicker form-control"
+                   placeholder="DD/MM/YYYY"
+                   ng-model="PurreqDtl.Vendor.TradeLicenseValidity"
+                   style="background-color:#ffffff; text-align:center; font-size: smaller;" />
+        </div>
+    </div>
+
     <!-- Partnership Deed / Agencyship -->
     <div class="row" style="margin-top: 5px;">
         <div class="col-lg-2" style="font-size: smaller;">
@@ -180,15 +314,53 @@
     </div>
 
 
-    <div class="row" style="margin-top: 5px;">
-        <div class="col-lg-2" style="font-size: smaller;">
-            <label for="GeneralDetails">Details of Services/ Goods :</label>
-        </div>
-        <div class="col-lg-4">
-            <input id="GeneralDetails" autocomplete="off" type="text" name="GeneralDetails" class="form-control" ng-model="PurreqDtl.Vendor.GenaralDetailsServices" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
-        </div>
-    </div>
+    @*<div class="row" style="margin-top: 5px;">
+            <div class="col-lg-2" style="font-size: smaller;">
+                <label for="GeneralDetails">Details of Services/ Goods :</label>
+            </div>
+            <div class="col-lg-4">
+                <input id="GeneralDetails" autocomplete="off" type="text" name="GeneralDetails" class="form-control" ng-model="PurreqDtl.Vendor.GenaralDetailsServices" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
+            </div>
+        </div>*@
     <br />
+    @*User Name*@
+
+
+    @*Password*@
+
+
+    @*Confirm Password*@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @*<div class="row" style="margin-top: 5px;">
+
+            <div class="col-lg-1">
+                <button id="btnSaveMasterupdate" type="button" class="btn btn-success saveBtn pull-left" data-dismiss="modal" title="Submit" ng-click="updateRegistration()">
+                    <i class="fa fa-save"></i> Update Registration
+                </button>
+            </div>
+
+        </div>*@
+
+
+
 
     <div class="row">
         <table st-table="displayScannedDocuments" st-safe-src="scannedDocuments"
@@ -228,6 +400,71 @@
             </tfoot>
         </table>
     </div>
+
+
+
+
+
+
+
+    <!--<br />-->
+    <!--#region Check-boxes for documents selection-->
+    <!--<div class="row" ng-show="docProperties">
+        <div class="col-lg-2 col-md-2 col-sm-2" ng-repeat="item in docProperties" ng-show="item.Exist">
+            <input type="checkbox" ng-model="item.Checked">{{item.DocPropertyName}}-({{item.DocClassification}})
+        </div>
+    </div>-->
+    <!--#endregion Check-boxes for documents selection-->
+    <!--<br />-->
+    <!--#region Grid for document identity of selected documents-->
+    <!--#endregion Grid for document identity of selected documents-->
+    <!--<br />-->
+    <!--#region Scanned documents display-->
+    <!--<div class="row">
+        <div class="col-lg-12">
+            <label>Process Documents: </label>
+
+            <button id="btnScand" class="btn btn-app btn-flat btn-sm btnScan" data-ng-click="getImages($event)">
+                <i class="fa fa-print"></i> Scan
+            </button>
+            <a class="btn btn-app btn-flat btn-sm btnLoad" data-ng-click="LoadImage()">
+                <i class="fa fa-inbox"></i> Load
+            </a>
+
+            <a class="btn  btn-app btn-flat btn-sm btnRemove" data-ng-click="RemoveAllSelectedImages()">
+                <i class="fa fa-remove"></i> Remove
+            </a>
+            <a class="btn  btn-app btn-flat btn-sm btnRotate" data-ng-click="RotateRight()">
+                <i class="fa fa-rotate-right"></i> Rotate
+            </a>
+
+            <a class="btn  btn-app btn-flat btn-sm btnMoveImage" data-ng-click="ShowMoveImageDiv()">
+                <i class="fa fa-reorder"></i> Move Image
+            </a>
+
+
+            <a class="btn  btn-app btn-flat btn-sm" data-ng-click="saveFurtherDoc('')">
+                <i class="fa fa-save"></i> Save Document(s)
+            </a>
+
+        </div>
+    </div>-->
+    @*<div class="row">
+            <div id="MoveImage" class="row hidden">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-10">
+                    <label>Which Image</label><input type="text" id="WhichImage" />
+                    <label>Where</label><input type="text" id="Where" />
+                    <button class="btn btn-primary btn-flat btn-sm" ng-click="MoveImage()">Move</button>
+                </div>
+            </div>
+        </div>
+        <br />*@
+    @*<div class="row">
+            <div class="col-lg-12">
+                <div id="dwtHorizontalThumbnil"></div>
+            </div>
+        </div>*@
 
     <br />
 
@@ -363,6 +600,39 @@
             </div>
         </div>
     </div>
+
+
+    @*<div id="viewerModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                        <h3 class="modal-title">Image Viewer</h3>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="box-body">
+                            <button class="btn btn-flat btn-sm btn-default" data-ng-click="ZoomIn()"> Zoom In</button>
+                            <button class="btn btn-flat btn-sm btn-default" data-ng-click="ZoomOut()"> Zoom Out</button>
+
+                            <div id="dwtLargeViewer_single" class="box-body"></div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            <div class="form-group">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+
+
+
+
+
 
 </div>
 
@@ -559,6 +829,9 @@
         }
 
         $scope.LoadImage = function () {
+            //dwObject.IfShowFileDialog = true;
+            //dwObject.RemoveAllImages();
+            //dwObject.LoadImageEx("", EnumDWT_ImageType.IT_ALL);
 
             dwObject.Addon.PDF.SetResolution(200);
             dwObject.Addon.PDF.SetConvertMode(EnumDWT_ConverMode.CM_RENDERALL);
@@ -596,12 +869,19 @@
                     DWObjectOFMakeUpdate.CloseSource();
                 };
 
+                ////DWObject.AcquireImage();
+
+                //DWObjectOFMakeUpdate.SelectSourceByIndex(document.getElementById("source").selectedIndex); //Use method SelectSourceByIndex to avoid the 'Select Source' dialog
+                //DWObjectOFMakeUpdate.OpenSource();
+
                 DWObjectOFMakeUpdate.IfDisableSourceAfterAcquire = true;	// Scanner source will be disabled/closed automatically after the scan.
                 DWObjectOFMakeUpdate.AcquireImage(OnAcquireImageSuccess, OnAcquireImageFailure);
             }
         };
 
         $scope.LoadImage_Update = function () {
+            //DWObjectOFMakeUpdate.IfShowFileDialog = true;
+            //DWObjectOFMakeUpdate.LoadImageEx("", EnumDWT_ImageType.IT_ALL);
 
             DWObjectOFMakeUpdate.Addon.PDF.SetResolution(200);
             DWObjectOFMakeUpdate.Addon.PDF.SetConvertMode(EnumDWT_ConverMode.CM_RENDERALL);
@@ -632,6 +912,91 @@
             $("#MoveImageUpdate").toggleClass("hidden");
             $scope.ShowUploadImageDivVar = false;
         };
+
+
+
+
+
+        //    })
+        //    .error(function () {
+
+        //    });
+
+
+
+        //$scope.test = function () {
+        //    $http.post('/VendorSelectionModule/VendorRegistrationUpdate/GetSavedPODocumentInfo',
+        //        {
+        //            TinBinDocId: 'VENDOCS25011900004'
+        //        })
+        //        /// For amenment
+        //        //$http.post('/LCModule/LCReceive/GetSavedPODocumentInfo', { LCNumber: $scope.vmLCReceive.LCNumber })
+        //        .success(function (response) {
+        //            //$scope.docPropIdentityGridSaveData = response.DocInfo;////////////////////////////
+        //            //console.log($scope.docPropIdentityGridSaveData);
+        //            //debugger;
+        //            DWObject.RemoveAllImages();
+        //            //DWObjectLargeViewer.RemoveAllImages();
+        //            var docPropertyID = "";
+        //            response.DocInfo.forEach(function (index) {
+        //                if (docPropertyID !== index.DocPropertyID && docPropertyID) {
+        //                    $scope.LoadImageWithoutBlank();
+        //                }
+        //                angular.forEach($scope.docPropertyForSpecificDocType, function (item) {
+        //                    if (index.DocPropertyID == item.DocPropertyID) {
+        //                        item.IsSelected = true;
+        //                    };
+        //                });
+        //                DWObject.IfShowFileDialog = false;
+        //                DWObject.FTPPort = index.ServerPort;
+        //                DWObject.FTPUserName = index.FtpUserName;
+        //                DWObject.FTPPassword = index.FtpPassword;
+        //                DWObject.FTPDownload(index.ServerIP, (index.FileServerUrl + "//Samiul2024.pdf" 
+                            
+        //                   /* 
+        //                   +index.DocumentID + "Samiul2024.pdf"*/
+        //                )
+        //                );
+        //                docPropertyID = index.DocPropertyID;
+        //            });
+        //            $scope.LoadImageWithoutBlank();
+        //            $scope.loader = false;
+        //        }).error(function (response) {
+        //            toastr.error(response.respStatus.Message);
+        //            $scope.loader = false;
+        //        });
+
+        //}
+
+
+        //var selectedPropID = new Array();
+
+        //$http.get('/VendorSelectionModule/VendorRegistration/GetSupportDoc')
+        //    .success(function (response) {
+        //        $scope.docPropertyForSpecificDocType = response.docProperties;
+        //        angular.forEach($scope.docPropertyForSpecificDocType, function (item) {
+        //            if (item.DocClassification == "Required") {
+        //                item.IsSelected = true;
+        //                selectedPropID.push(item.DocPropertyID);
+        //            }
+        //        })
+
+        //        $http.post('/VendorSelectionModule/VendorRegistration/GetIdentificationAttributesForDocProperties',
+        //            {
+        //                _SelectedPropID: selectedPropID.join()
+
+        //            })
+        //            .success(function (response) {
+        //                $scope.docPropIdentityGridData = response;
+        //                console.log($scope.docPropIdentityGridData);
+        //                $scope.loading = false;
+        //            }).error(function () {
+        //                $scope.loading = false;
+        //            });
+
+
+
+
 
 
 
@@ -821,12 +1186,62 @@
 
 
 
+
+
+
+
+
+
+
         };
 
 
 
 
+        $scope.BusinessTypeList = [];
+        $scope.BusinessNatureList = [];
+        $scope.CountryList = [];
+
+
+        $scope.loadBusinessType = function () {
+            $http.get('/VendorSelectionModule/VendorRegistration/GetBusinessTypeList')
+                .then(function (response) {
+                    $scope.BusinessTypeList = response.data;
+                });
+        };
+
+        $scope.loadBusinessNature = function () {
+            $http.get('/VendorSelectionModule/VendorRegistration/GetBusinessNatureList')
+                .then(function (response) {
+                    $scope.BusinessNatureList = response.data;
+                });
+        };
+
+        $scope.LoadCountryList = function () {
+            $http.get('/VendorSelectionModule/VendorRegistration/GetCountryList')
+                .then(function (res) {
+                    $scope.CountryList = res.data;
+                });
+        };
+
+        // call on page load
+        $scope.loadBusinessType();
+        $scope.loadBusinessNature();
+        $scope.LoadCountryList();
+
+
+
+
         $scope.updateRegistration = function () {
+
+
+
+
+
+
+
+
+
             $http.post('/VendorSelectionModule/VendorRegistration/VendorupdateRegistrationDetails', {
                 BusinessName: $scope.PurreqDtl.Vendor.BusinessName,
                 ContactPersonFirstName: $scope.PurreqDtl.Vendor.ContactPersonFirstName,

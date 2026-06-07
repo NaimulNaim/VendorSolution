@@ -200,6 +200,18 @@
                 </div>
 
                 <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">Business Nature</div>
+                    <div class="col-lg-4 col-md-5">
+                        <select class="form-control"
+                                ng-model="PurreqDtl.Vendor.BusinessNature"
+                                ng-options="bn as bn.BusinessNatureName for bn in BusinessNatureList track by bn.BusinessNatureID">
+                            <option value="">-- Select Business Nature --</option>
+                        </select>
+                    </div>
+                </div>
+
+               
+                <div class="row form-row-item">
                     <div class="col-lg-2 col-md-3 field-label">Country</div>
                     <div class="col-lg-4 col-md-5">
                         <select class="form-control"
@@ -225,7 +237,7 @@
                         Established Year
                     </div>
 
-                    <div class="col-lg-6 col-md-7">
+                    <div class="col-lg-4 col-md-5">
                         <input id="EstablishedYear"
                                name="EstablishedYear"
                                readonly
@@ -341,7 +353,7 @@
                         Trade License Validity
                     </div>
 
-                    <div class="col-lg-6 col-md-7">
+                    <div class="col-lg-2 col-md-3">
                         <input id="TradeLicenseValidity"
                                name="TradeLicenseValidity"
                                readonly
@@ -485,6 +497,17 @@
                                 ng-model="PurreqDtl.Vendor.BusinessType"
                                 ng-options="bt as bt.BusinessTypeName for bt in BusinessTypeList track by bt.BusinessTypeID">
                             <option value="">-- Select Business Type --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row form-row-item">
+                    <div class="col-lg-2 col-md-3 field-label">Business Nature</div>
+                    <div class="col-lg-4 col-md-5">
+                        <select class="form-control"
+                                ng-model="PurreqDtl.Vendor.BusinessNature"
+                                ng-options="bn as bn.BusinessNatureName for bn in BusinessNatureList track by bn.BusinessNatureID">
+                            <option value="">-- Select Business Nature --</option>
                         </select>
                     </div>
                 </div>
@@ -662,7 +685,7 @@
                         Trade License Validity
                     </div>
 
-                    <div class="col-lg-4 col-md-5">
+                    <div class="col-lg-2 col-md-3">
                         <input id="TradeLicenseValidity"
                                name="TradeLicenseValidity"
                                readonly
@@ -887,6 +910,7 @@
         $scope.PurreqDtl = {
             Vendor: {
                 BusinessType: { BusinessTypeID: "", BusinessTypeName: "" },
+                BusinessNature: { BusinessNatureID: "", BusinessNatureName: "" },
                 BusinessName: "",
                 ContactPerson: "",
                 ContactPersonFirstName: "",
@@ -1260,6 +1284,7 @@
                 companyAddress: $scope.PurreqDtl.Vendor.CompanyAddress,
                 country: $scope.PurreqDtl.Vendor.Country,
                 businessType: $scope.PurreqDtl.Vendor.BusinessType.BusinessTypeName,
+                businessNature: $scope.PurreqDtl.Vendor.BusinessNature.BusinessNatureName,
                 tin: $scope.PurreqDtl.Vendor.TIN,
                 bin: $scope.PurreqDtl.Vendor.BIN,
                 generalDetailsServices: $scope.PurreqDtl.Vendor.GenaralDetailsServices,
