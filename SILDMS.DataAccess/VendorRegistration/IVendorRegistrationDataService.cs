@@ -15,7 +15,7 @@ namespace SILDMS.DataAccess.VendorRegistration
         List <VendorRegData> GetVendorbyIDData(string vendorID,string Email, out string errorNumber);
         string ItemVendorcheckData(string vendorID, out string errorNumber);
         SecVendor_User VendorRegistrationDetailsDataService(string BusinessName, string ContactPerson, string VendorPhoneNumber, string Email,
-               string CompanyAddress, string Country, string BusinessType, string TypeOfMaterial, string TIN, string BIN, string GeneralDetailsServices, string UserName, string Password, string Status, string Vendor, string companyProfile,
+               string CompanyAddress, string Country, string BusinessType,string BusinessNature, string TypeOfMaterial, string TIN, string BIN, string GeneralDetailsServices, string UserName, string Password, string Status, string Vendor, string companyProfile,
     string tradeLicense,
     string partnershipDeed,
     string irc,

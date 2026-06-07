@@ -43,6 +43,104 @@
 
     </div>
 
+    @*<div class="row" style="margin-top: 5px;">
+            <div class="col-lg-2">Business Type</div>
+            <div class="col-lg-4">
+                <select class="form-control"
+                        ng-model="PurreqDtl.Vendor.BusinessType"
+                        ng-options="bt as bt.BusinessTypeName for bt in BusinessTypeList track by bt.BusinessTypeID">
+                    <option value="">-- Select Business Type --</option>
+                </select>
+            </div>
+        </div>*@
+
+    <div class="row" style="margin-top: 5px;">
+        <div class="col-lg-2">
+            <div class="form-group" style="font-size: smaller;">
+                <label for="BusinessType">Business Type :</label>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <select class="form-control"
+                    ng-model="PurreqDtl.Vendor.BusinessType"
+                    ng-options="bt as bt.BusinessTypeName for bt in BusinessTypeList track by bt.BusinessTypeID"
+                    style="font-size: smaller; padding: 3px 6px 3px;">
+                <option value="">-- Select Business Type --</option>
+            </select>
+        </div>
+
+
+    </div>
+
+
+    <div class="row" style="margin-top: 5px;">
+        <div class="col-lg-2">
+            <div class="form-group" style="font-size: smaller;">
+                <label for="Country">Country :</label>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <select class="form-control"
+                    ng-model="PurreqDtl.Vendor.Country"
+                    ng-options="c.CountryID as c.CountryName for c in CountryList"
+                    style="font-size: smaller; padding: 3px 6px 3px;">
+                <option value="">-- Select Country --</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 5px;">
+        <div class="col-lg-2">
+            <div class="form-group" style="font-size: smaller;">
+                <label for="CompanyAddress">Company Address :</label>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <input autocomplete="off"
+                   type="text"
+                   id="CompanyAddress"
+                   class="form-control"
+                   ng-model="PurreqDtl.Vendor.CompanyAddress"
+                   style="font-size: smaller; padding: 3px 6px 3px;" />
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 5px;">
+        <div class="col-lg-2">
+            <div class="form-group" style="font-size: smaller;">
+                <label for="EstablishedYear">Established Year :</label>
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <input id="EstablishedYear"
+                   name="EstablishedYear"
+                   readonly
+                   type="text"
+                   class="DatePicker form-control"
+                   placeholder="DD/MM/YYYY"
+                   ng-model="PurreqDtl.Vendor.EstablishedYear"
+                   style="background-color:#ffffff; text-align:center; font-size: smaller;" />
+        </div>
+    </div>
+
+
+    <div class="row" style="margin-top: 5px;">
+        <div class="col-lg-2" style="font-size: smaller;">
+            <label for="GeneralDetails">Services/ Goods Details :</label>
+        </div>
+        <div class="col-lg-4">
+            <input id="GeneralDetails" autocomplete="off" type="text" name="GeneralDetails" class="form-control" ng-model="PurreqDtl.Vendor.GenaralDetailsServices" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
+        </div>
+    </div>
+
+
+
+
+
+
+
+
     <div class="row" style="margin-top: 5px;">
 
         <div class="col-lg-2 col-md-2 col-sm-2" style="font-size: smaller;">
@@ -149,6 +247,25 @@
         </div>
     </div>
 
+    <div class="row" style="margin-top: 5px;">
+        <div class="col-lg-2">
+            <div class="form-group" style="font-size: smaller;">
+                <label for="TradeLicenseValidity">Trade License Validity :</label>
+            </div>
+        </div>
+
+        <div class="col-lg-2">
+            <input id="TradeLicenseValidity"
+                   name="TradeLicenseValidity"
+                   readonly
+                   type="text"
+                   class="DatePicker form-control"
+                   placeholder="DD/MM/YYYY"
+                   ng-model="PurreqDtl.Vendor.TradeLicenseValidity"
+                   style="background-color:#ffffff; text-align:center; font-size: smaller;" />
+        </div>
+    </div>
+
     <!-- Partnership Deed / Agencyship -->
     <div class="row" style="margin-top: 5px;">
         <div class="col-lg-2" style="font-size: smaller;">
@@ -197,14 +314,14 @@
     </div>
 
 
-    <div class="row" style="margin-top: 5px;">
-        <div class="col-lg-2" style="font-size: smaller;">
-            <label for="GeneralDetails">Details of Services/ Goods :</label>
-        </div>
-        <div class="col-lg-4">
-            <input id="GeneralDetails" autocomplete="off" type="text" name="GeneralDetails" class="form-control" ng-model="PurreqDtl.Vendor.GenaralDetailsServices" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
-        </div>
-    </div>
+    @*<div class="row" style="margin-top: 5px;">
+            <div class="col-lg-2" style="font-size: smaller;">
+                <label for="GeneralDetails">Details of Services/ Goods :</label>
+            </div>
+            <div class="col-lg-4">
+                <input id="GeneralDetails" autocomplete="off" type="text" name="GeneralDetails" class="form-control" ng-model="PurreqDtl.Vendor.GenaralDetailsServices" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
+            </div>
+        </div>*@
     <br />
     @*User Name*@
 
@@ -283,6 +400,10 @@
             </tfoot>
         </table>
     </div>
+
+
+
+
 
 
 
@@ -1073,6 +1194,40 @@
 
 
         };
+
+
+
+
+        $scope.BusinessTypeList = [];
+        $scope.BusinessNatureList = [];
+        $scope.CountryList = [];
+
+
+        $scope.loadBusinessType = function () {
+            $http.get('/VendorSelectionModule/VendorRegistration/GetBusinessTypeList')
+                .then(function (response) {
+                    $scope.BusinessTypeList = response.data;
+                });
+        };
+
+        $scope.loadBusinessNature = function () {
+            $http.get('/VendorSelectionModule/VendorRegistration/GetBusinessNatureList')
+                .then(function (response) {
+                    $scope.BusinessNatureList = response.data;
+                });
+        };
+
+        $scope.LoadCountryList = function () {
+            $http.get('/VendorSelectionModule/VendorRegistration/GetCountryList')
+                .then(function (res) {
+                    $scope.CountryList = res.data;
+                });
+        };
+
+        // call on page load
+        $scope.loadBusinessType();
+        $scope.loadBusinessNature();
+        $scope.LoadCountryList();
 
 
 

@@ -33,5 +33,8 @@ namespace SILDMS.Model.VendorSelectionModule
         public string IndentingLicense { get; set; }
         public string Others { get; set; }
         public string SAP_Status { get; set; }
+        public string BusinessNature { get; set; }
+        public string EstablishedYear { get; set; }
+        public string TradeLicenseValidity { get; set; }
     }
 }
