@@ -102,7 +102,8 @@
         <div class="col-lg-4">
             <select class="form-control"
                     ng-model="PurreqDtl.Vendor.Country"
-                    ng-options="c.CountryID as c.CountryName for c in CountryList"
+                    ng-options="bn as bn.CountryName for bn in CountryList track by bn.CountryID"
+                   
                     style="font-size: smaller; padding: 3px 6px 3px;">
                 <option value="">-- Select Country --</option>
             </select>
@@ -1116,11 +1117,15 @@
                 $scope.PurreqDtl.Vendor.UserName = "";
                 $scope.PurreqDtl.Vendor.Password = "";
                 $scope.PurreqDtl.Vendor.ConfirmPassword = "";
+                $scope.PurreqDtl.Vendor.EstablishedYear = vendor.EstablishedYear;
+                $scope.PurreqDtl.Vendor.TradeLicenseValidity = vendor.TradeLicenseValidity;
 
                 // ✅ FIX: Country (must match type)
                 if (vendor.Country) {
                     var countryObj = $scope.CountryList.find(i => i.CountryID == vendor.Country);
-                    $scope.PurreqDtl.Vendor.Country = countryObj ? countryObj.CountryID : vendor.Country;
+                
+
+                    $scope.PurreqDtl.Vendor.Country = countryObj || vendor.Country;
                 }
 
                 // ✅ FIX: BusinessType (object binding OR ID safe handling)
@@ -1131,6 +1136,15 @@
                     );
 
                     $scope.PurreqDtl.Vendor.BusinessType = businessTypeObj || vendor.BusinessType;
+                }
+    
+                if (vendor.BusinessNature) {
+                    var businessNatureObj = $scope.BusinessNatureList.find(i =>
+                        i.BusinessNatureID == vendor.BusinessNature ||
+                        i.BusinessNatureName == vendor.BusinessNature
+                    );
+
+                    $scope.PurreqDtl.Vendor.BusinessNature = businessNatureObj || vendor.BusinessNature;
                 }
 
                 $scope.loading = false;
@@ -1278,7 +1292,8 @@
 
 
 
-
+            $scope.PurreqDtl.Vendor.EstablishedYear = $scope.formatDate($('#EstablishedYear').val());
+            $scope.PurreqDtl.Vendor.TradeLicenseValidity = $scope.formatDate($('#TradeLicenseValidity').val());
 
 
 
@@ -1338,6 +1353,15 @@
 
 
         //--------------utilities
+
+
+
+        $scope.formatDate = function (date) {
+
+            var res = date.split("/");
+            return res[1] + "/" + res[0] + "/" + res[2];
+
+        };
 
         $scope.refreshPage = function () {
             setTimeout(function () {

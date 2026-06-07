@@ -1596,6 +1596,14 @@
 
         //--------------utilities
 
+
+        $scope.formatDate = function (date) {
+
+            var res = date.split("/");
+            return res[1] + "/" + res[0] + "/" + res[2];
+
+        };
+
         $scope.refreshPage = function () {
             setTimeout(function () {
                 window.location = "/SecurityModule/Account/Login";// Reload the current page
