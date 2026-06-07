@@ -27,7 +27,10 @@ namespace SILDMS.DataAccess.VendorRegistration
     string partnershipDeed,
     string irc,
     string indentingLicense,
-    string others, string UserName,string Password, out string errorNumber);
+    string others,
+    string BusinessNature,
+    string EstablishedYear,
+    string TradeLicenseValidity, string UserName,string Password, out string errorNumber);
         List<DSM_DocProperty> GetSupportDoc(string userID, string fromName, out string errorNumber);
         List<DSM_DocPropIdentify> GetIdentificationAttributesForDocProperties(string userID, string selectedPropID, out string errorNumber);
         BPS_NewBillReturnData AddDocument(string UserId,string vendorId, string uploaderIP, string selectedPropID, List<DocMetaValue> docMetaValues, out string errorNumber);

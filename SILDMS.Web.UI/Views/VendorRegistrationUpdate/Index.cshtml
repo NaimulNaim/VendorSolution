@@ -30,7 +30,7 @@
     <div class="row" style="margin-top: 5px;">
         <div class="col-lg-2">
             <div class="form-group" style="font-size: smaller;">
-                <label for="BusinessName">Business Name :<span style="color: red;"> *</span></label>
+                <label for="BusinessName">Business Name <span style="color: red;"> *</span></label>
             </div>
         </div>
         <div class="col-lg-4">
@@ -57,7 +57,7 @@
     <div class="row" style="margin-top: 5px;">
         <div class="col-lg-2">
             <div class="form-group" style="font-size: smaller;">
-                <label for="BusinessType">Business Type :</label>
+                <label for="BusinessType">Business Type </label>
             </div>
         </div>
 
@@ -73,11 +73,30 @@
 
     </div>
 
+    <div class="row" style="margin-top: 5px;">
+        <div class="col-lg-2">
+            <div class="form-group" style="font-size: smaller;">
+                <label for="BusinessType">Business Nature </label>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <select class="form-control"
+                    ng-model="PurreqDtl.Vendor.BusinessNature"
+                    ng-options="bn as bn.BusinessNatureName for bn in BusinessNatureList track by bn.BusinessNatureID"
+                    style="font-size: smaller; padding: 3px 6px 3px;">
+                <option value="">-- Select Business Nature --</option>
+            </select>
+        </div>
+
+
+    </div>
+
 
     <div class="row" style="margin-top: 5px;">
         <div class="col-lg-2">
             <div class="form-group" style="font-size: smaller;">
-                <label for="Country">Country :</label>
+                <label for="Country">Country </label>
             </div>
         </div>
         <div class="col-lg-4">
@@ -93,7 +112,7 @@
     <div class="row" style="margin-top: 5px;">
         <div class="col-lg-2">
             <div class="form-group" style="font-size: smaller;">
-                <label for="CompanyAddress">Company Address :</label>
+                <label for="CompanyAddress">Company Address </label>
             </div>
         </div>
         <div class="col-lg-6">
@@ -109,7 +128,7 @@
     <div class="row" style="margin-top: 5px;">
         <div class="col-lg-2">
             <div class="form-group" style="font-size: smaller;">
-                <label for="EstablishedYear">Established Year :</label>
+                <label for="EstablishedYear">Established Year </label>
             </div>
         </div>
         <div class="col-lg-2">
@@ -127,7 +146,7 @@
 
     <div class="row" style="margin-top: 5px;">
         <div class="col-lg-2" style="font-size: smaller;">
-            <label for="GeneralDetails">Services/ Goods Details :</label>
+            <label for="GeneralDetails">Services/ Goods Details </label>
         </div>
         <div class="col-lg-4">
             <input id="GeneralDetails" autocomplete="off" type="text" name="GeneralDetails" class="form-control" ng-model="PurreqDtl.Vendor.GenaralDetailsServices" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
@@ -144,7 +163,7 @@
     <div class="row" style="margin-top: 5px;">
 
         <div class="col-lg-2 col-md-2 col-sm-2" style="font-size: smaller;">
-            <label for="ContactPerson">Contact Person :</label>
+            <label for="ContactPerson">Contact Person </label>
         </div>
         <div class="col-lg-2 col-md-2 col-sm-2">
             <input id="FirstName" autocomplete="off" type="text" name="FirstName" class="form-control" ng-model="PurreqDtl.Vendor.ContactPersonFirstName" placeholder="First Name" style="font-size: smaller; padding: 3px 6px 3px;" required />
@@ -170,7 +189,7 @@
         </div>*@
     <div class="row" style="margin-top: 5px;">
         <div class="col-lg-2" style="font-size: smaller;">
-            <label for="VendorPhoneNumber">Contact Number :<span style="color: red;"> *</span></label>
+            <label for="VendorPhoneNumber">Contact Number<span style="color: red;"> *</span></label>
         </div>
 
         <!-- First number with + button -->
@@ -203,9 +222,9 @@
 
     <div class="row" style="margin-top: 5px;">
         <div class="col-lg-2" style="font-size: smaller;">
-            <label for="TIN">TIN :</label>
+            <label for="TIN">TIN </label>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-2">
             <input id="TIN" type="text" autocomplete="off" name="TIN" class="form-control" ng-model="PurreqDtl.Vendor.TIN" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
         </div>
         <div class="col-md-3">
@@ -215,9 +234,9 @@
 
     <div class="row" style="margin-top: 5px;">
         <div class="col-lg-2" style="font-size: smaller;">
-            <label for="BIN">BIN :</label>
+            <label for="BIN">BIN</label>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-2">
             <input id="BIN" autocomplete="off" type="text" name="BIN" class="form-control" ng-model="PurreqDtl.Vendor.BIN" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
         </div>
         <div class="col-md-3">
@@ -226,9 +245,9 @@
     </div>
     <div class="row" style="margin-top: 5px;">
         <div class="col-lg-2" style="font-size: smaller;">
-            <label for="CompanyProfile">Company Profile :</label>
+            <label for="CompanyProfile">Company Profile </label>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-2">
             <input id="CompanyProfile" type="text" autocomplete="off" class="form-control"
                    ng-model="PurreqDtl.Vendor.CompanyProfile" placeholder=""
                    style="font-size: smaller; padding: 3px 6px 3px;" />
@@ -238,9 +257,9 @@
     <!-- Trade License -->
     <div class="row" style="margin-top: 5px;">
         <div class="col-lg-2" style="font-size: smaller;">
-            <label for="TradeLicense">Trade License :</label>
+            <label for="TradeLicense">Trade License </label>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-2">
             <input id="TradeLicense" type="text" autocomplete="off" class="form-control"
                    ng-model="PurreqDtl.Vendor.TradeLicense" placeholder=""
                    style="font-size: smaller; padding: 3px 6px 3px;" />
@@ -250,7 +269,7 @@
     <div class="row" style="margin-top: 5px;">
         <div class="col-lg-2">
             <div class="form-group" style="font-size: smaller;">
-                <label for="TradeLicenseValidity">Trade License Validity :</label>
+                <label for="TradeLicenseValidity">Trade License Validity</label>
             </div>
         </div>
 
@@ -269,9 +288,9 @@
     <!-- Partnership Deed / Agencyship -->
     <div class="row" style="margin-top: 5px;">
         <div class="col-lg-2" style="font-size: smaller;">
-            <label for="PartnershipDeed">Partnership Deed / Agencyship :</label>
+            <label for="PartnershipDeed">Partnership Deed / Agencyship </label>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-2">
             <input id="PartnershipDeed" type="text" autocomplete="off" class="form-control"
                    ng-model="PurreqDtl.Vendor.PartnershipDeed" placeholder=""
                    style="font-size: smaller; padding: 3px 6px 3px;" />
@@ -281,9 +300,9 @@
     <!-- Import Registration Certificate (IRC) -->
     <div class="row" style="margin-top: 5px;">
         <div class="col-lg-2" style="font-size: smaller;">
-            <label for="ImportRegistration">Import Registration Certificate :</label>
+            <label for="ImportRegistration">Import Registration Certificate </label>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-2">
             <input id="ImportRegistration" type="text" autocomplete="off" class="form-control"
                    ng-model="PurreqDtl.Vendor.ImportRegistration" placeholder=""
                    style="font-size: smaller; padding: 3px 6px 3px;" />
@@ -293,9 +312,9 @@
     <!-- Indenting License -->
     <div class="row" style="margin-top: 5px;">
         <div class="col-lg-2" style="font-size: smaller;">
-            <label for="IndentingLicense">Indenting License :</label>
+            <label for="IndentingLicense">Indenting License </label>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-2">
             <input id="IndentingLicense" type="text" autocomplete="off" class="form-control"
                    ng-model="PurreqDtl.Vendor.IndentingLicense" placeholder=""
                    style="font-size: smaller; padding: 3px 6px 3px;" />
@@ -304,9 +323,9 @@
 
     <div class="row" style="margin-top: 5px;">
         <div class="col-lg-2" style="font-size: smaller;">
-            <label for="Others">Others :</label>
+            <label for="Others">Others </label>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-2">
             <input id="Others" type="text" autocomplete="off" class="form-control"
                    ng-model="PurreqDtl.Vendor.Others" placeholder=""
                    style="font-size: smaller; padding: 3px 6px 3px;" />
@@ -645,7 +664,7 @@
 
 <script type="text/javascript">
 
-    app.controller('VendorRegistrationUpdateCtrl', function ($scope, $http) {
+    app.controller('VendorRegistrationUpdateCtrl', function ($scope, $http,$q) {
 
         $scope.itemsByPage = 8;
         $scope.fromMenu = 1;
@@ -686,7 +705,10 @@
                 PartnershipDeed: "",
                 ImportRegistration: "",
                 IndentingLicense: "",
-                Others: ""
+                Others: "",
+                Country: { CountryID: "", CountryCode:"", CountryName: "" },
+                BusinessType: { BusinessTypeID: "", BusinessTypeName: "" },
+                BusinessNature: { BusinessNatureID: "", BusinessNatureName: "" },
             }
         }
         $scope.AddNumber = false;
@@ -951,9 +973,9 @@
         //                DWObject.FTPPort = index.ServerPort;
         //                DWObject.FTPUserName = index.FtpUserName;
         //                DWObject.FTPPassword = index.FtpPassword;
-        //                DWObject.FTPDownload(index.ServerIP, (index.FileServerUrl + "//Samiul2024.pdf" 
-                            
-        //                   /* 
+        //                DWObject.FTPDownload(index.ServerIP, (index.FileServerUrl + "//Samiul2024.pdf"
+
+        //                   /*
         //                   +index.DocumentID + "Samiul2024.pdf"*/
         //                )
         //                );
@@ -996,43 +1018,143 @@
 
 
 
+        $scope.BusinessTypeList = [];
+        $scope.BusinessNatureList = [];
+        $scope.CountryList = [];
+
+
+
+        //$scope.loadBusinessType = function () {
+          
+        //};
+
+        //$scope.loadBusinessNature = function () {
+        //    $http.get('/VendorSelectionModule/VendorRegistration/GetBusinessNatureList')
+        //        .then(function (response) {
+        //            $scope.BusinessNatureList = response.data;
+        //        });
+        //};
+
+        //$scope.LoadCountryList = function () {
+        //    $http.get('/VendorSelectionModule/VendorRegistration/GetCountryList')
+        //        .then(function (res) {
+        //            $scope.CountryList = res.data;
+        //        });
+        //};
+
+
+
+
+
+
+
+
+
+        function loadLists() {
+            return $q.all([
+                $http.get('/VendorSelectionModule/VendorRegistration/GetBusinessTypeList'),
+                $http.get('/VendorSelectionModule/VendorRegistration/GetBusinessNatureList'),
+                $http.get('/VendorSelectionModule/VendorRegistration/GetCountryList')
+            ]).then(function (res) {
+                $scope.BusinessTypeList = res[0].data;
+                $scope.BusinessNatureList = res[1].data;
+                $scope.CountryList = res[2].data;
+            });
+        }
+
 
 
 
 
         $http.post('/VendorSelectionModule/VendorRegistrationUpdate/GetVendorInformation')
-            .success(function (response) {
-                $scope.IndvVendorData = response.IndvVendorData;
+            .then(function (response) {
+
+                $scope.IndvVendorData = response.data.IndvVendorData;
                 $scope.VendorID = $scope.IndvVendorData[0].VendorID;
                 $scope.PurreqDtl.Vendor.TinBinDocId = $scope.IndvVendorData[0].TinBinDocId || "";
-                $scope.AutoCompleteVendorInfo($scope.IndvVendorData);
 
-                $http.get("/VendorSelectionModule/VendorRegistrationUpdate/GetDocsForFurtherDoc", { params: { "TinBinDocId": $scope.PurreqDtl.Vendor.TinBinDocId } })
-                    .success(function (response) {
-                    
-                        $scope.docProperties = [];
-                        $scope.scannedDocuments = [];
-                        $scope.displayScannedDocuments = [];
-                      
-                        $scope.setDocProperties(response.docProperties);
-                        //$scope.docProperties = response.docProperties;
-                        $scope.scannedDocuments = response.documents;
-                        $scope.displayScannedDocuments = [].concat($scope.scannedDocuments);
-                    })
-                    .error(function (response) {
+                const vendor = $scope.IndvVendorData[0];
 
-                    });
+                return loadLists().then(function () {
+                    return vendor;
+                });
 
-               
+            })
+            .then(function (vendor) {
 
+                $scope.PurreqDtl.Vendor.BusinessName = vendor.BusinessName || "";
+                $scope.PurreqDtl.Vendor.CompanyAddress = vendor.CompanyAddress || "";
+                $scope.PurreqDtl.Vendor.ContactPerson = vendor.ContactPerson || "";
+                $scope.PurreqDtl.Vendor.VendorId = vendor.VendorID || "";
+                $scope.PurreqDtl.Vendor.TinBinDocId = vendor.TinBinDocId || "";
 
+                if (vendor.ContactPerson) {
+                    const nameParts = vendor.ContactPerson.split(' ');
+                    $scope.PurreqDtl.Vendor.ContactPersonFirstName = nameParts[0] || "";
+                    $scope.PurreqDtl.Vendor.ContactPersonLastName = nameParts.slice(1).join(' ') || "";
+                } else {
+                    $scope.PurreqDtl.Vendor.ContactPersonFirstName = "";
+                    $scope.PurreqDtl.Vendor.ContactPersonLastName = "";
+                }
+
+                $scope.PurreqDtl.Vendor.VendorPhoneNumber = vendor.VendorPhoneNumber || "";
+                $scope.PurreqDtl.Vendor.VendorPhoneNumber2 = vendor.VendorPhoneNumber2 || "";
+
+                $scope.AddNumber = !!$scope.PurreqDtl.Vendor.VendorPhoneNumber2;
+
+                $scope.PurreqDtl.Vendor.GenaralDetailsServices = vendor.GenaralDetailsServices || "";
+                $scope.PurreqDtl.Vendor.Email = vendor.VendorEmail || "";
+                $scope.PurreqDtl.Vendor.TIN = vendor.TIN || "";
+                $scope.PurreqDtl.Vendor.BIN = vendor.BIN || "";
+                $scope.PurreqDtl.Vendor.CompanyProfile = vendor.CompanyProfile || "";
+                $scope.PurreqDtl.Vendor.TradeLicense = vendor.TradeLicense || "";
+                $scope.PurreqDtl.Vendor.PartnershipDeed = vendor.PartnershipDeed || "";
+                $scope.PurreqDtl.Vendor.ImportRegistration = vendor.IRC || "";
+                $scope.PurreqDtl.Vendor.IndentingLicense = vendor.IndentingLicense || "";
+                $scope.PurreqDtl.Vendor.Others = vendor.Others || "";
+
+                $scope.PurreqDtl.Vendor.UserName = "";
+                $scope.PurreqDtl.Vendor.Password = "";
+                $scope.PurreqDtl.Vendor.ConfirmPassword = "";
+
+                // ✅ FIX: Country (must match type)
+                if (vendor.Country) {
+                    var countryObj = $scope.CountryList.find(i => i.CountryID == vendor.Country);
+                    $scope.PurreqDtl.Vendor.Country = countryObj ? countryObj.CountryID : vendor.Country;
+                }
+
+                // ✅ FIX: BusinessType (object binding OR ID safe handling)
+                if (vendor.BusinessType) {
+                    var businessTypeObj = $scope.BusinessTypeList.find(i =>
+                        i.BusinessTypeID == vendor.BusinessType ||
+                        i.BusinessTypeName == vendor.BusinessType
+                    );
+
+                    $scope.PurreqDtl.Vendor.BusinessType = businessTypeObj || vendor.BusinessType;
+                }
 
                 $scope.loading = false;
-            }).error(function () {
+
+                return $http.get("/VendorSelectionModule/VendorRegistrationUpdate/GetDocsForFurtherDoc", {
+                    params: { "TinBinDocId": $scope.PurreqDtl.Vendor.TinBinDocId }
+                });
+
+            })
+            .then(function (response) {
+
+                $scope.docProperties = [];
+                $scope.scannedDocuments = [];
+                $scope.displayScannedDocuments = [];
+
+                $scope.setDocProperties(response.data.docProperties);
+                $scope.scannedDocuments = response.data.documents;
+                $scope.displayScannedDocuments = [].concat($scope.scannedDocuments);
+
+            })
+            .catch(function () {
                 $scope.loading = false;
                 toastr.error('Data Loading Failed.');
             });
-
 
 
 
@@ -1128,106 +1250,25 @@
 
 
 
-
-
-
-
-
-
-        $scope.AutoCompleteVendorInfo = function (vendorData) {
-            if (!vendorData || !Array.isArray(vendorData) || vendorData.length === 0) {
-                toastr.error('No data available to populate vendor information.');
-                return;
-            }
-
-            // Assuming vendorData is an array and we take the first element as the vendor details
-            const vendor = vendorData[0];
-
-            $scope.PurreqDtl.Vendor.BusinessName = vendor.BusinessName || "";
-            $scope.PurreqDtl.Vendor.CompanyAddress = vendor.CompanyAddress || "";
-            $scope.PurreqDtl.Vendor.ContactPerson = vendor.ContactPerson || "";
-            $scope.PurreqDtl.Vendor.VendorId = vendor.VendorID || "";
-            $scope.PurreqDtl.Vendor.TinBinDocId = vendor.TinBinDocId || "";
-
-
-
-            // Split the ContactPerson into FirstName and LastName if available
-            if (vendor.ContactPerson) {
-                const nameParts = vendor.ContactPerson.split(' ');
-                $scope.PurreqDtl.Vendor.ContactPersonFirstName = nameParts[0] || "";
-                $scope.PurreqDtl.Vendor.ContactPersonLastName = nameParts.slice(1).join(' ') || "";
-            } else {
-                $scope.PurreqDtl.Vendor.ContactPersonFirstName = "";
-                $scope.PurreqDtl.Vendor.ContactPersonLastName = "";
-            }
-            $scope.PurreqDtl.Vendor.VendorPhoneNumber = vendor.VendorPhoneNumber || "";
-            $scope.PurreqDtl.Vendor.VendorPhoneNumber2 = vendor.VendorPhoneNumber2 || "";
-
-            // Automatically show second input if VendorPhoneNumber2 exists
-            $scope.AddNumber = !!$scope.PurreqDtl.Vendor.VendorPhoneNumber2;
-            $scope.PurreqDtl.Vendor.GenaralDetailsServices = vendor.GenaralDetailsServices || "";
-            $scope.PurreqDtl.Vendor.Email = vendor.VendorEmail || "";
-            $scope.PurreqDtl.Vendor.TIN = vendor.TIN || "";
-            $scope.PurreqDtl.Vendor.BIN = vendor.BIN || "";
-            $scope.PurreqDtl.Vendor.CompanyProfile = vendor.CompanyProfile || "";
-            $scope.PurreqDtl.Vendor.TradeLicense = vendor.TradeLicense || "";
-            $scope.PurreqDtl.Vendor.PartnershipDeed = vendor.PartnershipDeed || "";
-            $scope.PurreqDtl.Vendor.ImportRegistration = vendor.IRC || "";
-            $scope.PurreqDtl.Vendor.IndentingLicense = vendor.IndentingLicense || "";
-            $scope.PurreqDtl.Vendor.Others = vendor.Others || "";
-
- 
-            $scope.PurreqDtl.Vendor.UserName = ""; // Default value, assuming it's entered manually
-            $scope.PurreqDtl.Vendor.Password = ""; // Default value, assuming it's entered manually
-            $scope.PurreqDtl.Vendor.ConfirmPassword = ""; // Default value, assuming it's entered manually
-
-
-
-
-
-
-
-
-
-
-
-
-
-        };
-
-
-
-
-        $scope.BusinessTypeList = [];
-        $scope.BusinessNatureList = [];
-        $scope.CountryList = [];
-
-
-        $scope.loadBusinessType = function () {
-            $http.get('/VendorSelectionModule/VendorRegistration/GetBusinessTypeList')
-                .then(function (response) {
-                    $scope.BusinessTypeList = response.data;
-                });
-        };
-
-        $scope.loadBusinessNature = function () {
-            $http.get('/VendorSelectionModule/VendorRegistration/GetBusinessNatureList')
-                .then(function (response) {
-                    $scope.BusinessNatureList = response.data;
-                });
-        };
-
-        $scope.LoadCountryList = function () {
-            $http.get('/VendorSelectionModule/VendorRegistration/GetCountryList')
-                .then(function (res) {
-                    $scope.CountryList = res.data;
-                });
-        };
-
+      
         // call on page load
-        $scope.loadBusinessType();
-        $scope.loadBusinessNature();
-        $scope.LoadCountryList();
+       
+
+
+
+        //$scope.AutoCompleteVendorInfo = function (vendorData) {
+           
+
+
+
+
+
+        //};
+
+
+
+
+
 
 
 
@@ -1250,8 +1291,8 @@
                 VendorPhoneNumber2: $scope.PurreqDtl.Vendor.VendorPhoneNumber2,
                 CompanyAddress: $scope.PurreqDtl.Vendor.CompanyAddress,
 
-                Country: $scope.PurreqDtl.Vendor.Country,
-                BusinessType: $scope.PurreqDtl.Vendor.BusinessType,
+                Country: $scope.PurreqDtl.Vendor.Country.CountryID,
+                BusinessType: $scope.PurreqDtl.Vendor.BusinessType.BusinessTypeName,
 
                 TIN: $scope.PurreqDtl.Vendor.TIN,
                 BIN: $scope.PurreqDtl.Vendor.BIN, 
@@ -1264,6 +1305,12 @@
                 irc: $scope.PurreqDtl.Vendor.ImportRegistration,
                 indentingLicense: $scope.PurreqDtl.Vendor.IndentingLicense,
                 others: $scope.PurreqDtl.Vendor.Others,
+     
+               
+                BusinessNature: $scope.PurreqDtl.Vendor.BusinessNature.BusinessNatureName,
+                EstablishedYear: $scope.PurreqDtl.Vendor.EstablishedYear,
+                TradeLicenseValidity: $scope.PurreqDtl.Vendor.TradeLicenseValidity,
+
                
                 UserName: "",
                 Password: "",

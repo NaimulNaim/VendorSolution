@@ -262,7 +262,8 @@ namespace SILDMS.DataAccess.VendorRegistration
         }
 
 
-        public SecVendor_User VendorupdateRegistrationDetailsData(string businessName, string contactPerson, string vendorPhoneNumber, string VendorPhoneNumber2, string companyAddress, string country, string businessType, string tIN, string bIN, string generalDetailsServices, string status,string Vendor,  string companyProfile, string tradeLicense, string partnershipDeed, string irc, string indentingLicense, string others, string UserName, string Password, out string errorNumber)
+        public SecVendor_User VendorupdateRegistrationDetailsData(string businessName, string contactPerson, string vendorPhoneNumber, string VendorPhoneNumber2, string companyAddress, string country, string businessType, string tIN, string bIN, string generalDetailsServices, string status,string Vendor,  string companyProfile, string tradeLicense, string partnershipDeed, string irc, string indentingLicense, string others,string BusinessNature, string EstablishedYear,
+    string TradeLicenseValidity, string UserName, string Password, out string errorNumber)
         {
             errorNumber = string.Empty;
             var User = new SecVendor_User();
@@ -296,6 +297,9 @@ namespace SILDMS.DataAccess.VendorRegistration
                 db.AddInParameter(dbCommandWrapper, "@IRC", SqlDbType.NVarChar, irc);
                 db.AddInParameter(dbCommandWrapper, "@IndentingLicense", SqlDbType.NVarChar, indentingLicense);
                 db.AddInParameter(dbCommandWrapper, "@Others", SqlDbType.NVarChar, others);
+                db.AddInParameter(dbCommandWrapper, "@BusinessNature", SqlDbType.NVarChar, BusinessNature);
+                db.AddInParameter(dbCommandWrapper, "@EstablishedYear", SqlDbType.NVarChar, EstablishedYear);
+                db.AddInParameter(dbCommandWrapper, "@TradeLicenseValidity", SqlDbType.NVarChar, TradeLicenseValidity);
                 //db.AddOutParameter(dbCommandWrapper, "@p_Error", DbType.Int32, 10);
 
                 var ds = db.ExecuteDataSet(dbCommandWrapper);
