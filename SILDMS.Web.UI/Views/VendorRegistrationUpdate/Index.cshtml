@@ -710,6 +710,8 @@
                 Country: { CountryID: "", CountryCode:"", CountryName: "" },
                 BusinessType: { BusinessTypeID: "", BusinessTypeName: "" },
                 BusinessNature: { BusinessNatureID: "", BusinessNatureName: "" },
+                EstablishedYear: "",
+                TradeLicenseValidity:""
             }
         }
         $scope.AddNumber = false;
@@ -1289,11 +1291,19 @@
 
         $scope.updateRegistration = function () {
 
+            var estYearVal = $('#EstablishedYear').val();
+            $scope.PurreqDtl.Vendor.EstablishedYear = estYearVal
+                ? $scope.formatDate(estYearVal)
+                : "";
+
+            var tradeVal = $('#TradeLicenseValidity').val();
+            $scope.PurreqDtl.Vendor.TradeLicenseValidity = tradeVal
+                ? $scope.formatDate(tradeVal)
+                : "";
 
 
-
-            $scope.PurreqDtl.Vendor.EstablishedYear = $scope.formatDate($('#EstablishedYear').val());
-            $scope.PurreqDtl.Vendor.TradeLicenseValidity = $scope.formatDate($('#TradeLicenseValidity').val());
+            //$scope.PurreqDtl.Vendor.EstablishedYear = $scope.formatDate($('#EstablishedYear').val());
+            //$scope.PurreqDtl.Vendor.TradeLicenseValidity = $scope.formatDate($('#TradeLicenseValidity').val());
 
 
 

@@ -1270,9 +1270,18 @@
             }
 
             $scope.loading = true;
+         
+            var estYearVal = $('#EstablishedYear').val();
+            $scope.PurreqDtl.Vendor.EstablishedYear = estYearVal
+                ? $scope.formatDate(estYearVal)
+                : "";
 
-            $scope.PurreqDtl.Vendor.EstablishedYear = $scope.formatDate($('#EstablishedYear').val());
-            $scope.PurreqDtl.Vendor.TradeLicenseValidity = $scope.formatDate($('#TradeLicenseValidity').val());
+            var tradeVal = $('#TradeLicenseValidity').val();
+            $scope.PurreqDtl.Vendor.TradeLicenseValidity = tradeVal
+                ? $scope.formatDate(tradeVal)
+                : "";
+            //$scope.PurreqDtl.Vendor.EstablishedYear = $scope.formatDate($('#EstablishedYear').val());
+            //$scope.PurreqDtl.Vendor.TradeLicenseValidity = $scope.formatDate($('#TradeLicenseValidity').val());
 
             // 1️⃣ Save Vendor
             $http.post('/VendorSelectionModule/VendorRegistration/VendorRegistrationDetails', {
