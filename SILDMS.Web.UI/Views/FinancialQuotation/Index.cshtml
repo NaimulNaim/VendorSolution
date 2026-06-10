@@ -1,9 +1,26 @@
-﻿
+﻿@*@{
+        ViewBag.Title = "Index";
+        Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+    }*@
+
 
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+
+    string userAgent = Request.UserAgent ?? "";
+
+    bool isMobile =
+        userAgent.Contains("Android") ||
+        userAgent.Contains("iPhone") ||
+        userAgent.Contains("iPad") ||
+        userAgent.Contains("iPod") ||
+        userAgent.Contains("Windows Phone");
 }
+
+
+
+
 
 <style type="text/css">
     label {
@@ -21,9 +38,10 @@
     .selected-row {
         background-color: #a4f5da !important;
     }
+
     .col-lg-3 {
         padding-right: 5px;
-        padding-left:30px;
+        padding-left: 30px;
     }
 
     .btn-table {
@@ -35,10 +53,10 @@
     }
 
     .col-lg-6 {
-        padding-right:20px;
+        padding-right: 20px;
     }
 
-   /* .readonly-mode {
+    /* .readonly-mode {
         pointer-events: none;
         opacity: 0.8;
     }
@@ -53,8 +71,8 @@
         opacity: 0.8;
     }*/
 
-        /* allow toggle headers */
-        /*.readonly-mode .allow-interaction {
+    /* allow toggle headers */
+    /*.readonly-mode .allow-interaction {
             pointer-events: auto;
             cursor: pointer;
         }*/
@@ -182,7 +200,7 @@
             </div>
             <div class="col-lg-2" ng-if="Quotation && lowestshowstatus">
                 <div class="form-group">
-                    <input id="LowestPriceNo" name="LowestPriceNo" type="text" data-ng-model="lowestPrice"  class="form-control text-right"
+                    <input id="LowestPriceNo" name="LowestPriceNo" type="text" data-ng-model="lowestPrice" class="form-control text-right"
                            placeholder="LowestPrice No" ng-readonly="true" />
                     @*<div ng-show="masterDataFrm.$submitted || masterDataFrm.UDCode.$touched">
                             <span ng-show="masterDataFrm.UDCode.$error.required" class="label label-danger">Please enter UD Code</span>
@@ -190,7 +208,7 @@
                 </div>
             </div>
 
-            
+
 
         </div>
 
@@ -199,65 +217,65 @@
 
 
     <div style=" margin: 1%; background-color: #f0f0f0; box-shadow: 2px 2px 5px #888888; padding: 0px 10px 0px 10px;" ng-show="flagToShowMasterTbl">
-     
-            <div class="col-sm-12 col-md-12 col-lg-12" style="padding: 11px;">
-                <div ng-if="flagToShow" style="text-align:center">
-                    <h4 style="color:red;">No data available!</h4>
-                </div>
-                @* Master Table *@
-                <div id="PndRecomAndApprovalTable" class="table-responsive" ng-if="!flagToShow">
-                    @*<h5 style="color:chocolate; font-weight:bold">No of Requisitions: {{prList[0].Row_count}}</h5>*@
-                    <table id="tableId" st-table="GridDisplayCollection" st-safe-src="MaterialList" class="table table-condensed table-bordered table-striped table-hover pnlView">
-                        <thead>
-                            <tr style="font-size: 15px;">
-                                <th colspan="7" style="text-align: left;font-weight: bold">Material List</th>
-                            </tr>
-                            <tr style="background-color: #84abc1; color: darkblue; font-size: 12px;">
-                                <th style="text-align:center">Material Code</th>
-                                <th style="text-align:center">Material Name</th>
-                                <th style="text-align:center">RFQ Quantity</th>
-                                <th style="text-align:center">RFQ Unit</th>
-                                <th style="text-align:center">Documents</th>
-                                @*<th style="text-align:center">Type</th>*@
-                                <th style="text-align:center">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr id="rowID" ng-repeat="row in GridDisplayCollection" style="height:20px; font-size:13px;" ng-class="{'selected-row': row.selected}">
-                                <td class="col-lg-2 col-md-2 col-sm-2" style="text-align:center">{{formatMaterialCode(row.materialCode)}}</td>
-                                <td class="col-lg-4 col-md-4 col-sm-4">{{row.materialName}}</td>
-                                <td class="col-lg-2 col-md-2 col-sm-2" style="text-align:right">{{row.MaterialQuantity| number:3}}</td>
-                                <td class="col-lg-1 col-md-1 col-sm-1" style="text-align:center">{{row.Unit}}</td>
-                                <td class="col-lg-1 col-md-1 col-sm-1 text-center">
-                                    <button type="button"
-                                            class="btn btn-info btn-table"
-                                            ng-click="AddDocument(row)"
-                                            ng-show="row.sampleDocId">
-                                        Details <i class="fa fa-eye"></i>
-                                    </button>
-                                </td>
+
+        <div class="col-sm-12 col-md-12 col-lg-12" style="padding: 11px;">
+            <div ng-if="flagToShow" style="text-align:center">
+                <h4 style="color:red;">No data available!</h4>
+            </div>
+            @* Master Table *@
+            <div id="PndRecomAndApprovalTable" class="table-responsive" ng-if="!flagToShow">
+                @*<h5 style="color:chocolate; font-weight:bold">No of Requisitions: {{prList[0].Row_count}}</h5>*@
+                <table id="tableId" st-table="GridDisplayCollection" st-safe-src="MaterialList" class="table table-condensed table-bordered table-striped table-hover pnlView">
+                    <thead>
+                        <tr style="font-size: 15px;">
+                            <th colspan="7" style="text-align: left;font-weight: bold">Material List</th>
+                        </tr>
+                        <tr style="background-color: #84abc1; color: darkblue; font-size: 12px;">
+                            <th style="text-align:center">Material Code</th>
+                            <th style="text-align:center">Material Name</th>
+                            <th style="text-align:center">RFQ Quantity</th>
+                            <th style="text-align:center">RFQ Unit</th>
+                            <th style="text-align:center">Documents</th>
+                            @*<th style="text-align:center">Type</th>*@
+                            <th style="text-align:center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="rowID" ng-repeat="row in GridDisplayCollection" style="height:20px; font-size:13px;" ng-class="{'selected-row': row.selected}">
+                            <td class="col-lg-2 col-md-2 col-sm-2" style="text-align:center">{{formatMaterialCode(row.materialCode)}}</td>
+                            <td class="col-lg-4 col-md-4 col-sm-4">{{row.materialName}}</td>
+                            <td class="col-lg-2 col-md-2 col-sm-2" style="text-align:right">{{row.MaterialQuantity| number:3}}</td>
+                            <td class="col-lg-1 col-md-1 col-sm-1" style="text-align:center">{{row.Unit}}</td>
+                            <td class="col-lg-1 col-md-1 col-sm-1 text-center">
+                                <button type="button"
+                                        class="btn btn-info btn-table"
+                                        ng-click="AddDocument(row)"
+                                        ng-show="row.sampleDocId">
+                                    Details <i class="fa fa-eye"></i>
+                                </button>
+                            </td>
 
 
-                                @*<td class="col-lg-1 col-md-1 col-sm-1" style="text-align:center">{{row.Fintype}}</td>*@
+                            @*<td class="col-lg-1 col-md-1 col-sm-1" style="text-align:center">{{row.Fintype}}</td>*@
 
 
                             @*<td class="col-lg-2 col-md-2 col-sm-2" style="text-align:center">
-                                <button ng-click="DetailItem(row, $index + 1)"
-                                        ng-class="{
-                                                  'btn btn-success btn-table': row.Action === 'A',
-                                                  'btn btn-warning btn-table': row.Action !== 'A'
-                                                  }">
-                                    {{ row.Action === 'A' ? 'Add' : 'Edit' }}
-                                </button>
-                                <button ng-if="row.FinanQuotationItemID"
-                                        ng-click="openDeleteModal(row)"
-                                        class="btn btn-danger btn-table"
-                                        style="margin-left:4px">
-                                    Delete
-                                </button>
+                                    <button ng-click="DetailItem(row, $index + 1)"
+                                            ng-class="{
+                                                      'btn btn-success btn-table': row.Action === 'A',
+                                                      'btn btn-warning btn-table': row.Action !== 'A'
+                                                      }">
+                                        {{ row.Action === 'A' ? 'Add' : 'Edit' }}
+                                    </button>
+                                    <button ng-if="row.FinanQuotationItemID"
+                                            ng-click="openDeleteModal(row)"
+                                            class="btn btn-danger btn-table"
+                                            style="margin-left:4px">
+                                        Delete
+                                    </button>
 
 
-                            </td>*@
+                                </td>*@
 
 
                             <td class="col-lg-2 col-md-2 col-sm-2 text-center">
@@ -291,33 +309,33 @@
 
 
 
-                                @*<td class="col-lg-1 col-md-1 col-sm-1" style="text-align:center">
-                                        <button ng-click="DetailItem(row)">
-                                            {{ row.Action === 'A' ? 'Add' : 'Edit' }}
-                                        </button>
+                            @*<td class="col-lg-1 col-md-1 col-sm-1" style="text-align:center">
+                                    <button ng-click="DetailItem(row)">
+                                        {{ row.Action === 'A' ? 'Add' : 'Edit' }}
+                                    </button>
 
-                                    </td>*@
+                                </td>*@
 
-                            </tr>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="9" class="text-center">
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </table>
-
-
-
-                    @*<div class="box-tools pull-right">
-                            <button type="button" id="btnRefresh" data-ng-click="fetchfromgoogle()" class="btn btn-warning btn-flat pull-right" ng-disabled="loading"><i class="fa fa-refresh"></i> Fetch from Google</button>
-                        </div>*@
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="9" class="text-center">
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
 
 
-                </div>
+
+                @*<div class="box-tools pull-right">
+                        <button type="button" id="btnRefresh" data-ng-click="fetchfromgoogle()" class="btn btn-warning btn-flat pull-right" ng-disabled="loading"><i class="fa fa-refresh"></i> Fetch from Google</button>
+                    </div>*@
+
+
             </div>
-    
+        </div>
+
     </div>
 
     <div style=" margin: 1%; background-color: #f0f0f0; box-shadow: 2px 2px 5px #888888; padding: 0px 10px 0px 10px;" ng-show="TechnicalQuote">
@@ -713,16 +731,16 @@
                         <br />
 
                         <h4 class="mb-2 text-center"
-            ng-click="showOptional = !showOptional"
-            style="cursor:pointer;color:darkblue">
-            {{ showOptional ? '-Hide Additional Details' : '+Additional Details' }}
-        </h4>
+                            ng-click="showOptional = !showOptional"
+                            style="cursor:pointer;color:darkblue">
+                            {{ showOptional ? '-Hide Additional Details' : '+Additional Details' }}
+                        </h4>
 
                         @*<h4 class="mb-2 text-center"
-                            ng-click="toggleOptional()"
-                            style="cursor:pointer;color:darkblue">
-                            {{ showOptional ? '- Hide Additional Details' : '+ Additional Details' }}
-                        </h4>*@
+                                ng-click="toggleOptional()"
+                                style="cursor:pointer;color:darkblue">
+                                {{ showOptional ? '- Hide Additional Details' : '+ Additional Details' }}
+                            </h4>*@
 
                         <div class="card border p-3"
                              ng-show="showOptional">
@@ -1310,22 +1328,22 @@
 
                 </div>
 
-                </div>
-
-                <br />
-                <div class="btn-group pull-right" style=" margin-right: 5px;">
-                    <button type="submit" id="btnSubmit1" ng-if="MaterialInvitation.FinanQuotationItemID!='' && lowestshowstatus==1" ng-click=" Update()" class="btn btn-primary btn-flat">Update Quotation</button>
-                    <button type="submit" id="btnSubmit" ng-if="MaterialInvitation.FinanQuotationItemID=='' && lowestshowstatus==1" ng-click=" Post()" class="btn btn-primary btn-flat">Save Quotation</button>
-                </div>
-
             </div>
 
-
-
-
-
+            <br />
+            <div class="btn-group pull-right" style=" margin-right: 5px;">
+                <button type="submit" id="btnSubmit1" ng-if="MaterialInvitation.FinanQuotationItemID!='' && lowestshowstatus==1" ng-click=" Update()" class="btn btn-primary btn-flat">Update Quotation</button>
+                <button type="submit" id="btnSubmit" ng-if="MaterialInvitation.FinanQuotationItemID=='' && lowestshowstatus==1" ng-click=" Post()" class="btn btn-primary btn-flat">Save Quotation</button>
+            </div>
 
         </div>
+
+
+
+
+
+
+    </div>
 
 
     <div class="row">
@@ -1755,10 +1773,18 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="~/Resources/dynamsoft.webtwain.intellisense.js"></script>
-<script type="text/javascript" src="~/Resources/dynamsoft.webtwain.initiate.js"></script>
-<script type="text/javascript" src="~/Resources/dynamsoft.webtwain.config.js"></script>
-<script type="text/javascript" src="~/Resources/addon/dynamsoft.webtwain.addon.pdf.js"></script>
+@*<script type="text/javascript" src="~/Resources/dynamsoft.webtwain.intellisense.js"></script>
+    <script type="text/javascript" src="~/Resources/dynamsoft.webtwain.initiate.js"></script>
+    <script type="text/javascript" src="~/Resources/dynamsoft.webtwain.config.js"></script>
+    <script type="text/javascript" src="~/Resources/addon/dynamsoft.webtwain.addon.pdf.js"></script>*@
+
+@if (!isMobile)
+{
+    <script src="~/Resources/dynamsoft.webtwain.intellisense.js"></script>
+    <script src="~/Resources/dynamsoft.webtwain.initiate.js"></script>
+    <script src="~/Resources/dynamsoft.webtwain.config.js"></script>
+    <script src="~/Resources/addon/dynamsoft.webtwain.addon.pdf.js"></script>
+}
 
 
 <script type="text/javascript">
@@ -1939,7 +1965,7 @@
             Discount: null,
             DiscountPer: '',
             DeliveryPer: '',
-            FreightPer:'',
+            FreightPer: '',
 
             OrderHandlingCharges: null,
             PackingCharges: null,
@@ -1987,7 +2013,7 @@
             Remarks: "",
             Fintype: "",
             SampleDocumentID: "",
-            DeliveryLocation:""
+            DeliveryLocation: ""
         };
 
 
@@ -2223,7 +2249,7 @@
             // Set status
             $scope.lowestshowstatus = deadlineDate >= currentDate ? 1 : 0;
             $scope.InvitationNumber = Invitation_Number;
-            
+
             //$scope.proposal = proposal;
             //$scope.Fintype = Fintype;
             $scope.p = 0;
@@ -2391,21 +2417,21 @@
                 }
 
 
-       
 
-                if ($scope.FinancialQuotationDetail.Discount>0) {
+
+                if ($scope.FinancialQuotationDetail.Discount > 0) {
                     if (!$scope.FinancialQuotationDetail.DiscountPer) {
                         toastr.error("DiscountPer is required when Discount is provided.");
                         return false;
                     }
                 }
 
-               
-             
 
-                if ($scope.FinancialQuotationDetail.Freight>0) {
-                   
-                    if (! $scope.FinancialQuotationDetail.FreightPer) {
+
+
+                if ($scope.FinancialQuotationDetail.Freight > 0) {
+
+                    if (!$scope.FinancialQuotationDetail.FreightPer) {
                         toastr.error("FreightPer is required when Freight is provided.");
                         return false;
                     }
@@ -2482,7 +2508,7 @@
                 //else {
                 //    $scope.UpdateDocument();
                 //}
-            
+
 
                 //// heavy + jQuery + FTP
 
@@ -2563,10 +2589,8 @@
 
 
         $scope.SaveDocumentOnly = function (callback) {
-
             var fileUpload = $("#FileUpload1").get(0);
             var files = fileUpload.files || [];
-
             var validFiles = [];
 
             angular.forEach(files, function (file) {
@@ -2578,10 +2602,9 @@
                     ? validFiles.map(f => f.name.split('.').pop().toLowerCase()).join(',') + ',.pdf'
                     : '.pdf';
 
-            if (typeof dwObject !== 'undefined' &&
-                dwObject.HowManyImagesInBuffer === 0 &&
-                files.length === 0) {
-
+            // On mobile, dwObject.HowManyImagesInBuffer is always 0 (stub),
+            // so if no files either, block the save
+            if (dwObject.HowManyImagesInBuffer === 0 && files.length === 0) {
                 $scope.loading = false;
                 toastr.error("There are no documents.");
                 return;
@@ -2590,15 +2613,13 @@
             $http.post('/VendorSelectionModule/FinancialQuotation/AddDocumentInfo', {
                 _modelDocumentsInfo: $scope.BillReceiveModel
             }).then(function (response) {
-
                 if (response.data.ResponseCode !== "S201") return;
 
                 var doc = response.data.DistinctID[0];
-
                 $scope.FinancialQuotationDetail.SampleDocumentID = doc.BillReceiveID;
 
                 var otherFilesDone = (files.length === 0);
-                var scannerDone = false;   // 🔥 FIX #1
+                var scannerDone = false;
 
                 function checkDone() {
                     if (otherFilesDone && scannerDone) {
@@ -2606,22 +2627,15 @@
                     }
                 }
 
-                // =========================
-                // SCANNER UPLOAD (FIXED)
-                // =========================
-
-                if (typeof dwObject !== 'undefined' &&
-                    dwObject.HowManyImagesInBuffer > 0) {
-
+                // Scanner upload — skipped automatically on mobile because
+                // stub dwObject.HowManyImagesInBuffer is always 0
+                if (dwObject.HowManyImagesInBuffer > 0) {
                     var safeFileName = doc.BillReceiveID.replace(/\//g, '_');
-
                     dwObject.FTPPort = doc.ServerPort;
                     dwObject.FTPUserName = doc.FtpUserName;
                     dwObject.FTPPassword = doc.FtpPassword;
-
                     var strFTPServer = doc.ServerIP;
 
-                    // REQUIRED LOOP (state sync)
                     for (var i = 0; i < dwObject.HowManyImagesInBuffer; i++) {
                         dwObject.SelectedImagesCount = i + 1;
                         dwObject.SetSelectedImageIndex(i, i);
@@ -2632,88 +2646,66 @@
                         doc.FileServerUrl + "/" + safeFileName + ".pdf"
                     );
 
-                    //var isUploaded = dwObject.FTPUploadAsMultiPagePDF(
-                    //    strFTPServer,
-                    //    doc.FileServerUrl + "/" + doc.BillReceiveID + ".pdf"
-                    //);
-
                     if (isUploaded) {
-
                         console.log("Scanner uploaded");
-
                         dwObject.RemoveAllSelectedImages();
-
                         toastr.success("Scanner PDF uploaded successfully");
-
-                        scannerDone = true;   // 🔥 FIX #2
-                        checkDone();          // 🔥 FIX #3
-
+                        scannerDone = true;
+                        checkDone();
                     } else {
-
                         toastr.error("Scanner PDF upload failed");
                     }
-
                 } else {
-
+                    // Mobile: no scanner, go straight to callback
                     scannerDone = true;
                     checkDone();
                 }
 
+                // Other files upload
+                if (files.length > 0) {
+                    var uploadCount = 0;
+
+                    angular.forEach(validFiles, function (file) {
+                        var fileData = new FormData();
+                        fileData.append('serverIP', doc.ServerIP);
+                        fileData.append('ftpPort', doc.ServerPort);
+                        fileData.append('ftpUserName', doc.FtpUserName);
+                        fileData.append('ftpPassword', doc.FtpPassword);
+                        fileData.append('serverURL', doc.FileServerUrl);
+                        fileData.append('documentID', doc.BillReceiveID);
+                        fileData.append('Ext', file.name.split('.').pop().toLowerCase());
+                        fileData.append(file.name, file);
+
+                        $.ajax({
+                            url: '/VendorSelectionModule/FinancialQuotation/UploadOtherFiles',
+                            type: "POST",
+                            contentType: false,
+                            processData: false,
+                            data: fileData,
+                            success: function (result) {
+                                uploadCount++;
+                                if (uploadCount === validFiles.length) {
+                                    toastr.success("Files uploaded successfully");
+                                    var $el = $('#FileUpload1');
+                                    $el.wrap('<form>').closest('form').get(0).reset();
+                                    $el.unwrap();
+                                    otherFilesDone = true;
+                                    checkDone();
+                                }
+                            },
+                            error: function (err) {
+                                toastr.error("File upload failed");
+                                console.error('Upload error:', err);
+                            }
+                        });
+                    });
+                }
             });
         };
 
 
 
 
-
-        function calculateCompressionRatio(totalSize, maxSize) {
-            return maxSize / totalSize;
-        }
-
-        function compressPageWithRatio(pageBlob, ratio) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-
-                reader.onload = function (event) {
-                    const img = new Image();
-
-                    img.onload = function () {
-                        // Create a canvas to draw the image
-                        const canvas = document.createElement('canvas');
-                        const ctx = canvas.getContext('2d');
-
-                        // Set canvas dimensions to match the image dimensions
-                        canvas.width = img.width;
-                        canvas.height = img.height;
-
-                        // Draw the image onto the canvas
-                        ctx.drawImage(img, 0, 0, img.width, img.height);
-
-                        // Convert the canvas content to a Blob with the specified compression quality
-                        canvas.toBlob(function (compressedBlob) {
-                            if (compressedBlob) {
-                                resolve(compressedBlob);
-                            } else {
-                                reject(new Error('Compression failed: No Blob created'));
-                            }
-                        }, 'image/jpg', ratio); // Adjust the image format and compression quality if needed
-                    };
-
-                    img.onerror = function () {
-                        reject(new Error('Image loading failed'));
-                    };
-
-                    img.src = event.target.result;
-                };
-
-                reader.onerror = function (error) {
-                    reject(error);
-                };
-
-                // Read the pageBlob as a Data URL (base64 representation)
-                reader.readAsDataURL(pageBlob); // Assuming pageBlob is a Blob
-            });
-        }
 
 
 
@@ -2945,7 +2937,6 @@
             }, 0); // 👈 repaint hook
         };
 
-
         $scope.SaveDocumentAndSubmit = function () {
             console.log('SaveDocumentAndSubmit called');
 
@@ -2955,9 +2946,6 @@
             var extensions = [];
             var concatenatedExtensions = "";
 
-            console.log('Files found:', files.length);
-
-            // Process files and filter out valid files
             if (files.length > 0) {
                 angular.forEach(files, function (file) {
                     var ext = file.name.split('.').pop().toLowerCase();
@@ -2977,196 +2965,121 @@
 
             $scope.BillReceiveModel.Extensions = concatenatedExtensions;
 
-            // Check if scanner has documents
-            if (concatenatedExtensions === '.pdf') {
-                if (typeof dwObject !== 'undefined' && dwObject.HowManyImagesInBuffer === 0) {
-                    $scope.loading = false;
-                    toastr.error("There are no documents.");
-                    return;
-                }
+            // On mobile stub, HowManyImagesInBuffer is always 0
+            if (concatenatedExtensions === '.pdf' && dwObject.HowManyImagesInBuffer === 0) {
+                $scope.loading = false;
+                toastr.error("There are no documents.");
+                return;
             }
 
-            console.log('Calling AddDocumentInfo API...');
-
-            // Step 1: Save document info to get Document ID
             $http.post('/VendorSelectionModule/FinancialQuotation/AddDocumentInfo', {
                 _modelDocumentsInfo: $scope.BillReceiveModel
-            })
-                .then(function (response) {
-                    console.log('AddDocumentInfo response:', response);
+            }).then(function (response) {
 
-                    if (response.data.ResponseCode === "S201") {
-                        $scope.data = response.data.DistinctID[0];
+                if (response.data.ResponseCode === "S201") {
+                    $scope.data = response.data.DistinctID[0];
+                    $scope.FinancialQuotationDetail.SampleDocumentID = response.data.DistinctID[0].BillReceiveID;
 
-                        // Store the document ID immediately
-                        $scope.FinancialQuotationDetail.SampleDocumentID = response.data.DistinctID[0].BillReceiveID;
-                        console.log('Document ID saved:', $scope.FinancialQuotationDetail.SampleDocumentID);
+                    var otherFilesComplete = (files.length === 0);
+                    var scannerPDFComplete = false;
 
-                        var allUploadsComplete = false;
-                        var otherFilesComplete = false;
-                        var scannerPDFComplete = false;
+                    var checkAllUploadsComplete = function () {
+                        if (otherFilesComplete && scannerPDFComplete) {
+                            console.log('All uploads complete, calling submit...');
+                            $scope.submit();
+                            $scope.p = 0;
+                        }
+                    };
 
-                        // Function to check if both uploads are done
-                        var checkAllUploadsComplete = function () {
-                            if (otherFilesComplete && scannerPDFComplete) {
-                                console.log('All uploads complete, calling submit...');
-                                $scope.submit();
-                                $scope.p = 0;
-                            }
-                        };
+                    // Other files upload
+                    if (files.length > 0) {
+                        var uploadCount = 0;
 
-                        // Step 2: Upload files (if any)
-                        if (files.length > 0) {
-                            console.log('Starting other files upload...');
-                            var uploadCount = 0;
+                        angular.forEach(validFiles, function (file) {
+                            var fileData = new FormData();
+                            fileData.append('serverIP', response.data.DistinctID[0].ServerIP);
+                            fileData.append('ftpPort', response.data.DistinctID[0].ServerPort);
+                            fileData.append('ftpUserName', response.data.DistinctID[0].FtpUserName);
+                            fileData.append('ftpPassword', response.data.DistinctID[0].FtpPassword);
+                            fileData.append('serverURL', response.data.DistinctID[0].FileServerUrl);
+                            fileData.append('documentID', response.data.DistinctID[0].BillReceiveID);
+                            fileData.append('Ext', file.name.split('.').pop().toLowerCase());
+                            fileData.append(file.name, file);
 
-                            angular.forEach(validFiles, function (file) {
-                                var fileData = new FormData();
-                                fileData.append('serverIP', response.data.DistinctID[0].ServerIP);
-                                fileData.append('ftpPort', response.data.DistinctID[0].ServerPort);
-                                fileData.append('ftpUserName', response.data.DistinctID[0].FtpUserName);
-                                fileData.append('ftpPassword', response.data.DistinctID[0].FtpPassword);
-                                fileData.append('serverURL', response.data.DistinctID[0].FileServerUrl);
-                                fileData.append('documentID', response.data.DistinctID[0].BillReceiveID);
-                                fileData.append('Ext', file.name.split('.').pop().toLowerCase());
-                                fileData.append(file.name, file);
-
-                                $.ajax({
-                                    url: '/VendorSelectionModule/FinancialQuotation/UploadOtherFiles',
-                                    type: "POST",
-                                    contentType: false,
-                                    processData: false,
-                                    data: fileData,
-                                    success: function (result) {
-                                        uploadCount++;
-                                        console.log('File uploaded:', uploadCount, '/', validFiles.length);
-
-                                        if (uploadCount === validFiles.length) {
-                                            toastr.success("Other files uploaded successfully");
-                                            var $el = $('#FileUpload1');
-                                            $el.wrap('<form>').closest('form').get(0).reset();
-                                            $el.unwrap();
-
-                                            otherFilesComplete = true;
-                                            checkAllUploadsComplete();
-                                        }
-                                    },
-                                    error: function (err) {
-                                        toastr.error("File upload failed");
-                                        console.error('Upload error:', err);
+                            $.ajax({
+                                url: '/VendorSelectionModule/FinancialQuotation/UploadOtherFiles',
+                                type: "POST",
+                                contentType: false,
+                                processData: false,
+                                data: fileData,
+                                success: function (result) {
+                                    uploadCount++;
+                                    if (uploadCount === validFiles.length) {
+                                        toastr.success("Other files uploaded successfully");
+                                        var $el = $('#FileUpload1');
+                                        $el.wrap('<form>').closest('form').get(0).reset();
+                                        $el.unwrap();
+                                        otherFilesComplete = true;
+                                        checkAllUploadsComplete();
                                     }
-                                });
+                                },
+                                error: function (err) {
+                                    toastr.error("File upload failed");
+                                    console.error('Upload error:', err);
+                                }
                             });
-                        } else {
-                            console.log('No other files to upload');
-                            otherFilesComplete = true;
+                        });
+                    }
+
+                    // Scanner upload — skipped on mobile because stub HowManyImagesInBuffer === 0
+                    if (dwObject.HowManyImagesInBuffer > 0) {
+                        var strFTPServer = response.data.DistinctID[0].ServerIP;
+
+                        if (!strFTPServer) {
+                            toastr.error("FTP Server is not assigned");
+                            $scope.loading = false;
+                            return;
                         }
 
-                        // Step 3: Upload Scanner PDF
-                        if (typeof dwObject !== 'undefined' && dwObject.HowManyImagesInBuffer > 0) {
-                            console.log('Starting scanner PDF upload...');
+                        dwObject.FTPPort = response.data.DistinctID[0].ServerPort;
+                        dwObject.FTPUserName = response.data.DistinctID[0].FtpUserName;
+                        dwObject.FTPPassword = response.data.DistinctID[0].FtpPassword;
 
-                            var strFTPServer = response.data.DistinctID[0].ServerIP;
+                        var safeFileName = response.data.DistinctID[0].BillReceiveID.replace(/\//g, '_');
 
-                            if (strFTPServer == "" || strFTPServer == null) {
-                                toastr.error("FTP Server is not assigned");
-                                $scope.loading = false;
-                                return;
-                            }
+                        for (var i = 0; i <= dwObject.HowManyImagesInBuffer - 1; i++) {
+                            dwObject.SelectedImagesCount = i + 1;
+                            dwObject.SetSelectedImageIndex(i, i);
+                        }
+                        dwObject.SelectedImagesCount = dwObject.HowManyImagesInBuffer;
 
-                            if (dwObject.CurrentImageIndexInBuffer == "-1") {
-                                toastr.error("No document found for upload");
-                                $scope.loading = false;
-                                return;
-                            }
+                        var isSave = dwObject.FTPUploadAsMultiPagePDF(
+                            strFTPServer,
+                            response.data.DistinctID[0].FileServerUrl + "//" + safeFileName + ".pdf"
+                        );
 
-                            dwObject.FTPPort = response.data.DistinctID[0].ServerPort;
-                            dwObject.FTPUserName = response.data.DistinctID[0].FtpUserName;
-                            dwObject.FTPPassword = response.data.DistinctID[0].FtpPassword;
-                            var safeFileName = response.data.DistinctID[0].BillReceiveID
-                                .replace(/\//g, '_');
-
-                            dwObject.SelectedImagesCount = 0;
-
-                            //for (var i = 0; i <= dwObject.HowManyImagesInBuffer - 1; i++) {
-                            //    if (dwObject.HowManyImagesInBuffer - 1 == i) {
-                            //        var isSave = dwObject.FTPUploadAsMultiPagePDF(
-                            //            strFTPServer,
-                            //            //response.data.DistinctID[0].FileServerUrl + "//" + response.data.DistinctID[0].BillReceiveID + ".pdf"
-                            //            response.data.DistinctID[0].FileServerUrl + "//" + safeFileName + ".pdf"
-                            //        );
-
-                            //        if (isSave) {
-                            //            console.log('Scanner PDF uploaded successfully');
-                            //            dwObject.RemoveAllSelectedImages();
-                            //            dwObject.RemoveImage(0);
-                            //            i = -1;
-                            //            toastr.success("Scanner PDF uploaded successfully");
-
-                            //            scannerPDFComplete = true;
-                            //            checkAllUploadsComplete();
-                            //        } else {
-                            //            toastr.error("Scanner PDF upload failed");
-                            //            break;
-                            //        }
-                            //    } else {
-                            //        dwObject.SelectedImagesCount = i + 1;
-                            //        dwObject.SetSelectedImageIndex(i, i);
-                            //    }
-                            //}
-
-
-
-                      /*      dwObject.SelectedImagesCount = 0;*/
-
-                            // STEP 1: select all images first (NO upload here)
-                            for (var i = 0; i <= dwObject.HowManyImagesInBuffer - 1; i++) {
-                                dwObject.SelectedImagesCount = i + 1;
-                                dwObject.SetSelectedImageIndex(i, i);
-                            }
-
-                            // STEP 2: ensure buffer is stable before upload
-                            dwObject.SelectedImagesCount = dwObject.HowManyImagesInBuffer;
-
-                            // STEP 3: upload ONCE
-                            var isSave = dwObject.FTPUploadAsMultiPagePDF(
-                                strFTPServer,
-                                response.data.DistinctID[0].FileServerUrl + "//" + safeFileName + ".pdf"
-                              /*  response.data.DistinctID[0].FileServerUrl + "//" + response.data.DistinctID[0].BillReceiveID + ".pdf"*/
-                            );
-
-                            if (isSave) {
-
-                                console.log('Scanner PDF uploaded successfully');
-
-                                // IMPORTANT: clean properly (DO NOT use RemoveImage(0))
-                                dwObject.RemoveAllSelectedImages();
-
-                                toastr.success("Scanner PDF uploaded successfully");
-
-                                scannerPDFComplete = true;
-                                checkAllUploadsComplete();
-
-                            } else {
-
-                                toastr.error("Scanner PDF upload failed");
-                            }
-
-
-
-
-
-                        } else {
-                            console.log('No scanner images to upload');
+                        if (isSave) {
+                            dwObject.RemoveAllSelectedImages();
+                            toastr.success("Scanner PDF uploaded successfully");
                             scannerPDFComplete = true;
                             checkAllUploadsComplete();
+                        } else {
+                            toastr.error("Scanner PDF upload failed");
                         }
+
+                    } else {
+                        // Mobile or no scanner images
+                        scannerPDFComplete = true;
+                        checkAllUploadsComplete();
                     }
-                }, function (error) {
-                    console.error('Error sending document info', error);
-                    toastr.error("Failed to save document information");
-                });
+                }
+
+            }, function (error) {
+                console.error('Error sending document info', error);
+                toastr.error("Failed to save document information");
+            });
         };
+
 
 
 
@@ -3188,10 +3101,10 @@
                     }
                     else {
                         $scope.flagToShow = false;
-                       
+
                     }
 
-                   
+
 
 
                     $scope.loading = false;
@@ -3269,7 +3182,7 @@
                 PenaltyClause: "",
                 Remarks: "",
                 Fintype: "",
-                DeliveryLocation:""
+                DeliveryLocation: ""
             };
 
 
@@ -3350,14 +3263,14 @@
             $scope.FinancialQuotationDetail.QuotationID = data.QuotationID;
             $scope.FinancialQuotationDetail.QuotationNo = data.QuotationNo;
             $scope.FinancialQuotationDetail.InvitationNumber = data.InvitationNumber;
-         
+
 
             // =====================
             // Quantities
             // =====================
             $scope.FinancialQuotationDetail.ProposeQty = data.ProposeQty;
             $scope.FinancialQuotationDetail.QuotationQty = data.QuotationQty;
-            
+
             /*   $scope.FinancialQuotationDetail.MinimumOrderQty = data.MinimumOrderQty;*/
             $scope.FinancialQuotationDetail.PackSize = data.PackSize;
             $scope.FinancialQuotationDetail.DeliveryLocation = data.DeliveryLocation;
@@ -3408,7 +3321,7 @@
             //$scope.FinancialQuotationDetail.OrderHandlingCharges = data.OrderHandlingCharges;
             //$scope.FinancialQuotationDetail.PackingCharges = data.PackingCharges;
             //$scope.FinancialQuotationDetail.SundryCharges = data.SundryCharges;
-           /* $scope.FinancialQuotationDetail.DeliveryCharge = data.DeliveryCharge;*/
+            /* $scope.FinancialQuotationDetail.DeliveryCharge = data.DeliveryCharge;*/
             $scope.FinancialQuotationDetail.DeliveryPer = data.DeliveryPer;
 
             // =====================
@@ -3487,7 +3400,7 @@
                 $scope.FinancialQuotationDetail.QtyTolerance = data.QtyTolerance;
                 setValue('QtyTolerance1', data.QtyTolerance);
 
-              
+
                 $scope.p = 2;
             }
             else {
@@ -3502,7 +3415,7 @@
                 setValue('price', data.Price);
 
                 $scope.FinancialQuotationDetail.Freight = data.Freight;
-             
+
                 setValue('Freight', data.Freight);
                 $scope.FinancialQuotationDetail.Discount = data.Discount;
                 setValue('Discount', data.Discount);
@@ -3521,7 +3434,7 @@
                 $scope.FinancialQuotationDetail.QtyTolerance = data.QtyTolerance;
                 setValue('QtyTolerance', data.QtyTolerance);
 
-             
+
 
                 p = 1;
             }
@@ -3599,13 +3512,13 @@
 
         $scope.openDeleteModal = function (row) {
             $scope.deleteRow = row;
-            
+
             $('#deleteConfirmModal').modal('show');
         };
 
         $scope.cancelDelete = function () {
             $scope.deleteRow = null;
-           
+
             $('#deleteConfirmModal').modal('hide');
         };
 
@@ -3671,7 +3584,7 @@
             row.selected = true;
 
 
-       
+
 
 
             dwObject.RemoveAllImages();
@@ -3685,7 +3598,7 @@
                 $scope.BillReceiveModel.VendorID = row.VendorID;
                 $scope.BillReceiveModel.materialCode = row.materialCode;
                 $scope.BillReceiveModel.materialName = row.materialName;
-///////////////////////////////////////////////////////////////////////////////
+                ///////////////////////////////////////////////////////////////////////////////
                 $http.post('/VendorSelectionModule/FinancialQuotation/FinQuotwiseDetails',
                     { FinanQuotationItemID: row.FinanQuotationItemID })
                     .success(function (response) {
@@ -3817,11 +3730,11 @@
                     $scope.p = 1;
                 }
                 else if (row.Fintype === 'DOMESTIC') {
-                   
-                        var Currencyobj = $scope.ItemTypeList.find(p => p.MasterDataID === '1');
-                        $scope.FinancialQuotationDetail.Currency = Currencyobj || data.Currency;
-                  
-                  
+
+                    var Currencyobj = $scope.ItemTypeList.find(p => p.MasterDataID === '1');
+                    $scope.FinancialQuotationDetail.Currency = Currencyobj || data.Currency;
+
+
                     $scope.p = 2;
                 }
 
@@ -3864,33 +3777,22 @@
 
 
 
+
         $scope.UpdateDocument = function () {
 
-            dwObject.IfShowFileDialog = false;
             $scope.IsDownload = false;
-
-
-
-
-
-
-
-
 
             var fileUpload = $("#FileUpload1").get(0);
             var files = fileUpload.files;
             var validFiles = [];
             var extensions = [];
             var concatenatedExtensions = "";
-            console.log(files);
-            // Process files and filter out PDF files
+
             if (files.length > 0) {
                 angular.forEach(files, function (file) {
                     var ext = file.name.split('.').pop().toLowerCase();
-
                     validFiles.push(file);
                     extensions.push(ext);
-
                 });
 
                 if (validFiles.length === 0) {
@@ -3898,9 +3800,7 @@
                     return;
                 }
 
-
                 var uploadCount = 0;
-
                 angular.forEach(validFiles, function (file) {
                     var fileData = new FormData();
                     fileData.append('serverIP', $scope.Server.ServerIP);
@@ -3920,12 +3820,11 @@
                         data: fileData,
                         success: function (result) {
                             uploadCount++;
-                            if (uploadCount == validFiles.length) {
+                            if (uploadCount === validFiles.length) {
                                 toastr.success("Document Uploaded Successfully");
                                 var $el = $('#FileUpload1');
                                 $el.wrap('<form>').closest('form').get(0).reset();
                                 $el.unwrap();
-
                             }
                         },
                         error: function (err) {
@@ -3934,126 +3833,96 @@
                     });
                 });
 
-
-
-
-
-
-
-
-
-
-
-
-                // Concatenate extensions
-
-                concatenatedExtensions = extensions.join(',');
                 concatenatedExtensions = extensions.join(',') + ',.pdf';
                 $scope.Server.Extensions = concatenatedExtensions;
             }
 
+            // Scanner upload — skipped on mobile because stub HowManyImagesInBuffer === 0
+            if (dwObject.HowManyImagesInBuffer > 0) {
 
+                dwObject.IfShowFileDialog = false;
+                dwObject.FTPPort = $scope.Server.ServerPort;
+                dwObject.FTPUserName = $scope.Server.FtpUserName;
+                dwObject.FTPPassword = $scope.Server.FtpPassword;
 
-            dwObject.FTPPort = $scope.Server.ServerPort;
-            dwObject.FTPUserName = $scope.Server.FtpUserName;
-            dwObject.FTPPassword = $scope.Server.FtpPassword;
+                var safeFileName = $scope.MaterialInvitation.SampleDocumentID.replace(/\//g, '_');
 
-            var safeFileName = $scope.MaterialInvitation.SampleDocumentID
-                .replace(/\//g, '_');
+                var isSave = dwObject.FTPUploadAllAsPDF(
+                    $scope.Server.ServerIP,
+                    $scope.Server.FileServerURL + "//" + safeFileName + ".pdf"
+                );
 
-            var isSave = dwObject.FTPUploadAllAsPDF($scope.Server.ServerIP,
-                $scope.Server.FileServerURL + "//" +
-                safeFileName + ".pdf");
-            //var isSave = dwObject.FTPUploadAllAsPDF($scope.Server.ServerIP,
-            //    $scope.Server.FileServerURL + "//" +
-            //    $scope.MaterialInvitation.SampleDocumentID + ".pdf");
-
-
-
-
-
-            if (isSave) {
-                // dwObject.RemoveAllImages();
-                $http.post('/VendorSelectionModule/FinancialQuotation/UpdateExtensionByDocId', {
-                    DocumentID: $scope.MaterialInvitation.SampleDocumentID,
-                    Extension: $scope.Server.Extensions
-                })
-                    .success(function (response) {
+                if (isSave) {
+                    $http.post('/VendorSelectionModule/FinancialQuotation/UpdateExtensionByDocId', {
+                        DocumentID: $scope.MaterialInvitation.SampleDocumentID,
+                        Extension: $scope.Server.Extensions
+                    }).success(function (response) {
                         if (response.respStatus.Message) {
-                            $scope.loading = false;
                             toastr.success("Document Updated Successfully");
-
                             dwObject.RemoveAllImages();
-
-                        }
-                        else {
+                        } else {
                             toastr.error('Document Update Failed');
                         }
                         $scope.loading = false;
                     }).error(function () {
                         $scope.loading = false;
                     });
+                } else {
+                    toastr.error('Document Update Failed');
+                }
 
+            } else if (files.length > 0) {
+                // Mobile: only file upload, update extension in DB
+                $http.post('/VendorSelectionModule/FinancialQuotation/UpdateExtensionByDocId', {
+                    DocumentID: $scope.MaterialInvitation.SampleDocumentID,
+                    Extension: $scope.Server.Extensions
+                }).success(function (response) {
+                    if (response.respStatus.Message) {
+                        toastr.success("Document Updated Successfully");
+                    } else {
+                        toastr.error('Document Update Failed');
+                    }
+                    $scope.loading = false;
+                }).error(function () {
+                    $scope.loading = false;
+                });
             }
-            else {
-                toastr.error('Document Update Failed');
-            }
-
-
         };
 
 
-
         $scope.docshow = function () {
-            //$scope.ServerIP = response.DistinctID[0].ServerIP;
-            //$scope.FileServerURL = response.DistinctID[0].FileServerUrl;
-            //$scope.ServerPort = response.DistinctID[0].ServerPort;
-            //$scope.FtpUserName = response.DistinctID[0].FtpUserName;
-            //$scope.FtpPassword = response.DistinctID[0].FtpPassword;
 
-
-
-
-
-            // Check if the string contains any commas
             if ($scope.Server.Extensions.includes(',')) {
-                // Split the string into an array based on commas
                 var separatedExtensions = $scope.Server.Extensions.split(',');
-
-                // Store the results in two variables
                 $scope.FileExtension = separatedExtensions[0];
-
                 $scope.IsDownload = true;
-
-
-
             }
 
+            // Dynamsoft viewer — skipped on mobile because stub HowManyImagesInBuffer
+            // and FTPDownload is a no-op on mobile stub
+            if (dwObject.HowManyImagesInBuffer === 0) {
+                // Mobile: just set the download flag, no viewer to load
+                dwObject.FTPDownload(
+                    $scope.Server.ServerIP,
+                    $scope.Server.FileServerURL + "//" +
+                    $scope.MaterialInvitation.SampleDocumentID.replace(/\//g, '_') + ".pdf"
+                ); // no-op on mobile stub, safe to call
+                return;
+            }
 
-
-
-
+            // PC: full Dynamsoft viewer load
             dwObject.IfShowFileDialog = false;
-            // dwObject.RemoveAllImages();
             dwObject.FTPPort = $scope.Server.ServerPort;
             dwObject.FTPUserName = $scope.Server.FtpUserName;
             dwObject.FTPPassword = $scope.Server.FtpPassword;
-            //DWObject.FTPDownload($scope.data.ServerIP, ($scope.data.FileServerUrl + "//" +
-            //    $scope.data.DocumentID + ".pdf"));
-
 
             var safeFileName = $scope.MaterialInvitation.SampleDocumentID.replace(/\//g, '_');
 
-            dwObject.FTPDownload($scope.Server.ServerIP,
-                $scope.Server.FileServerURL + "//" +
-                safeFileName + ".pdf");
-
-            //dwObject.FTPDownload($scope.Server.ServerIP,
-            //    $scope.Server.FileServerURL + "//" +
-            //    $scope.MaterialInvitation.SampleDocumentID + ".pdf");
-
-
-        }
+            dwObject.FTPDownload(
+                $scope.Server.ServerIP,
+                $scope.Server.FileServerURL + "//" + safeFileName + ".pdf"
+            );
+        };
 
 
 
@@ -4067,323 +3936,6 @@
 
 
 
-        var DWObject;
-        var DWObjectLargeViewer;
-        var DWObjectLargeViewer2;
-        var zoomFactor = .5;
-        var width = 9.69 * 90;
-        var height = 10.69 * 90;
-        //$scope.updateLargeViewer = function () {
-        //    DWObject.CopyToClipboard(DWObject.CurrentImageIndexInBuffer);
-        //    DWObjectLargeViewer.LoadDibFromClipboard();
-        //    $('#viewerModal2').modal('show');
-        //};
-        //function Dynamsoft_OnReady() {
-        //    DWObject = Dynamsoft.WebTwainEnv.GetWebTwain('dwtHorizontalThumbnil');
-
-        //    DWObjectLargeViewer = Dynamsoft.WebTwainEnv.GetWebTwain('dwtLargeViewer');
-
-        //    DWObjectLargeViewer.SetViewMode(1, 1);
-        //   /* DWObjectLargeViewer.MaxImagesInBuffer = 1;*/
-
-        //    DWObject.SetViewMode(4, -1);
-        //    DWObject.PDFCompressionType = EnumDWT_PDFCompressionType.PDF_AUTO;
-        //    DWObject.JPEGQuality = 20;
-        //    DWObject.FitWindowType = 0;
-        //    DWObject.SelectionImageBorderColor = 0x691254;
-        //    DWObject.ShowPageNumber = true;
-        //    DWObject.IfAppendImage = true;
-        //  /*  DWObject.RegisterEvent('OnMouseDoubleClick', $scope.updateLargeViewer);*/
-        //    DWObject.RegisterEvent('OnImageAreaSelected', function (sImageIndex, left, top, right, bottom) {
-        //        DWObject.Erase(sImageIndex, left, top, right, bottom);
-        //    });
-
-        //    if (DWObject) {
-        //        var count = DWObject.SourceCount;
-        //        if (count == 0 && Dynamsoft.Lib.env.bMac) {
-        //            DWObject.CloseSourceManager();
-        //            DWObject.ImageCaptureDriverType = 0;
-        //            DWObject.OpenSourceManager();
-        //            count = DWObject.SourceCount;
-        //        }
-
-        //        for (var i = 0; i < count; i++)
-        //            document.getElementById("source").options.add(new Option(DWObject.GetSourceNameItems(i), i)); // Get Data Source names from Data Source Manager and put them in a drop-down box
-
-        //    }
-        //    DWObject.Addon.PDF.Download("../Resources/addon/Pdf.zip",  // specify the url of the add-on resource
-        //        function () { console.log('Successfully Downloaded PDF add-on'); }, // successful callback
-        //        function (errorCode, errorString) { alert(errorString); }  // failure callback and show error message
-        //    );
-        //};
-
-
-
-        /*  $scope.selectedFiles = []; */// Array to store selected files
-
-        // Function to handle file selection
-        //$scope.handleFileSelect = function (files) {
-        //    // Reset selected files array
-        //    $scope.selectedFiles = [];
-
-        //    // Iterate through selected files
-        //    angular.forEach(files, function (file) {
-        //        $scope.selectedFiles.push(file);
-        //    });
-        //};
-        //$scope.files = [];
-        //$scope.getFileDetails = function (e) {
-
-
-        //    $scope.$apply(function () {
-
-        //        // store the file object in an array.
-        //        for (var i = 0; i < e.files.length; i++) {
-        //            $scope.files.push(e.files[i])
-        //        }
-
-        //    });
-        //    console.log($scope.files);
-        //};
-
-
-
-        $scope.ZoomIn = function () {
-            dwObjectLargeViewer.Zoom = zoomFactor * 1.2;
-            zoomFactor = zoomFactor * 1.2;
-        };
-
-        $scope.ZoomOut = function () {
-            dwObjectLargeViewer.Zoom = zoomFactor / 1.2;
-            zoomFactor = zoomFactor / 1.2;
-        };
-        $scope.DownloadDocument = function () {
-            if (dwObjectLargeViewer.HowManyImagesInBuffer > 0) {
-                dwObjectLargeViewer.IfShowFileDialog = true;
-                dwObjectLargeViewer.SaveAllAsPDF(' ', function () { }, function () { })
-            }
-        };
-        $scope.DownloadDocumentAll = function () {
-            if (dwObject.HowManyImagesInBuffer > 0) {
-                dwObject.IfShowFileDialog = true;
-                dwObject.SaveAllAsPDF(' ', function () { }, function () { })
-            }
-        };
-        $scope.AcquireImage = function () {
-            if (dwObject) {
-                dwObject.IfAutomaticDeskew = true;
-                dwObject.IfAutoDiscardBlankpages = false;
-                $scope.ShowUploadImageDivVar = false;
-                var OnAcquireImageSuccess, OnAcquireImageFailure;
-                OnAcquireImageSuccess = OnAcquireImageFailure = function () {
-                    dwObject.CloseSource();
-                };
-
-                dwObject.SelectSourceByIndex(document.getElementById("source").selectedIndex); //Use method SelectSourceByIndex to avoid the 'Select Source' dialog
-                dwObject.OpenSource();
-
-                dwObject.IfDisableSourceAfterAcquire = true;	// Scanner source will be disabled/closed automatically after the scan.
-                dwObject.AcquireImage(OnAcquireImageSuccess, OnAcquireImageFailure);
-            }
-        };
-
-        $scope.LoadImage = function () {
-
-            dwObject.Addon.PDF.SetResolution(200);
-            dwObject.Addon.PDF.SetConvertMode(EnumDWT_ConverMode.CM_RENDERALL);
-
-            dwObject.IfShowFileDialog = true;
-
-            // dwObject.RemoveAllImages();
-            dwObject.LoadImageEx("", EnumDWT_ImageType.IT_PDF, function () { }, function () { });
-
-            $scope.ShowUploadImageDivVar = false;
-        };
-
-
-        //$scope.LoadImage = function () {
-        //    dwObject.Addon.PDF.SetResolution(200);
-        //    dwObject.Addon.PDF.SetConvertMode(EnumDWT_ConverMode.CM_RENDERALL);
-
-        //    dwObject.IfShowFileDialog = true;
-
-        //    // dwObject.RemoveAllImages();
-        //    dwObject.LoadImageEx("", EnumDWT_ImageType.IT_PDF, function () {
-        //        compressLoadedImages().then(() => {
-        //            // Check if the total size exceeds the limit before proceeding with upload
-        //            var maxPDFSize = 2 * 1024 * 1024; // 2 MB limit (example)
-
-        //            if (calculateTotalSize() > maxPDFSize) {
-        //                toastr.error("The PDF file size exceeds the maximum allowed size of 2 MB.");
-        //                $scope.ShowUploadImageDivVar = false;
-        //                return;
-        //            }
-
-        //            $scope.ShowUploadImageDivVar = false;
-        //        }).catch(error => {
-        //            console.error('Error during image compression:', error);
-        //        });
-        //    }, function () {
-        //        console.error("Failed to load image.");
-        //    });
-        //};
-
-        //// Function to compress all loaded images in the buffer
-        //function compressLoadedImages() {
-        //    return new Promise((resolve, reject) => {
-        //        var compressionRatio = 0.5; // Example compression ratio; adjust as needed
-        //        var maxPages = 30; // Limit of pages to compress
-        //        var compressionPromises = [];
-
-        //        for (var i = 0; i < dwObject.HowManyImagesInBuffer && i < maxPages; i++) {
-        //            try {
-        //                var imageUrl = dwObject.GetImageURL(i); // Get the image URL for the index
-
-        //                var promise = fetch(imageUrl)
-        //                    .then(response => response.blob())
-        //                    .then(pageBlob => compressPageWithRatio(pageBlob, compressionRatio))
-        //                    .then(compressedBlob => {
-        //                        // Replace the current image in the buffer with the compressed one
-        //                        dwObject.ReplaceImage(i, compressedBlob);
-        //                    })
-        //                    .catch(error => {
-        //                        console.error('Error compressing page:', error);
-        //                    });
-
-        //                compressionPromises.push(promise);
-        //            } catch (error) {
-        //                console.error('Error processing image:', error);
-        //            }
-        //        }
-
-        //        // Wait for all compression promises to resolve
-        //        Promise.all(compressionPromises).then(resolve).catch(reject);
-        //    });
-        //}
-
-        //// Function to calculate the total size of all images in the buffer
-        //function calculateTotalSize() {
-        //    var totalSize = 0;
-        //    for (var i = 0; i < dwObject.HowManyImagesInBuffer; i++) {
-        //        try {
-        //            var imageUrl = dwObject.GetImageURL(i); // Get the image URL for the index
-        //            fetch(imageUrl)
-        //                .then(response => response.blob())
-        //                .then(pageBlob => {
-        //                    totalSize += pageBlob.size;
-        //                })
-        //                .catch(error => {
-        //                    console.error('Error fetching image:', error);
-        //                });
-        //        } catch (error) {
-        //            console.error('Error calculating total size:', error);
-        //        }
-        //    }
-        //    return totalSize;
-        //}
-
-        //// Function to compress the image using a canvas
-        //function compressPageWithRatio(pageBlob, ratio) {
-        //    return new Promise((resolve, reject) => {
-        //        const reader = new FileReader();
-        //        reader.onload = function (event) {
-        //            const img = new Image();
-        //            img.onload = function () {
-        //                const canvas = document.createElement('canvas');
-        //                const ctx = canvas.getContext('2d');
-
-        //                // Set canvas dimensions to match the image
-        //                canvas.width = img.width * ratio; // Adjust width based on ratio
-        //                canvas.height = img.height * ratio; // Adjust height based on ratio
-
-        //                // Draw the image onto the canvas
-        //                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-        //                // Convert canvas to a Blob with the desired compression quality
-        //                canvas.toBlob(function (compressedBlob) {
-        //                    if (compressedBlob) {
-        //                        resolve(compressedBlob);
-        //                    } else {
-        //                        reject(new Error('Compression failed: No Blob created'));
-        //                    }
-        //                }, 'image/jpeg', 0.8); // Adjust image format and quality if needed
-        //            };
-        //            img.src = event.target.result;
-        //        };
-        //        reader.onerror = function (error) {
-        //            reject(error);
-        //        };
-        //        reader.readAsDataURL(pageBlob); // Assuming pageBlob is a Blob
-        //    });
-        //}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        $scope.LoadImageWithoutBlank = function () {
-
-            dwObject.Addon.PDF.SetResolution(200);
-            dwObject.Addon.PDF.SetConvertMode(EnumDWT_ConverMode.CM_RENDERALL);
-            dwObject.IfShowFileDialog = true;
-            dwObject.HTTPDownloadEx(window.location.origin, '/Buffer/BlankPDF/blank.pdf', 3);
-            $scope.ShowUploadImageDivVar = false;
-        };
-
-
-        $scope.LoadImageWithoutBlank2 = function () {
-            dwObjectLargeViewer.Addon.PDF.SetResolution(200);
-            dwObjectLargeViewer.Addon.PDF.SetConvertMode(EnumDWT_ConverMode.CM_RENDERALL);
-            dwObjectLargeViewer.IfShowFileDialog = true;
-            dwObjectLargeViewer.HTTPDownloadEx('', '/Buffer/BlankPDF/blank.pdf', 3);
-            $scope.ShowUploadImageDivVar = false;
-        };
-
-
-
-
-
-
-
-
-
-        $scope.Load = function () {
-            dwObject.IfShowFileDialog = true;
-            dwObject.LoadImageEx("", EnumDWT_ImageType.IT_PDF);
-            $scope.ShowUploadImageDivVar = false;
-        };
-
-        $scope.RemoveAllSelectedImages = function () {
-            dwObject.RemoveAllSelectedImages();
-        }
-
-        $scope.RotateRight = function () {
-            dwObject.RotateRight(DWObject.GetSelectedImageIndex(0));
-        }
-
-        $scope.ShowMoveImageDiv = function () {
-            $("#MoveImage").toggleClass("hidden");
-            $scope.ShowUploadImageDivVar = false;
-        }
-
-        $scope.MoveImage = function () {
-            dwObject.MoveImage(($("#WhichImage").val() - 1), ($("#Where").val() - 1));
-            $("#MoveImage").toggleClass("hidden");
-            $scope.ShowUploadImageDivVar = false;
-        };
 
 
 
@@ -4442,7 +3994,7 @@
                                         $scope.InvWiseMaterial($scope.InvitationNumber);
 
                                     }, 2000);
-                                  // 2000 milliseconds = 2 seconds
+                                    // 2000 milliseconds = 2 seconds
                                 }
                                 else {
                                     toastr.error($scope.response);
@@ -4594,7 +4146,7 @@
         $scope.lowestshowstatus = 0;
 
         $scope.toggleQuotationSelect = function (InvitationNumber, quotationNo, RFQDeadline) {
-           
+
             $scope.RFQDeadline = RFQDeadline;
 
 
@@ -4607,7 +4159,7 @@
                 parseInt(parts[0])      // day
             );
             // Convert both dates to Date objects
-           
+
             var currentDate = new Date();
 
             // Optional: remove time part if you only want date comparison
@@ -4693,83 +4245,182 @@
 
 
 
-
-
-
         $scope.showEditModal = function (row, document) {
+    $scope.ServerIP = document.ServerIP;
+    $scope.FileServerURL = document.FileServerURL;
+    $scope.DocumentID = document.DocumentID;
+    $scope.FileExtension2 = document.FileExtension;
+    $scope.ServerPort = document.FtpPort;
+    $scope.FtpUserName = document.FtpUserName;
+    $scope.FtpPassword = document.FtpPassword;
+    $scope.DownloadedFileName = row.MaterialName;
+    $scope.DownloadedFileCode = row.MaterialCode;
 
-            /*  $("#viewerModal2").modal("show");*/
-            /*  DWObjectLargeViewer.RemoveAllImages();*/
-            $scope.ServerIP = document.ServerIP;
-            $scope.FileServerURL = document.FileServerURL;
-            $scope.DocumentID = document.DocumentID;
-            $scope.FileExtension2 = document.FileExtension;
-            $scope.ServerPort = document.FtpPort;
-            $scope.FtpUserName = document.FtpUserName;
-            $scope.FtpPassword = document.FtpPassword;
-            $scope.DownloadedFileName = row.MaterialName;
-            $scope.DownloadedFileCode = row.MaterialCode;
+    if (document.FileExtension.includes(',')) {
+        var separatedExtensions = document.FileExtension.split(',');
+        $scope.FileExtension2 = separatedExtensions[0];
+        $scope.IsDownload2 = true;
+    } else if (document.FileExtension != ".pdf") {
+        $scope.IsDownload = true;
+    }
 
-            if (document.FileExtension.includes(',')) {
-                // Split the string into an array based on commas
-                var separatedExtensions = document.FileExtension.split(',');
+    UpdatedItem = document;
 
-                // Store the results in two variables
-                $scope.FileExtension2 = separatedExtensions[0];
+    @if (!isMobile)
+    {
+        <text>
+        // Full Dynamsoft document viewer on PC/Laptop
+        dwObject2.RemoveAllImages();
+        $scope.DocumentName = document.DocPropertyName;
+        dwObject2.IfShowFileDialog = false;
+        dwObject2.FTPPort = document.FtpPort;
+        dwObject2.FTPUserName = document.FtpUserName;
+        dwObject2.FTPPassword = document.FtpPassword;
+        dwObject2.FTPDownload(document.ServerIP, (document.FileServerURL + "//" +
+            document.DocumentID + ".pdf"));
+        $scope.LoadImageWithoutBlank2();
+        </text>
+    }
 
-                $scope.IsDownload2 = true;
+    $("#DetailViewModal").modal("show");
+};
 
-
-
-            }
-
-
-
-
-
-
-            else if (document.FileExtension != ".pdf") {
-                $scope.IsDownload = true;
-            }
 
             //if ($scope.FileExtension == ".pdf") {
             //    $scope.uploadType = 1;
             //}
 
-            UpdatedItem = document;
-            dwObject2.RemoveAllImages();
-            $scope.DocumentName = document.DocPropertyName;
-            dwObject2.IfShowFileDialog = false;
+                  var dwObject = {
+            HowManyImagesInBuffer: 0,
+            RemoveAllImages: function () { },
+            RemoveAllSelectedImages: function () { },
+            FTPUploadAsMultiPagePDF: function () { return false; },
+            FTPUploadAllAsPDF: function () { return false; },
+            FTPDownload: function () { }
+        };
+        var dwObject2 = {
+            HowManyImagesInBuffer: 0,
+            RemoveAllImages: function () { },
+            IfShowFileDialog: false,
+            FTPPort: '',
+            FTPUserName: '',
+            FTPPassword: '',
+            FTPDownload: function () { }
+        };
+        var dwObjectLargeViewer;
+        var dwtLargeViewer_single;
+        var zoomFactor = 0.5;
 
-            dwObject2.FTPPort = document.FtpPort;
-            dwObject2.FTPUserName = document.FtpUserName;
-            dwObject2.FTPPassword = document.FtpPassword;
-            dwObject2.FTPDownload(document.ServerIP, (document.FileServerURL + "//" +
-                document.DocumentID + ".pdf"));
-            $("#DetailViewModal").modal("show");
-            $scope.LoadImageWithoutBlank2();
-            //DWObjectOFMakeUpdate.IfShowFileDialog = false;
-            //DWObjectOFMakeUpdate.RemoveAllImages();
+        // Safe no-op scope functions for mobile
+        $scope.ZoomIn = function () { };
+        $scope.ZoomOut = function () { };
+        $scope.DownloadDocument = function () { };
+        $scope.DownloadDocumentAll = function () { };
+        $scope.AcquireImage = function () { };
+        $scope.LoadImage = function () { };
+        $scope.LoadImageWithoutBlank = function () { };
+        $scope.LoadImageWithoutBlank2 = function () { };
+        $scope.Load = function () { };
+        $scope.RemoveAllSelectedImages = function () { };
+        $scope.RotateRight = function () { };
+        $scope.ShowMoveImageDiv = function () { };
+        $scope.MoveImage = function () { };
 
-            //DWObjectOFMakeUpdate.FTPPort =;
-            //DWObjectOFMakeUpdate.FTPUserName = document.FtpUserName;
-            //DWObjectOFMakeUpdate.FTPPassword = document.FtpPassword;
+@if (!isMobile)
+{
+    <text>
+        // Override stubs with real Dynamsoft implementations on PC/Laptop
 
-            //DWObjectOFMakeUpdate.FTPDownload(document.ServerIP, (document.FileServerURL +
-            //    "//" + document.DocumentID + ".pdf"));
-
-
+        $scope.ZoomIn = function () {
+            dwObjectLargeViewer.Zoom = zoomFactor * 1.2;
+            zoomFactor = zoomFactor * 1.2;
         };
 
-        var dwObject;
-        var dwObject2;
-        var dwObjectLargeViewer;
-        var zoomFactor = .5;;
+        $scope.ZoomOut = function () {
+            dwObjectLargeViewer.Zoom = zoomFactor / 1.2;
+            zoomFactor = zoomFactor / 1.2;
+        };
 
-        var dwtLargeViewer_single;
+        $scope.DownloadDocument = function () {
+            if (dwObjectLargeViewer.HowManyImagesInBuffer > 0) {
+                dwObjectLargeViewer.IfShowFileDialog = true;
+                dwObjectLargeViewer.SaveAllAsPDF(' ', function () { }, function () { });
+            }
+        };
+
+        $scope.DownloadDocumentAll = function () {
+            if (dwObject.HowManyImagesInBuffer > 0) {
+                dwObject.IfShowFileDialog = true;
+                dwObject.SaveAllAsPDF(' ', function () { }, function () { });
+            }
+        };
+
+        $scope.AcquireImage = function () {
+            if (dwObject) {
+                dwObject.IfAutomaticDeskew = true;
+                dwObject.IfAutoDiscardBlankpages = false;
+                $scope.ShowUploadImageDivVar = false;
+                var OnAcquireImageSuccess, OnAcquireImageFailure;
+                OnAcquireImageSuccess = OnAcquireImageFailure = function () {
+                    dwObject.CloseSource();
+                };
+                dwObject.SelectSourceByIndex(document.getElementById("source").selectedIndex);
+                dwObject.OpenSource();
+                dwObject.IfDisableSourceAfterAcquire = true;
+                dwObject.AcquireImage(OnAcquireImageSuccess, OnAcquireImageFailure);
+            }
+        };
+
+        $scope.LoadImage = function () {
+            dwObject.Addon.PDF.SetResolution(200);
+            dwObject.Addon.PDF.SetConvertMode(EnumDWT_ConverMode.CM_RENDERALL);
+            dwObject.IfShowFileDialog = true;
+            dwObject.LoadImageEx("", EnumDWT_ImageType.IT_PDF, function () { }, function () { });
+            $scope.ShowUploadImageDivVar = false;
+        };
+
+        $scope.LoadImageWithoutBlank = function () {
+            dwObject.Addon.PDF.SetResolution(200);
+            dwObject.Addon.PDF.SetConvertMode(EnumDWT_ConverMode.CM_RENDERALL);
+            dwObject.IfShowFileDialog = true;
+            dwObject.HTTPDownloadEx(window.location.origin, '/Buffer/BlankPDF/blank.pdf', 3);
+            $scope.ShowUploadImageDivVar = false;
+        };
+
+        $scope.LoadImageWithoutBlank2 = function () {
+            dwObjectLargeViewer.Addon.PDF.SetResolution(200);
+            dwObjectLargeViewer.Addon.PDF.SetConvertMode(EnumDWT_ConverMode.CM_RENDERALL);
+            dwObjectLargeViewer.IfShowFileDialog = true;
+            dwObjectLargeViewer.HTTPDownloadEx('', '/Buffer/BlankPDF/blank.pdf', 3);
+            $scope.ShowUploadImageDivVar = false;
+        };
+
+        $scope.Load = function () {
+            dwObject.IfShowFileDialog = true;
+            dwObject.LoadImageEx("", EnumDWT_ImageType.IT_PDF);
+            $scope.ShowUploadImageDivVar = false;
+        };
+
+        $scope.RemoveAllSelectedImages = function () {
+            dwObject.RemoveAllSelectedImages();
+        };
+
+        $scope.RotateRight = function () {
+            dwObject.RotateRight(dwObject.GetSelectedImageIndex(0));
+        };
+
+        $scope.ShowMoveImageDiv = function () {
+            $("#MoveImage").toggleClass("hidden");
+            $scope.ShowUploadImageDivVar = false;
+        };
+
+        $scope.MoveImage = function () {
+            dwObject.MoveImage(($("#WhichImage").val() - 1), ($("#Where").val() - 1));
+            $("#MoveImage").toggleClass("hidden");
+            $scope.ShowUploadImageDivVar = false;
+        };
 
         Dynamsoft.WebTwainEnv.RegisterEvent("OnWebTwainReady", dynamsoftOnReady);
-
 
         Dynamsoft.WebTwainEnv.CreateDWTObject('dwtLargeViewer_single',
             function (dwtObject) {
@@ -4784,34 +4435,25 @@
             }
         );
 
-
         function dynamsoftOnReady() {
             dwObject = Dynamsoft.WebTwainEnv.GetWebTwain("dwtHorizontalThumbnil");
             dwObject2 = Dynamsoft.WebTwainEnv.GetWebTwain("dwtVerticalThumbnil");
-
             dwObjectLargeViewer = Dynamsoft.WebTwainEnv.GetWebTwain("dwtLargeViewer");
 
             dwObjectLargeViewer.SetViewMode(-1, -1);
             dwObjectLargeViewer.MaxImagesInBuffer = 1;
 
             dwObject.SetViewMode(4, -1);
-            // DWObject.PDFCompressionType = EnumDWT_PDFCompressionType.PDF_JPEG;
             dwObject.JPEGQuality = 20;
             dwObject.FitWindowType = 0;
             dwObject.SelectionImageBorderColor = 0x691254;
             dwObject.ShowPageNumber = true;
             dwObject.IfAppendImage = true;
-            //dwObject.RegisterEvent("OnMouseDoubleClick", function () {
-            //    dwObject.CopyToClipboard(dwObject.CurrentImageIndexInBuffer);
-            //    dwtLargeViewer_single.LoadDibFromClipboard();
-            //    $('#viewerModal').modal('show');
-            //});
             dwObject.RegisterEvent("OnImageAreaSelected", function (sImageIndex, left, top, right, bottom) {
                 dwObject.Erase(sImageIndex, left, top, right, bottom);
             });
 
             dwObject2.SetViewMode(-1, 4);
-            //// DWObject.PDFCompressionType = EnumDWT_PDFCompressionType.PDF_JPEG;
             dwObject2.JPEGQuality = 20;
             dwObject2.FitWindowType = 0;
             dwObject2.SelectionImageBorderColor = 0x691254;
@@ -4825,11 +4467,13 @@
                 dwObject2.Erase(sImageIndex, left, top, right, bottom);
             });
 
-            dwObject.Addon.PDF.Download("../Resources/addon/Pdf.zip",  // specify the url of the add-on resource
-                function () { console.log('Successfully Downloaded PDF add-on'); }, // successful callback
-                function (errorCode, errorString) { alert(errorString); }  // failure callback and show error message
+            dwObject.Addon.PDF.Download("../Resources/addon/Pdf.zip",
+                function () { console.log('Successfully Downloaded PDF add-on'); },
+                function (errorCode, errorString) { alert(errorString); }
             );
         }
+    </text>
+}
 
 
 
@@ -4858,7 +4502,7 @@
                 $scope.loading = false;
             });
 
-        
+
         $scope.$watch('FinancialQuotationDetail.Freight', function (newVal) {
             validateFreightPercentage(newVal, $scope.FinancialQuotationDetail.FreightPer);
         });
@@ -4925,7 +4569,7 @@
 
 
         $scope.checkAndFormat = function (id) {
-        /*    CheckPositive(id);*/
+            /*    CheckPositive(id);*/
             $scope.FormatDigits(id, 13);
         };
 
@@ -5034,7 +4678,7 @@
             var pricePerUnit = (detail.Price || 0) / (detail.Per || 1);
 
             // Apply Unit → QuotationUnit conversion
-      /*      var conversionFactor = $scope.getUnitConversionFactor(detail.PriceUnit.Item_Code, detail.QuotationQtyUnit.Item_Code);*/
+            /*      var conversionFactor = $scope.getUnitConversionFactor(detail.PriceUnit.Item_Code, detail.QuotationQtyUnit.Item_Code);*/
 
             var baseTotal = pricePerUnit * (detail.QuotationQty || 0);
 

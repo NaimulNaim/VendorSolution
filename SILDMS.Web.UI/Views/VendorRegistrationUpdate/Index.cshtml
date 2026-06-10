@@ -1,8 +1,26 @@
 ﻿<script src="~/Scripts/jquery-barcode.min.js"></script>
+@*@{
+        ViewBag.Title = "Temporary";
+        Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+    }*@
+
+
 @{
     ViewBag.Title = "Temporary";
     Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+
+    string userAgent = Request.UserAgent ?? "";
+
+    bool isMobile =
+        userAgent.Contains("Android") ||
+        userAgent.Contains("iPhone") ||
+        userAgent.Contains("iPad") ||
+        userAgent.Contains("iPod") ||
+        userAgent.Contains("Windows Phone");
 }
+
+
+
 
 
 <div class="box box-primary box-body" ng-controller="VendorRegistrationUpdateCtrl">
@@ -103,7 +121,6 @@
             <select class="form-control"
                     ng-model="PurreqDtl.Vendor.Country"
                     ng-options="bn as bn.CountryName for bn in CountryList track by bn.CountryID"
-                   
                     style="font-size: smaller; padding: 3px 6px 3px;">
                 <option value="">-- Select Country --</option>
             </select>
@@ -656,16 +673,23 @@
 
 </div>
 
-<script type="text/javascript" src="~/Resources/dynamsoft.webtwain.intellisense.js"></script>
-<script type="text/javascript" src="~/Resources/dynamsoft.webtwain.initiate.js"></script>
-<script type="text/javascript" src="~/Resources/dynamsoft.webtwain.config.js"></script>
-<script type="text/javascript" src="~/Resources/addon/dynamsoft.webtwain.addon.pdf.js"></script>
+@*<script type="text/javascript" src="~/Resources/dynamsoft.webtwain.intellisense.js"></script>
+    <script type="text/javascript" src="~/Resources/dynamsoft.webtwain.initiate.js"></script>
+    <script type="text/javascript" src="~/Resources/dynamsoft.webtwain.config.js"></script>
+    <script type="text/javascript" src="~/Resources/addon/dynamsoft.webtwain.addon.pdf.js"></script>*@
 
+@if (!isMobile)
+{
+    <script src="~/Resources/dynamsoft.webtwain.intellisense.js"></script>
+    <script src="~/Resources/dynamsoft.webtwain.initiate.js"></script>
+    <script src="~/Resources/dynamsoft.webtwain.config.js"></script>
+    <script src="~/Resources/addon/dynamsoft.webtwain.addon.pdf.js"></script>
+}
 
 
 <script type="text/javascript">
 
-    app.controller('VendorRegistrationUpdateCtrl', function ($scope, $http,$q) {
+    app.controller('VendorRegistrationUpdateCtrl', function ($scope, $http, $q) {
 
         $scope.itemsByPage = 8;
         $scope.fromMenu = 1;
@@ -691,7 +715,7 @@
                 ContactPersonLastName: "",
                 Email: "",
                 VendorPhoneNumber: "",
-                VendorPhoneNumber2:"",
+                VendorPhoneNumber2: "",
                 TIN: "",
                 BIN: "",
                 CompanyAddress: "",
@@ -707,11 +731,11 @@
                 ImportRegistration: "",
                 IndentingLicense: "",
                 Others: "",
-                Country: { CountryID: "", CountryCode:"", CountryName: "" },
+                Country: { CountryID: "", CountryCode: "", CountryName: "" },
                 BusinessType: { BusinessTypeID: "", BusinessTypeName: "" },
                 BusinessNature: { BusinessNatureID: "", BusinessNatureName: "" },
                 EstablishedYear: "",
-                TradeLicenseValidity:""
+                TradeLicenseValidity: ""
             }
         }
         $scope.AddNumber = false;
@@ -727,12 +751,55 @@
 
 
         //#region Twain Code
-        var dwObject;
-        var dwObject2;
+           var dwObject = {
+            HowManyImagesInBuffer: 0,
+            RemoveAllImages: function () { },
+            RemoveAllSelectedImages: function () { },
+            FTPUploadAsMultiPagePDF: function () { return false; },
+            FTPUploadAllAsPDF: function () { return false; },
+            FTPDownload: function () { },
+            IfShowFileDialog: false
+        };
+        var dwObject2 = {
+            HowManyImagesInBuffer: 0,
+            RemoveAllImages: function () { },
+            IfShowFileDialog: false,
+            FTPPort: '',
+            FTPUserName: '',
+            FTPPassword: '',
+            FTPDownload: function () { }
+        };
         var dwObjectLargeViewer;
-        var zoomFactor = .5;;
-
         var dwtLargeViewer_single;
+        var DWObjectOFMakeUpdate;
+        var zoomFactor = 0.5;
+
+        // =============================================
+        // SCOPE NO-OPS — overridden on PC below
+        // =============================================
+        $scope.getImages = function () { };
+        $scope.ZoomIn = function () { };
+        $scope.ZoomOut = function () { };
+        $scope.RemoveAllSelectedImages = function () { };
+        $scope.LoadImage = function () { };
+        $scope.RotateRight = function () { };
+        $scope.ShowMoveImageDiv = function () { };
+        $scope.MoveImage = function () { };
+        $scope.AcquireImage_Update = function () { };
+        $scope.LoadImage_Update = function () { };
+        $scope.RemoveAllSelectedImages_Update = function () { };
+        $scope.RotateRight_Update = function () { };
+        $scope.ShowMoveImageDiv_Update = function () { };
+        $scope.MoveImage_Update = function () { };
+
+@if (!isMobile)
+{
+    <text>
+        // =============================================
+        // REAL DYNAMSOFT — PC / Laptop only
+        // =============================================
+
+        Dynamsoft.WebTwainEnv.RegisterEvent("OnWebTwainReady", dynamsoftOnReady);
 
         Dynamsoft.WebTwainEnv.CreateDWTObject('dwtLargeViewer_single',
             function (dwtObject) {
@@ -747,57 +814,6 @@
             }
         );
 
-        function dynamsoftOnReady() {
-            dwObject = Dynamsoft.WebTwainEnv.GetWebTwain("dwtHorizontalThumbnil");
-            dwObject2 = Dynamsoft.WebTwainEnv.GetWebTwain("dwtVerticalThumbnil");
-
-            dwObjectLargeViewer = Dynamsoft.WebTwainEnv.GetWebTwain("dwtLargeViewer");
-
-            dwObjectLargeViewer.SetViewMode(-1, -1);
-            dwObjectLargeViewer.MaxImagesInBuffer = 1;
-
-            dwObject.SetViewMode(4, -1);
-            // DWObject.PDFCompressionType = EnumDWT_PDFCompressionType.PDF_JPEG;
-            dwObject.JPEGQuality = 20;
-            dwObject.FitWindowType = 0;
-            dwObject.SelectionImageBorderColor = 0x691254;
-            dwObject.ShowPageNumber = true;
-            dwObject.IfAppendImage = true;
-            dwObject.RegisterEvent("OnMouseDoubleClick", function () {
-                dwObject.CopyToClipboard(dwObject.CurrentImageIndexInBuffer);
-                dwtLargeViewer_single.LoadDibFromClipboard();
-                $('#viewerModal').modal('show');
-            });
-            dwObject.RegisterEvent("OnImageAreaSelected", function (sImageIndex, left, top, right, bottom) {
-                dwObject.Erase(sImageIndex, left, top, right, bottom);
-            });
-
-            dwObject2.SetViewMode(-1, 4);
-            //// DWObject.PDFCompressionType = EnumDWT_PDFCompressionType.PDF_JPEG;
-            dwObject2.JPEGQuality = 20;
-            dwObject2.FitWindowType = 0;
-            dwObject2.SelectionImageBorderColor = 0x691254;
-            dwObject2.ShowPageNumber = true;
-            dwObject2.IfAppendImage = true;
-            dwObject2.RegisterEvent("OnMouseClick", function () {
-                dwObject2.CopyToClipboard(dwObject2.CurrentImageIndexInBuffer);
-                dwObjectLargeViewer.LoadDibFromClipboard();
-            });
-            dwObject2.RegisterEvent("OnImageAreaSelected", function (sImageIndex, left, top, right, bottom) {
-                dwObject2.Erase(sImageIndex, left, top, right, bottom);
-            });
-
-            dwObject.Addon.PDF.Download("../Resources/addon/Pdf.zip",  // specify the url of the add-on resource
-                function () { console.log('Successfully Downloaded PDF add-on'); }, // successful callback
-                function (errorCode, errorString) { alert(errorString); }  // failure callback and show error message
-            );
-        }
-
-
-        Dynamsoft.WebTwainEnv.RegisterEvent("OnWebTwainReady", dynamsoftOnReady);
-
-
-        var DWObjectOFMakeUpdate;
         Dynamsoft.WebTwainEnv.CreateDWTObject('dwtDocumentUpdate',
             function (dwtObject) {
                 DWObjectOFMakeUpdate = dwtObject;
@@ -823,16 +839,57 @@
             }
         );
 
+        function dynamsoftOnReady() {
+            dwObject = Dynamsoft.WebTwainEnv.GetWebTwain("dwtHorizontalThumbnil");
+            dwObject2 = Dynamsoft.WebTwainEnv.GetWebTwain("dwtVerticalThumbnil");
+            dwObjectLargeViewer = Dynamsoft.WebTwainEnv.GetWebTwain("dwtLargeViewer");
 
+            dwObjectLargeViewer.SetViewMode(-1, -1);
+            dwObjectLargeViewer.MaxImagesInBuffer = 1;
 
+            dwObject.SetViewMode(4, -1);
+            dwObject.JPEGQuality = 20;
+            dwObject.FitWindowType = 0;
+            dwObject.SelectionImageBorderColor = 0x691254;
+            dwObject.ShowPageNumber = true;
+            dwObject.IfAppendImage = true;
+            dwObject.RegisterEvent("OnMouseDoubleClick", function () {
+                dwObject.CopyToClipboard(dwObject.CurrentImageIndexInBuffer);
+                dwtLargeViewer_single.LoadDibFromClipboard();
+                $('#viewerModal').modal('show');
+            });
+            dwObject.RegisterEvent("OnImageAreaSelected", function (sImageIndex, left, top, right, bottom) {
+                dwObject.Erase(sImageIndex, left, top, right, bottom);
+            });
 
+            dwObject2.SetViewMode(-1, 4);
+            dwObject2.JPEGQuality = 20;
+            dwObject2.FitWindowType = 0;
+            dwObject2.SelectionImageBorderColor = 0x691254;
+            dwObject2.ShowPageNumber = true;
+            dwObject2.IfAppendImage = true;
+            dwObject2.RegisterEvent("OnMouseClick", function () {
+                dwObject2.CopyToClipboard(dwObject2.CurrentImageIndexInBuffer);
+                dwObjectLargeViewer.LoadDibFromClipboard();
+            });
+            dwObject2.RegisterEvent("OnImageAreaSelected", function (sImageIndex, left, top, right, bottom) {
+                dwObject2.Erase(sImageIndex, left, top, right, bottom);
+            });
+
+            dwObject.Addon.PDF.Download("../Resources/addon/Pdf.zip",
+                function () { console.log('Successfully Downloaded PDF add-on'); },
+                function (errorCode, errorString) { alert(errorString); }
+            );
+        }
+
+        // =============================================
+        // SCOPE OVERRIDES — real implementations
+        // =============================================
 
         $scope.getImages = function (e) {
-
             if (dwObject && $scope.clkBtn !== 1) {
                 dwObject.IfShowUI = false;
                 dwObject.IfAutomaticDeskew = true;
-                // DWObject.IfAutoDiscardBlankpages = false;
                 dwObject.AcquireImage();
             } else {
                 $scope.clkBtn = 0;
@@ -851,21 +908,14 @@
 
         $scope.RemoveAllSelectedImages = function () {
             dwObject.RemoveAllSelectedImages();
-        }
+        };
 
         $scope.LoadImage = function () {
-            //dwObject.IfShowFileDialog = true;
-            //dwObject.RemoveAllImages();
-            //dwObject.LoadImageEx("", EnumDWT_ImageType.IT_ALL);
-
             dwObject.Addon.PDF.SetResolution(200);
             dwObject.Addon.PDF.SetConvertMode(EnumDWT_ConverMode.CM_RENDERALL);
-
             dwObject.IfShowFileDialog = true;
-
             dwObject.RemoveAllImages();
             dwObject.LoadImageEx("", EnumDWT_ImageType.IT_PDF, function () { }, function () { });
-
             $scope.ShowUploadImageDivVar = false;
         };
 
@@ -882,8 +932,6 @@
             $("#MoveImage").toggleClass("hidden");
         };
 
-
-        //#region Dynamo_Helper_update
         $scope.AcquireImage_Update = function () {
             if (DWObjectOFMakeUpdate) {
                 DWObjectOFMakeUpdate.IfAutomaticDeskew = true;
@@ -893,44 +941,32 @@
                 OnAcquireImageSuccess = OnAcquireImageFailure = function () {
                     DWObjectOFMakeUpdate.CloseSource();
                 };
-
-                ////DWObject.AcquireImage();
-
-                //DWObjectOFMakeUpdate.SelectSourceByIndex(document.getElementById("source").selectedIndex); //Use method SelectSourceByIndex to avoid the 'Select Source' dialog
-                //DWObjectOFMakeUpdate.OpenSource();
-
-                DWObjectOFMakeUpdate.IfDisableSourceAfterAcquire = true;	// Scanner source will be disabled/closed automatically after the scan.
+                DWObjectOFMakeUpdate.IfDisableSourceAfterAcquire = true;
                 DWObjectOFMakeUpdate.AcquireImage(OnAcquireImageSuccess, OnAcquireImageFailure);
             }
         };
 
         $scope.LoadImage_Update = function () {
-            //DWObjectOFMakeUpdate.IfShowFileDialog = true;
-            //DWObjectOFMakeUpdate.LoadImageEx("", EnumDWT_ImageType.IT_ALL);
-
             DWObjectOFMakeUpdate.Addon.PDF.SetResolution(200);
             DWObjectOFMakeUpdate.Addon.PDF.SetConvertMode(EnumDWT_ConverMode.CM_RENDERALL);
-
             DWObjectOFMakeUpdate.IfShowFileDialog = true;
-
             DWObjectOFMakeUpdate.RemoveAllImages();
             DWObjectOFMakeUpdate.LoadImageEx("", EnumDWT_ImageType.IT_PDF, function () { }, function () { });
-
             $scope.ShowUploadImageDivVar = false;
         };
 
         $scope.RemoveAllSelectedImages_Update = function () {
             DWObjectOFMakeUpdate.RemoveAllSelectedImages();
-        }
+        };
 
         $scope.RotateRight_Update = function () {
             DWObjectOFMakeUpdate.RotateRight(DWObjectOFMakeUpdate.GetSelectedImageIndex(0));
-        }
+        };
 
         $scope.ShowMoveImageDiv_Update = function () {
             $("#MoveImageUpdate").toggleClass("hidden");
             $scope.ShowUploadImageDivVar = false;
-        }
+        };
 
         $scope.MoveImage_Update = function () {
             DWObjectOFMakeUpdate.MoveImage(($("#WhichImage_Update").val() - 1), ($("#Where_Update").val() - 1));
@@ -938,7 +974,8 @@
             $scope.ShowUploadImageDivVar = false;
         };
 
-
+    </text>
+}
 
 
 
@@ -1028,7 +1065,7 @@
 
 
         //$scope.loadBusinessType = function () {
-          
+
         //};
 
         //$scope.loadBusinessNature = function () {
@@ -1125,7 +1162,7 @@
                 // ✅ FIX: Country (must match type)
                 if (vendor.Country) {
                     var countryObj = $scope.CountryList.find(i => i.CountryID == vendor.Country);
-                
+
 
                     $scope.PurreqDtl.Vendor.Country = countryObj || vendor.Country;
                 }
@@ -1139,7 +1176,7 @@
 
                     $scope.PurreqDtl.Vendor.BusinessType = businessTypeObj || vendor.BusinessType;
                 }
-    
+
                 if (vendor.BusinessNature) {
                     var businessNatureObj = $scope.BusinessNatureList.find(i =>
                         i.BusinessNatureID == vendor.BusinessNature ||
@@ -1193,68 +1230,77 @@
 
 
 
+        var UpdatedItem = {};
 
         $scope.getScannedDocs = function (row) {
-            //console.log(dwObject2);
-            dwObject2.IfShowFileDialog = false;
+            // On mobile: dwObject2.FTPDownload is a no-op stub,
+            // so just show the modal — no viewer will load
             dwObject2.RemoveAllImages();
-            dwObjectLargeViewer.RemoveAllImages();
+
+            if (dwObjectLargeViewer) {
+                dwObjectLargeViewer.RemoveAllImages();
+            }
+
+            dwObject2.IfShowFileDialog = false;
             dwObject2.FTPPort = row.FtpPort;
             dwObject2.FTPUserName = row.FtpUserName;
             dwObject2.FTPPassword = row.FtpPassword;
             dwObject2.FTPDownload(row.ServerIP, (row.FileServerURL + "//" +
                 $scope.VendorID + ".pdf"));
+
             $("#DetailViewModal").modal("show");
-        }
-
-
-
-        var UpdatedItem = {};
+        };
 
         $scope.showEditModal = function (row) {
+            UpdatedItem = row;
+            $scope.DocumentName = row.DocPropertyName;
 
             $("#docUpdateModal").modal("show");
 
-            UpdatedItem = row;
-
-            $scope.DocumentName = row.DocPropertyName;
-
-            DWObjectOFMakeUpdate.IfShowFileDialog = false;
-            DWObjectOFMakeUpdate.RemoveAllImages();
-
-            DWObjectOFMakeUpdate.FTPPort = row.ServerPort;
-            DWObjectOFMakeUpdate.FTPUserName = row.FtpUserName;
-            DWObjectOFMakeUpdate.FTPPassword = row.FtpPassword;
-
-            DWObjectOFMakeUpdate.FTPDownload(row.ServerIP, (row.FileServerURL +
-                "//" + row.DocumentID + ".pdf"));
+            // Dynamsoft viewer only on PC — DWObjectOFMakeUpdate is null on mobile
+            if (DWObjectOFMakeUpdate) {
+                DWObjectOFMakeUpdate.IfShowFileDialog = false;
+                DWObjectOFMakeUpdate.RemoveAllImages();
+                DWObjectOFMakeUpdate.FTPPort = row.ServerPort;
+                DWObjectOFMakeUpdate.FTPUserName = row.FtpUserName;
+                DWObjectOFMakeUpdate.FTPPassword = row.FtpPassword;
+                DWObjectOFMakeUpdate.FTPDownload(row.ServerIP, (row.FileServerURL +
+                    "//" + row.DocumentID + ".pdf"));
+            }
         };
 
         $scope.UpdateDocument = function () {
-            if (UpdatedItem.DocumentID) {
+            if (!UpdatedItem.DocumentID) {
+                toastr.error('No Document Selected');
+                return;
+            }
+
+            // On mobile: DWObjectOFMakeUpdate is null, skip scanner upload
+            // User can still upload via file input (handled separately)
+            if (DWObjectOFMakeUpdate) {
                 DWObjectOFMakeUpdate.IfShowFileDialog = false;
                 var strFTPServer = UpdatedItem.ServerIP;
                 DWObjectOFMakeUpdate.FTPPort = UpdatedItem.ServerPort;
                 DWObjectOFMakeUpdate.FTPUserName = UpdatedItem.FtpUserName;
                 DWObjectOFMakeUpdate.FTPPassword = UpdatedItem.FtpPassword;
 
-                var isSave = DWObjectOFMakeUpdate.FTPUploadAllAsPDF(strFTPServer,
-                    UpdatedItem.FileServerURL + "//" +
-                    $scope.VendorID + ".pdf");
+                var isSave = DWObjectOFMakeUpdate.FTPUploadAllAsPDF(
+                    strFTPServer,
+                    UpdatedItem.FileServerURL + "//" + $scope.VendorID + ".pdf"
+                );
 
                 if (isSave) {
                     $scope.loading = false;
                     toastr.success("Upload Successful");
                     UpdatedItem = {};
                     $('#docUpdateModal').modal('hide');
-                }
-                else {
+                } else {
                     toastr.error('Document Update Failed');
                 }
+            } else {
+                // Mobile fallback — nothing to upload from scanner
+                toastr.warning("Document viewer not available on mobile. Please use file upload.");
             }
-            else
-                toastr.error('No Document Selected');
-
         };
 
         $scope.resetPage = function () {
@@ -1266,14 +1312,14 @@
 
 
 
-      
+
         // call on page load
-       
+
 
 
 
         //$scope.AutoCompleteVendorInfo = function (vendorData) {
-           
+
 
 
 
@@ -1320,7 +1366,7 @@
                 BusinessType: $scope.PurreqDtl.Vendor.BusinessType.BusinessTypeName,
 
                 TIN: $scope.PurreqDtl.Vendor.TIN,
-                BIN: $scope.PurreqDtl.Vendor.BIN, 
+                BIN: $scope.PurreqDtl.Vendor.BIN,
                 GeneralDetailsServices: $scope.PurreqDtl.Vendor.GenaralDetailsServices,
                 Status: 'Temporary',
                 Vendor: $scope.PurreqDtl.Vendor.VendorId,
@@ -1330,16 +1376,16 @@
                 irc: $scope.PurreqDtl.Vendor.ImportRegistration,
                 indentingLicense: $scope.PurreqDtl.Vendor.IndentingLicense,
                 others: $scope.PurreqDtl.Vendor.Others,
-     
-               
+
+
                 BusinessNature: $scope.PurreqDtl.Vendor.BusinessNature.BusinessNatureName,
                 EstablishedYear: $scope.PurreqDtl.Vendor.EstablishedYear,
                 TradeLicenseValidity: $scope.PurreqDtl.Vendor.TradeLicenseValidity,
 
-               
+
                 UserName: "",
                 Password: "",
-               
+
 
 
             })
@@ -1349,13 +1395,13 @@
                         $scope.refreshPage();
                     }
 
-                   
+
                 })
                 .catch(function () {
                     toastr.error("Data Save Failed");
                     $scope.loading = false;
                 });
-        } 
+        }
 
 
 
