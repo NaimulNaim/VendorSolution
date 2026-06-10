@@ -103,10 +103,11 @@ namespace SILDMS.Service.VendorRegistration
                 : ValidationResult.Success;
         }
 
-        public ValidationResult VendorupdateRegistrationDetailsService(string businessName, string contactPerson, string vendorPhoneNumber, string VendorPhoneNumber2, string companyAddress, string country, string businessType, string tIN, string bIN, string generalDetailsServices, string status, string vendor, string companyProfile, string tradeLicense, string partnershipDeed, string irc, string indentingLicense, string others, string UserName, string Password, out SecVendor_User user)
+        public ValidationResult VendorupdateRegistrationDetailsService(string businessName, string contactPerson, string vendorPhoneNumber, string VendorPhoneNumber2, string companyAddress, string country, string businessType, string tIN, string bIN, string generalDetailsServices, string status, string vendor, string companyProfile, string tradeLicense, string partnershipDeed, string irc, string indentingLicense, string others,string BusinessNature, string EstablishedYear,
+    string TradeLicenseValidity, string UserName, string Password, out SecVendor_User user)
         {
             user = _vendorRegistrationDataService.VendorupdateRegistrationDetailsData(businessName, contactPerson, vendorPhoneNumber, VendorPhoneNumber2,
-              companyAddress, country, businessType, tIN, bIN, generalDetailsServices, status,vendor, companyProfile, tradeLicense, partnershipDeed, irc, indentingLicense, others, UserName, Password, out _errorNumber);
+              companyAddress, country, businessType, tIN, bIN, generalDetailsServices, status,vendor, companyProfile, tradeLicense, partnershipDeed, irc, indentingLicense, others,BusinessNature,EstablishedYear,TradeLicenseValidity, UserName, Password, out _errorNumber);
             return _errorNumber.Length > 0
             ? new ValidationResult(_errorNumber, _localizationService.GetResource(_errorNumber))
             : ValidationResult.Success;

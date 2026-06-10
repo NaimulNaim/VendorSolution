@@ -20,7 +20,10 @@ namespace SILDMS.Service.VendorRegistration
     string partnershipDeed,
     string irc,
     string indentingLicense,
-    string others,string UserName,string Password, out SecVendor_User user);
+    string others,
+    string BusinessNature,
+    string EstablishedYear,
+    string TradeLicenseValidity, string UserName,string Password, out SecVendor_User user);
         
         ValidationResult GetSupportDoc(string userID, string fromName, out List<DSM_DocProperty> docProperties);
         ValidationResult GetIdentificationAttributesForDocProperties(string userID, string selectedPropID, out List<DSM_DocPropIdentify> docPropIdentifies);

@@ -136,7 +136,12 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
     string partnershipDeed,
     string irc,
     string indentingLicense,
-    string others, string UserName = null, string Password = null)
+    string others,
+    string BusinessNature,
+    string EstablishedYear,
+    string TradeLicenseValidity,
+
+    string UserName = null, string Password = null)
         {
             string resp_status = string.Empty, message = string.Empty;
             string ContactPerson = $"{ContactPersonFirstName} {ContactPersonLastName}";
@@ -152,7 +157,7 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
                 Password = "";
             }
             var result = _vendorRegistrationService.VendorupdateRegistrationDetailsService(BusinessName, ContactPerson, VendorPhoneNumber, VendorPhoneNumber2,
-                 CompanyAddress, Country, BusinessType, TIN, BIN, GeneralDetailsServices, Status, Vendor, companyProfile, tradeLicense, partnershipDeed, irc, indentingLicense, others, UserName, Password, out user);
+                 CompanyAddress, Country, BusinessType, TIN, BIN, GeneralDetailsServices, Status, Vendor, companyProfile, tradeLicense, partnershipDeed, irc, indentingLicense, others,BusinessNature,EstablishedYear,TradeLicenseValidity, UserName, Password, out user);
 
             return Json(new { user, message }, JsonRequestBehavior.AllowGet);
         }
