@@ -20,6 +20,8 @@
 
 
 
+
+
 <style type="text/css">
     label {
         margin-bottom: 2px;
@@ -54,6 +56,28 @@
         height: 20px;
         border-radius: 3px;
     }
+
+
+    /*@@media (min-width: 768px) {
+    #FileUpload1 {
+        display: none !important;
+    }
+}*/
+
+/* Mobile: hide scanner/dynamo elements */
+/*@@media (max-width: 767px) {
+    #dwtHorizontalThumbnil,
+    #source,
+    #external-events .external-event.bg-yellow,*/   /* Scan button */
+    /*#external-events .external-event.bg-aqua,*/     /* Load PDF */
+    /*#external-events .external-event.bg-purple,*/   /* Load Blank PDF */
+    /*#external-events .external-event.bg-maroon,*/   /* Load Another PDF */
+    /*#external-events .external-event.bg-red,*/      /* Rotate */
+    /*#external-events .external-event.bg-green,*/    /* Move Image */
+    /*#collapseOne {
+        display: none !important;
+    }
+}*/
 
 
     .readonly-mode input,
@@ -1115,8 +1139,12 @@
                         <div class="row">
                         </div>
                         <div class="row">
-                            <div class="col-lg-6">
+                            @*<div class="col-lg-6 ng-hide" >
 
+            <input type="file" id="FileUpload1" name="FileUpload1" multiple />
+        </div>*@
+
+                            <div class="col-lg-6 ng-hide" style="display:none;">
                                 <input type="file" id="FileUpload1" name="FileUpload1" multiple />
                             </div>
                             <div class="col-lg-6" style="margin-bottom:10px" ng-show="IsDownload">
@@ -3336,6 +3364,14 @@
 
 
         $scope.UpdateDocument = function () {
+
+
+            var isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+            if (isMobile) {
+                toastr.warning("Document update is not available on mobile devices.");
+                return;
+            }
             $scope.IsDownload = false;
 
             var fileUpload = $("#FileUpload1").get(0);

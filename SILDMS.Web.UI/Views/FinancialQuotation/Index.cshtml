@@ -24,40 +24,40 @@
 
 
         <style type="text/css">
-                    label {
-                        margin-bottom: 2px;
-                        font-weight: bold;
-                        font-size: 12px;
-                    }
+            label {
+                margin-bottom: 2px;
+                font-weight: bold;
+                font-size: 12px;
+            }
 
-                    .form-control {
-                        height: 25px;
-                        font-size: smaller;
-                        padding: 3px 6px 3px;
-                    }
+            .form-control {
+                height: 25px;
+                font-size: smaller;
+                padding: 3px 6px 3px;
+            }
 
-                    .selected-row {
-                        background-color: #a4f5da !important;
-                    }
+            .selected-row {
+                background-color: #a4f5da !important;
+            }
 
-                    .col-lg-3 {
-                        padding-right: 5px;
-                        padding-left: 30px;
-                    }
+            .col-lg-3 {
+                padding-right: 5px;
+                padding-left: 30px;
+            }
 
-                    .btn-table {
-                        font-size: 12px !important;
-                        padding: 1px 5px !important;
-                        line-height: 1 !important;
-                        height: 20px;
-                        border-radius: 3px;
-                    }
+            .btn-table {
+                font-size: 12px !important;
+                padding: 1px 5px !important;
+                line-height: 1 !important;
+                height: 20px;
+                border-radius: 3px;
+            }
 
-                    .col-lg-6 {
-                        padding-right: 20px;
-                    }
+            .col-lg-6 {
+                padding-right: 20px;
+            }
 
-                    /* .readonly-mode {
+            /* .readonly-mode {
                 pointer-events: none;
                 opacity: 0.8;
             }
@@ -67,33 +67,55 @@
                     pointer-events: none;
                 }*/
 
-                    /*.readonly-mode {
+            /*.readonly-mode {
                 pointer-events: none;
                 opacity: 0.8;
             }*/
 
-                    /* allow toggle headers */
-                    /*.readonly-mode .allow-interaction {
+            /* allow toggle headers */
+            /*.readonly-mode .allow-interaction {
                     pointer-events: auto;
                     cursor: pointer;
                 }*/
 
 
 
+/*
+            @@media (min-width: 768px) {
+    #FileUpload1 {
+        display: none !important;
+    }
+}
 
-                    .readonly-mode input,
-                    .readonly-mode select,
-                    .readonly-mode textarea {
-                        pointer-events: none;
-                        background-color: #f8f9fa !important;
-                    }
+            @@media (max-width: 767px) {
+    #dwtHorizontalThumbnil,
+    #source,
+    #external-events .external-event.bg-yellow,  Scan button 
+            #external-events .external-event.bg-aqua,  Load PDF 
+            #external-events .external-event.bg-purple,  Load Blank PDF 
+            #external-events .external-event.bg-maroon,  Load Another PDF 
+            #external-events .external-event.bg-red,  Rotate 
+            #external-events .external-event.bg-green,  Move Image 
+            #collapseOne {
+        display: none !important;
+    }
+}
+*/
 
-                    .readonly-mode button,
-                    .readonly-mode .btn {
-                        pointer-events: none;
-                    }
 
-                    /*.view-only-wrapper input,
+            .readonly-mode input,
+            .readonly-mode select,
+            .readonly-mode textarea {
+                pointer-events: none;
+                background-color: #f8f9fa !important;
+            }
+
+            .readonly-mode button,
+            .readonly-mode .btn {
+                pointer-events: none;
+            }
+
+            /*.view-only-wrapper input,
             .view-only-wrapper select,
             .view-only-wrapper textarea {
                 pointer-events: none;
@@ -1360,7 +1382,7 @@
                                 <div class="row">
                                 </div>
                                 <div class="row" @*ng-show="isMobile"*@>
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-6" ng-hide="true">
 
                                         <input type="file" id="FileUpload1" name="FileUpload1" multiple />
                                     </div>
@@ -1378,14 +1400,14 @@
 
 
                                 </div>
-                                <div class="row" ng-show="!isMobile">
+                                <div class="row" >
                                     <div class="col-lg-12">
 
                                         <div id="dwtHorizontalThumbnil"></div>
 
                                     </div>
                                 </div>
-                                <div class="row" ng-show="!isMobile" >
+                                <div class="row" >
                                     <div id="external-events">
 
 
@@ -1396,15 +1418,15 @@
                                             </div>
                                         </div>
                                         @*<div class="col-lg-6">
-                                                <div class="external-event bg-gray " style="position: relative;">
-                                                    Upload Type
-                                                    <select class="form-control" id="uploadType" name="uploadType" ng-model="uploadType" ng-init="uploadType='1'">
-                                                        <option value="1">Normal Upload</option>
-                                                        <option value="2">Other Upload</option>
-                                                        <option value="3">Secure Upload</option>
-                                                    </select>
-                                                </div>
-                                            </div>*@
+                            <div class="external-event bg-gray " style="position: relative;">
+                                Upload Type
+                                <select class="form-control" id="uploadType" name="uploadType" ng-model="uploadType" ng-init="uploadType='1'">
+                                    <option value="1">Normal Upload</option>
+                                    <option value="2">Other Upload</option>
+                                    <option value="3">Secure Upload</option>
+                                </select>
+                            </div>
+                        </div>*@
 
 
 
@@ -1416,74 +1438,75 @@
                             <!-- /. box -->
                         </div>
                         <!-- /.col -->
+                
+                            <div class="col-md-2" style="padding-left:0px;" >
 
-                        <div class="col-md-2" style="padding-left:0px;" ng-show="!isMobile">
+                                <div class="box-header with-border">
+                                    <h4 class="box-title">Options</h4>
+                                </div>
+                                <div class="box-body">
+                                    <!-- the events -->
+                                    <div id="external-events">
 
-                            <div class="box-header with-border">
-                                <h4 class="box-title">Options</h4>
-                            </div>
-                            <div class="box-body">
-                                <!-- the events -->
-                                <div id="external-events">
+                                        <div class="external-event bg-yellow " ng-click="AcquireImage();" style="position: relative; cursor:pointer">
+                                            <i class="fa fa-print"></i> Scan
+                                        </div>
+                                        <div class="external-event bg-aqua " ng-click="LoadImage()" style="position: relative; cursor: pointer">
 
-                                    <div class="external-event bg-yellow " ng-click="AcquireImage();" style="position: relative; cursor:pointer">
-                                        <i class="fa fa-print"></i> Scan
-                                    </div>
-                                    <div class="external-event bg-aqua " ng-click="LoadImage()" style="position: relative; cursor: pointer">
+                                            <i class="fa fa-inbox"></i> Load PDF
 
-                                        <i class="fa fa-inbox"></i> Load PDF
+                                        </div>
+                                        <div class="external-event bg-purple" ng-click="LoadImageWithoutBlank()" style="position: relative; cursor: pointer">
 
-                                    </div>
-                                    <div class="external-event bg-purple" ng-click="LoadImageWithoutBlank()" style="position: relative; cursor: pointer">
+                                            <i class="fa fa-pagelines"></i> Load Blank PDF
 
-                                        <i class="fa fa-pagelines"></i> Load Blank PDF
+                                        </div>
 
-                                    </div>
+                                        <div class=" btnAnoLoad external-event bg-maroon" ng-click="Load()" style="position: relative; cursor: pointer">
 
-                                    <div class=" btnAnoLoad external-event bg-maroon" ng-click="Load()" style="position: relative; cursor: pointer">
+                                            <i class="fa fa-clipboard"></i> Load Another PDF
 
-                                        <i class="fa fa-clipboard"></i> Load Another PDF
-
-                                    </div>
+                                        </div>
 
 
-                                    <div ng-click="RemoveAllSelectedImages()" class="external-event bg-light-blue " style="position: relative; cursor: pointer">
+                                        <div ng-click="RemoveAllSelectedImages()" class="external-event bg-light-blue " style="position: relative; cursor: pointer">
 
-                                        <i class="fa fa-remove"></i> Remove
+                                            <i class="fa fa-remove"></i> Remove
 
-                                    </div>
-                                    <div ng-click="RotateRight()" class="external-event bg-red " style="position: relative; cursor: pointer">
+                                        </div>
+                                        <div ng-click="RotateRight()" class="external-event bg-red " style="position: relative; cursor: pointer">
 
-                                        <i class="fa fa-rotate-right"></i> Rotate
+                                            <i class="fa fa-rotate-right"></i> Rotate
 
-                                    </div>
-                                    <div data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" ng-click="ShowMoveImageDiv()" class="external-event bg-green" style="position: relative; cursor: pointer">
-                                        <i class="fa fa-reorder"></i> Move Image
-                                    </div>
-                                    <div id="collapseOne" aria-expanded="false" class="collapse"
-                                         @*class="external-event bg-green-gradient hidden" *@
-                                         style="position: relative; background-color: #baf1d4; border: solid; border-color: green; cursor: pointer">
-                                        <div style="background-color: #baf1d4">
-                                            <div class="form-group">
-                                                <label style="color:green">Which Image</label><input type="text" id="WhichImage" style="width: 100%; color: green" />
-                                            </div>
-                                            <div class="form-group">
-                                                <label style="color:green">Where</label><input type="text" id="Where" style="width: 100%; color: green" />
-                                            </div>
-                                            <div class="form-group">
-                                                <button class="btn btn-success btn-flat btn-sm" ng-click="MoveImage()">Move</button>
+                                        </div>
+                                        <div data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" ng-click="ShowMoveImageDiv()" class="external-event bg-green" style="position: relative; cursor: pointer">
+                                            <i class="fa fa-reorder"></i> Move Image
+                                        </div>
+                                        <div id="collapseOne" aria-expanded="false" class="collapse"
+                                             @*class="external-event bg-green-gradient hidden" *@
+                                             style="position: relative; background-color: #baf1d4; border: solid; border-color: green; cursor: pointer">
+                                            <div style="background-color: #baf1d4">
+                                                <div class="form-group">
+                                                    <label style="color:green">Which Image</label><input type="text" id="WhichImage" style="width: 100%; color: green" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label style="color:green">Where</label><input type="text" id="Where" style="width: 100%; color: green" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <button class="btn btn-success btn-flat btn-sm" ng-click="MoveImage()">Move</button>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="external-event bg-blue" ng-click="DownloadDocumentAll();" style="position: relative; cursor: pointer;">
-                                        <i class="fa fa-download"></i> Download All
+                                        <div class="external-event bg-blue" ng-click="DownloadDocumentAll();" style="position: relative; cursor: pointer;">
+                                            <i class="fa fa-download"></i> Download All
+                                        </div>
                                     </div>
                                 </div>
+                                <!-- /.box-body -->
+
+
                             </div>
-                            <!-- /.box-body -->
-
-
-                        </div>
+                       
                     </div>
                     <!-- /.row -->
                 </div>
@@ -1686,7 +1709,7 @@
                             <button type="button" class="close" data-dismiss="modal" ng-click="" aria-hidden="true">x</button>
                             <h4 class="modal-title">Document Detail View</h4>
                         </div>
-                        <div class="modal-body"  ng-show="isMobile">
+                        <div class="modal-body" >
                             <div class="row">
                                 <div class="col-lg-6" style="margin-bottom:10px" ng-show="IsDownload2">
                                     <div style="float: right; display: flex;">
@@ -1706,7 +1729,7 @@
 
 
 
-                            <div class="row"  ng-show="!isMobile">
+                            <div class="row">
                                 <div class="col-lg-2">
                                     <h4><label>Thumbnail:</label></h4>
                                 </div>
@@ -1717,7 +1740,7 @@
                                 </div>
 
                             </div>
-                            <div class="row"  ng-show="!isMobile">
+                            <div class="row" >
                                 <div class="col-lg-2">
                                     <div id="dwtVerticalThumbnil" class="box-body"></div>
                                 </div>
@@ -3780,6 +3803,15 @@
 
 
         $scope.UpdateDocument = function () {
+
+
+            var isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+            if (isMobile) {
+               /* toastr.warning("Document update is not available on mobile devices.");*/
+                return;
+            }
+
 
             dwObject.IfShowFileDialog = false;
             $scope.IsDownload = false;
