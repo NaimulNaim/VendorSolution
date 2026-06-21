@@ -1,6 +1,15 @@
 ﻿@{
     ViewBag.Title = "Temporary";
     Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+
+    string userAgent = Request.UserAgent ?? "";
+
+    bool isMobile =
+        userAgent.Contains("Android") ||
+        userAgent.Contains("iPhone") ||
+        userAgent.Contains("iPad") ||
+        userAgent.Contains("iPod") ||
+        userAgent.Contains("Windows Phone");
 }
 
 <style>

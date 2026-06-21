@@ -87,7 +87,8 @@ namespace SILDMS.Web.UI.Areas.SecurityModule.Controllers
                 return "E401";
             }
 
-            bool result = await Task.Run(() => _userService.IsValidUser(StringEncription.RemoveSpecialCharacters(user.Trim()), StringEncription.Encrypt(password.Trim(), true), Convert.ToString(this.Request.UserHostAddress), out permissionMenu));
+            //bool result = await Task.Run(() => _userService.IsValidUser(StringEncription.RemoveSpecialCharacters(user.Trim()), StringEncription.Encrypt(password.Trim(), true), Convert.ToString(this.Request.UserHostAddress), out permissionMenu));
+            bool result = await Task.Run(() => _userService.IsValidUser((user.Trim()), StringEncription.Encrypt(password.Trim(), true), Convert.ToString(this.Request.UserHostAddress), out permissionMenu));
             if (result)
             {
                 var ident = new ClaimsIdentity(

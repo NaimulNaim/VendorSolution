@@ -417,39 +417,114 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
             }
         }
 
-        public async Task<FileResult> DownloadDocument(string documentID, string Ext)
-        {
+        //public async Task<FileResult> DownloadDocument(string documentID, string Ext)
+        //{
 
+        //    var ServerList = new Server();
+
+        //    await Task.Run(() => _technicalQuotationService.FetchServerDetailsService(documentID, out ServerList));
+
+        //    string userName = ServerList.FtpUserName;
+        //    string password = ServerList.FtpPassword;
+        //    string serverIP = ServerList.ServerIP;
+        //    string serverURL = ServerList.FileServerURL;
+        //    using (WebClient request = new WebClient())
+        //    {
+        //        if (Ext == "")
+        //        {
+        //            Ext = "pdf";
+        //        }
+
+        //        request.Credentials = new NetworkCredential(userName, password);
+
+        //        string fullUrl = "ftp://" + serverIP + "/" + serverURL + "/" + documentID + "." + Ext;
+        //        byte[] fileData = request.DownloadData(fullUrl);
+
+        //        var cd = new System.Net.Mime.ContentDisposition
+        //        {
+        //            FileName = documentID + "." + Ext,
+        //            Inline = false,
+        //        };
+
+        //        Response.AppendHeader("Content-Disposition", cd.ToString());
+        //        return File(fileData, "application / " + Ext);
+        //    }
+        //}
+
+
+
+        public async Task<ActionResult> DownloadDocument(string documentID, string Ext)
+        {
             var ServerList = new Server();
 
-            await Task.Run(() => _technicalQuotationService.FetchServerDetailsService(documentID, out ServerList));
+            await Task.Run(() =>
+                _technicalQuotationService.FetchServerDetailsService(documentID, out ServerList));
 
-            string userName = ServerList.FtpUserName;
-            string password = ServerList.FtpPassword;
-            string serverIP = ServerList.ServerIP;
-            string serverURL = ServerList.FileServerURL;
+            string ext = (Ext ?? "pdf").Replace(".", "").ToLower();
+
             using (WebClient request = new WebClient())
             {
-                if (Ext == "")
-                {
-                    Ext = "pdf";
-                }
+                request.Credentials = new NetworkCredential(
+                    ServerList.FtpUserName,
+                    ServerList.FtpPassword
+                );
 
-                request.Credentials = new NetworkCredential(userName, password);
+                string fullUrl =
+                    "ftp://" + ServerList.ServerIP + "/" +
+                    ServerList.FileServerURL + "/" +
+                    documentID + "." + ext;
 
-                string fullUrl = "ftp://" + serverIP + "/" + serverURL + "/" + documentID + "." + Ext;
                 byte[] fileData = request.DownloadData(fullUrl);
 
-                var cd = new System.Net.Mime.ContentDisposition
-                {
-                    FileName = documentID + "." + Ext,
-                    Inline = false,
-                };
+                string mimeType = GetMimeType(ext);
 
-                Response.AppendHeader("Content-Disposition", cd.ToString());
-                return File(fileData, "application / " + Ext);
+                bool inline = IsInline(ext);
+
+                Response.Clear();
+                Response.Buffer = true;
+
+                Response.AppendHeader(
+                    "Content-Disposition",
+                    (inline ? "inline" : "attachment") +
+                    "; filename=" + documentID + "." + ext
+                );
+
+                return File(fileData, mimeType);
             }
         }
+
+
+        private bool IsInline(string ext)
+        {
+            string[] inlineTypes = {
+        "pdf", "jpg", "jpeg", "png", "gif",
+        "mp4", "webm", "ogg", "mp3", "wav"
+    };
+
+            return inlineTypes.Contains(ext);
+        }
+
+        private string GetMimeType(string ext)
+        {
+            switch (ext)
+            {
+                case "pdf": return "application/pdf";
+                case "jpg":
+                case "jpeg": return "image/jpeg";
+                case "png": return "image/png";
+                case "gif": return "image/gif";
+                case "mp4": return "video/mp4";
+                case "webm": return "video/webm";
+                case "ogg": return "video/ogg";
+                case "mp3": return "audio/mpeg";
+                case "wav": return "audio/wav";
+                default: return "application/octet-stream";
+            }
+        }
+
+
+
+
 
         [Authorize]
         public async Task<dynamic> UpdateExtensionByDocId(string DocumentID, string Extension)
