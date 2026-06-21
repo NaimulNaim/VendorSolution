@@ -382,6 +382,7 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
         {
             HttpFileCollectionBase files = Request.Files;
             HttpPostedFileBase file = files[0];
+            var safeFileName = documentID.Replace("/", "_");
 
             try
             {
@@ -468,11 +469,11 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
                     ServerList.FtpUserName,
                     ServerList.FtpPassword
                 );
-
+                var safeFileName = documentID.Replace("/", "_");
                 string fullUrl =
                     "ftp://" + ServerList.ServerIP + "/" +
                     ServerList.FileServerURL + "/" +
-                    documentID + "." + ext;
+                    safeFileName + "." + ext;
 
                 byte[] fileData = request.DownloadData(fullUrl);
 

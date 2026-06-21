@@ -2271,18 +2271,25 @@
                 { technicalQuotation: $scope.TechnicalQuotation }
             )
                 .success(function (response) {
-                    $scope.response = response.respStatus.Message;
 
-                    if ($scope.response === 'Data Updated Successfully') {
-                        $scope.p = 0;
-                        $scope.reset();
-                        toastr.success($scope.response);
+                    if (response.respStatus.Message === 'Data Updated Successfully') {
 
+                        toastr.success(response.respStatus.Message);
+
+                        $timeout(function () {
+                            $scope.p = 0;
+                            $scope.toggleRefreshTable1();
+                        }, 200);
                     }
                     else {
-                        toastr.error($scope.response);
+                        toastr.error(response.respStatus.Message);
                     }
 
+                    $scope.loading = false;
+                })
+                .error(function () {
+                    toastr.error('Update failed');
+                    $scope.loading = false;
                 });
 
         }
@@ -2554,7 +2561,7 @@
         }
         $scope.TechnicalQuote = false;
 
-
+        $scope.IsDownload = false;
         $scope.reset = function () {
 
             $scope.TechnicalQuotation = {
@@ -4112,6 +4119,10 @@
 
         $scope.toggleRefreshTable = function (row) {
             window.location.href = "/VendorSelectionModule/TechnicalQuotation";
+        };
+
+        $scope.toggleRefreshTable1 = function () {
+            location.reload();
         };
 
         $scope.formatDate = function (date) {

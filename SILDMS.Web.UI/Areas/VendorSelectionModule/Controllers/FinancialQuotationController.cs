@@ -293,9 +293,11 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
             HttpFileCollectionBase files = Request.Files;
             HttpPostedFileBase file = files[0];
 
+            var safeFileName = documentID.Replace("/", "_");
+
             try
             {
-                FtpWebRequest ftp = (FtpWebRequest)FtpWebRequest.Create("ftp://" + serverIP + "/" + serverURL + "/" + documentID + "." + Ext);
+                FtpWebRequest ftp = (FtpWebRequest)FtpWebRequest.Create("ftp://" + serverIP + "/" + serverURL + "/" + safeFileName + "." + Ext);
                 ftp.Credentials = new NetworkCredential(ftpUserName, ftpPassword);
                 ftp.Proxy = null;
                 ftp.KeepAlive = true;
