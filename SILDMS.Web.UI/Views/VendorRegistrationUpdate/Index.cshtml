@@ -1,671 +1,478 @@
-﻿<script src="~/Scripts/jquery-barcode.min.js"></script>
-@{
+﻿@{
     ViewBag.Title = "Temporary";
     Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
 }
 
+<style>
+    /* ── Section card ── */
+    .reg-card {
+        background: #fff;
+        border: 1px solid #dce1e7;
+        border-radius: 6px;
+        box-shadow: 0 2px 8px rgba(0,0,0,.08);
+        padding: 24px 28px;
+        margin-top: 16px;
+    }
+
+    /* ── Uniform label column ── */
+    .field-label {
+        font-size: smaller;
+        font-weight: 600;
+        color: #444;
+        padding-top: 7px;
+        text-align: right;
+    }
+
+    @@media (min-width: 1200px) {
+        .col-lg-2 {
+            width: 22.666667%;
+        }
+    }
+
+    /* ── Required star ── */
+    .req {
+        color: #c0392b;
+        margin-left: 2px;
+    }
+
+    /* ── Inputs ── */
+    .reg-card .form-control {
+        font-size: 12px;
+        height: 32px;
+        padding: 4px 8px;
+        border-radius: 4px;
+        border: 1px solid #ccd0d5;
+        transition: border-color .2s, box-shadow .2s;
+    }
+
+        .reg-card .form-control:focus {
+            border-color: #5d9b5e;
+            box-shadow: 0 0 0 3px rgba(93,155,94,.15);
+            outline: none;
+        }
+
+    .reg-card select.form-control {
+        height: 32px;
+    }
+
+    /* ── File input ── */
+    .file-wrap {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 6px;
+    }
+
+        .file-wrap input[type="file"] {
+            font-size: 11px;
+            color: #555;
+        }
+
+    /* ── Form rows ── */
+    .form-row-item {
+        margin-bottom: 5px;
+    }
+
+    /* ── Page header bar ── */
+    .box-header.with-border {
+        background: #e4e9e3 !important;
+        border-bottom: 2px solid #c8d4c6;
+    }
+
+    .box-header .box-title {
+        font-family: Verdana, sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        color: #2c3e2d;
+    }
+
+    /* ── Submit button row ── */
+    .btn-submit-row {
+        border-top: 1px solid #e4e9e3;
+        padding-top: 16px;
+        margin-top: 20px;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+        .btn-submit-row .btn {
+            font-size: 12px;
+            padding: 7px 20px;
+            border-radius: 4px;
+        }
+
+    /* ── Error messages ── */
+    .field-error {
+        font-size: 11px;
+        color: #c0392b;
+        margin-top: 3px;
+        display: none;
+    }
+
+    /* ── View document button (eye icon) ── */
+    .button-custom {
+        background: transparent;
+        border: none;
+        color: #000000;
+    }
+
+        .button-custom:hover {
+            color: #3f6f40;
+        }
+</style>
 
 <div class="box box-primary box-body" ng-controller="VendorRegistrationUpdateCtrl">
-    @* Header *@
-    <div class="box-header with-border" style="font-family: Verdana; background: #E4E9E3; color: black; ">
+
+    <!-- ── Page Header ── -->
+    <div class="box-header with-border">
         <i class="fa fa-user"></i>
-        <h3 style="font-family: Verdana" class="box-title" ng-if="fromMenu">Update Vendor Registration</h3>
-        @*<h3 style="font-family: Verdana" class="box-title" ng-if="!fromMenu">Temporary Vendor Registration From</h3>*@
+        <h3 class="box-title" ng-if="fromMenu">Update Vendor Registration</h3>
         <div class="box-tools pull-right">
-            <button type="button" id="btnRefresh" data-ng-click="toggleRefreshTable(row)" class="btn btn-warning btn-flat pull-right" ng-disabled="loading"><i class="fa fa-refresh"></i> Refresh</button>
-            <button type="button" id="btnRefresh" data-ng-click="updateRegistration()" class="btn btn-danger" ng-disabled="loading"><i class="fa fa-edit"></i> Update</button>
+            <button type="button" id="btnRefresh" data-ng-click="toggleRefreshTable(row)"
+                    class="btn btn-warning btn-flat btn-sm" ng-disabled="loading">
+                <i class="fa fa-refresh"></i> Refresh
+            </button>
+            <button type="button" id="btnUpdate" data-ng-click="updateRegistration()"
+                    class="btn btn-danger btn-flat btn-sm" ng-disabled="loading">
+                <i class="fa fa-edit"></i> Update
+            </button>
         </div>
     </div>
 
-    @*Vendor Registration Details Table Modal*@
+    <!-- ══════════════════════════════════════
+         Registration form (mirrors VendorRegistrationCtrl layout)
+    ══════════════════════════════════════ -->
+    <div class="reg-card">
 
-
-
-
-
-
-
-
-
-    <div class="row" style="margin-top: 5px;">
-        <div class="col-lg-2">
-            <div class="form-group" style="font-size: smaller;">
-                <label for="BusinessName">Business Name <span style="color: red;"> *</span></label>
+        <!-- ── Business Info ── -->
+        <div class="row form-row-item">
+            <div class="col-lg-2 col-md-3 field-label">
+                Business Name <span class="req">*</span>
+            </div>
+            <div class="col-lg-4 col-md-5">
+                <input id="BusinessName" autocomplete="off" type="text" name="BusinessName"
+                       class="form-control" ng-model="PurreqDtl.Vendor.BusinessName" required />
+                <span class="field-error" id="errorMessageBusinessName">Please input a valid Business Name.</span>
             </div>
         </div>
-        <div class="col-lg-4">
-            <input id="BusinessName" autocomplete="off" type="text" name="BusinessName" class="form-control" ng-model="PurreqDtl.Vendor.BusinessName" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
-        </div>
-        <div class="col-md-3">
-            <span class="center-block text-red" id="errorMessageBusinessName" style="display: none;">Please input valid Business Name.</span>
-        </div>
 
-
-    </div>
-
-    @*<div class="row" style="margin-top: 5px;">
-            <div class="col-lg-2">Business Type</div>
-            <div class="col-lg-4">
+        <div class="row form-row-item">
+            <div class="col-lg-2 col-md-3 field-label">Business Type</div>
+            <div class="col-lg-4 col-md-5">
                 <select class="form-control"
                         ng-model="PurreqDtl.Vendor.BusinessType"
                         ng-options="bt as bt.BusinessTypeName for bt in BusinessTypeList track by bt.BusinessTypeID">
                     <option value="">-- Select Business Type --</option>
                 </select>
             </div>
-        </div>*@
+        </div>
 
-    <div class="row" style="margin-top: 5px;">
-        <div class="col-lg-2">
-            <div class="form-group" style="font-size: smaller;">
-                <label for="BusinessType">Business Type </label>
+        <div class="row form-row-item">
+            <div class="col-lg-2 col-md-3 field-label">Business Nature</div>
+            <div class="col-lg-4 col-md-5">
+                <select class="form-control"
+                        ng-model="PurreqDtl.Vendor.BusinessNature"
+                        ng-options="bn as bn.BusinessNatureName for bn in BusinessNatureList track by bn.BusinessNatureID">
+                    <option value="">-- Select Business Nature --</option>
+                </select>
             </div>
         </div>
 
-        <div class="col-lg-4">
-            <select class="form-control"
-                    ng-model="PurreqDtl.Vendor.BusinessType"
-                    ng-options="bt as bt.BusinessTypeName for bt in BusinessTypeList track by bt.BusinessTypeID"
-                    style="font-size: smaller; padding: 3px 6px 3px;">
-                <option value="">-- Select Business Type --</option>
-            </select>
-        </div>
-
-
-    </div>
-
-    <div class="row" style="margin-top: 5px;">
-        <div class="col-lg-2">
-            <div class="form-group" style="font-size: smaller;">
-                <label for="BusinessType">Business Nature </label>
+        <div class="row form-row-item">
+            <div class="col-lg-2 col-md-3 field-label">Country</div>
+            <div class="col-lg-4 col-md-5">
+                <select class="form-control"
+                        ng-model="PurreqDtl.Vendor.Country"
+                        ng-options="c as c.CountryName for c in CountryList track by c.CountryID">
+                    <option value="">-- Select Country --</option>
+                </select>
             </div>
         </div>
 
-        <div class="col-lg-4">
-            <select class="form-control"
-                    ng-model="PurreqDtl.Vendor.BusinessNature"
-                    ng-options="bn as bn.BusinessNatureName for bn in BusinessNatureList track by bn.BusinessNatureID"
-                    style="font-size: smaller; padding: 3px 6px 3px;">
-                <option value="">-- Select Business Nature --</option>
-            </select>
-        </div>
-
-
-    </div>
-
-
-    <div class="row" style="margin-top: 5px;">
-        <div class="col-lg-2">
-            <div class="form-group" style="font-size: smaller;">
-                <label for="Country">Country </label>
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <select class="form-control"
-                    ng-model="PurreqDtl.Vendor.Country"
-                    ng-options="bn as bn.CountryName for bn in CountryList track by bn.CountryID"
-                   
-                    style="font-size: smaller; padding: 3px 6px 3px;">
-                <option value="">-- Select Country --</option>
-            </select>
-        </div>
-    </div>
-
-    <div class="row" style="margin-top: 5px;">
-        <div class="col-lg-2">
-            <div class="form-group" style="font-size: smaller;">
-                <label for="CompanyAddress">Company Address </label>
-            </div>
-        </div>
-        <div class="col-lg-6">
-            <input autocomplete="off"
-                   type="text"
-                   id="CompanyAddress"
-                   class="form-control"
-                   ng-model="PurreqDtl.Vendor.CompanyAddress"
-                   style="font-size: smaller; padding: 3px 6px 3px;" />
-        </div>
-    </div>
-
-    <div class="row" style="margin-top: 5px;">
-        <div class="col-lg-2">
-            <div class="form-group" style="font-size: smaller;">
-                <label for="EstablishedYear">Established Year </label>
-            </div>
-        </div>
-        <div class="col-lg-2">
-            <input id="EstablishedYear"
-                   name="EstablishedYear"
-                   readonly
-                   type="text"
-                   class="DatePicker form-control"
-                   placeholder="DD/MM/YYYY"
-                   ng-model="PurreqDtl.Vendor.EstablishedYear"
-                   style="background-color:#ffffff; text-align:center; font-size: smaller;" />
-        </div>
-    </div>
-
-
-    <div class="row" style="margin-top: 5px;">
-        <div class="col-lg-2" style="font-size: smaller;">
-            <label for="GeneralDetails">Services/ Goods Details </label>
-        </div>
-        <div class="col-lg-4">
-            <input id="GeneralDetails" autocomplete="off" type="text" name="GeneralDetails" class="form-control" ng-model="PurreqDtl.Vendor.GenaralDetailsServices" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
-        </div>
-    </div>
-
-
-
-
-
-
-
-
-    <div class="row" style="margin-top: 5px;">
-
-        <div class="col-lg-2 col-md-2 col-sm-2" style="font-size: smaller;">
-            <label for="ContactPerson">Contact Person </label>
-        </div>
-        <div class="col-lg-2 col-md-2 col-sm-2">
-            <input id="FirstName" autocomplete="off" type="text" name="FirstName" class="form-control" ng-model="PurreqDtl.Vendor.ContactPersonFirstName" placeholder="First Name" style="font-size: smaller; padding: 3px 6px 3px;" required />
-        </div>
-        <div class="col-lg-2 col-md-2 col-sm-2">
-            <input id="LastName" autocomplete="off" type="text" name="LastName" class="form-control" ng-model="PurreqDtl.Vendor.ContactPersonLastName" placeholder="Last Name" style="font-size: smaller; padding: 3px 6px 3px;" required />
-        </div>
-        <div class="col-md-3">
-            <span class="center-block text-red" id="errorMessageContactPerson" style="display: none;">Please input valid ContactPerson.</span>
-        </div>
-    </div>
-
-    @*<div class="row" style="margin-top: 5px;">
-            <div class="col-lg-2" style="font-size: smaller;">
-                <label for="VendorPhoneNumber">Contact Number :<span style="color: red;"> *</span></label>
-            </div>
-            <div class="col-lg-2">
-                <input id="VendorPhoneNumber" autocomplete="off" type="text" name="VendorPhoneNumber" class="form-control" ng-model="PurreqDtl.Vendor.VendorPhoneNumber" placeholder="(+880) 00 0000 0000" style="font-size: smaller; padding: 3px 6px 3px;" required />
-            </div>
-            <div class="col-md-3">
-                <span class="center-block text-red" id="errorMessageVendorPhoneNumber" style="display: none;">Please input valid Contact Number.</span>
-            </div>
-        </div>*@
-    <div class="row" style="margin-top: 5px;">
-        <div class="col-lg-2" style="font-size: smaller;">
-            <label for="VendorPhoneNumber">Contact Number<span style="color: red;"> *</span></label>
-        </div>
-
-        <!-- First number with + button -->
-        <div class="col-lg-2" style="display: flex; align-items: center;">
-            <input type="text" class="form-control"
-                   ng-model="PurreqDtl.Vendor.VendorPhoneNumber"
-                   placeholder="" style="flex:1;" required />
-            <button type="button" ng-if="!AddNumber"
-                    ng-click="AddAnotherNumber('add')"
-                    class="btn btn-default" style="margin-left: 5px;">
-                +
-            </button>
-        </div>
-
-        <!-- Second number with - button -->
-        <div class="col-lg-2" ng-if="AddNumber" style="display: flex; align-items: center;">
-            <input type="text" class="form-control"
-                   ng-model="PurreqDtl.Vendor.VendorPhoneNumber2"
-                   placeholder="" style="flex:1;" required />
-            <button type="button" ng-click="AddAnotherNumber('remove')"
-                    class="btn btn-default" style="margin-left: 5px;">
-                -
-            </button>
-        </div>
-    </div>
-
-
-
-
-
-    <div class="row" style="margin-top: 5px;">
-        <div class="col-lg-2" style="font-size: smaller;">
-            <label for="TIN">TIN </label>
-        </div>
-        <div class="col-lg-2">
-            <input id="TIN" type="text" autocomplete="off" name="TIN" class="form-control" ng-model="PurreqDtl.Vendor.TIN" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
-        </div>
-        <div class="col-md-3">
-            <span class="center-block text-red" id="errorMessageTIN" style="display: none;">Please input valid TIN</span>
-        </div>
-    </div>
-
-    <div class="row" style="margin-top: 5px;">
-        <div class="col-lg-2" style="font-size: smaller;">
-            <label for="BIN">BIN</label>
-        </div>
-        <div class="col-lg-2">
-            <input id="BIN" autocomplete="off" type="text" name="BIN" class="form-control" ng-model="PurreqDtl.Vendor.BIN" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" />
-        </div>
-        <div class="col-md-3">
-            <span class="center-block text-red" id="errorMessageBIN" style="display: none;">Please input valid BIN</span>
-        </div>
-    </div>
-    <div class="row" style="margin-top: 5px;">
-        <div class="col-lg-2" style="font-size: smaller;">
-            <label for="CompanyProfile">Company Profile </label>
-        </div>
-        <div class="col-lg-2">
-            <input id="CompanyProfile" type="text" autocomplete="off" class="form-control"
-                   ng-model="PurreqDtl.Vendor.CompanyProfile" placeholder=""
-                   style="font-size: smaller; padding: 3px 6px 3px;" />
-        </div>
-    </div>
-
-    <!-- Trade License -->
-    <div class="row" style="margin-top: 5px;">
-        <div class="col-lg-2" style="font-size: smaller;">
-            <label for="TradeLicense">Trade License </label>
-        </div>
-        <div class="col-lg-2">
-            <input id="TradeLicense" type="text" autocomplete="off" class="form-control"
-                   ng-model="PurreqDtl.Vendor.TradeLicense" placeholder=""
-                   style="font-size: smaller; padding: 3px 6px 3px;" />
-        </div>
-    </div>
-
-    <div class="row" style="margin-top: 5px;">
-        <div class="col-lg-2">
-            <div class="form-group" style="font-size: smaller;">
-                <label for="TradeLicenseValidity">Trade License Validity</label>
+        <div class="row form-row-item">
+            <div class="col-lg-2 col-md-3 field-label">Company Address</div>
+            <div class="col-lg-6 col-md-7">
+                <input id="CompanyAddress" autocomplete="off" type="text" name="CompanyAddress"
+                       class="form-control" ng-model="PurreqDtl.Vendor.CompanyAddress" />
             </div>
         </div>
 
-        <div class="col-lg-2">
-            <input id="TradeLicenseValidity"
-                   name="TradeLicenseValidity"
-                   readonly
-                   type="text"
-                   class="DatePicker form-control"
-                   placeholder="DD/MM/YYYY"
-                   ng-model="PurreqDtl.Vendor.TradeLicenseValidity"
-                   style="background-color:#ffffff; text-align:center; font-size: smaller;" />
-        </div>
-    </div>
-
-    <!-- Partnership Deed / Agencyship -->
-    <div class="row" style="margin-top: 5px;">
-        <div class="col-lg-2" style="font-size: smaller;">
-            <label for="PartnershipDeed">Partnership Deed / Agencyship </label>
-        </div>
-        <div class="col-lg-2">
-            <input id="PartnershipDeed" type="text" autocomplete="off" class="form-control"
-                   ng-model="PurreqDtl.Vendor.PartnershipDeed" placeholder=""
-                   style="font-size: smaller; padding: 3px 6px 3px;" />
-        </div>
-    </div>
-
-    <!-- Import Registration Certificate (IRC) -->
-    <div class="row" style="margin-top: 5px;">
-        <div class="col-lg-2" style="font-size: smaller;">
-            <label for="ImportRegistration">Import Registration Certificate </label>
-        </div>
-        <div class="col-lg-2">
-            <input id="ImportRegistration" type="text" autocomplete="off" class="form-control"
-                   ng-model="PurreqDtl.Vendor.ImportRegistration" placeholder=""
-                   style="font-size: smaller; padding: 3px 6px 3px;" />
-        </div>
-    </div>
-
-    <!-- Indenting License -->
-    <div class="row" style="margin-top: 5px;">
-        <div class="col-lg-2" style="font-size: smaller;">
-            <label for="IndentingLicense">Indenting License </label>
-        </div>
-        <div class="col-lg-2">
-            <input id="IndentingLicense" type="text" autocomplete="off" class="form-control"
-                   ng-model="PurreqDtl.Vendor.IndentingLicense" placeholder=""
-                   style="font-size: smaller; padding: 3px 6px 3px;" />
-        </div>
-    </div>
-
-    <div class="row" style="margin-top: 5px;">
-        <div class="col-lg-2" style="font-size: smaller;">
-            <label for="Others">Others </label>
-        </div>
-        <div class="col-lg-2">
-            <input id="Others" type="text" autocomplete="off" class="form-control"
-                   ng-model="PurreqDtl.Vendor.Others" placeholder=""
-                   style="font-size: smaller; padding: 3px 6px 3px;" />
-        </div>
-    </div>
-
-
-    @*<div class="row" style="margin-top: 5px;">
-            <div class="col-lg-2" style="font-size: smaller;">
-                <label for="GeneralDetails">Details of Services/ Goods :</label>
+        <div class="row form-row-item">
+            <div class="col-lg-2 col-md-3 field-label">Established Year</div>
+            <div class="col-lg-4 col-md-5">
+                <input id="EstablishedYear" name="EstablishedYear" readonly type="text"
+                       class="DatePicker form-control" placeholder="DD/MM/YYYY"
+                       ng-model="PurreqDtl.Vendor.EstablishedYear"
+                       style="background-color:#ffffff; text-align:center" />
             </div>
-            <div class="col-lg-4">
-                <input id="GeneralDetails" autocomplete="off" type="text" name="GeneralDetails" class="form-control" ng-model="PurreqDtl.Vendor.GenaralDetailsServices" placeholder="" style="font-size: smaller; padding: 3px 6px 3px;" required />
+        </div>
+
+        <div class="row form-row-item">
+            <div class="col-lg-2 col-md-3 field-label">Services / Goods Details</div>
+            <div class="col-lg-6 col-md-7">
+                <input id="GeneralDetails" autocomplete="off" type="text" name="GeneralDetails"
+                       class="form-control" ng-model="PurreqDtl.Vendor.GenaralDetailsServices" />
             </div>
-        </div>*@
-    <br />
-    @*User Name*@
+        </div>
 
+        <div class="row form-row-item">
+            <div class="col-lg-2 col-md-3 field-label">Contact Person</div>
+            <div class="col-lg-2 col-md-3">
+                <input id="FirstName" autocomplete="off" type="text" class="form-control"
+                       ng-model="PurreqDtl.Vendor.ContactPersonFirstName" placeholder="First Name" />
+            </div>
+            <div class="col-lg-2 col-md-3">
+                <input id="LastName" autocomplete="off" type="text" class="form-control"
+                       ng-model="PurreqDtl.Vendor.ContactPersonLastName" placeholder="Last Name" />
+            </div>
+        </div>
 
-    @*Password*@
-
-
-    @*Confirm Password*@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    @*<div class="row" style="margin-top: 5px;">
-
-            <div class="col-lg-1">
-                <button id="btnSaveMasterupdate" type="button" class="btn btn-success saveBtn pull-left" data-dismiss="modal" title="Submit" ng-click="updateRegistration()">
-                    <i class="fa fa-save"></i> Update Registration
+        <div class="row form-row-item">
+            <div class="col-lg-2 col-md-3 field-label">
+                Contact Number <span class="req">*</span>
+            </div>
+            <div class="col-lg-3 col-md-4" style="display:flex; align-items:center;">
+                <input type="text" class="form-control" style="flex:1;"
+                       ng-model="PurreqDtl.Vendor.VendorPhoneNumber"
+                       placeholder="(+880) 00 0000 0000" required />
+                <button type="button" ng-if="!AddNumber" ng-click="AddAnotherNumber('add')"
+                        class="btn btn-default" style="margin-left:5px;">
+                    +
                 </button>
             </div>
-
-        </div>*@
-
-
-
-
-    <div class="row">
-        <table st-table="displayScannedDocuments" st-safe-src="scannedDocuments"
-               class="table table-condensed table-bordered table-striped table-hover">
-            <thead>
-                <tr>
-                    <th st-sort="DocPropertyName">Document Name</th>
-                    <th st-sort="IdentificationAttribute">Identification Attribute</th>
-                    <th st-sort="MetaValue">Attribute Value</th>
-                    <th st-sort="FileServerURL" class="hidden">FileServerURL</th>
-                    <th st-sort="">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="row in displayScannedDocuments">
-                    @*<td class="hidden">{{row.DocMetaID}}</td>*@
-                    <td class="hidden">{{row.DocumentID}}</td>
-                    <td class="col-lg-2">{{row.DocPropertyName}}</td>
-                    <td class="col-lg-3">{{row.IdentificationAttribute}}</td>
-                    <td class="col-lg-3">{{row.MetaValue}}</td>
-                    <td class="hidden">{{row.FileServerURL}}</td>
-                    <td class="col-lg-3">
-                        @*<button type="button" class="btn btn-xs btn-info btn-flat" data-ng-click="LoadImage(row)" style="display: inline-block;"><i class="fa fa-search-plus"></i> Quick View</button>*@
-                        <button type="button" class="btn btn-xs btn-success btn-flat" data-ng-click="getScannedDocs(row)"><i class="fa fa-list"></i> Detail View</button>
-                        <button type="button" ng-if="row.DocClassification != 'Required'" class="btn btn-xs btn-primary btn-flat" data-ng-click="showDeleteConfirmModal(row)" style="display: inline-block;"><i class="fa fa-edit"></i> Delete</button>
-                        <button type="button" class="btn btn-xs btn-primary btn-flat" data-ng-click="showEditModal(row)" style="display: inline-block;"><i class="fa fa-edit"></i> Edit</button>
-                        @*<button type="button" class="btn btn-xs btn-danger btn-flat" data-ng-click="ShowDeleteConfirmModal(row)" style="display: inline-block;"><i class="fa fa-edit"></i> Delete</button>*@
-                    </td>
-                </tr>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="6" class="text-center">
-                        <div st-pagination="" st-items-by-page="itemsByPage"></div>
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
-    </div>
-
-
-
-
-
-
-
-    <!--<br />-->
-    <!--#region Check-boxes for documents selection-->
-    <!--<div class="row" ng-show="docProperties">
-        <div class="col-lg-2 col-md-2 col-sm-2" ng-repeat="item in docProperties" ng-show="item.Exist">
-            <input type="checkbox" ng-model="item.Checked">{{item.DocPropertyName}}-({{item.DocClassification}})
+            <div class="col-lg-3 col-md-4" ng-if="AddNumber" style="display:flex; align-items:center;">
+                <input type="text" class="form-control" style="flex:1;"
+                       ng-model="PurreqDtl.Vendor.VendorPhoneNumber2"
+                       placeholder="(+880) 00 0000 0000" />
+                <button type="button" ng-click="AddAnotherNumber('remove')"
+                        class="btn btn-default" style="margin-left:5px;">
+                    -
+                </button>
+            </div>
+            <span class="field-error" id="errorMessageVendorPhoneNumber">Please input a valid Contact Number.</span>
         </div>
-    </div>-->
-    <!--#endregion Check-boxes for documents selection-->
-    <!--<br />-->
-    <!--#region Grid for document identity of selected documents-->
-    <!--#endregion Grid for document identity of selected documents-->
-    <!--<br />-->
-    <!--#region Scanned documents display-->
-    <!--<div class="row">
-        <div class="col-lg-12">
-            <label>Process Documents: </label>
 
-            <button id="btnScand" class="btn btn-app btn-flat btn-sm btnScan" data-ng-click="getImages($event)">
-                <i class="fa fa-print"></i> Scan
+        <!-- ── Documents ── -->
+        <div class="row form-row-item">
+            <div class="col-lg-2 col-md-3 field-label">TIN</div>
+            <div class="col-lg-2 col-md-3">
+                <div style="position: relative;">
+                    <input id="TIN" type="text" autocomplete="off" name="TIN"
+                           class="form-control" ng-model="PurreqDtl.Vendor.TIN"
+                           placeholder="Optional" style="padding-right:35px;" />
+                    <button  ng-if="!docExistsMap.TIN" ng-click="viewDoc('TIN')"
+                            class="btn button-custom"
+                            style="position:absolute; right:5px; top:50%; transform:translateY(-50%); padding:5px 10px;">
+                        <i class="fa fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4">
+                <div class="file-wrap">
+                    <input type="file" id="TINFile" accept=".pdf"
+                           onchange="angular.element(this).scope().fileSelected(this,'TIN')" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row form-row-item">
+            <div class="col-lg-2 col-md-3 field-label">BIN</div>
+            <div class="col-lg-2 col-md-3">
+                <div style="position: relative;">
+                    <input id="BIN" type="text" autocomplete="off" name="BIN"
+                           class="form-control" ng-model="PurreqDtl.Vendor.BIN"
+                           placeholder="Optional" style="padding-right:35px;" />
+                    <button ng-if="!docExistsMap.BIN" ng-click="viewDoc('BIN')"
+                            class="btn button-custom"
+                            style="position:absolute; right:5px; top:50%; transform:translateY(-50%); padding:5px 10px;">
+                        <i class="fa fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4">
+                <div class="file-wrap">
+                    <input type="file" id="BINFile" accept=".pdf"
+                           onchange="angular.element(this).scope().fileSelected(this,'BIN')" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row form-row-item">
+            <div class="col-lg-2 col-md-3 field-label">Company Profile</div>
+            <div class="col-lg-2 col-md-3">
+                <div style="position: relative;">
+                    <input id="CompanyProfile" type="text" autocomplete="off"
+                           class="form-control" ng-model="PurreqDtl.Vendor.CompanyProfile"
+                           placeholder="Optional" style="padding-right:35px;" />
+                    <button ng-if="!docExistsMap.CompanyProfile" ng-click="viewDoc('CompanyProfile')"
+                            class="btn button-custom"
+                            style="position:absolute; right:5px; top:50%; transform:translateY(-50%); padding:5px 10px;">
+                        <i class="fa fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4">
+                <div class="file-wrap">
+                    <input type="file" id="CompanyProfileFile" accept=".pdf"
+                           onchange="angular.element(this).scope().fileSelected(this,'CompanyProfile')" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row form-row-item">
+            <div class="col-lg-2 col-md-3 field-label">Trade License</div>
+            <div class="col-lg-2 col-md-3">
+                <div style="position: relative;">
+                    <input id="TradeLicense" type="text" autocomplete="off"
+                           class="form-control" ng-model="PurreqDtl.Vendor.TradeLicense"
+                           placeholder="Optional" style="padding-right:35px;" />
+                    <button ng-if="!docExistsMap.TradeLicense" ng-click="viewDoc('TradeLicense')"
+                            class="btn button-custom"
+                            style="position:absolute; right:5px; top:50%; transform:translateY(-50%); padding:5px 10px;">
+                        <i class="fa fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4">
+                <div class="file-wrap">
+                    <input type="file" id="TradeLicenseFile" accept=".pdf"
+                           onchange="angular.element(this).scope().fileSelected(this,'TradeLicense')" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row form-row-item">
+            <div class="col-lg-2 col-md-3 field-label">Trade License Validity</div>
+            <div class="col-lg-2 col-md-3">
+                <input id="TradeLicenseValidity" name="TradeLicenseValidity" readonly type="text"
+                       class="DatePicker form-control" placeholder="DD/MM/YYYY"
+                       ng-model="PurreqDtl.Vendor.TradeLicenseValidity"
+                       style="background-color:#ffffff; text-align:center" />
+            </div>
+        </div>
+
+        <div class="row form-row-item">
+            <div class="col-lg-2 col-md-3 field-label">Partnership Deed / Agencyship</div>
+            <div class="col-lg-2 col-md-3">
+                <div style="position: relative;">
+                    <input id="PartnershipDeed" type="text" autocomplete="off"
+                           class="form-control" ng-model="PurreqDtl.Vendor.PartnershipDeed"
+                           placeholder="Optional" style="padding-right:35px;" />
+                    <button ng-if="!docExistsMap.PartnershipDeed" ng-click="viewDoc('PartnershipDeed')"
+                            class="btn button-custom"
+                            style="position:absolute; right:5px; top:50%; transform:translateY(-50%); padding:5px 10px;">
+                        <i class="fa fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4">
+                <div class="file-wrap">
+                    <input type="file" id="PartnershipDeedFile" accept=".pdf"
+                           onchange="angular.element(this).scope().fileSelected(this,'PartnershipDeed')" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row form-row-item">
+            <div class="col-lg-2 col-md-3 field-label">Import Registration Certificate</div>
+            <div class="col-lg-2 col-md-3">
+                <div style="position: relative;">
+                    <input id="ImportRegistration" type="text" autocomplete="off"
+                           class="form-control" ng-model="PurreqDtl.Vendor.ImportRegistration"
+                           placeholder="Optional" style="padding-right:35px;" />
+                    <button ng-if="!docExistsMap.ImportRegistration" ng-click="viewDoc('ImportRegistration')"
+                            class="btn button-custom"
+                            style="position:absolute; right:5px; top:50%; transform:translateY(-50%); padding:5px 10px;">
+                        <i class="fa fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4">
+                <div class="file-wrap">
+                    <input type="file" id="ImportRegistrationFile" accept=".pdf"
+                           onchange="angular.element(this).scope().fileSelected(this,'ImportRegistration')" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row form-row-item">
+            <div class="col-lg-2 col-md-3 field-label">Indenting License</div>
+            <div class="col-lg-2 col-md-3">
+                <div style="position: relative;">
+                    <input id="IndentingLicense" type="text" autocomplete="off"
+                           class="form-control" ng-model="PurreqDtl.Vendor.IndentingLicense"
+                           placeholder="Optional" style="padding-right:35px;" />
+                    <button ng-if="!docExistsMap.IndentingLicense" ng-click="viewDoc('IndentingLicense')"
+                            class="btn button-custom"
+                            style="position:absolute; right:5px; top:50%; transform:translateY(-50%); padding:5px 10px;">
+                        <i class="fa fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4">
+                <div class="file-wrap">
+                    <input type="file" id="IndentingLicenseFile" accept=".pdf"
+                           onchange="angular.element(this).scope().fileSelected(this,'IndentingLicense')" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row form-row-item">
+            <div class="col-lg-2 col-md-3 field-label">Others</div>
+            <div class="col-lg-2 col-md-3">
+                <div style="position: relative;">
+                    <input id="Others" type="text" autocomplete="off"
+                           class="form-control" ng-model="PurreqDtl.Vendor.Others"
+                           placeholder="Optional" style="padding-right:35px;" />
+                    <button ng-if="!docExistsMap.Others" ng-click="viewDoc('Others')"
+                            class="btn button-custom"
+                            style="position:absolute; right:5px; top:50%; transform:translateY(-50%); padding:5px 10px;">
+                        <i class="fa fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4">
+                <div class="file-wrap">
+                    <input type="file" id="OthersFile" accept=".pdf"
+                           onchange="angular.element(this).scope().fileSelected(this,'Others')" />
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Submit ── -->
+        <div class="btn-submit-row">
+            <button id="btnSaveMasterUpdate" type="button" class="btn btn-success"
+                    title="Update" ng-click="updateRegistration()" ng-disabled="loading">
+                <i class="fa fa-save"></i>&nbsp; Update Registration
             </button>
-            <a class="btn btn-app btn-flat btn-sm btnLoad" data-ng-click="LoadImage()">
-                <i class="fa fa-inbox"></i> Load
-            </a>
-
-            <a class="btn  btn-app btn-flat btn-sm btnRemove" data-ng-click="RemoveAllSelectedImages()">
-                <i class="fa fa-remove"></i> Remove
-            </a>
-            <a class="btn  btn-app btn-flat btn-sm btnRotate" data-ng-click="RotateRight()">
-                <i class="fa fa-rotate-right"></i> Rotate
-            </a>
-
-            <a class="btn  btn-app btn-flat btn-sm btnMoveImage" data-ng-click="ShowMoveImageDiv()">
-                <i class="fa fa-reorder"></i> Move Image
-            </a>
-
-
-            <a class="btn  btn-app btn-flat btn-sm" data-ng-click="saveFurtherDoc('')">
-                <i class="fa fa-save"></i> Save Document(s)
-            </a>
-
         </div>
-    </div>-->
-    @*<div class="row">
-            <div id="MoveImage" class="row hidden">
-                <div class="col-lg-2"></div>
-                <div class="col-lg-10">
-                    <label>Which Image</label><input type="text" id="WhichImage" />
-                    <label>Where</label><input type="text" id="Where" />
-                    <button class="btn btn-primary btn-flat btn-sm" ng-click="MoveImage()">Move</button>
-                </div>
-            </div>
-        </div>
-        <br />*@
-    @*<div class="row">
-            <div class="col-lg-12">
-                <div id="dwtHorizontalThumbnil"></div>
-            </div>
-        </div>*@
-
-    <br />
-
-
-
-    <div id="DetailViewModal" class="modal fade">
-        <div class="modal-dialog">
+    </div><!-- /reg-card -->
+    @* ==================== PDF VIEWER MODAL ==================== *@
+    <div id="ShowPDFModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-fullscreen modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" ng-click="" aria-hidden="true">x</button>
-                    <h4 class="modal-title">Document Detail View</h4>
+                <div class="modal-header" style="padding: 5px 10px;">
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                    <h4 class="modal-title">Document Viewer</h4>
                 </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-lg-2">
-                            <h4><label>Thumbnail:</label></h4>
-                        </div>
-                        <div class="col-lg-10">
-                            <button class="btn btn-flat btn-sm btn-default" data-ng-click="ZoomIn()"> Zoom In</button>
-                            <button class="btn btn-flat btn-sm btn-default" data-ng-click="ZoomOut()"> Zoom Out</button>
-                            <button class="btn btn-flat btn-sm btn-default" data-ng-click="printData2()">Print</button>
-                        </div>
-
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-2">
-                            <div id="dwtVerticalThumbnil" class="box-body"></div>
-                        </div>
-                        <div class="col-lg-10">
-                            <div id="dwtLargeViewer" class="box-body"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <div class="col-sm-12 col-md-12 col-lg-12">
-                        <div class="form-group">
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-
-
-
-
-    <div id="viewerModal" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-                    <h3 class="modal-title">Image Viewer</h3>
-                </div>
-
-                <div class="modal-body">
-                    <div class="box-body">
-                        <button class="btn btn-flat btn-sm btn-default" data-ng-click="ZoomIn()"> Zoom In</button>
-                        <button class="btn btn-flat btn-sm btn-default" data-ng-click="ZoomOut()"> Zoom Out</button>
-
-                        <div id="dwtHorizontalThumbnil" class="box-body"></div>
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <div class="col-sm-12 col-md-12 col-lg-12">
-                        <div class="form-group">
-                        </div>
-                    </div>
+                <div class="modal-body" style="padding: 0; margin: 0;">
+                    <iframe id="pdfViewer" style="width: 100%; height: 100vh; border: none;" title="PDF Viewer"></iframe>
                 </div>
             </div>
         </div>
     </div>
 
-
-
-    <div id="docUpdateModal" class="modal fade">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-                    <h3 class="modal-title">Update Document - {{DocumentName}}</h3>
-                </div>
-
-                <div class="modal-body">
-
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <label>Process Documents: </label>
-
-                            <button class="btn btnc1 btn-app btn-flat btnScan" ng-click="AcquireImage_Update();">
-                                <i class="fa fa-print"></i> Scan
-                            </button>
-                            <a class="btn btnc2 btn-app btn-flat btnLoad" ng-click="LoadImage_Update()">
-                                <i class="fa fa-inbox"></i> Load PDF
-                            </a>
-
-                            <a class="btn btnc3 btn-app btn-flat btnRemove" ng-click="RemoveAllSelectedImages_Update()">
-                                <i class="fa fa-remove"></i> Remove
-                            </a>
-                            <a class="btn btnc2 btn-app btn-flat btnRotate" ng-click="RotateRight_Update()">
-                                <i class="fa fa-rotate-right"></i> Rotate
-                            </a>
-
-                            <a class="btn btnc2 btn-app btn-flat btnMoveImage" ng-click="ShowMoveImageDiv_Update()">
-                                <i class="fa fa-reorder"></i> Move Image
-                            </a>
-                        </div>
-                    </div>
-                    <br />
-                    <div class="row">
-                        <div id="MoveImageUpdate" class="row hidden">
-                            <div class="col-lg-2"></div>
-                            <div class="col-lg-10">
-                                <label>Which Image</label><input type="text" id="WhichImage_Update" />
-                                <label>Where</label><input type="text" id="Where_Update" />
-                                <button class="btn btn-primary btn-flat btn-sm" ng-click="MoveImage_Update()">Move</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-12 col-md-12 col-lg-12">
-                            <div id="dwtDocumentUpdate" style="height:200px;"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button class="btn btn-primary" ng-click="UpdateDocument()" type="button">Update</button>
-                </div>
-            </div>
+    <!-- ── Loading overlay ── -->
+    <div id="mydiv" ng-show="loading">
+        <div class="overlay">
+            <i class="fa fa-refresh fa-spin"></i> Loading...
         </div>
     </div>
-
-
-    @*<div id="viewerModal" class="modal fade">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-                        <h3 class="modal-title">Image Viewer</h3>
-                    </div>
-
-                    <div class="modal-body">
-                        <div class="box-body">
-                            <button class="btn btn-flat btn-sm btn-default" data-ng-click="ZoomIn()"> Zoom In</button>
-                            <button class="btn btn-flat btn-sm btn-default" data-ng-click="ZoomOut()"> Zoom Out</button>
-
-                            <div id="dwtLargeViewer_single" class="box-body"></div>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <div class="col-sm-12 col-md-12 col-lg-12">
-                            <div class="form-group">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>*@
-
-
-
-
-
 
 </div>
 
-<script type="text/javascript" src="~/Resources/dynamsoft.webtwain.intellisense.js"></script>
-<script type="text/javascript" src="~/Resources/dynamsoft.webtwain.initiate.js"></script>
-<script type="text/javascript" src="~/Resources/dynamsoft.webtwain.config.js"></script>
-<script type="text/javascript" src="~/Resources/addon/dynamsoft.webtwain.addon.pdf.js"></script>
-
-
-
 <script type="text/javascript">
-
-    app.controller('VendorRegistrationUpdateCtrl', function ($scope, $http,$q) {
+    app.controller('VendorRegistrationUpdateCtrl', function ($scope, $http, $q) {
 
         $scope.itemsByPage = 8;
         $scope.fromMenu = 1;
@@ -676,10 +483,9 @@
             autoclose: true
         });
 
-        $('.DatePicker')
-            .on('changeDate', function (ev) {
-                $('.datepicker').hide();
-            });
+        $('.DatePicker').on('changeDate', function (ev) {
+            $('.datepicker').hide();
+        });
 
         //------------- Model ----------------//
 
@@ -691,7 +497,7 @@
                 ContactPersonLastName: "",
                 Email: "",
                 VendorPhoneNumber: "",
-                VendorPhoneNumber2:"",
+                VendorPhoneNumber2: "",
                 TIN: "",
                 BIN: "",
                 CompanyAddress: "",
@@ -707,13 +513,14 @@
                 ImportRegistration: "",
                 IndentingLicense: "",
                 Others: "",
-                Country: { CountryID: "", CountryCode:"", CountryName: "" },
+                Country: { CountryID: "", CountryCode: "", CountryName: "" },
                 BusinessType: { BusinessTypeID: "", BusinessTypeName: "" },
                 BusinessNature: { BusinessNatureID: "", BusinessNatureName: "" },
                 EstablishedYear: "",
-                TradeLicenseValidity:""
+                TradeLicenseValidity: ""
             }
-        }
+        };
+
         $scope.AddNumber = false;
 
         $scope.AddAnotherNumber = function (action) {
@@ -725,333 +532,127 @@
             }
         };
 
+        //------------- File upload state ----------------//
 
-        //#region Twain Code
-        var dwObject;
-        var dwObject2;
-        var dwObjectLargeViewer;
-        var zoomFactor = .5;;
+        $scope.tinFile = null;
+        $scope.binFile = null;
+        $scope.companyProfileFile = null;
+        $scope.tradeLicenseFile = null;
+        $scope.partnershipDeedFile = null;
+        $scope.importRegistrationFile = null;
+        $scope.indentingLicenseFile = null;
+        $scope.othersFile = null;
 
-        var dwtLargeViewer_single;
-
-        Dynamsoft.WebTwainEnv.CreateDWTObject('dwtLargeViewer_single',
-            function (dwtObject) {
-                dwtLargeViewer_single = dwtObject;
-                dwtLargeViewer_single.SetViewMode(-1, -1);
-                dwtLargeViewer_single.MaxImagesInBuffer = 1;
-                dwtLargeViewer_single.Width = 9.69 * 90;
-                dwtLargeViewer_single.Height = $(window).height();
-            },
-            function (errorString) {
-                alert('WebTwain Loading Error');
+        $scope.fileSelected = function (input, type) {
+            if (input.files && input.files[0]) {
+                if (type === 'TIN') {
+                    $scope.tinFile = input.files[0];
+                } else if (type === 'BIN') {
+                    $scope.binFile = input.files[0];
+                } else if (type === 'CompanyProfile') {
+                    $scope.companyProfileFile = input.files[0];
+                } else if (type === 'TradeLicense') {
+                    $scope.tradeLicenseFile = input.files[0];
+                } else if (type === 'PartnershipDeed') {
+                    $scope.partnershipDeedFile = input.files[0];
+                } else if (type === 'ImportRegistration') {
+                    $scope.importRegistrationFile = input.files[0];
+                } else if (type === 'IndentingLicense') {
+                    $scope.indentingLicenseFile = input.files[0];
+                } else if (type === 'Others') {
+                    $scope.othersFile = input.files[0];
+                }
             }
-        );
+        };
 
-        function dynamsoftOnReady() {
-            dwObject = Dynamsoft.WebTwainEnv.GetWebTwain("dwtHorizontalThumbnil");
-            dwObject2 = Dynamsoft.WebTwainEnv.GetWebTwain("dwtVerticalThumbnil");
+        //------------- Document key map ----------------//
 
-            dwObjectLargeViewer = Dynamsoft.WebTwainEnv.GetWebTwain("dwtLargeViewer");
+        var docKeyMap = {
+            'TIN': 'TIN',
+            'BIN': 'BIN',
+            'Company Profile': 'CompanyProfile',
+            'CompanyProfile': 'CompanyProfile',
+            'Trade License': 'TradeLicense',
+            'TradeLicense': 'TradeLicense',
+            'Partnership Deed / Agencyship': 'PartnershipDeed',
+            'PartnershipDeed': 'PartnershipDeed',
+            'Import Registration Certificate': 'ImportRegistration',
+            'ImportRegistration': 'ImportRegistration',
+            'IRC': 'ImportRegistration',
+            'Indenting License': 'IndentingLicense',
+            'IndentingLicense': 'IndentingLicense',
+            'Others': 'Others'
+        };
 
-            dwObjectLargeViewer.SetViewMode(-1, -1);
-            dwObjectLargeViewer.MaxImagesInBuffer = 1;
+        //------------- Existing document lookups ----------------//
 
-            dwObject.SetViewMode(4, -1);
-            // DWObject.PDFCompressionType = EnumDWT_PDFCompressionType.PDF_JPEG;
-            dwObject.JPEGQuality = 20;
-            dwObject.FitWindowType = 0;
-            dwObject.SelectionImageBorderColor = 0x691254;
-            dwObject.ShowPageNumber = true;
-            dwObject.IfAppendImage = true;
-            dwObject.RegisterEvent("OnMouseDoubleClick", function () {
-                dwObject.CopyToClipboard(dwObject.CurrentImageIndexInBuffer);
-                dwtLargeViewer_single.LoadDibFromClipboard();
-                $('#viewerModal').modal('show');
+        $scope.docExistsMap = {};
+        $scope.docPropertyIDMap = {};
+        $scope.scannedDocuments = [];
+
+        $scope.setDocProperties = function (obj) {
+            $scope.docExistsMap = {};
+            $scope.docPropertyIDMap = {};
+
+            (obj || []).forEach(function (element) {
+                var key = docKeyMap[element.DocPropertyName] || element.DocPropertyName;
+
+                if (element.Exist) {
+                    $scope.docExistsMap[key] = true;
+                }
+
+                // Always store DocPropertyID regardless of Exist flag
+                if (element.DocPropertyID) {
+                    $scope.docPropertyIDMap[key] = element.DocPropertyID;
+                }
             });
-            dwObject.RegisterEvent("OnImageAreaSelected", function (sImageIndex, left, top, right, bottom) {
-                dwObject.Erase(sImageIndex, left, top, right, bottom);
+        };
+
+        // Opens the already-uploaded document for the given field key
+        $scope.viewDoc = function (type) {
+
+            var doc = ($scope.scannedDocuments || []).find(function (d) {
+                var key = docKeyMap[d.DocPropertyName] || d.DocPropertyName;
+                return key === type;
             });
 
-            dwObject2.SetViewMode(-1, 4);
-            //// DWObject.PDFCompressionType = EnumDWT_PDFCompressionType.PDF_JPEG;
-            dwObject2.JPEGQuality = 20;
-            dwObject2.FitWindowType = 0;
-            dwObject2.SelectionImageBorderColor = 0x691254;
-            dwObject2.ShowPageNumber = true;
-            dwObject2.IfAppendImage = true;
-            dwObject2.RegisterEvent("OnMouseClick", function () {
-                dwObject2.CopyToClipboard(dwObject2.CurrentImageIndexInBuffer);
-                dwObjectLargeViewer.LoadDibFromClipboard();
-            });
-            dwObject2.RegisterEvent("OnImageAreaSelected", function (sImageIndex, left, top, right, bottom) {
-                dwObject2.Erase(sImageIndex, left, top, right, bottom);
-            });
+            if (!doc) {
+                toastr.error("No document found to view.");
+                return;
+            }
 
-            dwObject.Addon.PDF.Download("../Resources/addon/Pdf.zip",  // specify the url of the add-on resource
-                function () { console.log('Successfully Downloaded PDF add-on'); }, // successful callback
-                function (errorCode, errorString) { alert(errorString); }  // failure callback and show error message
-            );
-        }
+            $scope.loading = true;
 
+            var requestUrl = "/VendorSelectionModule/VendorRegistrationUpdate/ViewDocument?" +
+                "serverIP=" + encodeURIComponent(doc.ServerIP) +
+                "&ftpPort=" + encodeURIComponent(doc.FtpPort || doc.ServerPort) +
+                "&ftpUserName=" + encodeURIComponent(doc.FtpUserName) +
+                "&ftpPassword=" + encodeURIComponent(doc.FtpPassword) +
+                "&fileServerURL=" + encodeURIComponent(doc.FileServerURL) +
+                "&vendorId=" + encodeURIComponent($scope.VendorID) +
+                "&ext=" + encodeURIComponent("pdf");
 
-        Dynamsoft.WebTwainEnv.RegisterEvent("OnWebTwainReady", dynamsoftOnReady);
-
-
-        var DWObjectOFMakeUpdate;
-        Dynamsoft.WebTwainEnv.CreateDWTObject('dwtDocumentUpdate',
-            function (dwtObject) {
-                DWObjectOFMakeUpdate = dwtObject;
-                DWObjectOFMakeUpdate.SetViewMode(4, -1);
-                DWObjectOFMakeUpdate.PDFCompressionType = EnumDWT_PDFCompressionType.PDF_JPEG;
-                DWObjectOFMakeUpdate.JPEGQuality = 20;
-                DWObjectOFMakeUpdate.FitWindowType = 0;
-                DWObjectOFMakeUpdate.Width = $(window).width() - 235;
-                DWObjectOFMakeUpdate.SelectionImageBorderColor = 0x691254;
-                DWObjectOFMakeUpdate.ShowPageNumber = true;
-                DWObjectOFMakeUpdate.IfAppendImage = true;
-                DWObjectOFMakeUpdate.RegisterEvent('OnMouseDoubleClick', function () {
-                    DWObjectOFMakeUpdate.CopyToClipboard(DWObjectOFMakeUpdate.CurrentImageIndexInBuffer);
-                    dwtLargeViewer_single.LoadDibFromClipboard();
-                    $('#viewerModal').modal('show');
+            $http.get(requestUrl, { responseType: 'arraybuffer' })
+                .then(function (response) {
+                    var file = new Blob([response.data], { type: 'application/pdf' });
+                    var fileURL = URL.createObjectURL(file);
+                    $("#pdfViewer").attr("src", fileURL + "#view=Fit");
+                    $('#ShowPDFModal').modal('show');
+                })
+                .catch(function (error) {
+                    toastr.warning("No document has been uploaded yet.");
+                    console.error(error);
+                })
+                .finally(function () {
+                    $scope.loading = false;
                 });
-                DWObjectOFMakeUpdate.RegisterEvent('OnImageAreaSelected', function (sImageIndex, left, top, right, bottom) {
-                    DWObjectOFMakeUpdate.Erase(sImageIndex, left, top, right, bottom);
-                });
-            },
-            function (errorString) {
-                alert('WebTwain Loading Error');
-            }
-        );
-
-
-
-
-
-        $scope.getImages = function (e) {
-
-            if (dwObject && $scope.clkBtn !== 1) {
-                dwObject.IfShowUI = false;
-                dwObject.IfAutomaticDeskew = true;
-                // DWObject.IfAutoDiscardBlankpages = false;
-                dwObject.AcquireImage();
-            } else {
-                $scope.clkBtn = 0;
-            }
         };
 
-        $scope.ZoomIn = function () {
-            dwObjectLargeViewer.Zoom = zoomFactor * 1.2;
-            zoomFactor = zoomFactor * 1.2;
-        };
-
-        $scope.ZoomOut = function () {
-            dwObjectLargeViewer.Zoom = zoomFactor / 1.2;
-            zoomFactor = zoomFactor / 1.2;
-        };
-
-        $scope.RemoveAllSelectedImages = function () {
-            dwObject.RemoveAllSelectedImages();
-        }
-
-        $scope.LoadImage = function () {
-            //dwObject.IfShowFileDialog = true;
-            //dwObject.RemoveAllImages();
-            //dwObject.LoadImageEx("", EnumDWT_ImageType.IT_ALL);
-
-            dwObject.Addon.PDF.SetResolution(200);
-            dwObject.Addon.PDF.SetConvertMode(EnumDWT_ConverMode.CM_RENDERALL);
-
-            dwObject.IfShowFileDialog = true;
-
-            dwObject.RemoveAllImages();
-            dwObject.LoadImageEx("", EnumDWT_ImageType.IT_PDF, function () { }, function () { });
-
-            $scope.ShowUploadImageDivVar = false;
-        };
-
-        $scope.RotateRight = function () {
-            dwObject.RotateRight(dwObject.GetSelectedImageIndex(0));
-        };
-
-        $scope.ShowMoveImageDiv = function () {
-            $("#MoveImage").toggleClass("hidden");
-        };
-
-        $scope.MoveImage = function () {
-            dwObject.MoveImage(($("#WhichImage").val() - 1), ($("#Where").val() - 1));
-            $("#MoveImage").toggleClass("hidden");
-        };
-
-
-        //#region Dynamo_Helper_update
-        $scope.AcquireImage_Update = function () {
-            if (DWObjectOFMakeUpdate) {
-                DWObjectOFMakeUpdate.IfAutomaticDeskew = true;
-                DWObjectOFMakeUpdate.IfAutoDiscardBlankpages = false;
-                $scope.ShowUploadImageDivVar = false;
-                var OnAcquireImageSuccess, OnAcquireImageFailure;
-                OnAcquireImageSuccess = OnAcquireImageFailure = function () {
-                    DWObjectOFMakeUpdate.CloseSource();
-                };
-
-                ////DWObject.AcquireImage();
-
-                //DWObjectOFMakeUpdate.SelectSourceByIndex(document.getElementById("source").selectedIndex); //Use method SelectSourceByIndex to avoid the 'Select Source' dialog
-                //DWObjectOFMakeUpdate.OpenSource();
-
-                DWObjectOFMakeUpdate.IfDisableSourceAfterAcquire = true;	// Scanner source will be disabled/closed automatically after the scan.
-                DWObjectOFMakeUpdate.AcquireImage(OnAcquireImageSuccess, OnAcquireImageFailure);
-            }
-        };
-
-        $scope.LoadImage_Update = function () {
-            //DWObjectOFMakeUpdate.IfShowFileDialog = true;
-            //DWObjectOFMakeUpdate.LoadImageEx("", EnumDWT_ImageType.IT_ALL);
-
-            DWObjectOFMakeUpdate.Addon.PDF.SetResolution(200);
-            DWObjectOFMakeUpdate.Addon.PDF.SetConvertMode(EnumDWT_ConverMode.CM_RENDERALL);
-
-            DWObjectOFMakeUpdate.IfShowFileDialog = true;
-
-            DWObjectOFMakeUpdate.RemoveAllImages();
-            DWObjectOFMakeUpdate.LoadImageEx("", EnumDWT_ImageType.IT_PDF, function () { }, function () { });
-
-            $scope.ShowUploadImageDivVar = false;
-        };
-
-        $scope.RemoveAllSelectedImages_Update = function () {
-            DWObjectOFMakeUpdate.RemoveAllSelectedImages();
-        }
-
-        $scope.RotateRight_Update = function () {
-            DWObjectOFMakeUpdate.RotateRight(DWObjectOFMakeUpdate.GetSelectedImageIndex(0));
-        }
-
-        $scope.ShowMoveImageDiv_Update = function () {
-            $("#MoveImageUpdate").toggleClass("hidden");
-            $scope.ShowUploadImageDivVar = false;
-        }
-
-        $scope.MoveImage_Update = function () {
-            DWObjectOFMakeUpdate.MoveImage(($("#WhichImage_Update").val() - 1), ($("#Where_Update").val() - 1));
-            $("#MoveImageUpdate").toggleClass("hidden");
-            $scope.ShowUploadImageDivVar = false;
-        };
-
-
-
-
-
-        //    })
-        //    .error(function () {
-
-        //    });
-
-
-
-        //$scope.test = function () {
-        //    $http.post('/VendorSelectionModule/VendorRegistrationUpdate/GetSavedPODocumentInfo',
-        //        {
-        //            TinBinDocId: 'VENDOCS25011900004'
-        //        })
-        //        /// For amenment
-        //        //$http.post('/LCModule/LCReceive/GetSavedPODocumentInfo', { LCNumber: $scope.vmLCReceive.LCNumber })
-        //        .success(function (response) {
-        //            //$scope.docPropIdentityGridSaveData = response.DocInfo;////////////////////////////
-        //            //console.log($scope.docPropIdentityGridSaveData);
-        //            //debugger;
-        //            DWObject.RemoveAllImages();
-        //            //DWObjectLargeViewer.RemoveAllImages();
-        //            var docPropertyID = "";
-        //            response.DocInfo.forEach(function (index) {
-        //                if (docPropertyID !== index.DocPropertyID && docPropertyID) {
-        //                    $scope.LoadImageWithoutBlank();
-        //                }
-        //                angular.forEach($scope.docPropertyForSpecificDocType, function (item) {
-        //                    if (index.DocPropertyID == item.DocPropertyID) {
-        //                        item.IsSelected = true;
-        //                    };
-        //                });
-        //                DWObject.IfShowFileDialog = false;
-        //                DWObject.FTPPort = index.ServerPort;
-        //                DWObject.FTPUserName = index.FtpUserName;
-        //                DWObject.FTPPassword = index.FtpPassword;
-        //                DWObject.FTPDownload(index.ServerIP, (index.FileServerUrl + "//Samiul2024.pdf"
-
-        //                   /*
-        //                   +index.DocumentID + "Samiul2024.pdf"*/
-        //                )
-        //                );
-        //                docPropertyID = index.DocPropertyID;
-        //            });
-        //            $scope.LoadImageWithoutBlank();
-        //            $scope.loader = false;
-        //        }).error(function (response) {
-        //            toastr.error(response.respStatus.Message);
-        //            $scope.loader = false;
-        //        });
-
-        //}
-
-
-        //var selectedPropID = new Array();
-
-        //$http.get('/VendorSelectionModule/VendorRegistration/GetSupportDoc')
-        //    .success(function (response) {
-        //        $scope.docPropertyForSpecificDocType = response.docProperties;
-        //        angular.forEach($scope.docPropertyForSpecificDocType, function (item) {
-        //            if (item.DocClassification == "Required") {
-        //                item.IsSelected = true;
-        //                selectedPropID.push(item.DocPropertyID);
-        //            }
-        //        })
-
-        //        $http.post('/VendorSelectionModule/VendorRegistration/GetIdentificationAttributesForDocProperties',
-        //            {
-        //                _SelectedPropID: selectedPropID.join()
-
-        //            })
-        //            .success(function (response) {
-        //                $scope.docPropIdentityGridData = response;
-        //                console.log($scope.docPropIdentityGridData);
-        //                $scope.loading = false;
-        //            }).error(function () {
-        //                $scope.loading = false;
-        //            });
-
-
+        //------------- Lookup lists ----------------//
 
         $scope.BusinessTypeList = [];
         $scope.BusinessNatureList = [];
         $scope.CountryList = [];
-
-
-
-        //$scope.loadBusinessType = function () {
-          
-        //};
-
-        //$scope.loadBusinessNature = function () {
-        //    $http.get('/VendorSelectionModule/VendorRegistration/GetBusinessNatureList')
-        //        .then(function (response) {
-        //            $scope.BusinessNatureList = response.data;
-        //        });
-        //};
-
-        //$scope.LoadCountryList = function () {
-        //    $http.get('/VendorSelectionModule/VendorRegistration/GetCountryList')
-        //        .then(function (res) {
-        //            $scope.CountryList = res.data;
-        //        });
-        //};
-
-
-
-
-
-
-
-
 
         function loadLists() {
             return $q.all([
@@ -1065,9 +666,9 @@
             });
         }
 
+        //------------- Initial load ----------------//
 
-
-
+        $scope.loading = true;
 
         $http.post('/VendorSelectionModule/VendorRegistrationUpdate/GetVendorInformation')
             .then(function (response) {
@@ -1076,7 +677,7 @@
                 $scope.VendorID = $scope.IndvVendorData[0].VendorID;
                 $scope.PurreqDtl.Vendor.TinBinDocId = $scope.IndvVendorData[0].TinBinDocId || "";
 
-                const vendor = $scope.IndvVendorData[0];
+                var vendor = $scope.IndvVendorData[0];
 
                 return loadLists().then(function () {
                     return vendor;
@@ -1092,7 +693,7 @@
                 $scope.PurreqDtl.Vendor.TinBinDocId = vendor.TinBinDocId || "";
 
                 if (vendor.ContactPerson) {
-                    const nameParts = vendor.ContactPerson.split(' ');
+                    var nameParts = vendor.ContactPerson.split(' ');
                     $scope.PurreqDtl.Vendor.ContactPersonFirstName = nameParts[0] || "";
                     $scope.PurreqDtl.Vendor.ContactPersonLastName = nameParts.slice(1).join(' ') || "";
                 } else {
@@ -1102,7 +703,6 @@
 
                 $scope.PurreqDtl.Vendor.VendorPhoneNumber = vendor.VendorPhoneNumber || "";
                 $scope.PurreqDtl.Vendor.VendorPhoneNumber2 = vendor.VendorPhoneNumber2 || "";
-
                 $scope.AddNumber = !!$scope.PurreqDtl.Vendor.VendorPhoneNumber2;
 
                 $scope.PurreqDtl.Vendor.GenaralDetailsServices = vendor.GenaralDetailsServices || "";
@@ -1115,41 +715,34 @@
                 $scope.PurreqDtl.Vendor.ImportRegistration = vendor.IRC || "";
                 $scope.PurreqDtl.Vendor.IndentingLicense = vendor.IndentingLicense || "";
                 $scope.PurreqDtl.Vendor.Others = vendor.Others || "";
-
                 $scope.PurreqDtl.Vendor.UserName = "";
                 $scope.PurreqDtl.Vendor.Password = "";
                 $scope.PurreqDtl.Vendor.ConfirmPassword = "";
                 $scope.PurreqDtl.Vendor.EstablishedYear = vendor.EstablishedYear;
                 $scope.PurreqDtl.Vendor.TradeLicenseValidity = vendor.TradeLicenseValidity;
 
-                // ✅ FIX: Country (must match type)
                 if (vendor.Country) {
-                    var countryObj = $scope.CountryList.find(i => i.CountryID == vendor.Country);
-                
-
+                    var countryObj = $scope.CountryList.find(function (i) {
+                        return i.CountryID == vendor.Country;
+                    });
                     $scope.PurreqDtl.Vendor.Country = countryObj || vendor.Country;
                 }
 
-                // ✅ FIX: BusinessType (object binding OR ID safe handling)
                 if (vendor.BusinessType) {
-                    var businessTypeObj = $scope.BusinessTypeList.find(i =>
-                        i.BusinessTypeID == vendor.BusinessType ||
-                        i.BusinessTypeName == vendor.BusinessType
-                    );
-
+                    var businessTypeObj = $scope.BusinessTypeList.find(function (i) {
+                        return i.BusinessTypeID == vendor.BusinessType ||
+                            i.BusinessTypeName == vendor.BusinessType;
+                    });
                     $scope.PurreqDtl.Vendor.BusinessType = businessTypeObj || vendor.BusinessType;
                 }
-    
-                if (vendor.BusinessNature) {
-                    var businessNatureObj = $scope.BusinessNatureList.find(i =>
-                        i.BusinessNatureID == vendor.BusinessNature ||
-                        i.BusinessNatureName == vendor.BusinessNature
-                    );
 
+                if (vendor.BusinessNature) {
+                    var businessNatureObj = $scope.BusinessNatureList.find(function (i) {
+                        return i.BusinessNatureID == vendor.BusinessNature ||
+                            i.BusinessNatureName == vendor.BusinessNature;
+                    });
                     $scope.PurreqDtl.Vendor.BusinessNature = businessNatureObj || vendor.BusinessNature;
                 }
-
-                $scope.loading = false;
 
                 return $http.get("/VendorSelectionModule/VendorRegistrationUpdate/GetDocsForFurtherDoc", {
                     params: { "TinBinDocId": $scope.PurreqDtl.Vendor.TinBinDocId }
@@ -1157,156 +750,52 @@
 
             })
             .then(function (response) {
-
-                $scope.docProperties = [];
-                $scope.scannedDocuments = [];
-                $scope.displayScannedDocuments = [];
-
                 $scope.setDocProperties(response.data.docProperties);
-                $scope.scannedDocuments = response.data.documents;
-                $scope.displayScannedDocuments = [].concat($scope.scannedDocuments);
-
+                $scope.scannedDocuments = response.data.documents || [];
+                $scope.loading = false;
             })
             .catch(function () {
                 $scope.loading = false;
                 toastr.error('Data Loading Failed.');
             });
 
-
-
-
-
-
-
-        $scope.setDocProperties = function (obj) {
-            obj.forEach(function (element) {
-                $scope.docProperty = {
-                    DocPropertyID: element.DocPropertyID,
-                    DocPropertyName: element.DocPropertyName,
-                    DocClassification: element.DocClassification,
-                    Exist: element.Exist,
-                    Checked: false
-                }
-                $scope.docProperties.push($scope.docProperty);
-            });
-        }
-
-
-
-
-        $scope.getScannedDocs = function (row) {
-            //console.log(dwObject2);
-            dwObject2.IfShowFileDialog = false;
-            dwObject2.RemoveAllImages();
-            dwObjectLargeViewer.RemoveAllImages();
-            dwObject2.FTPPort = row.FtpPort;
-            dwObject2.FTPUserName = row.FtpUserName;
-            dwObject2.FTPPassword = row.FtpPassword;
-            dwObject2.FTPDownload(row.ServerIP, (row.FileServerURL + "//" +
-                $scope.VendorID + ".pdf"));
-            $("#DetailViewModal").modal("show");
-        }
-
-
-
-        var UpdatedItem = {};
-
-        $scope.showEditModal = function (row) {
-
-            $("#docUpdateModal").modal("show");
-
-            UpdatedItem = row;
-
-            $scope.DocumentName = row.DocPropertyName;
-
-            DWObjectOFMakeUpdate.IfShowFileDialog = false;
-            DWObjectOFMakeUpdate.RemoveAllImages();
-
-            DWObjectOFMakeUpdate.FTPPort = row.ServerPort;
-            DWObjectOFMakeUpdate.FTPUserName = row.FtpUserName;
-            DWObjectOFMakeUpdate.FTPPassword = row.FtpPassword;
-
-            DWObjectOFMakeUpdate.FTPDownload(row.ServerIP, (row.FileServerURL +
-                "//" + row.DocumentID + ".pdf"));
-        };
-
-        $scope.UpdateDocument = function () {
-            if (UpdatedItem.DocumentID) {
-                DWObjectOFMakeUpdate.IfShowFileDialog = false;
-                var strFTPServer = UpdatedItem.ServerIP;
-                DWObjectOFMakeUpdate.FTPPort = UpdatedItem.ServerPort;
-                DWObjectOFMakeUpdate.FTPUserName = UpdatedItem.FtpUserName;
-                DWObjectOFMakeUpdate.FTPPassword = UpdatedItem.FtpPassword;
-
-                var isSave = DWObjectOFMakeUpdate.FTPUploadAllAsPDF(strFTPServer,
-                    UpdatedItem.FileServerURL + "//" +
-                    $scope.VendorID + ".pdf");
-
-                if (isSave) {
-                    $scope.loading = false;
-                    toastr.success("Upload Successful");
-                    UpdatedItem = {};
-                    $('#docUpdateModal').modal('hide');
-                }
-                else {
-                    toastr.error('Document Update Failed');
-                }
-            }
-            else
-                toastr.error('No Document Selected');
-
-        };
-
-        $scope.resetPage = function () {
-            window.location.reload();
-        }
-
-
-
-
-
-
-      
-        // call on page load
-       
-
-
-
-        //$scope.AutoCompleteVendorInfo = function (vendorData) {
-           
-
-
-
-
-
-        //};
-
-
-
-
-
-
-
-
-
+        //------------- Save ----------------//
         $scope.updateRegistration = function () {
 
             var estYearVal = $('#EstablishedYear').val();
             $scope.PurreqDtl.Vendor.EstablishedYear = estYearVal
-                ? $scope.formatDate(estYearVal)
-                : "";
+                ? $scope.formatDate(estYearVal) : "";
 
             var tradeVal = $('#TradeLicenseValidity').val();
             $scope.PurreqDtl.Vendor.TradeLicenseValidity = tradeVal
-                ? $scope.formatDate(tradeVal)
-                : "";
+                ? $scope.formatDate(tradeVal) : "";
 
 
-            //$scope.PurreqDtl.Vendor.EstablishedYear = $scope.formatDate($('#EstablishedYear').val());
-            //$scope.PurreqDtl.Vendor.TradeLicenseValidity = $scope.formatDate($('#TradeLicenseValidity').val());
+            //------------- Document Validation ----------------//
+            var documentValidation = [
+                { file: $scope.tinFile, value: $scope.PurreqDtl.Vendor.TIN, name: 'TIN' },
+                { file: $scope.binFile, value: $scope.PurreqDtl.Vendor.BIN, name: 'BIN' },
+                { file: $scope.companyProfileFile, value: $scope.PurreqDtl.Vendor.CompanyProfile, name: 'Company Profile' },
+                { file: $scope.tradeLicenseFile, value: $scope.PurreqDtl.Vendor.TradeLicense, name: 'Trade License' },
+                { file: $scope.partnershipDeedFile, value: $scope.PurreqDtl.Vendor.PartnershipDeed, name: 'Partnership Deed / Agencyship' },
+                { file: $scope.importRegistrationFile, value: $scope.PurreqDtl.Vendor.ImportRegistration, name: 'Import Registration Certificate' },
+                { file: $scope.indentingLicenseFile, value: $scope.PurreqDtl.Vendor.IndentingLicense, name: 'Indenting License' },
+                { file: $scope.othersFile, value: $scope.PurreqDtl.Vendor.Others, name: 'Others' }
+            ];
 
+            for (var i = 0; i < documentValidation.length; i++) {
+                if (documentValidation[i].file &&
+                    (!documentValidation[i].value || !documentValidation[i].value.trim())) {
 
+                    toastr.error(
+                        'Please enter the ' + documentValidation[i].name +
+                        ' number/details before uploading the document.'
+                    );
+                    return;
+                }
+            }
 
+            $scope.loading = true;
 
             $http.post('/VendorSelectionModule/VendorRegistration/VendorupdateRegistrationDetails', {
                 BusinessName: $scope.PurreqDtl.Vendor.BusinessName,
@@ -1315,12 +804,11 @@
                 VendorPhoneNumber: $scope.PurreqDtl.Vendor.VendorPhoneNumber,
                 VendorPhoneNumber2: $scope.PurreqDtl.Vendor.VendorPhoneNumber2,
                 CompanyAddress: $scope.PurreqDtl.Vendor.CompanyAddress,
-
                 Country: $scope.PurreqDtl.Vendor.Country.CountryID,
                 BusinessType: $scope.PurreqDtl.Vendor.BusinessType.BusinessTypeName,
-
+                BusinessNature: $scope.PurreqDtl.Vendor.BusinessNature.BusinessNatureName,
                 TIN: $scope.PurreqDtl.Vendor.TIN,
-                BIN: $scope.PurreqDtl.Vendor.BIN, 
+                BIN: $scope.PurreqDtl.Vendor.BIN,
                 GeneralDetailsServices: $scope.PurreqDtl.Vendor.GenaralDetailsServices,
                 Status: 'Temporary',
                 Vendor: $scope.PurreqDtl.Vendor.VendorId,
@@ -1330,59 +818,103 @@
                 irc: $scope.PurreqDtl.Vendor.ImportRegistration,
                 indentingLicense: $scope.PurreqDtl.Vendor.IndentingLicense,
                 others: $scope.PurreqDtl.Vendor.Others,
-     
-               
-                BusinessNature: $scope.PurreqDtl.Vendor.BusinessNature.BusinessNatureName,
                 EstablishedYear: $scope.PurreqDtl.Vendor.EstablishedYear,
                 TradeLicenseValidity: $scope.PurreqDtl.Vendor.TradeLicenseValidity,
-
-               
                 UserName: "",
-                Password: "",
-               
-
-
+                Password: ""
             })
-                .success(function (response) {
-                    if (response.user.UserID != "") {
-                        toastr.success('Data Updated Successfully');
-                        $scope.refreshPage();
+                .then(function (response) {
+
+                    if (!response.data.user || !response.data.user.UserID) {
+                        toastr.error("Vendor update failed");
+                        $scope.loading = false;
+                        return;
                     }
 
-                   
+                    var uploads = [];
+
+                    // ── Get FTP credentials from any existing scanned document
+                    //    (all docs share the same FTP server, so any entry works)
+                    var docInfo = ($scope.scannedDocuments && $scope.scannedDocuments.length > 0)
+                        ? $scope.scannedDocuments[0]
+                        : null;
+
+                    if (!docInfo) {
+                        toastr.error("FTP server info not available. Cannot upload documents.");
+                        $scope.loading = false;
+                        return;
+                    }
+
+                    function uploadFile(file, docType) {
+                        var fileData = new FormData();
+                        fileData.append('serverIP', docInfo.ServerIP);
+                        fileData.append('ftpPort', docInfo.FtpPort || docInfo.ServerPort);
+                        fileData.append('ftpUserName', docInfo.FtpUserName);
+                        fileData.append('ftpPassword', docInfo.FtpPassword);
+                        fileData.append('vendorId', $scope.PurreqDtl.Vendor.VendorId);
+                        fileData.append('docType', docType);
+                        fileData.append('file', file);
+
+                        return $http.post(
+                            '/VendorSelectionModule/VendorRegistration/UploadOtherFiles',
+                            fileData,
+                            {
+                                transformRequest: angular.identity,
+                                headers: { 'Content-Type': undefined }
+                            }
+                        );
+                    }
+
+                    if ($scope.tinFile) uploads.push(uploadFile($scope.tinFile, 'TIN'));
+                    if ($scope.binFile) uploads.push(uploadFile($scope.binFile, 'BIN'));
+                    if ($scope.companyProfileFile) uploads.push(uploadFile($scope.companyProfileFile, 'CompanyProfile'));
+                    if ($scope.tradeLicenseFile) uploads.push(uploadFile($scope.tradeLicenseFile, 'TradeLicense'));
+                    if ($scope.partnershipDeedFile) uploads.push(uploadFile($scope.partnershipDeedFile, 'PartnershipDeed'));
+                    if ($scope.importRegistrationFile) uploads.push(uploadFile($scope.importRegistrationFile, 'ImportRegistration'));
+                    if ($scope.indentingLicenseFile) uploads.push(uploadFile($scope.indentingLicenseFile, 'IndentingLicense'));
+                    if ($scope.othersFile) uploads.push(uploadFile($scope.othersFile, 'Others'));
+
+                    if (uploads.length === 0) {
+                        toastr.success('Data Updated Successfully');
+                        $scope.loading = false;
+                        $scope.refreshPage();
+                        return;
+                    }
+
+                    Promise.all(uploads)
+                        .then(function () {
+                            toastr.success('Data updated and documents uploaded successfully');
+                        })
+                        .catch(function () {
+                            toastr.warning('Data updated but some documents failed to upload');
+                        })
+                        .finally(function () {
+                            $scope.loading = false;
+                            $scope.refreshPage();
+                        });
                 })
                 .catch(function () {
                     toastr.error("Data Save Failed");
                     $scope.loading = false;
                 });
-        } 
+        };
 
-
-
-
-
-
-        //--------------utilities
-
-
+        //--------------utilities----------------//
 
         $scope.formatDate = function (date) {
-
             var res = date.split("/");
             return res[1] + "/" + res[0] + "/" + res[2];
-
         };
 
         $scope.refreshPage = function () {
             setTimeout(function () {
-                window.location = "/VendorSelectionModule/VendorDashboard/";// Reload the current page
-            }, 2000); // 2000 milliseconds = 3 seconds
-        }
+                window.location = "/VendorSelectionModule/VendorDashboard/";
+            }, 2000);
+        };
 
-
-
-
+        $scope.toggleRefreshTable = function (row) {
+            location.reload();
+        };
 
     });
 </script>
-
