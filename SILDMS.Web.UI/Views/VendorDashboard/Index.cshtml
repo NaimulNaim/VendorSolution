@@ -1,194 +1,289 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
 }
-@*<link href="~/Content/AdminLTE/plugins/css/adminlte.min.css" rel="stylesheet" />*@
-@*<link href="~/Content/AdminLTE/plugins/css/all.min.css" rel="stylesheet" />*@
-
-
 
 <style>
-
-       .link_total_bm {
-           color: black;
-           font-weight: bold;
-       }
-
-           .link_total_bm :hover {
-               color: #0091EA !important;
-               font-weight: bold;
-           }
-
-       .link_within_bm {
-           color: green;
-           font-weight: bold;
-       }
-
-           .link_within_bm :hover {
-               color: #0091EA;
-               font-weight: bold;
-           }
-
-       .link_out_bm {
-           color: firebrick;
-           font-weight: bold;
-       }
-
-           .link_out_bm :hover {
-               color: #0091EA;
-               font-weight: bold;
-           }
-
-       .global-search {
-           height: 34px;
-       }
-
-       .btn-round {
-           border-radius: 17px;
-       }
-
-       .box.box-solid.box-primary > .box-header {
-           text-align: center;
-       }
-
-       .box.box-solid.box-primary > .box-headerVCMS {
-           color: #fff;
-           background: #9fc17b;
-           background-color: #689b6d;
-       }
-
-       .divBox {
-           background-color: #c4e7f3;
-           height: 110px;
-           width: 100%;
-           padding-top: 5px;
-           padding-bottom: 5px;
-           border-radius: 10px;
-       }
-
-    .divPU {
-        background-color: #C9E2B8;
-        height: 80px;
-        width: 100%;
-        padding-top: 5px;
-        padding-bottom: 5px;
-        border-radius: 10px;
+    *, *::before, *::after {
+        box-sizing: border-box;
     }
 
-    .divDU {
-        background-color: #B9CBE9;
-        height: 80px;
-        width: 100%;
-        padding-top: 5px;
-        padding-bottom: 5px;
-        border-radius: 10px;
+    /* ── Summary boxes ── */
+    .link_total_bm {
+        color: black;
+        font-weight: bold;
     }
 
-    .divCHQ {
+    .link_within_bm {
+        color: green;
+        font-weight: bold;
+    }
+
+    .link_out_bm {
+        color: firebrick;
+        font-weight: bold;
+    }
+
+        .link_total_bm:hover, .link_within_bm:hover, .link_out_bm:hover {
+            color: #0091EA !important;
+        }
+
+    .global-search {
+        height: 34px;
+    }
+
+    .btn-round {
+        border-radius: 17px;
+    }
+
+    .box.box-solid.box-primary > .box-header {
+        text-align: center;
+    }
+
+    .box.box-solid.box-primary > .box-headerVCMS {
+        color: #fff;
+        background: #9fc17b;
+        background-color: #689b6d;
+    }
+
+    /* Summary card */
+    .divBox {
+        background-color: #c4e7f3;
+        border-radius: 10px;
+        padding: 10px 8px;
+        width: 100%;
+    }
+
+    .summary-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .summary-tile {
+        flex: 1 1 140px;
+        border-radius: 10px;
+        padding: 10px 8px;
+        text-align: center;
+    }
+
+    .tile-chq {
         background-color: #FCB788;
-        height: 80px;
-        width: 100%;
-        padding-top: 5px;
-        padding-bottom: 5px;
-        border-radius: 10px;
     }
 
-       .divAgg {
-           background-color: lightgreen;
-           height: 80px;
-           width: 480px;
-           padding-top: 5px;
-           padding-bottom: 5px;
-           border-radius: 10px;
-       }
-    .responsive-table-wrapper {
-        width: 100%;
-        overflow-x: auto;
+    .tile-du {
+        background-color: #B9CBE9;
     }
 
-        /* Base table styling */
-        .responsive-table-wrapper table {
-            width: 100%;
-            table-layout: fixed; /* REQUIRED for column widths */
-            font-size: clamp(10px, 0.8vw, 14px);
+    .tile-pu {
+        background-color: #C9E2B8;
+    }
+
+    .summary-tile h5 {
+        font-size: clamp(20px, 4vw, 32px);
+        font-weight: bold;
+        color: #222;
+        margin: 0 0 4px;
+    }
+
+    .summary-tile span {
+        font-size: clamp(11px, 2vw, 14px);
+        color: #222;
+        font-weight: 600;
+    }
+
+    /* ── Section headers ── */
+    .panel-label {
+        background: #5a7f73;
+        color: #fff;
+        font-size: 13px;
+        font-weight: bold;
+        padding: 6px 12px;
+        border-radius: 4px 4px 0 0;
+        margin-bottom: 0;
+    }
+
+    /* ── Desktop table panel ── */
+    .desk-table-panel {
+        display: block;
+    }
+
+        .desk-table-panel .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
-        /* Cell styling */
-        .responsive-table-wrapper th,
-        .responsive-table-wrapper td {
-            padding: clamp(4px, 0.5vw, 8px);
-            word-break: break-word;
-            text-align: center;
+    /* ── Mobile card list ── */
+    .mob-card-list {
+        display: none;
+    }
+
+    .mob-rfq-card {
+        background: #fff;
+        border: 1px solid #ddd;
+        border-top: none;
+        padding: 10px 12px;
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+        .mob-rfq-card:last-child {
+            border-radius: 0 0 4px 4px;
         }
 
-        /* Vertically center grouped headers (rowspan / colspan) */
-        .responsive-table-wrapper thead tr:first-child th {
-            vertical-align: middle;
+        .mob-rfq-card + .mob-rfq-card {
+            border-top: 1px solid #eee;
         }
 
-        /* Quotation No column — ~40% width */
-            .responsive-table-wrapper td:nth-child(1),
-            .responsive-table-wrapper thead tr:first-child th:nth-child(1)
-            {
-                width: 28%;
-            }
+    .mob-rfq-num {
+        font-size: 13px;
+        font-weight: 700;
+        color: #0f6e56;
+        text-decoration: none;
+        display: block;
+        margin-bottom: 3px;
+    }
 
-        .responsive-table-wrapper td:nth-child(2),
-        .responsive-table-wrapper thead tr:first-child th:nth-child(2) {
-            width: 23%;
+        .mob-rfq-num.disabled {
+            color: #999;
+            text-decoration: none;
+            cursor: default;
         }
 
-        /* Column 3 — RFQ Deadline */
-        .responsive-table-wrapper td:nth-child(3),
-        .responsive-table-wrapper thead tr:first-child th:nth-child(3) {
-            width: 24%;
+    .mob-rfq-meta {
+        font-size: 11px;
+        color: #666;
+        margin-bottom: 4px;
+    }
+
+        .mob-rfq-meta span {
+            display: inline-block;
+            margin-right: 10px;
         }
 
-        /* Column 4 — Tech */
-        .responsive-table-wrapper td:nth-child(4),
-        .responsive-table-wrapper thead tr:nth-child(2) th:nth-child(1) {
-            width: 14%;
+    .mob-rfq-actions {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .mob-info-btn {
+        background: #17a2b8;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        padding: 4px 10px;
+        font-size: 12px;
+        cursor: pointer;
+        touch-action: manipulation;
+    }
+
+    .mob-tq-btn {
+        background: #FCB788;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        padding: 4px 10px;
+        font-size: 12px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .mob-fq-btn {
+        background: #B9CBE9;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        padding: 4px 10px;
+        font-size: 12px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .mob-empty {
+        padding: 14px 12px;
+        color: #999;
+        font-size: 13px;
+        border: 1px solid #ddd;
+        border-top: none;
+        text-align: center;
+    }
+
+    /* ── Panel columns: stacked on mobile, 3-col on md+ ── */
+    .panel-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin-top: 16px;
+    }
+
+    .panel-col {
+        flex: 1 1 280px;
+        min-width: 0;
+    }
+
+    /* ── Responsive ── */
+    @@media (max-width: 768px) {
+        .desk-table-panel {
+            display: none;
         }
 
-        /* Column 5 — Fin */
-        .responsive-table-wrapper td:nth-child(5),
-        .responsive-table-wrapper thead tr:nth-child(2) th:nth-child(2) {
-            width: 13%;
+        .mob-card-list {
+            display: block;
         }
 
-        /* Vertically center grouped headers */
-        .responsive-table-wrapper thead tr:first-child th {
-            vertical-align: middle;
+        .panel-col {
+            flex: 1 1 100%;
         }
 
-
-
-
-        /* Buttons scale proportionally */
-        .responsive-table-wrapper .btn-xs {
-            font-size: clamp(8px, 0.7vw, 12px);
-            padding: clamp(2px, 0.4vw, 4px) clamp(4px, 1vw, 6px);
-        }
-
-    /* Small screens — Razor-safe */
-    @@media screen and (max-width: 1080px) {
-        .responsive-table-wrapper table {
-            font-size: clamp(8px, 1.5vw, 12px);
-        }
-
-        .responsive-table-wrapper th,
-        .responsive-table-wrapper td {
-            text-align: left;
-        }
-
-        .responsive-table-wrapper .btn-xs {
-            font-size: clamp(6px, 1.2vw, 10px);
+        .summary-tile {
+            flex: 1 1 120px;
         }
     }
 
+    @@media (min-width: 769px) {
+        .desk-table-panel {
+            display: block;
+        }
+
+        .mob-card-list {
+            display: none !important;
+        }
+    }
+
+    @@media (max-width: 480px) {
+        .summary-tile h5 {
+            font-size: 22px;
+        }
+
+        .summary-tile span {
+            font-size: 11px;
+        }
+
+        .divBox {
+            padding: 8px 6px;
+        }
+    }
+
+    @@media (min-width: 1200px) {
+        .panel-col {
+            flex: 1 1 300px;
+        }
+    }
+
+    button, a, input {
+        touch-action: manipulation;
+    }
+
+    /* table base */
+    .table-condensed td, .table-condensed th {
+        padding: 5px 8px;
+    }
 </style>
-
 
 <div class="box box-primary box-body" ng-controller="VendorSideDashboardVCMSCtrl">
 
@@ -198,287 +293,56 @@
             <h3 class="box-title text-center">Vendor Dashboard</h3>
         </div>
         <div class="box-body">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="divBox">
-                        <div class="box-body">
-                            <div class="row">
-                                <a class="link_within_bm">
-                                    <div class="col-sm-4 border-right">
-                                        <div class="divCHQ">
-                                            <div class="description-block">
-                                                <h5 class="description-header" style="color:black">{{TechInvToRespTotal === "" ? 0 : TechInvToRespTotal}}</h5>
-                                                <span style="color:black"><b>Technical Proposal to Submit </b></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a class="link_within_bm">
-                                    <div class="col-sm-4 border-right">
-                                        <div class="divDU">
-                                            <div class="description-block">
-                                                <h5 class="description-header" style="color:black">{{FinanInvToRespTotal === "" ? 0 : FinanInvToRespTotal}}</h5>
-                                                <span style="color:black">Financial Quotation to Submit</span>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </a>
-                                <a class="link_out_bm">
-                                    <div class="col-sm-4">
-                                        <div class="divPU">
-                                            <div class="description-block">
-                                                <h5 class="description-header" style="color:black">{{RunInvTotal === "" ? 0 : RunInvTotal}}</h5>
-                                                <span style="color:black">Quotations Submitted</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
+            <div class="divBox">
+                <div class="summary-grid">
+                    <div class="summary-tile tile-chq">
+                        <h5>{{TechInvToRespTotal === "" ? 0 : TechInvToRespTotal}}</h5>
+                        <span><b>Technical Proposal to Submit</b></span>
+                    </div>
+                    <div class="summary-tile tile-du">
+                        <h5>{{FinanInvToRespTotal === "" ? 0 : FinanInvToRespTotal}}</h5>
+                        <span>Financial Quotation to Submit</span>
+                    </div>
+                    <div class="summary-tile tile-pu">
+                        <h5>{{RunInvTotal === "" ? 0 : RunInvTotal}}</h5>
+                        <span>Quotations Submitted</span>
                     </div>
                 </div>
-                <br />
-                <br /><br /><br /><br /><br />
             </div>
-
-
         </div>
-
     </div>
 
+    <div class="panel-row">
 
+        <div class="panel-col">
+            <div class="panel-label">Technical Proposal to Submit</div>
 
-
-    <!--<div class="row">-->
-    <!-- ===================== TQ DETAILS ===================== -->
-    <!--<div class="col-md-4 col-sm-12">
-        <div class="box box-primary box-solid">
-            <div class="box-header with-border" style="padding:5px"></div>
-
-            <div class="box-body">
-                <table st-table="displayedCollection"
-                       st-safe-src="invitationTecnicalList"
-                       class="table table-condensed table-bordered table-striped table-hover"
-                       style="table-layout:fixed;width:100%;">
-
-                    <thead>
-                        <tr>
-                            <th style="width:25%;text-align:center;">RFQ No</th>
-                            <th style="width:25%;text-align:center;">RFQ Date</th>
-                            <th style="width:25%;text-align:center;">RFQ Deadline</th>
-                            <th style="width:25%;text-align:center;">Action</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <tr ng-repeat="item in invitationTecnicalList">
-                            <td class="text-center"
-                                ng-style="item.TotalItem == 0 ? {'cursor':'not-allowed'} : {'cursor':'pointer'}">
-
-                                <a ng-if="item.TotalItem != 0"
-                                   ng-href="/VendorSelectionModule/TechnicalQuotation?InvitationNumber={{item.InnvitationNumber}}"
-                                   class="text-primary">
-                                    {{item.InnvitationNumber}}
-                                </a>
-
-                                <span ng-if="item.TotalItem == 0" class="text-muted">
-                                    {{item.InnvitationNumber}}
-                                </span>
-                            </td>
-
-                            <td class="text-center">
-                                {{formatDatetest(item.InnvitationDt)}}
-                            </td>
-
-                            <td class="text-center">
-                                {{formatDatetest(item.QuotationlastDt)}}
-                            </td>
-
-                            <td class="text-center">
-                                <button class="btn btn-xs btn-info"
-                                        ng-click="selectPR(item)"
-                                        title="Select">
-                                    <i class="fa fa-info"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-
-                    <tfoot>
-                        <tr>
-                            <td colspan="4" class="text-center">
-                                <div st-pagination
-                                     st-items-by-page="itemsByPage"
-                                     st-displayed-pages="10">
-                                </div>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
-    </div>-->
-    <!-- ===================== FQ DETAILS ===================== -->
-    <!--<div class="col-md-4 col-sm-12">
-        <div class="box box-primary box-solid">
-            <div class="box-header with-border" style="padding:5px"></div>
-
-            <div class="box-body">
-                <table st-table="displayedCollection"
-                       st-safe-src="invitationFinanList"
-                       class="table table-condensed table-bordered table-striped table-hover"
-                       style="table-layout:fixed;width:100%;">
-
-                    <thead>
-                        <tr>
-                            <th style="width:25%;text-align:center;">RFQ No</th>
-                            <th style="width:25%;text-align:center;">RFQ Date</th>
-                            <th style="width:25%;text-align:center;">RFQ Deadline</th>
-                            <th style="width:25%;text-align:center;">Action</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <tr ng-repeat="item in invitationFinanList">
-                            <td class="text-center"
-                                ng-style="item.TotalItem == 0 ? {'cursor':'not-allowed'} : {'cursor':'pointer'}">
-
-                                <a ng-if="item.TotalItem != 0"
-                                   ng-href="/VendorSelectionModule/FinancialQuotation?InvitationNumber={{item.InnvitationNumber}}"
-                                   class="text-primary">
-                                    {{item.InnvitationNumber}}
-                                </a>
-
-                                <span ng-if="item.TotalItem == 0" class="text-muted">
-                                    {{item.InnvitationNumber}}
-                                </span>
-                            </td>
-
-                            <td class="text-center">
-                                {{formatDatetest(item.InnvitationDt)}}
-                            </td>
-
-                            <td class="text-center">
-                                {{formatDatetest(item.QuotationlastDt)}}
-                            </td>
-
-                            <td class="text-center">
-                                <button class="btn btn-xs btn-info"
-                                        ng-click="selectPRFinancial(item)"
-                                        title="Select">
-                                    <i class="fa fa-info"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-
-                    <tfoot>
-                        <tr>
-                            <td colspan="4" class="text-center">
-                                <div st-pagination
-                                     st-items-by-page="itemsByPage"
-                                     st-displayed-pages="10">
-                                </div>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
-    </div>-->
-    <!-- ===================== RUNNING QUOTATION ===================== -->
-    <!--<div class="col-md-4 col-sm-12">
-            <div class="box box-primary box-solid">
-                <div class="box-header with-border" style="padding:5px"></div>
-
-                <div class="box-body">
-                    <table st-table="displayedCollection"
-                           st-safe-src="invitationRunninglList"
-                           class="table table-condensed table-bordered table-striped table-hover"
-                           style="table-layout:fixed;width:100%;">
-
-                        <thead>
-                            <tr>
-                                <th rowspan="2" style="width:25%;text-align:center;">Quotation No</th>
-                                <th rowspan="2" style="width:25%;text-align:center;">Quotation Date</th>
-                                <th rowspan="2" style="width:25%;text-align:center;">RFQ Deadline</th>
-                                <th colspan="2" style="width:25%;text-align:center;">Action</th>
-                            </tr>
-                            <tr>
-                                <th style="width: 19%; text-align: center; font-size: x-small;">Tech</th>
-                                <th style="width: 19%; text-align: center; font-size: x-small; ">Finan</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <tr ng-repeat="item in displayedCollection">
-                                <td class="text-center">{{item.QuotationNo}}</td>
-                                <td class="text-center">{{formatDatetest(item.QuotationSetOn)}}</td>
-                                <td class="text-center">{{formatDatetest(item.QuotationlastDt)}}</td>
-
-                                <td class="text-center">
-                                    <a ng-if="item.TechQuotationItemID"
-                                       ng-href="/VendorSelectionModule/TechnicalQuotation?InvitationNumber={{item.InnvitationNumber}}&QuotationNo={{item.QuotationNo}}"
-                                       class="btn btn-xs btn-primary">TQ</a>
-                                </td>
-
-                                <td class="text-center">
-                                    <a ng-if="item.FinanQuotationItemID"
-                                       ng-href="/VendorSelectionModule/FinancialQuotation?InvitationNumber={{item.InnvitationNumber}}&QuotationNo={{item.QuotationNo}}"
-                                       class="btn btn-xs btn-success">FQ</a>
-                                </td>
-                            </tr>
-                        </tbody>
-
-                        <tfoot>
-                            <tr>
-                                <td colspan="5" class="text-center">
-                                    <div st-pagination
-                                         st-items-by-page="itemsByPage"
-                                         st-displayed-pages="10">
-                                    </div>
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-    </div>-->
-
-<div class="row">
-
-    <!-- ===================== TQ DETAILS ===================== -->
-    <div class="col-md-4 col-sm-12">
-        <div class="box box-primary box-solid">
-            <div class="box-header with-border" style="padding:5px"></div>
-            <div class="box-body">
-                <div class="responsive-table-wrapper">
+            <div class="desk-table-panel">
+                <div class="table-responsive">
                     <table st-table="displayedCollection"
                            st-safe-src="invitationTecnicalList"
-                           class="table table-condensed table-bordered table-striped table-hover">
+                           class="table table-condensed table-bordered table-striped table-hover"
+                           style="width:100%;">
                         <thead>
-                            <tr>
-                                <th style="color:black">RFQ No</th>
-                                <th style="color:black">RFQ Date</th>
-                                <th style="color:black">RFQ Deadline</th>
-                                <th style="color:black">Action</th>
+                            <tr style="background:#84c1ad;">
+                                <th style="color:darkblue;">RFQ No</th>
+                                <th style="color:darkblue;">RFQ Date</th>
+                                <th style="color:darkblue;">RFQ Deadline</th>
+                                <th style="color:darkblue;">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="item in invitationTecnicalList">
-                                <td class="text-center" ng-style="item.TotalItem == 0 ? {'cursor':'not-allowed'} : {'cursor':'pointer'}">
-                                    <a ng-if="item.TotalItem != 0"
-                                       ng-href="/VendorSelectionModule/TechnicalQuotation?InvitationNumber={{item.InnvitationNumber}} &QuotationSendingDeadline={{formatDatetest(item.QuotationlastDt)}}""
+                                <td class="text-center" ng-style="item.TotalItem==0?{'cursor':'not-allowed'}:{'cursor':'pointer'}">
+                                    <a ng-if="item.TotalItem!=0"
+                                       ng-href="/VendorSelectionModule/TechnicalQuotation?InvitationNumber={{item.InnvitationNumber}}&QuotationSendingDeadline={{formatDatetest(item.QuotationlastDt)}}"
                                        class="text-primary">{{item.InnvitationNumber}}</a>
-                                    <span ng-if="item.TotalItem == 0" class="text-muted">{{item.InnvitationNumber}}</span>
+                                    <span ng-if="item.TotalItem==0" class="text-muted">{{item.InnvitationNumber}}</span>
                                 </td>
                                 <td class="text-center">{{formatDatetest(item.InnvitationDt)}}</td>
                                 <td class="text-center">{{formatDatetest(item.QuotationlastDt)}}</td>
                                 <td class="text-center">
-                                    <button class="btn btn-xs btn-info" ng-click="selectPR(item)" title="Select">
+                                    <button class="btn btn-xs btn-info" ng-click="selectPR(item)" title="Detail">
                                         <i class="fa fa-info"></i>
                                     </button>
                                 </td>
@@ -494,38 +358,67 @@
                     </table>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- ===================== FQ DETAILS ===================== -->
-    <div class="col-md-4 col-sm-12">
-        <div class="box box-primary box-solid">
-            <div class="box-header with-border" style="padding:5px"></div>
-            <div class="box-body">
-                <div class="responsive-table-wrapper">
+            <div class="mob-card-list" id="mobTqList">
+                <div ng-repeat="item in invitationTecnicalList" class="mob-rfq-card">
+                    <div style="flex:1;min-width:0;">
+                        <a ng-if="item.TotalItem!=0"
+                           class="mob-rfq-num"
+                           ng-href="/VendorSelectionModule/TechnicalQuotation?InvitationNumber={{item.InnvitationNumber}}&QuotationSendingDeadline={{formatDatetest(item.QuotationlastDt)}}">
+                            {{item.InnvitationNumber}}
+                        </a>
+                        <span ng-if="item.TotalItem==0" class="mob-rfq-num disabled">{{item.InnvitationNumber}}</span>
+                        <div class="mob-rfq-meta">
+                            <span>Date: {{formatDatetest(item.InnvitationDt)}}</span>
+                            <span>Deadline: {{formatDatetest(item.QuotationlastDt)}}</span>
+                        </div>
+                        <div class="mob-rfq-actions">
+                            <button class="mob-info-btn" ng-click="selectPR(item)">
+                                <i class="fa fa-info"></i> Detail
+                            </button>
+                            <a ng-if="item.TotalItem!=0"
+                               class="mob-tq-btn"
+                               ng-href="/VendorSelectionModule/TechnicalQuotation?InvitationNumber={{item.InnvitationNumber}}&QuotationSendingDeadline={{formatDatetest(item.QuotationlastDt)}}">
+                                Submit TQ
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="mob-empty" ng-if="!invitationTecnicalList || invitationTecnicalList.length===0">
+                    No pending technical proposals
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-col">
+            <div class="panel-label" style="background:#5870a0;">Financial Quotation to Submit</div>
+
+            <div class="desk-table-panel">
+                <div class="table-responsive">
                     <table st-table="displayedCollection"
                            st-safe-src="invitationFinanList"
-                           class="table table-condensed table-bordered table-striped table-hover">
+                           class="table table-condensed table-bordered table-striped table-hover"
+                           style="width:100%;">
                         <thead>
-                            <tr>
-                                <th style="color:black">RFQ No</th>
-                                <th style="color:black">RFQ Date</th>
-                                <th style="color:black">RFQ Deadline</th>
-                                <th style="color:black">Action</th>
+                            <tr style="background:#84c1ad;">
+                                <th style="color:darkblue;">RFQ No</th>
+                                <th style="color:darkblue;">RFQ Date</th>
+                                <th style="color:darkblue;">RFQ Deadline</th>
+                                <th style="color:darkblue;">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="item in invitationFinanList">
-                                <td class="text-center" ng-style="item.TotalItem == 0 ? {'cursor':'not-allowed'} : {'cursor':'pointer'}">
-                                    <a ng-if="item.TotalItem != 0"
-                                       ng-href="/VendorSelectionModule/FinancialQuotation?InvitationNumber={{item.InnvitationNumber}} &QuotationSendingDeadline={{formatDatetest(item.QuotationlastDt)}}"
+                                <td class="text-center" ng-style="item.TotalItem==0?{'cursor':'not-allowed'}:{'cursor':'pointer'}">
+                                    <a ng-if="item.TotalItem!=0"
+                                       ng-href="/VendorSelectionModule/FinancialQuotation?InvitationNumber={{item.InnvitationNumber}}&QuotationSendingDeadline={{formatDatetest(item.QuotationlastDt)}}"
                                        class="text-primary">{{item.InnvitationNumber}}</a>
-                                    <span ng-if="item.TotalItem == 0" class="text-muted">{{item.InnvitationNumber}}</span>
+                                    <span ng-if="item.TotalItem==0" class="text-muted">{{item.InnvitationNumber}}</span>
                                 </td>
                                 <td class="text-center">{{formatDatetest(item.InnvitationDt)}}</td>
                                 <td class="text-center">{{formatDatetest(item.QuotationlastDt)}}</td>
                                 <td class="text-center">
-                                    <button class="btn btn-xs btn-info" ng-click="selectPRFinancial(item)" title="Select">
+                                    <button class="btn btn-xs btn-info" ng-click="selectPRFinancial(item)" title="Detail">
                                         <i class="fa fa-info"></i>
                                     </button>
                                 </td>
@@ -541,121 +434,154 @@
                     </table>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- ===================== RUNNING QUOTATION ===================== -->
-    <div class="col-md-4 col-sm-12">
-        <div class="box box-primary box-solid">
-            <div class="box-header with-border" style="padding:5px"></div>
-            <div class="box-body">
-                <div class="responsive-table-wrapper">
+            <div class="mob-card-list">
+                <div ng-repeat="item in invitationFinanList" class="mob-rfq-card">
+                    <div style="flex:1;min-width:0;">
+                        <a ng-if="item.TotalItem!=0"
+                           class="mob-rfq-num"
+                           style="color:#5870a0;"
+                           ng-href="/VendorSelectionModule/FinancialQuotation?InvitationNumber={{item.InnvitationNumber}}&QuotationSendingDeadline={{formatDatetest(item.QuotationlastDt)}}">
+                            {{item.InnvitationNumber}}
+                        </a>
+                        <span ng-if="item.TotalItem==0" class="mob-rfq-num disabled">{{item.InnvitationNumber}}</span>
+                        <div class="mob-rfq-meta">
+                            <span>Date: {{formatDatetest(item.InnvitationDt)}}</span>
+                            <span>Deadline: {{formatDatetest(item.QuotationlastDt)}}</span>
+                        </div>
+                        <div class="mob-rfq-actions">
+                            <button class="mob-info-btn" ng-click="selectPRFinancial(item)">
+                                <i class="fa fa-info"></i> Detail
+                            </button>
+                            <a ng-if="item.TotalItem!=0"
+                               class="mob-fq-btn"
+                               ng-href="/VendorSelectionModule/FinancialQuotation?InvitationNumber={{item.InnvitationNumber}}&QuotationSendingDeadline={{formatDatetest(item.QuotationlastDt)}}">
+                                Submit FQ
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="mob-empty" ng-if="!invitationFinanList || invitationFinanList.length===0">
+                    No pending financial quotations
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-col">
+            <div class="panel-label" style="background:#7a7a3a;">Quotations Submitted</div>
+
+            <div class="desk-table-panel">
+                <div class="table-responsive">
                     <table st-table="displayedCollection"
                            st-safe-src="invitationRunninglList"
-                           class="table table-condensed table-bordered table-striped table-hover">
-
+                           class="table table-condensed table-bordered table-striped table-hover"
+                           style="width:100%;">
                         <thead>
-                            <tr>
-                                <th style="color:black" rowspan="2">Quotation No</th>
-                                <th style="color:black" rowspan="2">Quotation Date</th>
-                                <th style="color:black" rowspan="2">RFQ Deadline</th>
-                                <th style="color:black"  colspan="2">Action</th>
+                            <tr style="background:#84c1ad;">
+                                <th rowspan="2" style="color:darkblue;vertical-align:middle;">Quotation No</th>
+                                <th rowspan="2" style="color:darkblue;vertical-align:middle;">Quotation Date</th>
+                                <th rowspan="2" style="color:darkblue;vertical-align:middle;">RFQ Deadline</th>
+                                <th colspan="2" style="color:darkblue;text-align:center;">Action</th>
                             </tr>
-                            <tr>
-                                <th style="color:black">Tech</th>
-                                <th style="color:black">Fin</th>
+                            <tr style="background:#84c1ad;">
+                                <th style="color:darkblue;text-align:center;">Tech</th>
+                                <th style="color:darkblue;text-align:center;">Fin</th>
                             </tr>
                         </thead>
-
                         <tbody>
                             <tr ng-repeat="item in displayedCollection">
                                 <td class="text-center">{{item.QuotationNo}}</td>
                                 <td class="text-center">{{formatDatetest(item.QuotationSetOn)}}</td>
                                 <td class="text-center">{{formatDatetest(item.QuotationlastDt)}}</td>
                                 <td class="text-center">
-                                    @*<a ng-if="item.TechQuotationItemID"
-        ng-href="/VendorSelectionModule/TechnicalQuotation?InvitationNumber={{item.InnvitationNumber}}&QuotationNo={{item.QuotationNo}}"
-        class="btn btn-xs btn-primary" style="background-color:#FCB788">TQ</a>*@
                                     <a ng-if="item.TechQuotationItemID"
-                                       ng-href="/VendorSelectionModule/TechnicalQuotation?InvitationNumber={{item.InnvitationNumber}}&QuotationNo={{item.QuotationNo}} &QuotationSendingDeadline={{formatDatetest(item.QuotationlastDt)}}"
-                                        class="btn btn-xs btn-success"
-                                        style=" background-color: #FCB788 !important;
-                                        border-color: #FCB788 !important; 
-                                         color: #fff !important; "
-                                       >TQ</a>
+                                       ng-href="/VendorSelectionModule/TechnicalQuotation?InvitationNumber={{item.InnvitationNumber}}&QuotationNo={{item.QuotationNo}}&QuotationSendingDeadline={{formatDatetest(item.QuotationlastDt)}}"
+                                       class="btn btn-xs"
+                                       style="background-color:#FCB788;color:#fff;border-color:#FCB788;">TQ</a>
                                 </td>
                                 <td class="text-center">
                                     <a ng-if="item.FinanQuotationItemID"
-                                       ng-href="/VendorSelectionModule/FinancialQuotation?InvitationNumber={{item.InnvitationNumber}}&QuotationNo={{item.QuotationNo}} &QuotationSendingDeadline={{formatDatetest(item.QuotationlastDt)}}"
-                                       class="btn btn-xs btn-success"
-                                       style=" background-color: #B9CBE9 !important;
-                                               border-color: #B9CBE9 !important;
-                                               color: #fff !important;"
-                                     >FQ</a>
+                                       ng-href="/VendorSelectionModule/FinancialQuotation?InvitationNumber={{item.InnvitationNumber}}&QuotationNo={{item.QuotationNo}}&QuotationSendingDeadline={{formatDatetest(item.QuotationlastDt)}}"
+                                       class="btn btn-xs"
+                                       style="background-color:#B9CBE9;color:#fff;border-color:#B9CBE9;">FQ</a>
                                 </td>
                             </tr>
                         </tbody>
-
                         <tfoot>
                             <tr>
                                 <td colspan="5" class="text-center">
-                                    <div st-pagination
-                                         st-items-by-page="itemsByPage"
-                                         st-displayed-pages="10"></div>
+                                    <div st-pagination st-items-by-page="itemsByPage" st-displayed-pages="10"></div>
                                 </td>
                             </tr>
                         </tfoot>
-
                     </table>
                 </div>
             </div>
+
+            <div class="mob-card-list">
+                <div ng-repeat="item in invitationRunninglList" class="mob-rfq-card">
+                    <div style="flex:1;min-width:0;">
+                        <span class="mob-rfq-num" style="color:#7a7a3a;">{{item.QuotationNo}}</span>
+                        <div class="mob-rfq-meta">
+                            <span>Date: {{formatDatetest(item.QuotationSetOn)}}</span>
+                            <span>Deadline: {{formatDatetest(item.QuotationlastDt)}}</span>
+                        </div>
+                        <div class="mob-rfq-actions">
+                            <a ng-if="item.TechQuotationItemID"
+                               class="mob-tq-btn"
+                               ng-href="/VendorSelectionModule/TechnicalQuotation?InvitationNumber={{item.InnvitationNumber}}&QuotationNo={{item.QuotationNo}}&QuotationSendingDeadline={{formatDatetest(item.QuotationlastDt)}}">
+                                TQ
+                            </a>
+                            <a ng-if="item.FinanQuotationItemID"
+                               class="mob-fq-btn"
+                               ng-href="/VendorSelectionModule/FinancialQuotation?InvitationNumber={{item.InnvitationNumber}}&QuotationNo={{item.QuotationNo}}&QuotationSendingDeadline={{formatDatetest(item.QuotationlastDt)}}">
+                                FQ
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="mob-empty" ng-if="!invitationRunninglList || invitationRunninglList.length===0">
+                    No submitted quotations
+                </div>
+            </div>
         </div>
+
     </div>
 
 
-</div>
-
     <div id="QuotedInvits" class="modal fade">
-        <div class="modal-dialog">
+        <div class="modal-dialog" style="max-width:95vw;width:600px;">
             <div class="modal-content">
-                <!-- Modal Header -->
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" ng-click="ResetSearchModel()" aria-hidden="true">x</button>
+                    <button type="button" class="close" data-dismiss="modal" ng-click="ResetSearchModel()" aria-hidden="true">&times;</button>
                     <h3 class="modal-title">RFQ - {{InvitationNumber}}</h3>
                 </div>
-
-                <!-- Modal Body -->
-                <div id="PndRecomAndApprovalTable" class="table-responsive">
-                    <table id="tableId" style="width:100%;" st-table="GridDisplayCollection" st-safe-src="MaterialList" class="table table-condensed table-bordered table-striped table-hover pnlView">
+                <div class="table-responsive" style="overflow-x:auto;-webkit-overflow-scrolling:touch;">
+                    <table id="tableId" style="width:100%;"
+                           st-table="GridDisplayCollection"
+                           st-safe-src="MaterialList"
+                           class="table table-condensed table-bordered table-striped table-hover pnlView">
                         <thead>
-                            <tr>
-                                <th class="col-lg-1 col-md-1 col-sm-1">Material Code</th>
-                                <th class="col-lg-1 col-md-1 col-sm-1">Material Name</th>
-                                <th class="col-lg-1 col-md-1 col-sm-1">Quantity</th>
-                                <th class="col-lg-1 col-md-1 col-sm-1">Unit</th>
-                                @*<th class="col-lg-1 col-md-1 col-sm-1">Material Type</th>*@
+                            <tr style="background:#84c1ad;">
+                                <th style="color:darkblue;">Material Code</th>
+                                <th style="color:darkblue;">Material Name</th>
+                                <th style="color:darkblue;">Quantity</th>
+                                <th style="color:darkblue;">Unit</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="row in GridDisplayCollection | orderBy:'IsBack':true">
-                                <td class="text-right" style="text-align:center">{{formatMaterialCode(row.materialCode)}}</td>
+                                <td class="text-center">{{formatMaterialCode(row.materialCode)}}</td>
                                 <td class="text-left">{{row.materialName}}</td>
                                 <td class="text-right">{{row.MaterialQuantity | number:3}}</td>
-                                <td class="text-right" style="text-align:center">{{row.Unit}}</td>
-                                <!-- Removed Button for Documents -->
-                                @*<td class="text-left">{{row.MatInvType}}</td>*@
+                                <td class="text-center">{{row.Unit}}</td>
                             </tr>
                         </tbody>
-                        <tfoot>
-                        </tfoot>
                     </table>
                 </div>
             </div>
         </div>
     </div>
-
-
-
 
     <div id="mydiv" data-ng-show="ParkingLoading || PostingLoading || ClearingLoading || countLoading || tableLoading">
         <div class="overlay">
@@ -665,22 +591,12 @@
         </div>
     </div>
 
-
-
 </div>
 
-
-
 <script type="text/javascript">
-
-
-
-
-
     app.controller('VendorSideDashboardVCMSCtrl', ['$scope', '$http', function ($scope, $http) {
-        //Start Region for personal data Declaration
-        $scope.InvitationList = {};
 
+        $scope.InvitationList = {};
         $scope.postingResult = {};
         $scope.clearingResult = {};
         $scope.isSupervisor = false;
@@ -692,326 +608,101 @@
         var LoadParkingData = function () {
             $scope.ParkingLoading = true;
             $http.get('/VendorSelectionModule/VendorDashboard/GetUserWiseInvList')
-                .then(
-                    function (response) {
-                        $scope.InvitationList = response.data.totalList;
-
-                        $scope.TechInvToRespTotal = $scope.InvitationList.TechInvToRespTotal;
-                        $scope.FinanInvToRespTotal = $scope.InvitationList.FinanInvToRespTotal;
-                        $scope.RunInvTotal = $scope.InvitationList.RunInvTotal;
-                        $scope.invitationTecnicalList = $scope.InvitationList.InvitationTecnicalList;
-                        $scope.invitationFinanList = $scope.InvitationList.InvitationFinanList;
-                        $scope.invitationRunninglList = $scope.InvitationList.InvitationRunninglList;
-
-                        console.log($scope.invitationTecnicalList);
-
-                        //$scope.TotalSCMCHQ = $scope.parkingResult[0].TotalSCMCHQ === "" ? 0 : parseInt($scope.parkingResult[0].TotalSCMCHQ);
-                        //$scope.TotalSCMDU = $scope.parkingResult[0].TotalSCMDU === "" ? 0 : parseInt($scope.parkingResult[0].TotalSCMDU);
-                        //$scope.TotalSCMPU = $scope.parkingResult[0].TotalSCMPU === "" ? 0 : parseInt($scope.parkingResult[0].TotalSCMPU);
-                        //$scope.TotalTSDCHQ = $scope.parkingResult[0].TotalTSDCHQ === "" ? 0 : parseInt($scope.parkingResult[0].TotalTSDCHQ);
-                        //$scope.TotalTSDDU = $scope.parkingResult[0].TotalTSDDU === "" ? 0 : parseInt($scope.parkingResult[0].TotalTSDDU);
-                        //$scope.TotalTSDPU = $scope.parkingResult[0].TotalTSDPU === "" ? 0 : parseInt($scope.parkingResult[0].TotalTSDPU);
-                        //$scope.TotalTSD = $scope.parkingResult[0].TotalTSD;
-                        //$scope.TotASSNSCMCHQ = $scope.parkingResult[0].TotASSNSCMCHQ;
-                        //$scope.TotASSNSCMDU = $scope.parkingResult[0].TotASSNSCMDU;
-                        //$scope.TotASSNSCMPU = $scope.parkingResult[0].TotASSNSCMPU;
-                        //$scope.TotASSNTSDCHQ = $scope.parkingResult[0].TotASSNTSDCHQ;
-                        //$scope.TotASSNTSDDU = $scope.parkingResult[0].TotASSNTSDDU;
-                        //$scope.TotASSNTSDPU = $scope.parkingResult[0].TotASSNTSDPU;
-                        //$scope.TotSCM = $scope.parkingResult[0].TotSCM;
-                        //$scope.TotTSD = $scope.parkingResult[0].TotTSD;
-                        //console.log($scope.parkingResult[0].TotASSNSCMDU);
-                        //console.log($scope.TotASSNSCMDU);
-
-                        $scope.SumOfSCM = (parseInt($scope.TotalSCMCHQ) + parseInt($scope.TotalSCMDU) + parseInt($scope.TotalSCMPU))
-                        $scope.SumOfTSD = (parseInt($scope.TotalTSDCHQ) + parseInt($scope.TotalTSDDU) + parseInt($scope.TotalTSDPU))
-
-                        if (!$scope.TotASSNSCMCHQ && !$scope.TotASSNSCMDU && !$scope.TotASSNSCMPU) {
-                            $scope.isSCMValuNull = true;
-                        }
-                        else {
-                            $scope.isSCMValuNull = false;
-                        }
-                        if (!$scope.TotASSNTSDCHQ && !$scope.TotASSNTSDDU && !$scope.TotASSNTSDPU) {
-                            $scope.isTSDValuNull = true;
-                        }
-                        else {
-                            $scope.isTSDValuNull = false;
-                        }
-
-
-                        $scope.ParkingLoading = false;
-                    },
-                    function () {
-                        $scope.ParkingLoading = false;
-                    });
-
-        }
+                .then(function (response) {
+                    $scope.InvitationList = response.data.totalList;
+                    $scope.TechInvToRespTotal = $scope.InvitationList.TechInvToRespTotal;
+                    $scope.FinanInvToRespTotal = $scope.InvitationList.FinanInvToRespTotal;
+                    $scope.RunInvTotal = $scope.InvitationList.RunInvTotal;
+                    $scope.invitationTecnicalList = $scope.InvitationList.InvitationTecnicalList;
+                    $scope.invitationFinanList = $scope.InvitationList.InvitationFinanList;
+                    $scope.invitationRunninglList = $scope.InvitationList.InvitationRunninglList;
+                    $scope.ParkingLoading = false;
+                }, function () {
+                    $scope.ParkingLoading = false;
+                });
+        };
         LoadParkingData();
 
-
-
-        setTimeout(myFunction, 1000);
-
-
-
-
-
-        function myFunction() {
-
-            //-----SCM------
-            var aSCM = $scope.TotASSNSCMCHQ;
-            var bSCM = $scope.TotASSNSCMDU;
-            var cSCM = $scope.TotASSNSCMPU;
-
-            var donutDataSCM = {
-                labels: [
-                    'CHQ',
-                    'DU',
-                    'PU',
-                ],
-                datasets: [
-                    {
-                        data: [aSCM, bSCM, cSCM],
-                        backgroundColor: ['#f56954', '#00a65a', '#f39c12'],
-                    }
-                ]
-            }
-            //var pieChartCanvasScm = $('#pieChartScm').get(0).getContext('2d')
-            //var pieDataSCM = donutDataSCM;
-            //var pieOptionsSCM = {
-            //    maintainAspectRatio: false,
-            //    responsive: true,
-            //}
-            //new Chart(pieChartCanvasScm, {
-            //    type: 'pie',
-            //    data: pieDataSCM,
-            //    options: pieOptionsSCM
-            //})
-
-
-
-            //-----TSD------
-            var aTSD = $scope.TotASSNTSDCHQ;
-            var bTSD = $scope.TotASSNTSDDU;
-            var cTSD = $scope.TotASSNTSDPU;
-
-            var donutDataTSD = {
-                labels: [
-                    'CHQ',
-                    'DU',
-                    'PU',
-                ],
-                datasets: [
-                    {
-                        data: [aTSD, bTSD, cTSD],
-                        backgroundColor: ['#f56954', '#00a65a', '#f39c12'],
-                    }
-                ]
-            }
-            //var pieChartCanvasTsd = $('#pieChartTsd').get(0).getContext('2d')
-            //var pieDataTSD = donutDataTSD;
-            //var pieOptionsTSD = {
-            //    maintainAspectRatio: false,
-            //    responsive: true,
-            //}
-            //new Chart(pieChartCanvasTsd, {
-            //    type: 'pie',
-            //    data: pieDataTSD,
-            //    options: pieOptionsTSD
-            //})
-
-
-
-            var donutData = {
-                labels: [
-                    'CHQ',
-                    'DU',
-                    'PU',
-                ],
-                datasets: [
-                    {
-                        data: [10, 10, 10],
-                        backgroundColor: ['#BFC9CA', '#BFC9CA', '#BFC9CA'],
-                    }
-                ]
-            }
-            //var pieChartCanvas = $('#pieChartScmNull').get(0).getContext('2d')
-            //var pieData = donutData;
-            //var pieOptions = {
-            //    maintainAspectRatio: false,
-            //    responsive: true,
-            //}
-            //new Chart(pieChartCanvas, {
-            //    type: 'pie',
-            //    data: pieData,
-            //    options: pieOptions
-            //})
-
-
-
-            var donutDataNullTSD = {
-                labels: [
-                    'CHQ',
-                    'DU',
-                    'PU',
-                ],
-                datasets: [
-                    {
-                        data: [10, 10, 10],
-                        backgroundColor: ['#BFC9CA', '#BFC9CA', '#BFC9CA'],
-                    }
-                ]
-            }
-            //var pieChartCanvasNullTSD = $('#pieChartTsdNull').get(0).getContext('2d')
-            //var pieDataNullTSD = donutDataNullTSD;
-            //var pieOptionsNullTSD = {
-            //    maintainAspectRatio: false,
-            //    responsive: true,
-            //}
-            //new Chart(pieChartCanvasNullTSD, {
-            //    type: 'pie',
-            //    data: pieDataNullTSD,
-            //    options: pieOptionsNullTSD
-            //})
-        }
-
-
-
-
-
-
-        //Start Region for Supervisor Data-----------
         $scope.supervisorAsgnment = {};
 
         var LoadSuperDataAsgn = function () {
             $scope.tableLoading = true;
             $http.get('/CBPSModule/DashboardV2/GetParkingResultAsgn')
-                .then(
-                    function (response) {
-                        $scope.supervisorAsgnment = response.data;
-                        $scope.tableLoading = false;
-                    },
-                    function () {
-                        $scope.tableLoading = false;
-                    });
+                .then(function (response) {
+                    $scope.supervisorAsgnment = response.data;
+                    $scope.tableLoading = false;
+                }, function () { $scope.tableLoading = false; });
         };
-
-        //End Region for Supervisor Data -------------
-
-
-
-
 
         $scope.pendingResult = {};
 
         var GetPendingBillCount = function () {
             $scope.countLoading = true;
             $http.get('/CBPSModule/DashboardV2/GetPendingBillCount')
-                .then(
-                    function (response) {
-                        $scope.pendingResult = response.data;
-                        $scope.countLoading = false;
-                    },
-                    function () {
-                        $scope.countLoading = false;
-                    });
+                .then(function (response) {
+                    $scope.pendingResult = response.data;
+                    $scope.countLoading = false;
+                }, function () { $scope.countLoading = false; });
         };
-
-
-
 
         var ShowAllocation = function () {
             $http.get('/CBPSModule/DashboardV2/IsASuperVisor')
-                .then(
-                    function (response) {
-                        if (response.data) {
-                            $scope.isSupervisor = true;
-                            GetPendingBillCount();
-                            LoadSuperDataAsgn();
-                        }
-                    },
-                    function () {
-
-                    });
+                .then(function (response) {
+                    if (response.data) {
+                        $scope.isSupervisor = true;
+                        GetPendingBillCount();
+                        LoadSuperDataAsgn();
+                    }
+                }, function () { });
         };
-
         ShowAllocation();
 
-
-
-        $scope.hideAll = function (list) {
-            return list.UDDocCategoryCode != 'All';
-        };
+        $scope.hideAll = function (list) { return list.UDDocCategoryCode != 'All'; };
         $scope.InvitationNumber = '';
 
         $scope.selectPR = function (row) {
             $scope.InvitationNumber = row.InnvitationNumber;
             $scope.p = 0;
             $scope.InvWiseMaterial($scope.InvitationNumber);
-        }
+        };
 
         $scope.selectPRFinancial = function (row) {
             $scope.InvitationNumber = row.InnvitationNumber;
             $scope.p = 0;
             $scope.InvWiseMaterialFinancial($scope.InvitationNumber);
-        }
-
+        };
 
         $scope.InvWiseMaterialFinancial = function (detail) {
-            $http.post('/VendorSelectionModule/FinancialQuotation/InvWiseMaterial',
-                { InvNumber: detail })
+            $http.post('/VendorSelectionModule/FinancialQuotation/InvWiseMaterial', { InvNumber: detail })
                 .success(function (response) {
-                    //$scope.flagToShow = false;
-                    //$scope.flagToShowMasterTbl = true;
                     $scope.MaterialList = response.InvMaterialList;
                     $scope.GridDisplayCollection = [].concat($scope.MaterialList);
                     $scope.loading = false;
-                }).error(function () {
-                    $scope.loading = false;
-                    toastr.error('Data Loading Failed.');
-                });
-
+                }).error(function () { $scope.loading = false; toastr.error('Data Loading Failed.'); });
             $('#QuotedInvits').modal('show');
-        }
-
-
-
+        };
 
         $scope.InvWiseMaterial = function (detail) {
-            $http.post('/VendorSelectionModule/TechnicalQuotation/InvWiseMaterial',
-                { InvNumber: detail })
+            $http.post('/VendorSelectionModule/TechnicalQuotation/InvWiseMaterial', { InvNumber: detail })
                 .success(function (response) {
-                    //$scope.flagToShow = false;
-                    //$scope.flagToShowMasterTbl = true;
                     $scope.MaterialList = response.InvMaterialList;
                     $scope.GridDisplayCollection = [].concat($scope.MaterialList);
                     $scope.loading = false;
-                }).error(function () {
-                    $scope.loading = false;
-                    toastr.error('Data Loading Failed.');
-                });
-
+                }).error(function () { $scope.loading = false; toastr.error('Data Loading Failed.'); });
             $('#QuotedInvits').modal('show');
-        }
-
-
+        };
 
         $scope.formatDatetest = function (dateString) {
-            var date = new Date(dateString); // Parse the input date string
-            var day = String(date.getDate()).padStart(2, '0'); // Ensure 2-digit day
-            var month = String(date.getMonth() + 1).padStart(2, '0'); // Ensure 2-digit month (months are 0-based)
-            var year = date.getFullYear(); // Get full year
-            return `${day}/${month}/${year}`; // Format as DD/MM/YYYY
+            var date = new Date(dateString);
+            var day = String(date.getDate()).padStart(2, '0');
+            var month = String(date.getMonth() + 1).padStart(2, '0');
+            var year = date.getFullYear();
+            return day + '/' + month + '/' + year;
         };
+
         $scope.formatMaterialCode = function (materialCode) {
-            return materialCode.replace(/^0+/, '');
+            return materialCode ? materialCode.replace(/^0+/, '') : '';
         };
-
-
-
 
     }]);
-
 </script>
-
