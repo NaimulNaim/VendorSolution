@@ -327,39 +327,182 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
             }
         }
 
-        public async Task<FileResult> DownloadDocument(string documentID, string Ext)
+        //public async Task<FileResult> DownloadDocument(string documentID, string Ext)
+        //{
+
+        //    var ServerList = new Server();
+
+        //    await Task.Run(() => _financialQuotationService.FetchServerDetailsService(documentID, out ServerList));
+
+        //    string userName = ServerList.FtpUserName;
+        //    string password = ServerList.FtpPassword;
+        //    string serverIP = ServerList.ServerIP;
+        //    string serverURL = ServerList.FileServerURL;
+        //    using (WebClient request = new WebClient())
+        //    {
+        //        if (Ext == "")
+        //        {
+        //            Ext = "pdf";
+        //        }
+
+        //        request.Credentials = new NetworkCredential(userName, password);
+
+        //        string fullUrl = "ftp://" + serverIP + "/" + serverURL + "/" + documentID + "." + Ext;
+        //        byte[] fileData = request.DownloadData(fullUrl);
+
+        //        var cd = new System.Net.Mime.ContentDisposition
+        //        {
+        //            FileName = documentID + "." + Ext,
+        //            Inline = false,
+        //        };
+        //        var mimeType = GetMimeType(Ext);
+        //        Response.AppendHeader("Content-Disposition", cd.ToString());
+        //        return File(fileData, mimeType);
+        //    }
+        //}
+
+
+
+
+
+        //public async Task<FileResult> DownloadDocument(string documentID, string Ext)
+        //{
+        //    // FTP Download
+
+        //    var mimeType = GetMimeType(Ext);
+
+        //    Response.AppendHeader(
+        //        "Content-Disposition",
+        //        Ext.ToLower() == "pdf"
+        //        ? "inline; filename=" + documentID + "." + Ext
+        //        : "attachment; filename=" + documentID + "." + Ext);
+
+        //    return File(fileData, mimeType);
+        //}
+
+
+
+
+        private string GetMimeType(string ext)
         {
-
-            var ServerList = new Server();
-
-            await Task.Run(() => _financialQuotationService.FetchServerDetailsService(documentID, out ServerList));
-
-            string userName = ServerList.FtpUserName;
-            string password = ServerList.FtpPassword;
-            string serverIP = ServerList.ServerIP;
-            string serverURL = ServerList.FileServerURL;
-            using (WebClient request = new WebClient())
+            switch (ext)
             {
-                if (Ext == "")
-                {
-                    Ext = "pdf";
-                }
-
-                request.Credentials = new NetworkCredential(userName, password);
-
-                string fullUrl = "ftp://" + serverIP + "/" + serverURL + "/" + documentID + "." + Ext;
-                byte[] fileData = request.DownloadData(fullUrl);
-
-                var cd = new System.Net.Mime.ContentDisposition
-                {
-                    FileName = documentID + "." + Ext,
-                    Inline = false,
-                };
-
-                Response.AppendHeader("Content-Disposition", cd.ToString());
-                return File(fileData, "application / " + Ext);
+                case "pdf": return "application/pdf";
+                case "mp4": return "video/mp4";
+                case "mp3": return "audio/mpeg";
+                case "jpg":
+                case "jpeg": return "image/jpeg";
+                case "png": return "image/png";
+                case "gif": return "image/gif";
+                case "docx": return "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+                case "xlsx": return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                case "zip": return "application/zip";
+                default: return "application/octet-stream";
             }
         }
+
+
+
+
+        //public async Task<FileResult> DownloadDocument(string documentID, string Ext)
+        //{
+        //    var ServerList = new Server();
+        //    await Task.Run(() => _financialQuotationService.FetchServerDetailsService(documentID, out ServerList));
+
+        //    string userName = ServerList.FtpUserName;
+        //    string password = ServerList.FtpPassword;
+        //    string serverIP = ServerList.ServerIP;
+        //    string serverURL = ServerList.FileServerURL;
+
+        //    if (string.IsNullOrWhiteSpace(Ext))
+        //        Ext = "pdf";
+
+        //    Ext = Ext.TrimStart('.').ToLower();   // normalise: ".PDF" → "pdf"
+
+        //    // FIX 1: correct MIME type — "application / pdf" had a space, broke the response
+        //    var mimeType = GetMimeType(Ext);
+
+        //    using (var request = new WebClient())
+        //    {
+        //        request.Credentials = new NetworkCredential(userName, password);
+        //        string fullUrl = "ftp://" + serverIP + "/" + serverURL + "/" + documentID + "." + Ext;
+        //        byte[] fileData = request.DownloadData(fullUrl);
+
+        //        // FIX 2: Inline = true for PDF so browser opens it in iframe; false = download
+        //        var cd = new System.Net.Mime.ContentDisposition
+        //        {
+        //            FileName = documentID + "." + Ext,
+        //            Inline = (Ext == "pdf"),
+        //        };
+        //        Response.AppendHeader("Content-Disposition", cd.ToString());
+
+        //        return File(fileData, mimeType);
+        //    }
+        //}
+
+        //// Maps common extensions to correct MIME types
+        //private string GetMimeType(string ext)
+        //{
+        //    switch (ext)
+        //    {
+        //        case "pdf": return "application/pdf";
+        //        case "mp4": return "video/mp4";
+        //        case "mp3": return "audio/mpeg";
+        //        case "jpg":
+        //        case "jpeg": return "image/jpeg";
+        //        case "png": return "image/png";
+        //        case "gif": return "image/gif";
+        //        case "docx": return "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+        //        case "xlsx": return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        //        case "zip": return "application/zip";
+        //        default: return "application/octet-stream";
+        //    }
+        //}
+
+
+
+
+
+        public FileResult DownloadDocumentfromMat(
+        string documentID,
+        string serverIP,
+        string serverURL,
+        string ftpPort,
+        string ftpUserName,
+        string ftpPassword)
+        {
+            string safeDocumentID = documentID.Replace("/", "_");
+
+            string fullUrl =
+                "ftp://" + serverIP +
+                "/" + serverURL +
+                "/" + safeDocumentID + ".pdf";
+
+            byte[] fileData;
+
+            using (WebClient request = new WebClient())
+            {
+                request.Credentials =
+                    new NetworkCredential(
+                        ftpUserName,
+                        ftpPassword);
+
+                fileData = request.DownloadData(fullUrl);
+            }
+
+            Response.Clear();
+
+            Response.Buffer = true;
+
+            Response.ContentType = "application/pdf";
+
+            Response.AddHeader(
+                "Content-Disposition",
+                "inline; filename=" + safeDocumentID + ".pdf");
+
+            return File(fileData, "application/pdf");
+        }
+
 
         [Authorize]
         public async Task<dynamic> UpdateExtensionByDocId(string DocumentID, string Extension)
@@ -388,6 +531,37 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
             }
         }
 
+        //[HttpGet]
+        //public async Task<FileResult> DownloadDocument(string documentID)
+        //{
+        //    var ServerList = new Server();
+        //    await Task.Run(() => _financialQuotationService.FetchServerDetailsService(documentID, out ServerList));
+
+        //    string userName = ServerList.FtpUserName;
+        //    string password = ServerList.FtpPassword;
+        //    string serverIP = ServerList.ServerIP;
+        //    string serverURL = ServerList.FileServerURL;
+
+        //    string safeDocumentID = documentID.Replace("/", "_");
+
+        //    string fullUrl = "ftp://" + serverIP + "/" + serverURL + "/" + safeDocumentID + ".pdf";
+
+        //    byte[] fileData;
+        //    using (WebClient request = new WebClient())
+        //    {
+        //        request.Credentials = new NetworkCredential(userName, password);
+        //        fileData = request.DownloadData(fullUrl);
+        //    }
+
+        //    var cd = new System.Net.Mime.ContentDisposition
+        //    {
+        //        FileName = safeDocumentID + ".pdf",
+        //        Inline = true,
+        //    };
+        //    Response.AppendHeader("Content-Disposition", cd.ToString());
+
+        //    return File(fileData, "application/pdf");
+        //}
 
 
         //public async Task<FileResult> DownloadDocument(string documentID, string Ext)

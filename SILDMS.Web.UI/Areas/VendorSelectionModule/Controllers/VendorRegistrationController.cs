@@ -179,7 +179,7 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
 
             if (ModelState.IsValid)
             {
-                string UploaderIP = "172.16.189.34";
+                string UploaderIP = GetIPAddress.LocalIPAddress();
 
                 respStatus.Message = "Success";
 
