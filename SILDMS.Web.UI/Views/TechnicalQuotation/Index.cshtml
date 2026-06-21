@@ -1136,16 +1136,7 @@
                             <div class="col-lg-6 ">
                                 <input type="file" id="FileUpload1" name="FileUpload1" multiple />
                             </div>
-                            @*<div class="col-lg-6" style="margin-bottom:10px" ng-show="IsDownload">
-                                    <div style="float: right; display: flex;">
-                                        <div style="font-weight: bold; padding-right: 11px;">
-                                            Existing Document:
-                                        </div>
-                                        <div style="padding-right: 11px;" ng-show="FileExtension!='.pdf'">{{MaterialInvitation.SampleDocumentID +"."+ FileExtension }}</div>
-                                        <a class="btn btn-sm btn-warning" ng-show="FileExtension!='.pdf'" style="display: inline-block;" href="/VendorSelectionModule/TechnicalQuotation/DownloadDocument?documentID={{MaterialInvitation.SampleDocumentID}}&Ext={{FileExtension}}">Download</a>
-                                    </div>
-
-                                </div>*@
+                          
                             <div class="col-lg-6" style="margin-bottom:10px" ng-show="IsDownload">
                                 <div style="float:right;display:flex;align-items:center;gap:10px">
                                     <div style="font-weight:bold">Existing Document:</div>
@@ -2377,7 +2368,12 @@
 
 
             if ($scope.TechnicalQuotation.Techtype === 'SPARES') {
-                $scope.TechnicalQuotation.YearOfManufacturing = $scope.formatDate($('#YearOfManufacturing').val());
+                var yearOfManufacturing = $('#YearOfManufacturing').val();
+
+                if (yearOfManufacturing) {
+                    $scope.TechnicalQuotation.YearOfManufacturing =
+                        $scope.formatDate(yearOfManufacturing);
+                }
 
                 if ($("#ItemName").val() == "") {
                     toastr.error("ItemName is required.");

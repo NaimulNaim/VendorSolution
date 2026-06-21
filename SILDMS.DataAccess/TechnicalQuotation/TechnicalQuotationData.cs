@@ -1070,6 +1070,7 @@ namespace SILDMS.DataAccess.TechnicalQuotation
                 db.AddInParameter(dbCommandWrapper, "@Proposal", SqlDbType.VarChar, technicalQuotation.Proposal);
                 db.AddInParameter(dbCommandWrapper, "@AllPharmacopeialReference", SqlDbType.VarChar, technicalQuotation.AllPharmacopeialReference);
                 db.AddInParameter(dbCommandWrapper, "@CurrentStatus", SqlDbType.VarChar, technicalQuotation.CurrentStatus);
+                db.AddInParameter(dbCommandWrapper, "@SampleDocumentID", SqlDbType.VarChar, technicalQuotation.SampleDocumentID);
 
 
 
