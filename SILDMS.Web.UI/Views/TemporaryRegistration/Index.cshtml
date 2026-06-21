@@ -776,13 +776,10 @@
                         User Name <span class="req">*</span>
                     </div>
                     <div class="col-lg-3 col-md-4">
-                        <input autocomplete="off"
-                               type="text"
+                        <input type="text"
                                class="form-control"
+                               autocomplete="new-password"
                                ng-model="PurreqDtl.Vendor.UserName" />
-                        <span class="field-error" id="errorMessageUserName2">
-                            Please input a valid User Name.
-                        </span>
                     </div>
                 </div>
 
@@ -791,13 +788,10 @@
                         Password <span class="req">*</span>
                     </div>
                     <div class="col-lg-3 col-md-4">
-                        <input autocomplete="off"
-                               type="password"
+                        <input type="password"
                                class="form-control"
+                               autocomplete="new-password"
                                ng-model="PurreqDtl.Vendor.Password" />
-                        <span class="field-error" id="errorMessagePassword2">
-                            Please input a valid Password.
-                        </span>
                     </div>
                 </div>
 
@@ -1622,6 +1616,15 @@
         $scope.toggleRefreshTable = function (row) {
             location.reload();
         };
+
+
+        $scope.formatDate = function (date) {
+
+            var res = date.split("/");
+            return res[1] + "/" + res[0] + "/" + res[2];
+
+        };
+
 
     });
 </script>
