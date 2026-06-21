@@ -1136,16 +1136,7 @@
                             <div class="col-lg-6 ">
                                 <input type="file" id="FileUpload1" name="FileUpload1" multiple />
                             </div>
-                            @*<div class="col-lg-6" style="margin-bottom:10px" ng-show="IsDownload">
-                                    <div style="float: right; display: flex;">
-                                        <div style="font-weight: bold; padding-right: 11px;">
-                                            Existing Document:
-                                        </div>
-                                        <div style="padding-right: 11px;" ng-show="FileExtension!='.pdf'">{{MaterialInvitation.SampleDocumentID +"."+ FileExtension }}</div>
-                                        <a class="btn btn-sm btn-warning" ng-show="FileExtension!='.pdf'" style="display: inline-block;" href="/VendorSelectionModule/TechnicalQuotation/DownloadDocument?documentID={{MaterialInvitation.SampleDocumentID}}&Ext={{FileExtension}}">Download</a>
-                                    </div>
-
-                                </div>*@
+                          
                             <div class="col-lg-6" style="margin-bottom:10px" ng-show="IsDownload">
                                 <div style="float:right;display:flex;align-items:center;gap:10px">
                                     <div style="font-weight:bold">Existing Document:</div>
@@ -2377,7 +2368,12 @@
 
 
             if ($scope.TechnicalQuotation.Techtype === 'SPARES') {
-                $scope.TechnicalQuotation.YearOfManufacturing = $scope.formatDate($('#YearOfManufacturing').val());
+                var yearOfManufacturing = $('#YearOfManufacturing').val();
+
+                if (yearOfManufacturing) {
+                    $scope.TechnicalQuotation.YearOfManufacturing =
+                        $scope.formatDate(yearOfManufacturing);
+                }
 
                 if ($("#ItemName").val() == "") {
                     toastr.error("ItemName is required.");
@@ -3224,25 +3220,96 @@
 
 
 
+        //$scope.UpdateDocument = function () {
+        //    var fileUpload = $("#FileUpload1").get(0);
+        //    var files = fileUpload.files;
+        //    var validFiles = [];
+        //    var extensions = [];
+
+        //    angular.forEach(files, function (file) {
+        //        validFiles.push(file);
+        //        extensions.push(file.name.split('.').pop().toLowerCase());
+        //    });
+
+        //    if (validFiles.length === 0) {
+        //        toastr.warning("Please select a file to upload.");
+        //        return;
+        //    }
+
+        //    var uploadCount = 0;
+
+        //    angular.forEach(validFiles, function (file) {
+        //        var fileData = new FormData();
+        //        fileData.append('serverIP', $scope.Server.ServerIP);
+        //        fileData.append('ftpPort', $scope.Server.ServerPort);
+        //        fileData.append('ftpUserName', $scope.Server.FtpUserName);
+        //        fileData.append('ftpPassword', $scope.Server.FtpPassword);
+        //        fileData.append('serverURL', $scope.Server.FileServerURL);
+        //        fileData.append('documentID', $scope.MaterialInvitation.SampleDocumentID);
+        //        fileData.append('Ext', file.name.split('.').pop().toLowerCase());
+        //        fileData.append(file.name, file);
+
+        //        $.ajax({
+        //            url: '/VendorSelectionModule/TechnicalQuotation/UploadOtherFiles',
+        //            type: "POST",
+        //            contentType: false,
+        //            processData: false,
+        //            data: fileData,
+        //            success: function () {
+        //                uploadCount++;
+        //                if (uploadCount === validFiles.length) {
+        //                    // Use exactly the extensions selected — no forced .pdf suffix
+        //                    $scope.Server.Extensions = extensions.join(',');
+
+        //                    $http.post('/VendorSelectionModule/TechnicalQuotation/UpdateExtensionByDocId', {
+        //                        DocumentID: $scope.MaterialInvitation.SampleDocumentID,
+        //                        Extension: $scope.Server.Extensions
+        //                    }).success(function (response) {
+        //                        if (response.respStatus.Message) {
+        //                            toastr.success("Document Updated Successfully");
+        //                        } else {
+        //                            toastr.error('Document Update Failed');
+        //                        }
+        //                        $scope.loading = false;
+        //                    }).error(function () {
+        //                        $scope.loading = false;
+        //                    });
+
+        //                    var $el = $('#FileUpload1');
+        //                    $el.wrap('<form>').closest('form').get(0).reset();
+        //                    $el.unwrap();
+        //                    toastr.success("Document Replaced Successfully");
+        //                }
+        //            },
+        //            error: function () {
+        //                toastr.error("Document Upload Failed");
+        //                $scope.loading = false;
+        //            }
+        //        });
+        //    });
+        //};
+
+
+
         $scope.UpdateDocument = function () {
-            var fileUpload = $("#FileUpload1").get(0);
-            var files = fileUpload.files;
-            var validFiles = [];
-            var extensions = [];
+            var fileUpload = document.getElementById("FileUpload1");
 
-            angular.forEach(files, function (file) {
-                validFiles.push(file);
-                extensions.push(file.name.split('.').pop().toLowerCase());
-            });
-
-            if (validFiles.length === 0) {
-                toastr.warning("Please select a file to upload.");
+            if (!fileUpload.files || fileUpload.files.length === 0) {
+                toastr.warning("Please select a file.");
                 return;
             }
 
-            var uploadCount = 0;
+            $scope.loading = true;
 
-            angular.forEach(validFiles, function (file) {
+            var validFiles = Array.from(fileUpload.files);
+            var extensions = validFiles.map(function (f) {
+                return f.name.split('.').pop().toLowerCase();
+            });
+            var uploadCount = 0;
+            var uploadErrors = 0;
+
+            angular.forEach(validFiles, function (file, idx) {
+                var ext = extensions[idx];
                 var fileData = new FormData();
                 fileData.append('serverIP', $scope.Server.ServerIP);
                 fileData.append('ftpPort', $scope.Server.ServerPort);
@@ -3250,7 +3317,7 @@
                 fileData.append('ftpPassword', $scope.Server.FtpPassword);
                 fileData.append('serverURL', $scope.Server.FileServerURL);
                 fileData.append('documentID', $scope.MaterialInvitation.SampleDocumentID);
-                fileData.append('Ext', file.name.split('.').pop().toLowerCase());
+                fileData.append('Ext', ext);
                 fileData.append(file.name, file);
 
                 $.ajax({
@@ -3259,39 +3326,63 @@
                     contentType: false,
                     processData: false,
                     data: fileData,
-                    success: function () {
+                    success: function (result) {
                         uploadCount++;
-                        if (uploadCount === validFiles.length) {
-                            // Use exactly the extensions selected — no forced .pdf suffix
-                            $scope.Server.Extensions = extensions.join(',');
 
-                            $http.post('/VendorSelectionModule/TechnicalQuotation/UpdateExtensionByDocId', {
-                                DocumentID: $scope.MaterialInvitation.SampleDocumentID,
-                                Extension: $scope.Server.Extensions
-                            }).success(function (response) {
-                                if (response.respStatus.Message) {
+                        // FIX: check upload truly succeeded before updating extension
+                        if (result && result.ResponseCode !== "S201") {
+                            uploadErrors++;
+                        }
+
+                        if (uploadCount === validFiles.length) {
+                            if (uploadErrors > 0) {
+                                toastr.error("One or more files failed to upload.");
+                                $scope.loading = false;
+                                return;
+                            }
+
+                            // FIX: only call UpdateExtensionByDocId AFTER all files
+                            // are confirmed uploaded — eliminates the race condition
+                            $http.post(
+                                '/VendorSelectionModule/TechnicalQuotation/UpdateExtensionByDocId',
+                                {
+                                    DocumentID: $scope.MaterialInvitation.SampleDocumentID,
+                                    Extension: extensions.join(',')
+                                }
+                            ).then(function (response) {
+                                if (response.data &&
+                                    response.data.respStatus &&
+                                    response.data.respStatus.Message) {
+                                    $scope.Server.Extensions = extensions.join(',');
+                                    document.getElementById("FileUpload1").value = "";
                                     toastr.success("Document Updated Successfully");
                                 } else {
-                                    toastr.error('Document Update Failed');
+                                    toastr.error("Document Update Failed");
                                 }
                                 $scope.loading = false;
-                            }).error(function () {
+                            }).catch(function (err) {
+                                console.error(err);
+                                toastr.error("Failed to update document record");
                                 $scope.loading = false;
                             });
-
-                            var $el = $('#FileUpload1');
-                            $el.wrap('<form>').closest('form').get(0).reset();
-                            $el.unwrap();
-                            toastr.success("Document Replaced Successfully");
                         }
                     },
-                    error: function () {
-                        toastr.error("Document Upload Failed");
-                        $scope.loading = false;
+                    error: function (err) {
+                        uploadCount++;
+                        uploadErrors++;
+                        console.error('Upload error:', err);
+                        if (uploadCount === validFiles.length) {
+                            toastr.error("Document Upload Failed");
+                            $scope.loading = false;
+                        }
                     }
                 });
             });
         };
+
+
+
+
 
 
 
