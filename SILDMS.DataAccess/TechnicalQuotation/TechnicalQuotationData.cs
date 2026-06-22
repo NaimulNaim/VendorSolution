@@ -143,6 +143,7 @@ namespace SILDMS.DataAccess.TechnicalQuotation
                             ProductLifeCycleValue = reader.GetString("ProductLifeCycleValue"),
                             ProductLifeCycleUnit = reader.GetString("ProductLifeCycleUnit"),
                             sampleDocId = reader.GetString("DocumentID"),
+                            InvitationSendPerson = reader.GetString("InvitationSendPerson"),
                             Action = "A"
 
                         }).ToList();
@@ -751,7 +752,7 @@ namespace SILDMS.DataAccess.TechnicalQuotation
                             sampleDocId = reader.GetString("DocumentID"),
                             SampleDocumentID = reader.GetString("SampleDocId"),
                             BiddingItemVendorID = reader.GetString("BiddingVendorID"),
-
+                            InvitationSendPerson = reader.GetString("InvitationSendPerson"),
                             BiddingID = reader.GetString("BiddingID"),
                             Action = "E",
 

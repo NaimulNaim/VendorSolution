@@ -143,6 +143,21 @@
                 </button>
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <label for="InvitationSendingPerson">Contact Person </label>
+                </div>
+            </div>
+            <div class="col-lg-3" style="padding-left:15px;">
+                <div class="form-group">
+                    <input id="InvitationSendingPerson" name="InvitationSendingPerson" ng-model="InvitationSendingPerson" readonly class="form-control" autofocus />
+
+                </div>
+            </div>
+
+        </div>
         <div class="row">
             <div class="col-lg-2" ng-if="Quotation">
                 <div class="form-group">
@@ -154,8 +169,8 @@
                     <input id="QuotationNumber" name="QuotationNumber" type="text" data-ng-model="Quotation" class="form-control"
                            placeholder="Quotation Number" ng-readonly="true" />
                     @*<div ng-show="masterDataFrm.$submitted || masterDataFrm.UDCode.$touched">
-                            <span ng-show="masterDataFrm.UDCode.$error.required" class="label label-danger">Please enter UD Code</span>
-                        </div>*@
+                        <span ng-show="masterDataFrm.UDCode.$error.required" class="label label-danger">Please enter UD Code</span>
+                    </div>*@
                 </div>
             </div>
 
@@ -2549,6 +2564,7 @@
                     $scope.flagToShow = false;
                     $scope.flagToShowMasterTbl = true;
                     $scope.MaterialList = response.InvMaterialList;
+                    $scope.InvitationSendingPerson = $scope.MaterialList[0].InvitationSendPerson;
 
                     $scope.GridDisplayCollection = [].concat($scope.MaterialList);
 
@@ -3721,8 +3737,9 @@
 
                 // Defensive: ensure response exists
                 var data = res.data && res.data.AllQuotation ? res.data.AllQuotation : [];
-
+    
                 $scope.MaterialList = data;
+                $scope.InvitationSendingPerson = $scope.MaterialList[0].InvitationSendPerson;
                 $scope.GridDisplayCollection = [].concat(data);
 
                 // Flags for UI

@@ -622,6 +622,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" ng-click="ResetSearchModel()" aria-hidden="true">x</button>
                     <h3 class="modal-title">RFQ - {{InvitationNumber}}</h3>
+                    <h4>Contact Person - {{InvitationSendingPerson}}</h4>
                 </div>
 
                 <!-- Modal Body -->
@@ -965,6 +966,9 @@
                     //$scope.flagToShow = false;
                     //$scope.flagToShowMasterTbl = true;
                     $scope.MaterialList = response.InvMaterialList;
+
+                    $scope.InvitationSendingPerson = $scope.MaterialList[0].InvitationSendPerson;
+
                     $scope.GridDisplayCollection = [].concat($scope.MaterialList);
                     $scope.loading = false;
                 }).error(function () {
@@ -985,6 +989,7 @@
                     //$scope.flagToShow = false;
                     //$scope.flagToShowMasterTbl = true;
                     $scope.MaterialList = response.InvMaterialList;
+                    $scope.InvitationSendingPerson=$scope.MaterialList[0].InvitationSendPerson;
                     $scope.GridDisplayCollection = [].concat($scope.MaterialList);
                     $scope.loading = false;
                 }).error(function () {

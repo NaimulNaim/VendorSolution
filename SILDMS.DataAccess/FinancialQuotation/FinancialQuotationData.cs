@@ -110,6 +110,7 @@ namespace SILDMS.DataAccess.FinancialQuotation
                             Status = reader.GetInt32("Status"),
                             Fintype = reader.GetString("Fintype"),
                             Proposal = reader.GetString("Proposal"),
+                            InvitationSendPerson = reader.GetString("InvitationSendPerson"),
 
                             QuotationID = dt1.Columns.Contains("QuotationID") && !reader.IsNull("QuotationID")
                        ? Convert.ToInt64(reader["QuotationID"])
@@ -764,6 +765,7 @@ namespace SILDMS.DataAccess.FinancialQuotation
                             sampleDocId = reader.GetString("DocumentID"),
                             SampleDocumentID = reader.GetString("SampleDocId"),
                             LowestNetUnitPrice = reader.GetString("LowestNetUnitPrice"),
+                            InvitationSendPerson = reader.GetString("InvitationSendPerson"),
                             Action = "E",
 
 

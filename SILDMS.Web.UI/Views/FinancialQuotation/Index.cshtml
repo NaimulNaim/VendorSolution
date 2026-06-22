@@ -185,43 +185,59 @@
                     Search
                 </button>
             </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        <label for="InvitationSendingPerson">Contact Person </label>
+                    </div>
+                </div>
+                <div class="col-lg-3" style="padding-left:15px;">
+                    <div class="form-group">
+                        <input id="InvitationSendingPerson" name="InvitationSendingPerson" ng-model="InvitationSendingPerson" readonly class="form-control" autofocus />
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-lg-2" ng-if="Quotation">
+                    <div class="form-group">
+                        <label for="QuotationNumber">Quotation No </label>
+                    </div>
+                </div>
+                <div class="col-lg-2" ng-if="Quotation">
+                    <div class="form-group">
+                        <input id="QuotationNumber" name="QuotationNumber" type="text" data-ng-model="Quotation" class="form-control"
+                               placeholder="Quotation No" ng-readonly="true" />
+                        @*<div ng-show="masterDataFrm.$submitted || masterDataFrm.UDCode.$touched">
+                        <span ng-show="masterDataFrm.UDCode.$error.required" class="label label-danger">Please enter UD Code</span>
+                    </div>*@
+                    </div>
+                </div>
+                <div class="col-lg-4"></div>
+                <div class="col-lg-2" ng-if="Quotation && lowestshowstatus">
+                    <div class="form-group">
+                        <label for="LowestPrice">Lowest Quoted Price </label>
+                    </div>
+                </div>
+                <div class="col-lg-2" ng-if="Quotation && lowestshowstatus">
+                    <div class="form-group">
+                        <input id="LowestPriceNo" name="LowestPriceNo" type="text" data-ng-model="lowestPrice" class="form-control text-right"
+                               placeholder="LowestPrice No" ng-readonly="true" />
+                        @*<div ng-show="masterDataFrm.$submitted || masterDataFrm.UDCode.$touched">
+                        <span ng-show="masterDataFrm.UDCode.$error.required" class="label label-danger">Please enter UD Code</span>
+                    </div>*@
+                    </div>
+                </div>
+
+
+
+            </div>
+
         </div>
-        <div class="row">
-            <div class="col-lg-2" ng-if="Quotation">
-                <div class="form-group">
-                    <label for="QuotationNumber">Quotation No </label>
-                </div>
-            </div>
-            <div class="col-lg-2" ng-if="Quotation">
-                <div class="form-group">
-                    <input id="QuotationNumber" name="QuotationNumber" type="text" data-ng-model="Quotation" class="form-control"
-                           placeholder="Quotation No" ng-readonly="true" />
-                    @*<div ng-show="masterDataFrm.$submitted || masterDataFrm.UDCode.$touched">
-                            <span ng-show="masterDataFrm.UDCode.$error.required" class="label label-danger">Please enter UD Code</span>
-                        </div>*@
-                </div>
-            </div>
-            <div class="col-lg-4"></div>
-            <div class="col-lg-2" ng-if="Quotation && lowestshowstatus">
-                <div class="form-group">
-                    <label for="LowestPrice">Lowest Quoted Price </label>
-                </div>
-            </div>
-            <div class="col-lg-2" ng-if="Quotation && lowestshowstatus">
-                <div class="form-group">
-                    <input id="LowestPriceNo" name="LowestPriceNo" type="text" data-ng-model="lowestPrice" class="form-control text-right"
-                           placeholder="LowestPrice No" ng-readonly="true" />
-                    @*<div ng-show="masterDataFrm.$submitted || masterDataFrm.UDCode.$touched">
-                            <span ng-show="masterDataFrm.UDCode.$error.required" class="label label-danger">Please enter UD Code</span>
-                        </div>*@
-                </div>
-            </div>
-
-
-
-        </div>
-
-    </div>
 
 
 
@@ -3171,6 +3187,7 @@
                     $scope.flagToShow = false;
                     $scope.flagToShowMasterTbl = true;
                     $scope.MaterialList = response.InvMaterialList;
+                    $scope.InvitationSendingPerson = $scope.MaterialList[0].InvitationSendPerson;
                     $scope.GridDisplayCollection = [].concat($scope.MaterialList);
                     if ($scope.MaterialList.length <= 0) {
                         $scope.flagToShow = true;
@@ -4066,6 +4083,7 @@
                     $scope.flagToShowMasterTbl = true;
                     $scope.MaterialList = response.AllQuotation;
 
+                    $scope.InvitationSendingPerson = $scope.MaterialList[0].InvitationSendPerson;
                     $scope.lowestPrice = $scope.MaterialList[0].LowestNetUnitPrice;
 
                     $scope.GridDisplayCollection = [].concat($scope.MaterialList);

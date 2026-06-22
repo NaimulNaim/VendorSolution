@@ -582,6 +582,7 @@ namespace SILDMS.Model.VendorSelectionModule
         public DateTime RFQDeadline { get; set; }
         public string RFQDeadlineString { get; set; }
         public string LowestNetUnitPrice { get; set; }
+        public string InvitationSendPerson { get; set; }
     }
 
 
