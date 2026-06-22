@@ -4,6 +4,7 @@ using SILDMS.Model.SecurityModule;
 using SILDMS.Utillity;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Net;
@@ -27,68 +28,87 @@ namespace SILDMS.Web.UI.Areas.SecurityModule.Controllers
 
         public ActionResult SendCredentials(string email)
         {
-            // HttpPostedFile httpPostedFileBase2 = System.Web.HttpContext.Current.Request.Files[0];
-            int a = 1;
-            //var toEmailId = new List<ReturnResult>();
-            var user = new List<VendorUser>();
-            user = GetUserByEmailAsync(email);
-            if (user != null && user.Count > 0)
+            int result = 1;
+
+            try
             {
+                List<VendorUser> user = GetUserByEmailAsync(email);
+
+                if (user == null || user.Count == 0)
+                {
+                    result = 3; // User not found
+                    return Json(new { Msg = result }, JsonRequestBehavior.AllowGet);
+                }
+
                 string userId = user[0].UserId;
-                string password = user[0].Password;
                 string decryptedPassword = StringEncription.Decrypt(user[0].Password, true);
 
+                // Read SMTP settings from web.config
+                string fromMail = ConfigurationManager.AppSettings["FromMail"];
+                string smtpPassword = ConfigurationManager.AppSettings["Password"];
+                string host = ConfigurationManager.AppSettings["Host"];
+                int port = Convert.ToInt32(ConfigurationManager.AppSettings["Port"]);
 
-                var message = "";
-                ServicePointManager.SecurityProtocol = (SecurityProtocolType)48 | (SecurityProtocolType)192 | (SecurityProtocolType)768 | (SecurityProtocolType)3072;
-                //Reading sender Email credential from web.config file
-                HostAdd = "172.16.128.39";
-                //FromEmailid = ConfigurationManager.AppSettings["FromMail"].ToString();
-                Password = "(Cbp$)@978!"; ;
-                // ToEmail = "shalim@squaregroup.com";
-                //creating the object of MailMessage
-                MailMessage mailMessage = new MailMessage();
-                mailMessage.From = new MailAddress("cbps@squaregroup.com"); //From Email Id
-                mailMessage.Subject = "Forgot Password"; //Subject of Email
-                mailMessage.Body = $"<p>Your User ID: <b>{userId}</b></p><p>Your Password: <b>{decryptedPassword}</b></p>";
-                mailMessage.IsBodyHtml = true;
-                mailMessage.To.Add(email);
+                ServicePointManager.SecurityProtocol =
+                    SecurityProtocolType.Tls |
+                    SecurityProtocolType.Tls11 |
+                    SecurityProtocolType.Tls12;
 
-
-
-
-
-                SmtpClient smtp = new SmtpClient(); // creating object of smptpclient
-                smtp.Host = HostAdd; //host of emailaddress for example smtp.gmail.com etc
-                smtp.EnableSsl = true;
-                NetworkCredential networkCred = new NetworkCredential();
-                networkCred.UserName = mailMessage.From.Address;
-                networkCred.Password = Password;
-                smtp.UseDefaultCredentials = true;
-                smtp.Credentials = networkCred;
-                smtp.Port = 587;
-
-
-
-                ServicePointManager.ServerCertificateValidationCallback = (s, certificate, chain, sslPolicyErrors) => true;
-
-                try
+                using (MailMessage mailMessage = new MailMessage())
                 {
-                    smtp.Send(mailMessage);
-                    a = 2;
+                    mailMessage.From = new MailAddress(fromMail);
+                    mailMessage.To.Add(email);
+                    mailMessage.Subject = "Forgot Password";
+                    mailMessage.IsBodyHtml = true;
+
+                    mailMessage.Body = $@"
+                <html>
+                <body>
+                    <p>Dear User,</p>
+
+                    <p>Your login credentials are:</p>
+
+                    <p>
+                        <strong>User ID:</strong> {userId}<br/>
+                        <strong>Password:</strong> {decryptedPassword}
+                    </p>
+
+                    <p>Regards,<br/>CBPS System</p>
+                </body>
+                </html>";
+
+                    using (SmtpClient smtp = new SmtpClient())
+                    {
+                        smtp.Host = host;
+                        smtp.Port = port;
+
+                        // For internal SMTP server on port 25 usually SSL is disabled.
+                        smtp.EnableSsl = false;
+
+                        smtp.UseDefaultCredentials = false;
+                        smtp.Credentials = new NetworkCredential(
+                            fromMail,
+                            smtpPassword);
+
+                        // Ignore SSL certificate validation if needed
+                        ServicePointManager.ServerCertificateValidationCallback =
+                            (sender, certificate, chain, sslPolicyErrors) => true;
+
+                        smtp.Send(mailMessage);
+                    }
                 }
-                catch (Exception ex)
-                {
-                    a = 0;
-                }
-                return Json(new { Msg = a }, JsonRequestBehavior.AllowGet);
+
+                result = 2; // Success
             }
-            else
+            catch (Exception ex)
             {
-                a = 3;
-                return Json(new { Msg = a }, JsonRequestBehavior.AllowGet);
+                // Log exception here
+                string errorMessage = ex.ToString();
+
+                result = 0; // Failed
             }
 
+            return Json(new { Msg = result }, JsonRequestBehavior.AllowGet);
         }
 
         public List<VendorUser> GetUserByEmailAsync(string email)
