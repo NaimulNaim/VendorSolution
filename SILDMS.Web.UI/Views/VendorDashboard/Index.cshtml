@@ -8,6 +8,11 @@
         box-sizing: border-box;
     }
 
+
+    html {
+        zoom: 90%;
+    }
+
     /* ── Summary boxes ── */
     .link_total_bm {
         color: black;
@@ -68,7 +73,7 @@
     }
 
     .tile-chq {
-        background-color: #FCB788;
+        background-color: #e8b795;
     }
 
     .tile-du {
@@ -94,7 +99,7 @@
 
     /* ── Section headers ── */
     .panel-label {
-        background: #5a7f73;
+        background: #e18d52;
         color: #fff;
         font-size: 13px;
         font-weight: bold;
@@ -137,7 +142,7 @@
         }
 
     .mob-rfq-num {
-        font-size: 13px;
+        font-size: 18px;
         font-weight: 700;
         color: #0f6e56;
         text-decoration: none;
@@ -181,7 +186,7 @@
     }
 
     .mob-tq-btn {
-        background: #FCB788;
+        background: #dd874d;
         color: #fff;
         border: none;
         border-radius: 4px;
@@ -193,7 +198,7 @@
     }
 
     .mob-fq-btn {
-        background: #B9CBE9;
+        background: #5870a0;
         color: #fff;
         border: none;
         border-radius: 4px;
@@ -283,6 +288,146 @@
     .table-condensed td, .table-condensed th {
         padding: 5px 8px;
     }
+
+      /* Modern Modal */
+   /* ===========================
+   RFQ Material Modal
+=========================== */
+
+#QuotedInvits .modal-dialog {
+    width: 95%;
+    max-width: 800px;
+    margin: 25px auto;
+}
+
+#QuotedInvits .modal-content {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0,0,0,.12);
+}
+
+    #QuotedInvits .modal-header {
+        background: #376456;
+        color: #fff;
+        padding: 12px 16px;
+    }
+
+#QuotedInvits .modal-title {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+#QuotedInvits .close {
+    color: #fff;
+    opacity: 1;
+    font-size: 26px;
+    text-shadow: none;
+}
+
+#QuotedInvits .modal-body {
+    padding: 0;
+}
+
+/* Desktop table */
+
+.material-table-view table {
+    margin-bottom: 0;
+}
+
+.material-table-view th {
+    background: #f7f8fa;
+    text-align: center;
+    font-weight: 600;
+}
+
+.material-table-view td {
+    vertical-align: middle;
+}
+
+/* Mobile cards hidden on desktop */
+
+.mob-material-list {
+    display: none;
+}
+
+/* ===========================
+   MOBILE
+=========================== */
+
+@@media (max-width:768px) {
+
+    #QuotedInvits .modal-dialog {
+        width: 96%;
+        margin: 12px auto;
+    }
+
+    #QuotedInvits .modal-content {
+        border-radius: 10px;
+        max-height: 65vh;
+    }
+
+    #QuotedInvits .modal-title {
+        font-size: 16px;
+    }
+
+    /* Hide table on mobile */
+    .material-table-view {
+        display: none;
+    }
+
+    /* Show cards */
+    .mob-material-list {
+        display: block;
+        padding: 10px;
+        max-height: 50vh;
+        overflow-y: auto;
+    }
+
+    .mob-material-card {
+        background: #fff;
+        border: 1px solid #e9ecef;
+        border-radius: 10px;
+        padding: 12px;
+        margin-bottom: 10px;
+        box-shadow: 0 1px 3px rgba(0,0,0,.05);
+    }
+
+    .mat-name {
+        font-size: 14px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 6px;
+        line-height: 1.4;
+    }
+
+    .mat-code {
+        font-size: 12px;
+        color: #777;
+        margin-bottom: 10px;
+    }
+
+    .mat-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .mat-qty {
+        font-size: 16px;
+        font-weight: 700;
+        color: #444;
+    }
+
+    .unit-badge {
+        background: #84c1ad;
+        color: #fff;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+   }
 </style>
 
 <div class="box box-primary box-body" ng-controller="VendorSideDashboardVCMSCtrl">
@@ -325,19 +470,29 @@
                            style="width:100%;">
                         <thead>
                             <tr style="background:#84c1ad;">
-                                <th style="color:darkblue;">RFQ No</th>
-                                <th style="color:darkblue;">RFQ Date</th>
-                                <th style="color:darkblue;">RFQ Deadline</th>
-                                <th style="color:darkblue;">Action</th>
+                                <th style="color:black;">RFQ No</th>
+                                <th style="color:black;">RFQ Date</th>
+                                <th style="color:black;">RFQ Deadline</th>
+                                <th style="color:black;">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="item in invitationTecnicalList">
-                                <td class="text-center" ng-style="item.TotalItem==0?{'cursor':'not-allowed'}:{'cursor':'pointer'}">
-                                    <a ng-if="item.TotalItem!=0"
+                                <td class="text-center" style="padding:0;">
+
+                                    <a ng-if="item.TotalItem != 0"
                                        ng-href="/VendorSelectionModule/TechnicalQuotation?InvitationNumber={{item.InnvitationNumber}}&QuotationSendingDeadline={{formatDatetest(item.QuotationlastDt)}}"
-                                       class="text-primary">{{item.InnvitationNumber}}</a>
-                                    <span ng-if="item.TotalItem==0" class="text-muted">{{item.InnvitationNumber}}</span>
+                                       class="text-primary"
+                                       style="display:block;width:100%;height:100%;padding:8px;text-decoration:none;cursor:pointer;">
+                                        {{item.InnvitationNumber}}
+                                    </a>
+
+                                    <span ng-if="item.TotalItem == 0"
+                                          class="text-muted"
+                                          style="display:block;width:100%;padding:8px;cursor:not-allowed;">
+                                        {{item.InnvitationNumber}}
+                                    </span>
+
                                 </td>
                                 <td class="text-center">{{formatDatetest(item.InnvitationDt)}}</td>
                                 <td class="text-center">{{formatDatetest(item.QuotationlastDt)}}</td>
@@ -401,19 +556,29 @@
                            style="width:100%;">
                         <thead>
                             <tr style="background:#84c1ad;">
-                                <th style="color:darkblue;">RFQ No</th>
-                                <th style="color:darkblue;">RFQ Date</th>
-                                <th style="color:darkblue;">RFQ Deadline</th>
-                                <th style="color:darkblue;">Action</th>
+                                <th style="color:black;">RFQ No</th>
+                                <th style="color:black;">RFQ Date</th>
+                                <th style="color:black;">RFQ Deadline</th>
+                                <th style="color:black;">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="item in invitationFinanList">
-                                <td class="text-center" ng-style="item.TotalItem==0?{'cursor':'not-allowed'}:{'cursor':'pointer'}">
-                                    <a ng-if="item.TotalItem!=0"
+                                <td class="text-center" style="padding:0;">
+
+                                    <a ng-if="item.TotalItem != 0"
                                        ng-href="/VendorSelectionModule/FinancialQuotation?InvitationNumber={{item.InnvitationNumber}}&QuotationSendingDeadline={{formatDatetest(item.QuotationlastDt)}}"
-                                       class="text-primary">{{item.InnvitationNumber}}</a>
-                                    <span ng-if="item.TotalItem==0" class="text-muted">{{item.InnvitationNumber}}</span>
+                                       class="text-primary"
+                                       style="display:block;width:100%;height:100%;padding:8px;text-decoration:none;cursor:pointer;">
+                                        {{item.InnvitationNumber}}
+                                    </a>
+
+                                    <span ng-if="item.TotalItem == 0"
+                                          class="text-muted"
+                                          style="display:block;width:100%;padding:8px;cursor:not-allowed;">
+                                        {{item.InnvitationNumber}}
+                                    </span>
+
                                 </td>
                                 <td class="text-center">{{formatDatetest(item.InnvitationDt)}}</td>
                                 <td class="text-center">{{formatDatetest(item.QuotationlastDt)}}</td>
@@ -478,14 +643,14 @@
                            style="width:100%;">
                         <thead>
                             <tr style="background:#84c1ad;">
-                                <th rowspan="2" style="color:darkblue;vertical-align:middle;">Quotation No</th>
-                                <th rowspan="2" style="color:darkblue;vertical-align:middle;">Quotation Date</th>
-                                <th rowspan="2" style="color:darkblue;vertical-align:middle;">RFQ Deadline</th>
-                                <th colspan="2" style="color:darkblue;text-align:center;">Action</th>
+                                <th rowspan="2" style="color:black;vertical-align:middle;">Quotation No</th>
+                                <th rowspan="2" style="color:black; vertical-align: middle;">Quotation Date</th>
+                                <th rowspan="2" style="color:black; vertical-align: middle;">RFQ Deadline</th>
+                                <th colspan="2" style="color:black; text-align: center;">Action</th>
                             </tr>
                             <tr style="background:#84c1ad;">
-                                <th style="color:darkblue;text-align:center;">Tech</th>
-                                <th style="color:darkblue;text-align:center;">Fin</th>
+                                <th class="hide" style="color:darkblue;text-align:center;">Tech</th>
+                                <th class="hide" style="color:darkblue;text-align:center;">Fin</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -497,13 +662,13 @@
                                     <a ng-if="item.TechQuotationItemID"
                                        ng-href="/VendorSelectionModule/TechnicalQuotation?InvitationNumber={{item.InnvitationNumber}}&QuotationNo={{item.QuotationNo}}&QuotationSendingDeadline={{formatDatetest(item.QuotationlastDt)}}"
                                        class="btn btn-xs"
-                                       style="background-color:#FCB788;color:#fff;border-color:#FCB788;">TQ</a>
+                                       style="background-color: #e18d52; color: #fff; border-color: #FCB788; ">TQ</a>
                                 </td>
                                 <td class="text-center">
                                     <a ng-if="item.FinanQuotationItemID"
                                        ng-href="/VendorSelectionModule/FinancialQuotation?InvitationNumber={{item.InnvitationNumber}}&QuotationNo={{item.QuotationNo}}&QuotationSendingDeadline={{formatDatetest(item.QuotationlastDt)}}"
                                        class="btn btn-xs"
-                                       style="background-color:#B9CBE9;color:#fff;border-color:#B9CBE9;">FQ</a>
+                                       style="background-color: #5870a0; color: #fff; border-color: #B9CBE9;">FQ</a>
                                 </td>
                             </tr>
                         </tbody>
@@ -548,37 +713,97 @@
 
     </div>
 
-
-    <div id="QuotedInvits" class="modal fade">
-        <div class="modal-dialog" style="max-width:95vw;width:600px;">
+    <div id="QuotedInvits" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
             <div class="modal-content">
+
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" ng-click="ResetSearchModel()" aria-hidden="true">&times;</button>
-                    <h3 class="modal-title">RFQ - {{InvitationNumber}}</h3>
+                    <button type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            ng-click="ResetSearchModel()"
+                            aria-hidden="true">
+                        &times;
+                    </button>
+
+                    <h3 class="modal-title">
+                        RFQ - {{InvitationNumber}}
+                    </h3>
                 </div>
-                <div class="table-responsive" style="overflow-x:auto;-webkit-overflow-scrolling:touch;">
-                    <table id="tableId" style="width:100%;"
-                           st-table="GridDisplayCollection"
-                           st-safe-src="MaterialList"
-                           class="table table-condensed table-bordered table-striped table-hover pnlView">
-                        <thead>
-                            <tr style="background:#84c1ad;">
-                                <th style="color:darkblue;">Material Code</th>
-                                <th style="color:darkblue;">Material Name</th>
-                                <th style="color:darkblue;">Quantity</th>
-                                <th style="color:darkblue;">Unit</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="row in GridDisplayCollection | orderBy:'IsBack':true">
-                                <td class="text-center">{{formatMaterialCode(row.materialCode)}}</td>
-                                <td class="text-left">{{row.materialName}}</td>
-                                <td class="text-right">{{row.MaterialQuantity | number:3}}</td>
-                                <td class="text-center">{{row.Unit}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="modal-body">
+
+                    <!-- Desktop Table -->
+                    <div class="table-responsive material-table-view">
+                        <table id="tableId"
+                               st-table="GridDisplayCollection"
+                               st-safe-src="MaterialList"
+                               class="table table-bordered table-hover">
+
+                            <thead>
+                                <tr>
+                                    <th  style="color:black;">Material Code</th>
+                                    <th style="color:black;">Material Name</th>
+                                    <th style="color:black;">Quantity</th>
+                                    <th  style="color:black;">Unit</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr ng-repeat="row in GridDisplayCollection | orderBy:'IsBack':true">
+                                    <td class="text-center">
+                                        {{formatMaterialCode(row.materialCode)}}
+                                    </td>
+                                    <td>
+                                        {{row.materialName}}
+                                    </td>
+                                    <td class="text-right">
+                                        {{row.MaterialQuantity | number:3}}
+                                    </td>
+                                    <td class="text-center">
+                                        {{row.Unit}}
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                    <!-- Mobile Cards -->
+                    <div class="mob-material-list">
+
+                        <div class="mob-material-card"
+                             ng-repeat="row in GridDisplayCollection | orderBy:'IsBack':true">
+
+                            <div class="mat-name">
+                                {{row.materialName}}
+                            </div>
+
+                            <div class="mat-code">
+                                Material Code:
+                                {{formatMaterialCode(row.materialCode)}}
+                            </div>
+
+                            <div class="mat-footer">
+
+                                <div>
+                                    <small>Quantity</small>
+                                    <div class="mat-qty">
+                                        {{row.MaterialQuantity | number:3}}
+                                    </div>
+                                </div>
+
+                                <span class="unit-badge">
+                                    {{row.Unit}}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
                 </div>
+
             </div>
         </div>
     </div>
