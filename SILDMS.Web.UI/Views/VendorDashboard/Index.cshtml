@@ -729,6 +729,7 @@
                     <h3 class="modal-title">
                         RFQ - {{InvitationNumber}}
                     </h3>
+                    <h4>Contact Person - {{InvitationSendingPerson}}</h4>
                 </div>
                 <div class="modal-body">
 
@@ -800,22 +801,12 @@
 
                         </div>
 
-                    </div>
-    <div id="QuotedInvits" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" ng-click="ResetSearchModel()" aria-hidden="true">x</button>
-                    <h3 class="modal-title">RFQ - {{InvitationNumber}}</h3>
-                    <h4>Contact Person - {{InvitationSendingPerson}}</h4>
-                </div>
-
-                </div>
-
-            </div>
-        </div>
+               
     </div>
+
+                    </div>
+                </div>
+            </div>
 
     <div id="mydiv" data-ng-show="ParkingLoading || PostingLoading || ClearingLoading || countLoading || tableLoading">
         <div class="overlay">
@@ -826,6 +817,8 @@
     </div>
 
 </div>
+
+    </div>
 
 <script type="text/javascript">
     app.controller('VendorSideDashboardVCMSCtrl', ['$scope', '$http', function ($scope, $http) {

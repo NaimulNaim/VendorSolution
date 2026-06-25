@@ -9,6 +9,7 @@ using System.Data;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -26,7 +27,94 @@ namespace SILDMS.Web.UI.Areas.SecurityModule.Controllers
         [HttpPost]
 
 
-        public ActionResult SendCredentials(string email)
+        //public ActionResult SendCredentials(string email)
+        //{
+        //    int result = 1;
+
+        //    try
+        //    {
+        //        List<VendorUser> user = GetUserByEmailAsync(email);
+
+        //        if (user == null || user.Count == 0)
+        //        {
+        //            result = 3; // User not found
+        //            return Json(new { Msg = result }, JsonRequestBehavior.AllowGet);
+        //        }
+
+        //        string userId = user[0].UserId;
+        //        string decryptedPassword = StringEncription.Decrypt(user[0].Password, true);
+
+        //        // Read SMTP settings from web.config
+        //        string fromMail = ConfigurationManager.AppSettings["FromMail"];
+        //        string smtpPassword = ConfigurationManager.AppSettings["Password"];
+        //        string host = ConfigurationManager.AppSettings["Host"];
+        //        int port = Convert.ToInt32(ConfigurationManager.AppSettings["Port"]);
+
+        //        ServicePointManager.SecurityProtocol =
+        //            SecurityProtocolType.Tls |
+        //            SecurityProtocolType.Tls11 |
+        //            SecurityProtocolType.Tls12;
+
+        //        using (MailMessage mailMessage = new MailMessage())
+        //        {
+        //            mailMessage.From = new MailAddress(fromMail);
+        //            mailMessage.To.Add(email);
+        //            mailMessage.Subject = "Forgot Password";
+        //            mailMessage.IsBodyHtml = true;
+
+        //            mailMessage.Body = $@"
+        //        <html>
+        //        <body>
+        //            <p>Dear User,</p>
+
+        //            <p>Your login credentials are:</p>
+
+        //            <p>
+        //                <strong>User ID:</strong> {userId}<br/>
+        //                <strong>Password:</strong> {decryptedPassword}
+        //            </p>
+
+        //            <p>Regards,<br/>CBPS System</p>
+        //        </body>
+        //        </html>";
+
+        //            using (SmtpClient smtp = new SmtpClient())
+        //            {
+        //                smtp.Host = host;
+        //                smtp.Port = port;
+
+        //                // For internal SMTP server on port 25 usually SSL is disabled.
+        //                smtp.EnableSsl = true;
+
+        //                smtp.UseDefaultCredentials = false;
+        //                smtp.Credentials = new NetworkCredential(
+        //                    fromMail,
+        //                    smtpPassword);
+
+        //                // Ignore SSL certificate validation if needed
+        //                ServicePointManager.ServerCertificateValidationCallback =
+        //                    (sender, certificate, chain, sslPolicyErrors) => true;
+
+        //                smtp.Send(mailMessage);
+        //            }
+        //        }
+
+        //        result = 2; // Success
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log exception here
+        //        string errorMessage = ex.ToString();
+
+        //        result = 0; // Failed
+        //    }
+
+        //    return Json(new { Msg = result }, JsonRequestBehavior.AllowGet);
+        //}
+
+
+
+        public async Task<ActionResult> SendCredentials(string email)
         {
             int result = 1;
 
@@ -36,14 +124,12 @@ namespace SILDMS.Web.UI.Areas.SecurityModule.Controllers
 
                 if (user == null || user.Count == 0)
                 {
-                    result = 3; // User not found
-                    return Json(new { Msg = result }, JsonRequestBehavior.AllowGet);
+                    return Json(new { Msg = 3 }, JsonRequestBehavior.AllowGet);
                 }
 
                 string userId = user[0].UserId;
                 string decryptedPassword = StringEncription.Decrypt(user[0].Password, true);
 
-                // Read SMTP settings from web.config
                 string fromMail = ConfigurationManager.AppSettings["FromMail"];
                 string smtpPassword = ConfigurationManager.AppSettings["Password"];
                 string host = ConfigurationManager.AppSettings["Host"];
@@ -54,7 +140,10 @@ namespace SILDMS.Web.UI.Areas.SecurityModule.Controllers
                     SecurityProtocolType.Tls11 |
                     SecurityProtocolType.Tls12;
 
-                using (MailMessage mailMessage = new MailMessage())
+                ServicePointManager.ServerCertificateValidationCallback =
+                    (sender, certificate, chain, sslPolicyErrors) => true;
+
+                using (var mailMessage = new MailMessage())
                 {
                     mailMessage.From = new MailAddress(fromMail);
                     mailMessage.To.Add(email);
@@ -62,54 +151,59 @@ namespace SILDMS.Web.UI.Areas.SecurityModule.Controllers
                     mailMessage.IsBodyHtml = true;
 
                     mailMessage.Body = $@"
-                <html>
-                <body>
-                    <p>Dear User,</p>
+<html>
+<body>
+    <p>Dear User,</p>
 
-                    <p>Your login credentials are:</p>
+    <p>Your login credentials are:</p>
 
-                    <p>
-                        <strong>User ID:</strong> {userId}<br/>
-                        <strong>Password:</strong> {decryptedPassword}
-                    </p>
+    <p>
+        <strong>User ID:</strong> {userId}<br/>
+        <strong>Password:</strong> {decryptedPassword}
+    </p>
 
-                    <p>Regards,<br/>CBPS System</p>
-                </body>
-                </html>";
+    <p>Regards,<br/>CBPS System</p>
+</body>
+</html>";
 
-                    using (SmtpClient smtp = new SmtpClient())
+                    using (var smtpClient = new SmtpClient(host, port))
                     {
-                        smtp.Host = host;
-                        smtp.Port = port;
-
-                        // For internal SMTP server on port 25 usually SSL is disabled.
-                        smtp.EnableSsl = false;
-
-                        smtp.UseDefaultCredentials = false;
-                        smtp.Credentials = new NetworkCredential(
+                        smtpClient.EnableSsl = true; // same as your working code
+                        smtpClient.UseDefaultCredentials = false;
+                        smtpClient.Credentials = new NetworkCredential(
                             fromMail,
                             smtpPassword);
 
-                        // Ignore SSL certificate validation if needed
-                        ServicePointManager.ServerCertificateValidationCallback =
-                            (sender, certificate, chain, sslPolicyErrors) => true;
+                        smtpClient.Timeout = 30000;
 
-                        smtp.Send(mailMessage);
+                        await smtpClient.SendMailAsync(mailMessage);
                     }
                 }
 
-                result = 2; // Success
+                result = 2;
+            }
+            catch (SmtpException smtpEx)
+            {
+                System.IO.File.WriteAllText(
+                    Server.MapPath("~/SmtpError.txt"),
+                    smtpEx.ToString());
+
+                result = 0;
             }
             catch (Exception ex)
             {
-                // Log exception here
-                string errorMessage = ex.ToString();
+                System.IO.File.WriteAllText(
+                    Server.MapPath("~/GeneralError.txt"),
+                    ex.ToString());
 
-                result = 0; // Failed
+                result = 0;
             }
 
             return Json(new { Msg = result }, JsonRequestBehavior.AllowGet);
         }
+
+
+
 
         public List<VendorUser> GetUserByEmailAsync(string email)
         {
