@@ -594,6 +594,7 @@ namespace SILDMS.Model.VendorSelectionModule
         public string FtpUserName { get; set; }
         public string FtpPassword { get; set; }
         public string Extensions { get; set; }
+        public string DocumentID { get; set; }
     }
     
 

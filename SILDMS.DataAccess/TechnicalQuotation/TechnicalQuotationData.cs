@@ -934,7 +934,8 @@ namespace SILDMS.DataAccess.TechnicalQuotation
                             FileServerURL = reader.GetString("FileServerURL"),
                             FtpUserName = reader.GetString("FtpUserName"),
                             FtpPassword = reader.GetString("FtpPassword"),
-                            Extensions = reader.GetString("FileExtension")
+                            Extensions = reader.GetString("FileExtension"),
+                            DocumentID = reader.GetString("DocumentID"),
 
 
 

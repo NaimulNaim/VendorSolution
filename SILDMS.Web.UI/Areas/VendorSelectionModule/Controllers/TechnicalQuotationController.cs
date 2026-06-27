@@ -473,7 +473,7 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
                 string fullUrl =
                     "ftp://" + ServerList.ServerIP + "/" +
                     ServerList.FileServerURL + "/" +
-                    safeFileName + "." + ext;
+                    ServerList.DocumentID + "." + ext;
 
                 byte[] fileData = request.DownloadData(fullUrl);
 

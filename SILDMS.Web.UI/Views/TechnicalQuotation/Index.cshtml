@@ -1771,7 +1771,8 @@
             FileServerURL: "",
             FtpUserName: "",
             FtpPassword: "",
-            Extensions: ""
+            Extensions: "",
+            DocumentID:""
 
         }
 
@@ -2349,7 +2350,7 @@
                     fileData.append('ftpUserName', doc.FtpUserName);
                     fileData.append('ftpPassword', doc.FtpPassword);
                     fileData.append('serverURL', doc.FileServerUrl);
-                    fileData.append('documentID', doc.BillReceiveID);
+                    fileData.append('documentID', doc.DocumentID);
                     fileData.append('Ext', file.name.split('.').pop().toLowerCase());
                     fileData.append(file.name, file);
 
@@ -2482,6 +2483,7 @@
             }, 0);
         };
 
+
         $scope.SaveTechnicalDocumentAndSubmit = function () {
             var fileUpload = $("#FileUpload1").get(0);
             var files = fileUpload.files;
@@ -2520,7 +2522,7 @@
                     fileData.append('ftpUserName', doc.FtpUserName);
                     fileData.append('ftpPassword', doc.FtpPassword);
                     fileData.append('serverURL', doc.FileServerUrl);
-                    fileData.append('documentID', doc.BillReceiveID);
+                    fileData.append('documentID', doc.DocumentID);
                     fileData.append('Ext', file.name.split('.').pop().toLowerCase());
                     fileData.append(file.name, file);
 
@@ -2792,6 +2794,7 @@
                     $scope.Server.ServerPort = response.ServerList.ServerPort;
                     $scope.Server.FtpUserName = response.ServerList.FtpUserName;
                     $scope.Server.FtpPassword = response.ServerList.FtpPassword;
+                    $scope.Server.DocumentID = response.ServerList.DocumentID;
 
                     $scope.docshow();
 
@@ -3339,7 +3342,7 @@
                 fileData.append('ftpUserName', $scope.Server.FtpUserName);
                 fileData.append('ftpPassword', $scope.Server.FtpPassword);
                 fileData.append('serverURL', $scope.Server.FileServerURL);
-                fileData.append('documentID', $scope.MaterialInvitation.SampleDocumentID);
+                fileData.append('documentID', $scope.Server.DocumentID);
                 fileData.append('Ext', ext);
                 fileData.append(file.name, file);
 
