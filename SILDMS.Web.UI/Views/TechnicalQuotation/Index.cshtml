@@ -1171,14 +1171,13 @@
                         </div>
 
                     </div>
-                    <!-- /.box-body -->
-                    <!-- /. box -->
+               
                 </div>
-                <!-- /.col -->
+          
 
 
             </div>
-            <!-- /.row -->
+     
         </div>
     </div>
 
@@ -2121,6 +2120,7 @@
             BiddingItemVendorID: "",
             materialCode: "",
             materialName: "",
+            Unit:"",
             invitationNumber: "",
             Extension: "",
             VendorID: ""
@@ -3080,6 +3080,7 @@
                 $scope.BillReceiveModel.VendorID = row.VendorID;
                 $scope.BillReceiveModel.materialCode = row.materialCode;
                 $scope.BillReceiveModel.materialName = row.materialName;
+                $scope.BillReceiveModel.Unit = row.Unit;
                 ///////////////////////////////////////////////////////////////////////////////
                 $http.post('/VendorSelectionModule/TechnicalQuotation/TechQuotwiseDetails',
                     { TechQuotationItemID: row.TechQuotationItemID })
@@ -3137,6 +3138,7 @@
                 $scope.BillReceiveModel.VendorID = row.VendorID;
                 $scope.BillReceiveModel.materialCode = row.materialCode;
                 $scope.BillReceiveModel.materialName = row.materialName;
+                $scope.BillReceiveModel.Unit = row.Unit;
                 if (row.Unit) {
                     var unitObj = $scope.ItemList.find(i => i.Item_Code === row.Unit);
                     $scope.TechnicalQuotation.PriceUnit = unitObj || row.Unit;
@@ -3532,6 +3534,7 @@
                     InvitationNumber: $scope.BillReceiveModel.invitationNumber,
                     MaterialCode: $scope.BillReceiveModel.materialCode,
                     MaterialName: $scope.BillReceiveModel.materialName,
+                    RFQUnit: $scope.BillReceiveModel.Unit
 
                 })
                 .success(function (response) {

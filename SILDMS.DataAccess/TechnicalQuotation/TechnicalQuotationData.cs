@@ -213,6 +213,8 @@ namespace SILDMS.DataAccess.TechnicalQuotation
                 db.AddInParameter(dbCommandWrapper, "@UploaderIP", SqlDbType.NVarChar, _modelDocumentsInfo.UploaderIP);
                 db.AddInParameter(dbCommandWrapper, "@SetBy", SqlDbType.NVarChar, _modelDocumentsInfo.SetBy);
                 db.AddInParameter(dbCommandWrapper, "@materialName", SqlDbType.NVarChar, _modelDocumentsInfo.materialName);
+                db.AddInParameter(dbCommandWrapper, "@materialCode", SqlDbType.NVarChar, _modelDocumentsInfo.materialCode);
+                db.AddInParameter(dbCommandWrapper, "@Unit", SqlDbType.NVarChar, _modelDocumentsInfo.Unit);
                 //db.AddInParameter(dbCommandWrapper, "@ConfColumnIds", SqlDbType.NVarChar, _modelDocumentsInfo.ConfigureColumnIds);
                 db.AddInParameter(dbCommandWrapper, "@Status", SqlDbType.Int, 1);
                 //db.AddInParameter(dbCommandWrapper, "@Doc_MetaType", SqlDbType.Structured, docMetaDataTable);
@@ -357,7 +359,7 @@ namespace SILDMS.DataAccess.TechnicalQuotation
             return returnData;
         }
 
-        public List<Quotation> submitquotationData(string UserId, string invId, string VendorID, string invitationNumber, string MaterialCode, string MaterialName, out string errorNumber)
+        public List<Quotation> submitquotationData(string UserId, string invId, string VendorID, string invitationNumber, string MaterialCode, string MaterialName,string RFQUnit, out string errorNumber)
         {
             errorNumber = string.Empty;
             var QuotationList = new List<Quotation>();
@@ -371,6 +373,7 @@ namespace SILDMS.DataAccess.TechnicalQuotation
                 db.AddInParameter(dbCommandWrapper, "@VendorID", SqlDbType.VarChar, VendorID);
                 db.AddInParameter(dbCommandWrapper, "@MaterialCode", SqlDbType.VarChar, MaterialCode);
                 db.AddInParameter(dbCommandWrapper, "@MaterialName", SqlDbType.VarChar, MaterialName);
+                db.AddInParameter(dbCommandWrapper, "@RFQUnit", SqlDbType.VarChar, RFQUnit);
                 db.AddInParameter(dbCommandWrapper, "@Setby", SqlDbType.VarChar, UserId);
 
                 db.AddOutParameter(dbCommandWrapper, "@p_Error", DbType.Int32, 10);

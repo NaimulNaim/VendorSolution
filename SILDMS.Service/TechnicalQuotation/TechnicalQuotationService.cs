@@ -64,10 +64,10 @@ namespace SILDMS.Service.TechnicalQuotation
         }
 
 
-        public ValidationResult submitquotationService(string UserId, string invId, string biddingItemVendorID, string invitationNumber, string MaterialCode, string MaterialName, out List<Quotation> quotationList)
+        public ValidationResult submitquotationService(string UserId, string invId, string biddingItemVendorID, string invitationNumber, string MaterialCode, string MaterialName,string RFQUnit, out List<Quotation> quotationList)
         {
 
-            quotationList = _technicalQuotationData.submitquotationData(UserId, invId, biddingItemVendorID, invitationNumber, MaterialCode, MaterialName, out _errorNumber);
+            quotationList = _technicalQuotationData.submitquotationData(UserId, invId, biddingItemVendorID, invitationNumber, MaterialCode, MaterialName, RFQUnit, out _errorNumber);
             return _errorNumber.Length > 0
                 ? new ValidationResult(_errorNumber, _localizationService.GetResource(_errorNumber))
                 : ValidationResult.Success;

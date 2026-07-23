@@ -212,5 +212,6 @@ namespace SILDMS.Model.DocScanningModule
 
         public IList<DocMetaValue> DocMetaValues { get; set; }
         public IList<DocSearch> docList { get; set; }
+        public object Unit { get; set; }
     }
 }

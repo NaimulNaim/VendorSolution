@@ -1955,6 +1955,7 @@
             itemNo: null,
             materialCode: '',
             materialName: '',
+            Unit:'',
             remarks: '',
             sampleDocId: '',
             proposalType: '',
@@ -2269,7 +2270,8 @@
             materialName: "",
             invitationNumber: "",
             Extension: "",
-            VendorID: ""
+            VendorID: "",
+            Unit:""
         };
 
         $scope.SlipModel = {
@@ -3300,6 +3302,7 @@
                 itemNo: null,
                 materialCode: '',
                 materialName: '',
+                Unit:'',
                 remarks: '',
                 sampleDocId: '',
                 proposalType: '',
@@ -3665,6 +3668,7 @@
                 $scope.BillReceiveModel.VendorID = row.VendorID;
                 $scope.BillReceiveModel.materialCode = row.materialCode;
                 $scope.BillReceiveModel.materialName = row.materialName;
+                $scope.BillReceiveModel.Unit = row.Unit;
                 ///////////////////////////////////////////////////////////////////////////////
                 $http.post('/VendorSelectionModule/FinancialQuotation/FinQuotwiseDetails',
                     { FinanQuotationItemID: row.FinanQuotationItemID })
@@ -3696,6 +3700,7 @@
 
                 $scope.MaterialInvitation.materialName = row.materialName;
                 $scope.MaterialInvitation.materialCode = row.materialCode;
+                $scope.MaterialInvitation.Unit = row.Unit;
                 $scope.MaterialInvitation.invitationNumber = row.invitationNumber;
                 $scope.MaterialInvitation.InvitationID = row.InvitationID;
                 $scope.MaterialInvitation.MaterialQuantity = row.MaterialQuantity;
@@ -3782,6 +3787,7 @@
                 $scope.BillReceiveModel.VendorID = row.VendorID;
                 $scope.BillReceiveModel.materialCode = row.materialCode;
                 $scope.BillReceiveModel.materialName = row.materialName;
+                $scope.BillReceiveModel.Unit = row.Unit;
                 $scope.MaterialInvitation.QuotationID = row.QuotationID;
                 $scope.MaterialInvitation.QuotationNo = row.QuotationNo;
 
@@ -3862,6 +3868,7 @@
                         InvitationNumber: $scope.BillReceiveModel.invitationNumber,
                         MaterialCode: $scope.BillReceiveModel.materialCode,
                         MaterialName: $scope.BillReceiveModel.materialName,
+                        RFQUnit: $scope.BillReceiveModel.Unit
 
                     })
                     .success(function (response) {
