@@ -91,6 +91,7 @@ namespace SILDMS.DataAccess.FinancialQuotation
                         {
                             // Existing mappings
                             sampleDocId = reader.GetString("DocumentID"),
+                            MasterDocumentID = reader.GetString("MasterDocumentID"),
                             materialName = reader.GetString("MaterialName"),
                             materialCode = reader.GetString("MaterialCode"),
                             material_Category_Code = reader.GetString("MaterialCategory"),
@@ -201,36 +202,7 @@ namespace SILDMS.DataAccess.FinancialQuotation
             List<DSM_DocPropIdentify> docInfo = new List<DSM_DocPropIdentify>();
             BPS_POHeader headerInfo = new BPS_POHeader();
 
-            //try
-            //{
-            //DataTable docMetaDataTable = new DataTable();
-            //docMetaDataTable.Columns.Add("DocPropertyID");
-            //docMetaDataTable.Columns.Add("MetaValue");
-            //docMetaDataTable.Columns.Add("Remarks");
-            //docMetaDataTable.Columns.Add("DocPropIdentifyID");
-
-            //foreach (var item in _docMetaValues)
-            //{
-            //    DataRow objDataRow = docMetaDataTable.NewRow();
-
-            //    objDataRow[0] = item.DocPropertyID;
-            //    objDataRow[1] = item.MetaValue;
-            //    objDataRow[2] = item.Remarks;
-            //    objDataRow[3] = item.DocPropIdentifyID;
-            //    docMetaDataTable.Rows.Add(objDataRow);
-            //}
-
-            //DataTable docPropertyIDDataTable = new DataTable();
-            //docPropertyIDDataTable.Columns.Add("DocPropertyID");
-
-            //string[] docPropIDs = _selectedPropID.Split(',');
-            //foreach (var item in docPropIDs)
-            //{
-            //    DataRow objDataRow = docPropertyIDDataTable.NewRow();
-            //    objDataRow[0] = item;
-
-            //    docPropertyIDDataTable.Rows.Add(objDataRow);
-            //}
+        
 
 
             _errorNumber = String.Empty;
@@ -239,12 +211,7 @@ namespace SILDMS.DataAccess.FinancialQuotation
 
             using (DbCommand dbCommandWrapper = db.GetStoredProcCommand("VCMS_Test2"))
             {
-                //db.AddInParameter(dbCommandWrapper, "@OwnerLevelID", SqlDbType.NVarChar, _modelDocumentsInfo.OwnerLevelID);
-                //db.AddInParameter(dbCommandWrapper, "@OwnerID", SqlDbType.NVarChar, _modelDocumentsInfo.OwnerID);
-                //db.AddInParameter(dbCommandWrapper, "@DocCategoryID ", SqlDbType.NVarChar, _modelDocumentsInfo.DocCategoryID);
-                //db.AddInParameter(dbCommandWrapper, "@DocTypeID", SqlDbType.NVarChar, _modelDocumentsInfo.DocTypeID);
-                //db.AddInParameter(dbCommandWrapper, "@FileOriginalName", SqlDbType.NVarChar, "");
-                //db.AddInParameter(dbCommandWrapper, "@FileCodeName", SqlDbType.NVarChar, "");
+
                 db.AddInParameter(dbCommandWrapper, "@FileExtension", SqlDbType.NVarChar, _modelDocumentsInfo.Extensions);
                 db.AddInParameter(dbCommandWrapper, "@UploaderIP", SqlDbType.NVarChar, _modelDocumentsInfo.UploaderIP);
                 db.AddInParameter(dbCommandWrapper, "@SetBy", SqlDbType.NVarChar, _modelDocumentsInfo.SetBy);
@@ -260,55 +227,6 @@ namespace SILDMS.DataAccess.FinancialQuotation
                 db.AddInParameter(dbCommandWrapper, "@InvitationID", SqlDbType.NVarChar, _modelDocumentsInfo.InvitationID);
                 db.AddInParameter(dbCommandWrapper, "@VendorID", SqlDbType.NVarChar, _modelDocumentsInfo.VendorID);
 
-                //db.AddInParameter(dbCommandWrapper, "@BoothID", SqlDbType.NVarChar, _modelDocumentsInfo.BoothID);
-
-                //db.AddInParameter(dbCommandWrapper, "@PONo", SqlDbType.NVarChar, _modelDocumentsInfo.PONo);
-
-                ////db.AddInParameter(dbCommandWrapper, "@BillTrackingNo", SqlDbType.NVarChar,
-                ////    _modelDocumentsInfo.BillTrackingNo);
-
-                //db.AddInParameter(dbCommandWrapper, "@InvoicingParty", SqlDbType.NVarChar,
-                //    _modelDocumentsInfo.InvoicingPartyCode);
-
-                //db.AddInParameter(dbCommandWrapper, "@InvoiceNo", SqlDbType.NVarChar, _modelDocumentsInfo.InvoiceNo);
-
-                //db.AddInParameter(dbCommandWrapper, "@InvoiceDate", SqlDbType.DateTime, Convert.ToDateTime(_modelDocumentsInfo.InvoiceDate));//null ? (DateTime?)null : DateTime.ParseExact(_modelDocumentsInfo.InvoiceDate, "dd/MM/yyyy", null));
-                //                                                                                                                             // DMSUtility.FormatDate(_modelDocumentsInfo.InvoiceDate.ToString()));
-
-                //db.AddInParameter(dbCommandWrapper, "@InvoiceAmount", SqlDbType.NVarChar,
-                //    _modelDocumentsInfo.InvoiceAmt);
-
-                //db.AddInParameter(dbCommandWrapper, "@InvoiceCurrency", SqlDbType.NVarChar,
-                //    _modelDocumentsInfo.InvoiceCurrency);
-
-                //db.AddInParameter(dbCommandWrapper, "@PreferedPayMode", SqlDbType.NVarChar,
-                //    _modelDocumentsInfo.PreferedPayMode);
-
-                //db.AddInParameter(dbCommandWrapper, "@BillSubmittedBy", SqlDbType.NVarChar,
-                //    _modelDocumentsInfo.BillSubmittedBy);
-
-                //db.AddInParameter(dbCommandWrapper, "@BillSubmitDate", SqlDbType.DateTime,
-                //      _modelDocumentsInfo.BillSubmitDate == null ? (DateTime?)null : DateTime.ParseExact(_modelDocumentsInfo.BillSubmitDate, "dd/MM/yyyy", null));
-                ////  DMSUtility.FormatDate(_modelDocumentsInfo.BillSubmitDate.ToString()));
-
-                //db.AddInParameter(dbCommandWrapper, "@BearerContactNo", SqlDbType.NVarChar,
-                //    _modelDocumentsInfo.BearerContactNo);
-
-                //db.AddInParameter(dbCommandWrapper, "@ProcessGroupID", SqlDbType.NVarChar,
-                //    _modelDocumentsInfo.ProcessGroupID);
-                //db.AddInParameter(dbCommandWrapper, "@Remarks", SqlDbType.NVarChar,
-                //    _modelDocumentsInfo.Remarks);
-
-                //db.AddInParameter(dbCommandWrapper, "@Mushak", SqlDbType.NVarChar,
-                // _modelDocumentsInfo.Mushak);
-
-                //db.AddInParameter(dbCommandWrapper, "@MushakAmount", SqlDbType.Decimal,
-                //     _modelDocumentsInfo.MushakAmount);
-
-                //if (string.IsNullOrEmpty(_modelDocumentsInfo.MushakDate))
-                //    db.AddInParameter(dbCommandWrapper, "@MushakDate", SqlDbType.DateTime, null);
-                //else
-                //    db.AddInParameter(dbCommandWrapper, "@MushakDate", SqlDbType.DateTime, Convert.ToDateTime(_modelDocumentsInfo.MushakDate));
 
                 DataSet ds = db.ExecuteDataSet(dbCommandWrapper);
 
@@ -353,44 +271,11 @@ namespace SILDMS.DataAccess.FinancialQuotation
                 }
 
 
-                //if (ds.Tables.Count > 1)
-                //{
-                //    if (ds.Tables[1].Rows.Count > 0)
-                //    {
-                //        DataTable dt1 = ds.Tables[1];
-                //        headerInfo = dt1.AsEnumerable().Select(reader => new BPS_POHeader
-                //        {
-                //            BillReceiveID = reader.GetString("BillReceiveID"),
-                //            BillTrackingNo = reader.GetString("BillTrackingNo"),
-                //            PONo = reader.GetString("PONo"),
-                //            VendorType = reader.GetString("VendorType"),
-                //            InvoicingParty = reader.GetString("InvoicingParty"),
-                //            InvoiceNo = reader.GetString("InvoiceNo"),
-                //            InvoiceAmt = reader.GetString("InvoiceAmt"),
-                //            InvoiceCurrency = reader.GetString("InvoiceCurrency"),
-                //            PreferedPayMode = reader.GetString("PreferedPayMode"),
-                //            BillSubmitDate = reader.GetDateTime("BillSubmitDate").ToString("dd/MM/yyyy"),
-                //            InvoiceDate = reader.GetDateTime("InvoiceDate").ToString("dd/MM/yyyy"),
-                //            CompanyName = reader.GetString("CompanyName"),
-                //            OwnerName = reader.GetString("OwnerName"),
-                //            BillReceivedBy = reader.GetString("BillReceivedBy"),
-                //            BillReceivedAt = reader.GetString("BillReceivedAt"),
-                //            PurchaseGroup = reader.GetString("PurchaseGroup"),
-                //            BoxNumber = reader.GetString("BoxNumber")
-                //        }).FirstOrDefault();
-
-                //    }
-                //}
+          
                 returnData.DocInfo = docInfo;
-                //returnData.DocHeaderInfo = headerInfo;
+               
             }
-            //}
-            //catch (Exception ex)
-            //{
-            //    _errorNumber = "E404";
-            //}
-
-
+           
 
             return returnData;
         }
@@ -1366,5 +1251,80 @@ namespace SILDMS.DataAccess.FinancialQuotation
 
             return isDeleted;
         }
+
+        public List<MaterialDocumentInfo> GetDocumentsByDocumentIdDataService(string documentID, out string errorNumber)
+        {
+            errorNumber = string.Empty;
+            var documents = new List<MaterialDocumentInfo>();
+            var factory = new DatabaseProviderFactory();
+            var db = factory.CreateDefault() as SqlDatabase;
+            using (var dbCommandWrapper = db.GetStoredProcCommand("VCMS_GetDocumentsByDocumentID"))
+            {
+                db.AddInParameter(dbCommandWrapper, "@DocumentID", SqlDbType.VarChar, documentID);
+                dbCommandWrapper.CommandTimeout = 300;
+
+                var ds = db.ExecuteDataSet(dbCommandWrapper);
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    DataTable dt = ds.Tables[0];
+                    documents = dt.AsEnumerable().Select(reader => new MaterialDocumentInfo
+                    {
+                        DocumentID = reader.GetString("DocumentID"),
+                        FileOriginalName = reader.GetString("FileOriginalName"),
+                        Sequence = reader.GetInt32("Sequence"),
+                        FileExtension = reader.GetString("FileExtension"),
+                        FileServerUrl = reader.GetString("FileServerUrl"),
+                        ServerID = reader.GetString("ServerID"),
+                        ServerIP = reader.GetString("ServerIP"),
+                        ServerPort = reader.GetString("ServerPort"),
+                        FtpUserName = reader.GetString("FtpUserName"),
+                        FtpPassword = reader.GetString("FtpPassword"),
+                        DocPropertyName = reader.GetString("DocPropertyName"),
+                        BiddingItemVendorId = reader.GetString("BiddingItemVendorId")
+                    }).ToList();
+                }
+            }
+            return documents;
+        }
+
+
+        public MaterialDocumentInfo GetDocumentByIdDataService(string documentID, out string errorNumber)
+        {
+            errorNumber = string.Empty;
+            MaterialDocumentInfo document = null;
+            var factory = new DatabaseProviderFactory();
+            var db = factory.CreateDefault() as SqlDatabase;
+            using (var dbCommandWrapper = db.GetStoredProcCommand("VCMS_GetDocumentByID"))
+            {
+                db.AddInParameter(dbCommandWrapper, "@DocumentID", SqlDbType.VarChar, documentID);
+                dbCommandWrapper.CommandTimeout = 300;
+
+                var ds = db.ExecuteDataSet(dbCommandWrapper);
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    var row = ds.Tables[0].Rows[0];
+                    document = new MaterialDocumentInfo
+                    {
+                        DocumentID = row.Field<string>("DocumentID"),
+                        FileOriginalName = row.Field<string>("FileOriginalName"),
+                        Sequence = row.GetInt32("Sequence"),
+                        FileExtension = row.Field<string>("FileExtension"),
+                        FileServerUrl = row.Field<string>("FileServerUrl"),
+                        ServerID = row.Field<string>("ServerID"),
+                        ServerIP = row.Field<string>("ServerIP"),
+                        ServerPort = row.Field<string>("ServerPort"),
+                        FtpUserName = row.Field<string>("FtpUserName"),
+                        FtpPassword = row.Field<string>("FtpPassword"),
+
+                    };
+                }
+                else
+                {
+                    errorNumber = "E303"; // not found
+                }
+            }
+            return document;
+        }
+
     }
 }

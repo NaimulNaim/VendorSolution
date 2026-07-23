@@ -43,51 +43,7 @@
             padding-right: 20px;
         }
 
-        /* .readonly-mode {
-                    pointer-events: none;
-                    opacity: 0.8;
-                }
-
-                    .readonly-mode button,
-                    .readonly-mode .btn {
-                        pointer-events: none;
-                    }*/
-
-        /*.readonly-mode {
-                    pointer-events: none;
-                    opacity: 0.8;
-                }*/
-
-        /* allow toggle headers */
-        /*.readonly-mode .allow-interaction {
-                        pointer-events: auto;
-                        cursor: pointer;
-                    }*/
-
-
-
-        /*
-                @@media (min-width: 768px) {
-        #FileUpload1 {
-            display: none !important;
-        }
-    }
-
-                @@media (max-width: 767px) {
-        #dwtHorizontalThumbnil,
-        #source,
-        #external-events .external-event.bg-yellow,  Scan button
-                #external-events .external-event.bg-aqua,  Load PDF
-                #external-events .external-event.bg-purple,  Load Blank PDF
-                #external-events .external-event.bg-maroon,  Load Another PDF
-                #external-events .external-event.bg-red,  Rotate
-                #external-events .external-event.bg-green,  Move Image
-                #collapseOne {
-            display: none !important;
-        }
-    }
-    */
-
+ 
 
         .readonly-mode input,
         .readonly-mode select,
@@ -101,37 +57,11 @@
             pointer-events: none;
         }
 
-        /*.view-only-wrapper input,
-                .view-only-wrapper select,
-                .view-only-wrapper textarea {
-                    pointer-events: none;
-                    background-color: #f8f9fa !important;
-                }*/
+      
 
 </style>
 
 <div class="box box-primary box-body" ng-controller="FinancialQuotationCtrl">
-
-
-
-
-    @*<i class="fa fa-user"></i>
-            <h3 style="font-family: Verdana" class="box-title" ng-if="fromMenu">Purchase Requisition Wise Materials Assign from Menu</h3>
-            <h3 style="font-family: Verdana" class="box-title" ng-if="!fromMenu">Purchase Requisition Wise Materials Assign from Dashboard</h3>
-            <div class="box-tools pull-right">
-                <button type="button" id="btnRefresh" data-ng-click="toggleRefreshTable(row)" class="btn btn-warning btn-flat pull-right" ng-disabled="loading"><i class="fa fa-refresh"></i> Refresh</button>
-            </div>
-        </div>*@
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -185,59 +115,59 @@
                     Search
                 </button>
             </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <label for="InvitationSendingPerson">Contact Person </label>
+                </div>
             </div>
+            <div class="col-lg-3" style="padding-left:15px;">
+                <div class="form-group">
+                    <input id="InvitationSendingPerson" name="InvitationSendingPerson" ng-model="InvitationSendingPerson" readonly class="form-control" autofocus />
 
-            <div class="row">
-                <div class="col-lg-2">
-                    <div class="form-group">
-                        <label for="InvitationSendingPerson">Contact Person </label>
-                    </div>
                 </div>
-                <div class="col-lg-3" style="padding-left:15px;">
-                    <div class="form-group">
-                        <input id="InvitationSendingPerson" name="InvitationSendingPerson" ng-model="InvitationSendingPerson" readonly class="form-control" autofocus />
-
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="row">
-                <div class="col-lg-2" ng-if="Quotation">
-                    <div class="form-group">
-                        <label for="QuotationNumber">Quotation No </label>
-                    </div>
-                </div>
-                <div class="col-lg-2" ng-if="Quotation">
-                    <div class="form-group">
-                        <input id="QuotationNumber" name="QuotationNumber" type="text" data-ng-model="Quotation" class="form-control"
-                               placeholder="Quotation No" ng-readonly="true" />
-                        @*<div ng-show="masterDataFrm.$submitted || masterDataFrm.UDCode.$touched">
-                        <span ng-show="masterDataFrm.UDCode.$error.required" class="label label-danger">Please enter UD Code</span>
-                    </div>*@
-                    </div>
-                </div>
-                <div class="col-lg-4"></div>
-                <div class="col-lg-2" ng-if="Quotation && lowestshowstatus">
-                    <div class="form-group">
-                        <label for="LowestPrice">Lowest Quoted Price </label>
-                    </div>
-                </div>
-                <div class="col-lg-2" ng-if="Quotation && lowestshowstatus">
-                    <div class="form-group">
-                        <input id="LowestPriceNo" name="LowestPriceNo" type="text" data-ng-model="lowestPrice" class="form-control text-right"
-                               placeholder="LowestPrice No" ng-readonly="true" />
-                        @*<div ng-show="masterDataFrm.$submitted || masterDataFrm.UDCode.$touched">
-                        <span ng-show="masterDataFrm.UDCode.$error.required" class="label label-danger">Please enter UD Code</span>
-                    </div>*@
-                    </div>
-                </div>
-
-
-
             </div>
 
         </div>
+
+        <div class="row">
+            <div class="col-lg-2" ng-if="Quotation">
+                <div class="form-group">
+                    <label for="QuotationNumber">Quotation No </label>
+                </div>
+            </div>
+            <div class="col-lg-2" ng-if="Quotation">
+                <div class="form-group">
+                    <input id="QuotationNumber" name="QuotationNumber" type="text" data-ng-model="Quotation" class="form-control"
+                           placeholder="Quotation No" ng-readonly="true" />
+                    @*<div ng-show="masterDataFrm.$submitted || masterDataFrm.UDCode.$touched">
+                            <span ng-show="masterDataFrm.UDCode.$error.required" class="label label-danger">Please enter UD Code</span>
+                        </div>*@
+                </div>
+            </div>
+            <div class="col-lg-4"></div>
+            <div class="col-lg-2" ng-if="Quotation && lowestshowstatus">
+                <div class="form-group">
+                    <label for="LowestPrice">Lowest Quoted Price </label>
+                </div>
+            </div>
+            <div class="col-lg-2" ng-if="Quotation && lowestshowstatus">
+                <div class="form-group">
+                    <input id="LowestPriceNo" name="LowestPriceNo" type="text" data-ng-model="lowestPrice" class="form-control text-right"
+                           placeholder="LowestPrice No" ng-readonly="true" />
+                    @*<div ng-show="masterDataFrm.$submitted || masterDataFrm.UDCode.$touched">
+                            <span ng-show="masterDataFrm.UDCode.$error.required" class="label label-danger">Please enter UD Code</span>
+                        </div>*@
+                </div>
+            </div>
+
+
+
+        </div>
+
+    </div>
 
 
 
@@ -261,6 +191,7 @@
                             <th style="text-align:center">RFQ Quantity</th>
                             <th style="text-align:center">RFQ Unit</th>
                             <th style="text-align:center">Documents</th>
+                            @*<th style="text-align:center">Master Documents</th>*@
                             @*<th style="text-align:center">Type</th>*@
                             <th style="text-align:center">Action</th>
                         </tr>
@@ -271,11 +202,29 @@
                             <td class="col-lg-4 col-md-4 col-sm-4">{{row.materialName}}</td>
                             <td class="col-lg-2 col-md-2 col-sm-2" style="text-align:right">{{row.MaterialQuantity| number:3}}</td>
                             <td class="col-lg-1 col-md-1 col-sm-1" style="text-align:center">{{row.Unit}}</td>
+                            @*<td class="col-lg-1 col-md-1 col-sm-1 text-center">
+                                    <button type="button"
+                                            class="btn btn-info btn-table"
+                                            ng-click="AddDocument(row)"
+                                            ng-show="row.sampleDocId">
+                                        Details <i class="fa fa-eye"></i>
+                                    </button>
+                                </td>
+                                <td class="col-lg-1 col-md-1 col-sm-1 text-center">
+                                    <button type="button"
+                                            class="btn btn-info btn-table"
+                                            ng-click="MasterAddDocument(row)"
+                                            ng-show="row.MasterDocumentID">
+                                        Details <i class="fa fa-eye"></i>
+                                    </button>
+                                </td>*@
+
+
                             <td class="col-lg-1 col-md-1 col-sm-1 text-center">
                                 <button type="button"
                                         class="btn btn-info btn-table"
-                                        ng-click="AddDocument(row)"
-                                        ng-show="row.sampleDocId">
+                                        ng-click="OpenAllDocumentsModal(row)"
+                                        ng-show="row.sampleDocId || row.MasterDocumentID">
                                     Details <i class="fa fa-eye"></i>
                                 </button>
                             </td>
@@ -1371,65 +1320,58 @@
     </div>
 
 
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="row">
-                <!-- /.col -->
-                <div class="col-md-10">
-
-                    <div class="box-header with-border">
-                        <h4 class="box-title">Process Documents:</h4>
-                    </div>
-                    <div class="box-body no-padding">
-                        <div class="row">
-                        </div>
-                        <div class="row" @*ng-show="isMobile"*@>
-                            <div class="col-lg-6">
-
-                                <input type="file" id="FileUpload1" name="FileUpload1" multiple />
-                            </div>
-                            @*<div class="col-lg-6" style="margin-bottom:10px" ng-show="IsDownload">
-                                    <div style="float: right; display: flex;">
-                                        <div style="font-weight: bold; padding-right: 11px;">
-                                            Existing Document:
-                                        </div>
-                                        <div style="padding-right: 11px;" ng-show="FileExtension!='.pdf'">{{MaterialInvitation.SampleDocumentID +"."+ FileExtension }}</div>
-                                        <a class="btn btn-sm btn-warning" ng-show="FileExtension!='.pdf'" style="display: inline-block;" href="/VendorSelectionModule/TechnicalQuotation/DownloadDocument?documentID={{MaterialInvitation.SampleDocumentID}}&Ext={{FileExtension}}">Download</a>
-                                    </div>
-
-                                </div>*@
-
-                            <div class="col-lg-6" style="margin-bottom:10px" ng-show="IsDownload">
-                                <div style="float:right;display:flex;align-items:center;gap:10px">
-                                    <div style="font-weight:bold">Existing Document:</div>
-                                    <span>{{MaterialInvitation.SampleDocumentID + "." + FileExtension}}</span>
-                                    <button class="btn btn-sm btn-primary"
-                                            ng-click="openFileViewer(MaterialInvitation.SampleDocumentID, FileExtension)">
-                                        View & Download
-                                    </button>
-                                    @*<a class="btn btn-sm btn-warning"
-                                       ng-href="/VendorSelectionModule/TechnicalQuotation/DownloadDocument?documentID={{MaterialInvitation.SampleDocumentID}}&Ext={{FileExtension}}">
-                                        Download
-                                    </a>*@
-                                </div>
-                            </div>
-
-
-
-                        </div>
-
-                    </div>
-                    <!-- /.box-body -->
-                    <!-- /. box -->
-                </div>
-                <!-- /.col -->
-
-
-
-            </div>
-            <!-- /.row -->
+    <div class="col-lg-12" ng-show="ProcessDocuments.length > 0" style="margin-top:10px;">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr style="background:#f4f4f4;">
+                    <th style="width:50px;text-align:center;">#</th>
+                    <th>File Name</th>
+                    <th style="width:100px;text-align:center;">Ext</th>
+                    <th style="width:280px;text-align:center;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="doc in ProcessDocuments">
+                    <td style="text-align:center;vertical-align:middle;">{{$index + 1}}</td>
+                    <td style="vertical-align:middle;">
+                        <i class="fa fa-file-text-o" style="margin-right:8px;color:#3c8dbc;"></i>
+                        {{doc.fileName}}
+                    </td>
+                    <td style="text-align:center;vertical-align:middle;">
+                        <span class="label label-info">{{doc.fileExtension}}</span>
+                    </td>
+                    <td style="text-align:center;vertical-align:middle;">
+                        <button class="btn btn-primary btn-sm" ng-if="doc.canView"
+                                ng-click="ViewDocumentFile(doc)">
+                            <i class="fa fa-eye"></i> View
+                        </button>
+                        <button class="btn btn-warning btn-sm"
+                                ng-click="DownloadDocumentFile(doc)">
+                            <i class="fa fa-download"></i> Download
+                        </button>
+                        <button class="btn btn-info btn-sm"
+                                ng-click="TriggerReplaceProcessDocument(doc)">
+                            <i class="fa fa-refresh"></i> Replace
+                        </button>
+                        <button class="btn btn-danger btn-sm"
+                                ng-click="DeleteProcessDocument(doc)">
+                            <i class="fa fa-trash"></i> Delete
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="text-muted" ng-if="ProcessDocuments.length < 5" style="margin-top:5px;">
+            {{5 - ProcessDocuments.length}} slot(s) remaining — attach more files above and click Save/Update Quotation to add them.
         </div>
     </div>
+
+    <!-- Hidden input used only by Replace — separate from #FileUpload1 so it
+         doesn't interfere with the batch-new-upload input above it. -->
+    <input type="file" id="ReplaceFileUpload1" style="display:none;"
+           accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png" />
+
+
 
 
 
@@ -1498,50 +1440,6 @@
             </div>
         </div>
     </div>
-
-    @*<div id="InvitationModal" class="modal fade">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" ng-click="ResetSearchModel()" aria-hidden="true">x</button>
-                        <h3 class="modal-title">RFQ List</h3>
-                    </div>
-                    <div class="table-responsive" data-ng-disabled="" ng-cloak>
-                        <table st-table="InvitationDisplayedCollection" st-safe-src="Invitation" class="table table-condensed table-bordered table-striped table-hover pnlView">
-                            <thead>
-                                <tr>
-                                    <th class="col-lg-1 col-md-1 col-sm-1 text-center">SL</th>
-                                    <th class="col-lg-4 col-md-4 col-sm-4 text-center">RFQ NO</th>
-
-
-                                    <th class="col-lg-1 col-md-1 col-sm-1 text-center">Action</th>
-                                </tr>
-
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="row in InvitationDisplayedCollection">
-                                    <td class="text-center">{{$index+1}}</td>
-                                    <td class="text-center">{{row.Invitation_Number}}</td>
-
-
-                                    <td class="text-center">
-                                        <a class="btn col-center btn-sm btn-flat btn-success" data-ng-click="toggleInvitationSelect(row.Invitation_Number)">Select</a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="9" class="text-center"><div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="10"></div></td>
-                                </tr>
-                            </tfoot>
-
-                        </table>
-                    </div>
-                    <div class="modal-footer">
-                    </div>
-                </div>
-            </div>
-        </div>*@
 
 
     <div id="InvitationModal" class="modal fade">
@@ -1684,66 +1582,9 @@
 
 
 
-    @*<div id="DetailViewModal" class="modal fade">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" ng-click="" aria-hidden="true">x</button>
-                        <h4 class="modal-title">Document Detail View</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-lg-6" style="margin-bottom:10px" ng-show="IsDownload2">
-                                <div style="float: right; display: flex;">
-                                    <div style="font-weight: bold; padding-right: 11px;">
-                                        Existing Media:
-                                    </div>
-                                    <div style="padding-right: 11px;" ng-show="FileExtension2!='.pdf'">{{DocumentID +"."+ FileExtension2 }}</div>
-                                    <a class="btn btn-sm btn-warning" ng-show="FileExtension2!='.pdf'" style="display: inline-block;" href="/VendorSelectionModule/TechnicalQuotation/DownloadDocument2?documentID={{DocumentID}}&Ext={{FileExtension2}}">Download</a>
-                                </div>
-
-                            </div>
-                        </div>
 
 
-
-
-
-
-
-                        <div class="row">
-                            <div class="col-lg-2">
-                                <h4><label>Thumbnail:</label></h4>
-                            </div>
-                            <div class="col-lg-10">
-                                <button class="btn btn-flat btn-sm btn-default" data-ng-click="ZoomIn()"> Zoom In</button>
-                                <button class="btn btn-flat btn-sm btn-default" data-ng-click="ZoomOut()"> Zoom Out</button>
-                                <button class="btn btn-flat btn-sm btn-default" data-ng-click="DownloadDocument()"> Download</button>
-                            </div>
-
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-2">
-                                <div id="dwtVerticalThumbnil" class="box-body"></div>
-                            </div>
-                            <div class="col-lg-10">
-                                <div id="dwtLargeViewer" class="box-body"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <div class="col-sm-12 col-md-12 col-lg-12">
-                            <div class="form-group">
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>*@
-
-
-    <div id="DetailViewModal" class="modal fade" tabindex="-1">
+    <!--<div id="DetailViewModal" class="modal fade" tabindex="-1">
         <div class="modal-dialog modal-lg" style="width:95%">
             <div class="modal-content">
 
@@ -1759,21 +1600,19 @@
                     </h4>
                 </div>
 
-                <div class="modal-body">
+                <div class="modal-body">-->
+    <!-- PDF Viewer -->
+    <!--<div ng-if="!IsDownload2">
 
-                    <!-- PDF Viewer -->
-                    <div ng-if="!IsDownload2">
+        <iframe ng-src="{{DocViewerUrl2}}"
+                width="100%"
+                height="700"
+                style="border:none">
+        </iframe>
 
-                        <iframe ng-src="{{DocViewerUrl2}}"
-                                width="100%"
-                                height="700"
-                                style="border:none">
-                        </iframe>
-
-                    </div>
-
-                    <!-- Download Section -->
-                    <div ng-if="IsDownload2">
+    </div>-->
+    <!-- Download Section -->
+    <!--<div ng-if="IsDownload2">
 
                         <h4>{{DocFileName2}}</h4>
 
@@ -1790,7 +1629,7 @@
 
             </div>
         </div>
-    </div>
+    </div>-->
 
     <div class="modal fade" id="deleteConfirmModal" tabindex="-1">
         <div class="modal-dialog modal-sm">
@@ -1823,16 +1662,233 @@
 
 
 
+    <!--
+      Replaces the two separate single-document "Details" buttons with one that
+      opens this combined modal showing everything at once.
+    -->
+    <div id="AllDocumentsViewModal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-lg" style="width:70%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Documents</h4>
+                </div>
+                <div class="modal-body">
+                    <div ng-repeat="section in AllDocSections" style="margin-bottom:24px;">
+                        <h4>{{section.title}}</h4>
+
+                        <div ng-if="section.documents.length === 0" class="text-muted">
+                            No documents uploaded.
+                        </div>
+
+                        <table class="table table-bordered table-striped" ng-if="section.documents.length > 0">
+                            <thead>
+                                <tr style="background:#f4f4f4;">
+                                    <th>File Name</th>
+                                    <th style="width:100px;text-align:center;">Ext</th>
+                                    <th style="width:220px;text-align:center;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="doc in section.documents">
+                                    <td style="vertical-align:middle;">
+                                        <i class="fa fa-file-text-o" style="margin-right:8px;color:#3c8dbc;"></i>
+                                        {{doc.fileName}}
+                                    </td>
+                                    <td style="text-align:center;vertical-align:middle;">
+                                        <span class="label label-info">{{doc.fileExtension}}</span>
+                                    </td>
+                                    <td style="text-align:center;vertical-align:middle;">
+                                        <button class="btn btn-primary btn-sm" ng-if="doc.canView"
+                                                ng-click="ViewDocumentFile(doc)">
+                                            <i class="fa fa-eye"></i> View
+                                        </button>
+                                        <button class="btn btn-warning btn-sm"
+                                                ng-click="DownloadDocumentFile(doc)">
+                                            <i class="fa fa-download"></i> Download
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <div id="DocumentPreviewModal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-lg" style="width:80%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">{{PreviewDoc.fileName}}</h4>
+                </div>
+                <div class="modal-body">
+                    <div ng-if="PreviewDoc.isPdf">
+                        <iframe ng-src="{{PreviewTrustedUrl}}"
+                                width="100%"
+                                height="700"
+                                style="border:none">
+                        </iframe>
+                    </div>
+
+                    <div ng-if="PreviewDoc.isImage" style="text-align:center;">
+                        <img ng-src="{{PreviewDoc.viewUrl}}"
+                             style="max-width:100%;max-height:700px;" />
+                    </div>
+
+                    <div ng-if="!PreviewDoc.isInlineRenderable" style="text-align:center;padding:40px 0;">
+                        <p class="text-muted">
+                            This file type ({{PreviewDoc.fileExtension}}) can't be previewed in the browser.
+                        </p>
+                        <a class="btn btn-primary" ng-href="{{PreviewDoc.viewUrl}}" target="_blank">
+                            <i class="fa fa-external-link"></i> Open
+                        </a>
+                        <a class="btn btn-warning" ng-href="{{PreviewDoc.downloadUrl}}">
+                            <i class="fa fa-download"></i> Download
+                        </a>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-warning" ng-href="{{PreviewDoc.downloadUrl}}" ng-if="PreviewDoc.isInlineRenderable">
+                        <i class="fa fa-download"></i> Download
+                    </a>
+                    <button class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- ==================== NEW: Multiple Process Documents ==================== -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-md-10">
+                    <div class="box-header with-border">
+                        <h4 class="box-title">Process Documents (Max 5):</h4>
+                    </div>
+                    <div class="box-body no-padding">
+
+                        <!-- File Upload Input -->
+                        <div class="row" style="margin-bottom:10px;">
+                            <div class="col-lg-6">
+                                <input type="file" id="ProcessFileUpload" multiple
+                                       accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.mp4" />
+                                <button type="button" class="btn btn-success btn-sm"
+                                        ng-click="AddProcessFiles()"
+                                        ng-disabled="loading || !ProcessNewFiles.length"
+                                        style="margin-top:5px;">
+                                    <i class="fa fa-plus"></i> Add to List
+                                </button>
+                            </div>
+                            <div class="col-lg-6">
+                                <span class="text-muted">Selected: {{ProcessNewFiles.length || 0}} file(s)</span>
+                            </div>
+                        </div>
+
+                        <!-- Documents Table -->
+                        <div class="row" ng-if="ProcessDocuments.length > 0">
+                            <div class="col-lg-12">
+                                <table class="table table-bordered table-striped table-condensed">
+                                    <thead>
+                                        <tr style="background:#f4f4f4;">
+                                            <th style="width:40px;">#</th>
+                                            <th>File Name</th>
+                                            <th style="width:80px;">Ext</th>
+                                            <th style="width:80px;">Size</th>
+                                            <th style="width:180px;">Status</th>
+                                            <th style="width:200px;">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="doc in ProcessDocuments"
+                                            ng-class="{'success': doc.isUploaded, 'warning': !doc.isUploaded && !doc.isDeleted, 'danger': doc.isDeleted}">
+                                            <td>{{$index + 1}}</td>
+                                            <td>
+                                                <i class="fa fa-file-text-o" style="margin-right:6px;color:#3c8dbc;" ng-if="doc.isUploaded"></i>
+                                                <i class="fa fa-clock-o" style="margin-right:6px;color:#f39c12;" ng-if="!doc.isUploaded && !doc.isDeleted"></i>
+                                                <i class="fa fa-trash-o" style="margin-right:6px;color:#dd4b39;" ng-if="doc.isDeleted"></i>
+                                                {{doc.fileName}}
+                                            </td>
+                                            <td><span class="label label-info">{{doc.fileExtension}}</span></td>
+                                            <td>{{doc.fileSize}}</td>
+                                            <td>
+                                                <span class="label label-success" ng-if="doc.isUploaded">Uploaded</span>
+                                                <span class="label label-warning" ng-if="!doc.isUploaded && !doc.isDeleted">Pending</span>
+                                                <span class="label label-danger" ng-if="doc.isDeleted">Deleted</span>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-primary btn-xs" ng-if="doc.isUploaded"
+                                                        ng-click="ViewProcessDocument(doc)">
+                                                    <i class="fa fa-eye"></i> View
+                                                </button>
+                                                <button class="btn btn-warning btn-xs" ng-if="doc.isUploaded"
+                                                        ng-click="DownloadProcessDocument(doc)">
+                                                    <i class="fa fa-download"></i>
+                                                </button>
+                                                <button class="btn btn-primary btn-xs" ng-if="doc.isUploaded"
+                                                        ng-click="TriggerReplaceProcessDocument(doc, $index)">
+                                                    <i class="fa fa-refresh"></i> Replace
+                                                </button>
+                                                <button class="btn btn-danger btn-xs" ng-if="doc.isUploaded && !doc.isDeleted"
+                                                        ng-click="DeleteProcessDocument($index)">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                                <button class="btn btn-danger btn-xs" ng-if="!doc.isUploaded && !doc.isDeleted"
+                                                        ng-click="RemovePendingProcessDocument($index)">
+                                                    <i class="fa fa-remove"></i> Remove
+                                                </button>
+                                                <button class="btn btn-success btn-xs" ng-if="doc.isDeleted"
+                                                        ng-click="UndoDeleteProcessDocument($index)">
+                                                    <i class="fa fa-undo"></i> Undo
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-info" ng-if="ProcessDocuments.length === 0">
+                            <i class="fa fa-info-circle"></i> No process documents. Select files and click "Add to List".
+                        </div>
+
+                        <div class="alert alert-warning" ng-if="ProcessDocuments.length >= 5">
+                            <i class="fa fa-exclamation-triangle"></i> Maximum 5 documents allowed.
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden file input for Replace -->
+    <input type="file" id="ProcessReplaceUpload" style="display:none;"
+           accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.mp4" />
+
+
+
+
+
+
     <div id="mydiv" ng-show="loading">
         <div class="overlay">
             <i class="fa fa-refresh fa-spin"></i>Loading...
         </div>
     </div>
 </div>
-@*<script type="text/javascript" src="~/Resources/dynamsoft.webtwain.intellisense.js"></script>
-    <script type="text/javascript" src="~/Resources/dynamsoft.webtwain.initiate.js"></script>
-    <script type="text/javascript" src="~/Resources/dynamsoft.webtwain.config.js"></script>
-    <script type="text/javascript" src="~/Resources/addon/dynamsoft.webtwain.addon.pdf.js"></script>*@
 
 
 
@@ -1930,7 +1986,7 @@
 
         }]);
 
-    app.controller('FinancialQuotationCtrl', function ($scope, $http, $timeout,$sce) {
+    app.controller('FinancialQuotationCtrl', function ($scope, $http, $timeout,$sce,$q) {
 
         $scope.myarray = [];
         $scope.myarray2 = [];
@@ -1997,23 +2053,6 @@
 
 
 
-        //$scope.FinancialQuotationDetail = {
-        //    rowIndex: '',
-        //    FinanQuotationItemID: "",
-        //    ProposeQty: "",
-        //    Unit: { Item_Code: "", Item_Name: "" },
-        //    UnitPrice: "",
-        //    Currency: { MasterDataID: "", MasterDataValue: "" },
-        //    TotalPrice: "",
-        //    VatAmount: "",
-        //    TaxAmount: "",
-        //    GrossPrice: "",
-        //    DiscountPrice: "",
-        //    NetPrice: "",
-        //    QuotValidDate: "",
-        //    ExpecDeliDate: "",
-        //    ProposalType: ""
-        //};
 
 
         $scope.FinancialQuotationDetail = {
@@ -4399,6 +4438,485 @@
                 }
             }
         });
+
+
+
+
+
+
+        (function () {
+            var ENDPOINTS = {
+                byDocumentID: '/VendorSelectionModule/FinancialQuotation/GetDocumentsByDocumentID',
+                view: '/VendorSelectionModule/FinancialQuotation/ViewDocument',
+                download: '/VendorSelectionModule/FinancialQuotation/DownloadDocument'
+            };
+
+            function decorateDocuments(documents) {
+                return (documents || []).map(function (doc) {
+                    var ext = (doc.FileExtension || '').toLowerCase();
+                    var isMp4 = ext === '.mp4' || ext === 'mp4';
+                    var isPdf = ext === '.pdf' || ext === 'pdf';
+                    var isImage = ['.jpg', 'jpg', '.jpeg', 'jpeg', '.png', 'png'].indexOf(ext) !== -1;
+                    return {
+                        documentID: doc.DocumentID,
+                        fileName: doc.FileOriginalName,
+                        fileExtension: ext,
+                        canView: !isMp4,
+                        isPdf: isPdf,
+                        isImage: isImage,
+                        // "inline-renderable" = the browser can actually display it in
+                        // an <iframe>/<img> (pdf, images). Everything else that isn't
+                        // mp4 still gets a View button, but View just opens/downloads
+                        // via whatever the OS has associated with that file type.
+                        isInlineRenderable: isPdf || isImage,
+                        viewUrl: ENDPOINTS.view + '?documentID=' + encodeURIComponent(doc.DocumentID),
+                        downloadUrl: ENDPOINTS.download + '?documentID=' + encodeURIComponent(doc.DocumentID) +
+                            '&fileName=' + encodeURIComponent(doc.FileOriginalName || 'Document')
+                    };
+                });
+            }
+
+            function fetchGroup(documentID) {
+                if (!documentID) {
+                    // No anchor id for this section on this row -> nothing to show,
+                    // skip the call entirely rather than hitting the server for nothing.
+                    return $q.when({ data: { success: true, documents: [] } });
+                }
+                return $http.post(ENDPOINTS.byDocumentID, { documentID: documentID });
+            }
+
+            $scope.OpenAllDocumentsModal = function (row) {
+                $scope.loading = true;
+
+                // row.MasterDocumentID and row.sampleDocId are each just one
+                // DocumentID belonging to their respective group — the server
+                // derives the rest (BillReceiveID/BillTrackingNo) from that alone.
+                var masterPromise = fetchGroup(row.MasterDocumentID);
+                var materialPromise = fetchGroup(row.sampleDocId);
+
+                $q.all([masterPromise, materialPromise]).then(function (results) {
+                    var masterRes = results[0].data;
+                    var materialRes = results[1].data;
+
+                    $scope.AllDocSections = [
+                        {
+                            title: 'Overall Documents',
+                            documents: decorateDocuments(masterRes.success ? masterRes.documents : [])
+                        },
+                        {
+                            title: 'Material Documents',
+                            documents: decorateDocuments(materialRes.success ? materialRes.documents : [])
+                        }
+                    ];
+
+                    $scope.loading = false;
+                    $('#AllDocumentsViewModal').modal('show');
+                }, function () {
+                    $scope.loading = false;
+                    toastr.error('Failed to load documents.');
+                });
+            };
+
+            $scope.ViewDocumentFile = function (doc) {
+                $scope.PreviewDoc = doc;
+                // $sce.trustAsResourceUrl is required — Angular blocks binding
+                // ng-src on an iframe to a same-origin-but-dynamic URL otherwise.
+                $scope.PreviewTrustedUrl = $sce.trustAsResourceUrl(doc.viewUrl);
+                $('#DocumentPreviewModal').modal('show');
+            };
+
+            $scope.DownloadDocumentFile = function (doc) {
+                window.open(doc.downloadUrl, '_blank');
+            };
+        })();
+
+
+
+
+
+
+        // ================================================================
+        // PROCESS-LEVEL MULTIPLE DOCUMENTS (Max 5)
+        // Integrated with existing Save/Update/Submit flow
+        // ================================================================
+
+        // Initialize
+        $scope.ProcessDocuments = [];      // Array of {fileName, fileExtension, fileSize, fileObj, documentID, serverDetails, isUploaded, isDeleted, isNew, originalIndex}
+        $scope.ProcessNewFiles = [];       // Files selected from file input
+        $scope.ProcessDeletedIDs = [];     // Track deleted document IDs for server cleanup
+        $scope.ProcessReplaceTarget = null;// Target doc for replace operation
+
+        // Watch file input
+        $('#ProcessFileUpload').on('change', function () {
+            $scope.$apply(function () {
+                $scope.ProcessNewFiles = Array.from(this.files);
+            }.bind(this));
+        });
+
+        // Add selected files to the list
+        $scope.AddProcessFiles = function () {
+            if (!$scope.ProcessNewFiles || $scope.ProcessNewFiles.length === 0) return;
+
+            var currentCount = $scope.ProcessDocuments.filter(function (d) {
+                return !d.isDeleted;
+            }).length;
+
+            if (currentCount + $scope.ProcessNewFiles.length > 5) {
+                toastr.error("Maximum 5 documents allowed. You can add " + (5 - currentCount) + " more.");
+                return;
+            }
+
+            angular.forEach($scope.ProcessNewFiles, function (file) {
+                var ext = '.' + file.name.split('.').pop().toLowerCase();
+                var allowed = ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.jpg', '.jpeg', '.png', '.mp4'];
+
+                if (allowed.indexOf(ext) === -1) {
+                    toastr.warning("Skipped: " + file.name + " (type not allowed)");
+                    return;
+                }
+                if (file.size > 10 * 1024 * 1024) {
+                    toastr.warning("Skipped: " + file.name + " (exceeds 10MB)");
+                    return;
+                }
+
+                $scope.ProcessDocuments.push({
+                    fileName: file.name,
+                    fileExtension: ext,
+                    fileSize: (file.size / 1024).toFixed(1) + ' KB',
+                    fileObj: file,
+                    documentID: null,
+                    serverDetails: null,
+                    isUploaded: false,
+                    isDeleted: false,
+                    isNew: true,
+                    originalIndex: $scope.ProcessDocuments.length
+                });
+            });
+
+            // Clear file input
+            var $el = $('#ProcessFileUpload');
+            $el.wrap('<form>').closest('form').get(0).reset();
+            $el.unwrap();
+            $scope.ProcessNewFiles = [];
+        };
+
+        // Remove pending (not yet uploaded) document
+        $scope.RemovePendingProcessDocument = function (index) {
+            $scope.ProcessDocuments.splice(index, 1);
+            // Reindex
+            angular.forEach($scope.ProcessDocuments, function (doc, i) {
+                doc.originalIndex = i;
+            });
+        };
+
+        // Delete uploaded document (mark for deletion)
+        $scope.DeleteProcessDocument = function (index) {
+            if (!confirm("Delete this document?")) return;
+            var doc = $scope.ProcessDocuments[index];
+            doc.isDeleted = true;
+            if (doc.documentID) {
+                $scope.ProcessDeletedIDs.push(doc.documentID);
+            }
+        };
+
+        // Undo delete
+        $scope.UndoDeleteProcessDocument = function (index) {
+            var doc = $scope.ProcessDocuments[index];
+            doc.isDeleted = false;
+            if (doc.documentID) {
+                var idx = $scope.ProcessDeletedIDs.indexOf(doc.documentID);
+                if (idx > -1) $scope.ProcessDeletedIDs.splice(idx, 1);
+            }
+        };
+
+        // View document (reuse your existing viewer)
+        $scope.ViewProcessDocument = function (doc) {
+            $scope.openFileViewer(doc.documentID, doc.fileExtension);
+        };
+
+        // Download document
+        $scope.DownloadProcessDocument = function (doc) {
+            var url = '/VendorSelectionModule/FinancialQuotation/DownloadDocument?' +
+                'documentID=' + encodeURIComponent(doc.documentID) +
+                '&Ext=' + encodeURIComponent(doc.fileExtension.replace('.', ''));
+            window.open(url, '_blank');
+        };
+
+        // Trigger replace
+        $scope.TriggerReplaceProcessDocument = function (doc, index) {
+            $scope.ProcessReplaceTarget = { doc: doc, index: index };
+            $('#ProcessReplaceUpload').click();
+        };
+
+        // Handle replace file selection
+        $('#ProcessReplaceUpload').on('change', function () {
+            var files = this.files;
+            var $el = $('#ProcessReplaceUpload');
+            if (files.length === 0) return;
+
+            var file = files[0];
+            var ext = '.' + file.name.split('.').pop().toLowerCase();
+            var allowed = ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.jpg', '.jpeg', '.png', '.mp4'];
+
+            if (allowed.indexOf(ext) === -1) {
+                toastr.error("File type not allowed: " + ext);
+                $el.wrap('<form>').closest('form').get(0).reset();
+                $el.unwrap();
+                return;
+            }
+            if (file.size > 10 * 1024 * 1024) {
+                toastr.error("File exceeds 10MB limit.");
+                $el.wrap('<form>').closest('form').get(0).reset();
+                $el.unwrap();
+                return;
+            }
+
+            $scope.ReplaceProcessDocument(file, ext);
+            $el.wrap('<form>').closest('form').get(0).reset();
+            $el.unwrap();
+        });
+
+        // Replace uploaded document (same pattern as UpdateDocument)
+        $scope.ReplaceProcessDocument = function (file, ext) {
+            if (!$scope.ProcessReplaceTarget) return;
+
+            $scope.loading = true;
+            var target = $scope.ProcessReplaceTarget;
+            var doc = target.doc;
+
+            var fileData = new FormData();
+            fileData.append('serverIP', doc.serverDetails.ServerIP);
+            fileData.append('ftpPort', doc.serverDetails.ServerPort);
+            fileData.append('ftpUserName', doc.serverDetails.FtpUserName);
+            fileData.append('ftpPassword', doc.serverDetails.FtpPassword);
+            fileData.append('serverURL', doc.serverDetails.FileServerUrl);
+            fileData.append('documentID', doc.documentID);
+            fileData.append('Ext', ext.replace('.', ''));
+            fileData.append(file.name, file);
+
+            $.ajax({
+                url: '/VendorSelectionModule/FinancialQuotation/UploadOtherFiles',
+                type: "POST",
+                contentType: false,
+                processData: false,
+                data: fileData,
+                success: function (result) {
+                    // Update extension in DB
+                    $http.post(
+                        '/VendorSelectionModule/FinancialQuotation/UpdateExtensionByDocId',
+                        {
+                            DocumentID: doc.documentID,
+                            Extension: ext.replace('.', '')
+                        }
+                    ).then(function (response) {
+                        if (response.data && response.data.respStatus && response.data.respStatus.Message) {
+                            // Update local doc info
+                            doc.fileName = file.name;
+                            doc.fileExtension = ext;
+                            doc.fileSize = (file.size / 1024).toFixed(1) + ' KB';
+                            toastr.success("Document replaced successfully");
+                        } else {
+                            toastr.error("Failed to update document record");
+                        }
+                        $scope.ProcessReplaceTarget = null;
+                        $scope.loading = false;
+                        $scope.$apply();
+                    }).catch(function (err) {
+                        console.error(err);
+                        toastr.error("Failed to update document record");
+                        $scope.ProcessReplaceTarget = null;
+                        $scope.loading = false;
+                        $scope.$apply();
+                    });
+                },
+                error: function (err) {
+                    toastr.error("File upload failed");
+                    console.error('Upload error:', err);
+                    $scope.ProcessReplaceTarget = null;
+                    $scope.loading = false;
+                    $scope.$apply();
+                }
+            });
+        };
+
+        // ================================================================
+        // SAVE ALL PROCESS DOCUMENTS (Call this from Update/Post before saving quotation)
+        // ================================================================
+
+        $scope.SaveAllProcessDocuments = function (callback) {
+            var pendingDocs = $scope.ProcessDocuments.filter(function (d) {
+                return d.isNew && !d.isUploaded && !d.isDeleted;
+            });
+
+            if (pendingDocs.length === 0) {
+                // Nothing new to upload, just handle deletions
+                $scope.ExecuteProcessDeletions(function () {
+                    if (callback) callback();
+                });
+                return;
+            }
+
+            var uploadCount = 0;
+            var totalPending = pendingDocs.length;
+
+            angular.forEach(pendingDocs, function (doc) {
+                // Build BillReceiveModel for this doc
+                var processModel = {
+                    invitationNumber: $scope.InvitationNumber,
+                    materialCode: $scope.InvitationNumber,
+                    materialName: 'ProcessDoc_' + $scope.InvitationNumber,
+                    BiddingItemVendorID: '',
+                    VendorID: '',
+                    Unit: '',
+                    Extensions: doc.fileExtension.replace('.', '')
+                };
+
+                $http.post('/VendorSelectionModule/FinancialQuotation/AddDocumentInfo', {
+                    _modelDocumentsInfo: processModel
+                }).then(function (response) {
+                    if (response.data.ResponseCode !== "S201") {
+                        toastr.error("Failed to create document record for: " + doc.fileName);
+                        uploadCount++;
+                        if (uploadCount === totalPending) {
+                            $scope.ExecuteProcessDeletions(function () {
+                                if (callback) callback();
+                            });
+                        }
+                        return;
+                    }
+
+                    var serverDoc = response.data.DistinctID[0];
+                    doc.documentID = serverDoc.DocumentID;
+                    doc.serverDetails = {
+                        ServerIP: serverDoc.ServerIP,
+                        ServerPort: serverDoc.ServerPort,
+                        FtpUserName: serverDoc.FtpUserName,
+                        FtpPassword: serverDoc.FtpPassword,
+                        FileServerUrl: serverDoc.FileServerUrl
+                    };
+
+                    var fileData = new FormData();
+                    fileData.append('serverIP', serverDoc.ServerIP);
+                    fileData.append('ftpPort', serverDoc.ServerPort);
+                    fileData.append('ftpUserName', serverDoc.FtpUserName);
+                    fileData.append('ftpPassword', serverDoc.FtpPassword);
+                    fileData.append('serverURL', serverDoc.FileServerUrl);
+                    fileData.append('documentID', serverDoc.DocumentID);
+                    fileData.append('Ext', doc.fileExtension.replace('.', ''));
+                    fileData.append(doc.fileObj.name, doc.fileObj);
+
+                    $.ajax({
+                        url: '/VendorSelectionModule/FinancialQuotation/UploadOtherFiles',
+                        type: "POST",
+                        contentType: false,
+                        processData: false,
+                        data: fileData,
+                        success: function () {
+                            doc.isUploaded = true;
+                            doc.isNew = false;
+                            uploadCount++;
+                            if (uploadCount === totalPending) {
+                                $scope.ExecuteProcessDeletions(function () {
+                                    if (callback) callback();
+                                });
+                            }
+                        },
+                        error: function (err) {
+                            toastr.error("Upload failed for: " + doc.fileName);
+                            console.error('Upload error:', err);
+                            uploadCount++;
+                            if (uploadCount === totalPending) {
+                                $scope.ExecuteProcessDeletions(function () {
+                                    if (callback) callback();
+                                });
+                            }
+                        }
+                    });
+                }, function (error) {
+                    toastr.error("Failed to save document info for: " + doc.fileName);
+                    uploadCount++;
+                    if (uploadCount === totalPending) {
+                        $scope.ExecuteProcessDeletions(function () {
+                            if (callback) callback();
+                        });
+                    }
+                });
+            });
+        };
+
+        // Execute deletions on server
+        $scope.ExecuteProcessDeletions = function (callback) {
+            if ($scope.ProcessDeletedIDs.length === 0) {
+                if (callback) callback();
+                return;
+            }
+
+            var deleteCount = 0;
+            angular.forEach($scope.ProcessDeletedIDs, function (docID) {
+                $http.post('/VendorSelectionModule/FinancialQuotation/DeleteProcessDocument', {
+                    documentID: docID
+                }).then(function () {
+                    deleteCount++;
+                    if (deleteCount === $scope.ProcessDeletedIDs.length) {
+                        $scope.ProcessDeletedIDs = [];
+                        // Remove deleted docs from array
+                        $scope.ProcessDocuments = $scope.ProcessDocuments.filter(function (d) {
+                            return !d.isDeleted;
+                        });
+                        if (callback) callback();
+                    }
+                }, function () {
+                    deleteCount++;
+                    if (deleteCount === $scope.ProcessDeletedIDs.length) {
+                        if (callback) callback();
+                    }
+                });
+            });
+        };
+
+        // ================================================================
+        // LOAD EXISTING PROCESS DOCUMENTS (Call when RFQ is selected)
+        // ================================================================
+
+        $scope.LoadExistingProcessDocuments = function () {
+            if (!$scope.InvitationNumber) return;
+
+            $http.post('/VendorSelectionModule/FinancialQuotation/GetProcessDocStatus', {
+                biddingProcessNumber: $scope.InvitationNumber
+            }).success(function (res) {
+                if (!res.success || !res.documents) return;
+
+                $scope.ProcessDocuments = [];
+                angular.forEach(res.documents, function (doc) {
+                    $scope.ProcessDocuments.push({
+                        fileName: doc.FileOriginalName,
+                        fileExtension: doc.FileExtension,
+                        fileSize: '-', // Size not stored in DB
+                        fileObj: null,
+                        documentID: doc.DocumentID,
+                        serverDetails: {
+                            ServerIP: doc.ServerIP,
+                            ServerPort: doc.ServerPort,
+                            FtpUserName: doc.FtpUserName,
+                            FtpPassword: doc.FtpPassword,
+                            FileServerUrl: doc.FileServerUrl
+                        },
+                        isUploaded: true,
+                        isDeleted: false,
+                        isNew: false,
+                        originalIndex: $scope.ProcessDocuments.length
+                    });
+                });
+            }).error(function () {
+                console.log("No existing process documents found");
+            });
+        };
+
+
+
+
+
+
 
 
 

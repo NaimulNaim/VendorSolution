@@ -159,5 +159,23 @@ namespace SILDMS.Service.FinancialQuotation
                 ? new ValidationResult(_errorNumber, _localizationService.GetResource(_errorNumber))
                 : ValidationResult.Success;
         }
+
+        public ValidationResult GetDocumentsByDocumentIdService(string documentID, out List<MaterialDocumentInfo> documents)
+        {
+            documents = _financialQuotationData.GetDocumentsByDocumentIdDataService(documentID, out _errorNumber);
+
+            return _errorNumber.Length > 0
+                ? new ValidationResult(_errorNumber, _localizationService.GetResource(_errorNumber))
+                : ValidationResult.Success;
+        }
+        public ValidationResult GetDocumentByIdService(string documentID, out MaterialDocumentInfo document)
+        {
+            document = _financialQuotationData.GetDocumentByIdDataService(documentID, out _errorNumber);
+
+            return _errorNumber.Length > 0
+                ? new ValidationResult(_errorNumber, _localizationService.GetResource(_errorNumber))
+                : ValidationResult.Success;
+        }
+
     }
 }

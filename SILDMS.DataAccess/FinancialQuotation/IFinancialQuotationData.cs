@@ -29,5 +29,7 @@ namespace SILDMS.DataAccess.FinancialQuotation
         List<Item> ItemlistData(out string errorNumber);
      
         bool DeleteFinquot(string finanQuotationItemID, out string errorNumber);
+        List<MaterialDocumentInfo> GetDocumentsByDocumentIdDataService(string documentID, out string errorNumber);
+        MaterialDocumentInfo GetDocumentByIdDataService(string documentID, out string errorNumber);
     }
 }

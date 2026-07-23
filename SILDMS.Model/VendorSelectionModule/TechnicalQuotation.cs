@@ -303,33 +303,55 @@ namespace SILDMS.Model.VendorSelectionModule
     }
 
 
-   
 
 
-//public class FinancialQuotationDetail
-//    {
-//        public string rowIndex { get; set; }
-//        public string FinanQuotationItemID { get; set; }
-//        public double ProposeQty { get; set; }
-      
-//        public Item Unit { get; set; }
-//        public double UnitPrice { get; set; }
-//        public Currency Currency { get; set; }
-//        public double TotalPrice { get; set; }
-//        public double VatAmount { get; set; }
-//        public double TaxAmount { get; set; }
-//        public double GrossPrice { get; set; }
-//        public double DiscountPrice { get; set; }
-//        public double NetPrice { get; set; }
-//        public DateTime QuotValidDate { get; set; }
-//        public DateTime ExpecDeliDate { get; set; }
-//        public string ProposalType { get; set; }
-//        public string QuotValidDateString { get; set; }
-//        public string ExpecDeliDateString { get; set; }
 
- 
-//    }
-  public class FinancialQuotationDetail
+    //public class FinancialQuotationDetail
+    //    {
+    //        public string rowIndex { get; set; }
+    //        public string FinanQuotationItemID { get; set; }
+    //        public double ProposeQty { get; set; }
+
+    //        public Item Unit { get; set; }
+    //        public double UnitPrice { get; set; }
+    //        public Currency Currency { get; set; }
+    //        public double TotalPrice { get; set; }
+    //        public double VatAmount { get; set; }
+    //        public double TaxAmount { get; set; }
+    //        public double GrossPrice { get; set; }
+    //        public double DiscountPrice { get; set; }
+    //        public double NetPrice { get; set; }
+    //        public DateTime QuotValidDate { get; set; }
+    //        public DateTime ExpecDeliDate { get; set; }
+    //        public string ProposalType { get; set; }
+    //        public string QuotValidDateString { get; set; }
+    //        public string ExpecDeliDateString { get; set; }
+
+
+    //    }
+
+    public class MaterialDocumentInfo
+    {
+        public string DocumentID { get; set; }
+        public string FileOriginalName { get; set; }
+        public int Sequence { get; set; }
+        public string FileExtension { get; set; }
+        public string FileServerUrl { get; set; }
+        public string ServerID { get; set; }     // internal server key, matches SEC_Server.ServerID
+        public string ServerIP { get; set; }     // actual host/IP to FTP to
+        public string ServerPort { get; set; }
+        public string FtpUserName { get; set; }
+        public string FtpPassword { get; set; }
+        public string DocPropertyName { get; set; }
+        public string BiddingItemVendorId { get; set; }
+    }
+
+
+
+
+
+
+    public class FinancialQuotationDetail
     {
         public string rowIndex { get; set; }
         public string FinanQuotationItemID { get; set; }
@@ -583,6 +605,7 @@ namespace SILDMS.Model.VendorSelectionModule
         public string RFQDeadlineString { get; set; }
         public string LowestNetUnitPrice { get; set; }
         public string InvitationSendPerson { get; set; }
+        public string MasterDocumentID { get; set; }
     }
 
 
