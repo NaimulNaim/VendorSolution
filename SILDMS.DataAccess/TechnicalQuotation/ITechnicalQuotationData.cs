@@ -30,5 +30,6 @@ namespace SILDMS.DataAccess.TechnicalQuotation
 
         List<Sys_MasterData> GetAllItemTypes(string masterDataType, out string _errorNumber);
         bool DeleteTechQuotwiseDetailsData(string techQuotationItemID, out string errorNumber);
+        bool DeleteDocumenDataService(string documentID, out string errorNumber);
     }
 }

@@ -32,5 +32,6 @@ namespace SILDMS.Service.FinancialQuotation
         ValidationResult DeleteFinquot(string finanQuotationItemID, out bool isDeleted);
         ValidationResult GetDocumentsByDocumentIdService(string documentID, out List<MaterialDocumentInfo> documents);
         ValidationResult GetDocumentByIdService(string documentID, out MaterialDocumentInfo document);
+        ValidationResult DeleteDocumentService(string documentID);
     }
 }

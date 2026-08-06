@@ -177,5 +177,12 @@ namespace SILDMS.Service.FinancialQuotation
                 : ValidationResult.Success;
         }
 
+        public ValidationResult DeleteDocumentService(string documentID)
+        {_financialQuotationData.DeleteDocumenDataService(documentID, out _errorNumber);
+
+            return _errorNumber.Length > 0
+                ? new ValidationResult(_errorNumber, _localizationService.GetResource(_errorNumber))
+                : ValidationResult.Success;
+        }
     }
 }

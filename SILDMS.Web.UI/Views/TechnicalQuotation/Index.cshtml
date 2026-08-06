@@ -169,8 +169,8 @@
                     <input id="QuotationNumber" name="QuotationNumber" type="text" data-ng-model="Quotation" class="form-control"
                            placeholder="Quotation Number" ng-readonly="true" />
                     @*<div ng-show="masterDataFrm.$submitted || masterDataFrm.UDCode.$touched">
-                        <span ng-show="masterDataFrm.UDCode.$error.required" class="label label-danger">Please enter UD Code</span>
-                    </div>*@
+                            <span ng-show="masterDataFrm.UDCode.$error.required" class="label label-danger">Please enter UD Code</span>
+                        </div>*@
                 </div>
             </div>
 
@@ -213,11 +213,13 @@
                             <td class="col-lg-4 col-md-4 col-sm-4">{{row.materialName}}</td>
                             <td class="col-lg-2 col-md-2 col-sm-2" style="text-align:right">{{row.MaterialQuantity| number:3}}</td>
                             <td class="col-lg-1 col-md-1 col-sm-1" style="text-align:center">{{row.Unit}}</td>
+
+
                             <td class="col-lg-1 col-md-1 col-sm-1 text-center">
                                 <button type="button"
                                         class="btn btn-info btn-table"
-                                        ng-click="AddDocument(row)"
-                                        ng-show="row.sampleDocId">
+                                        ng-click="OpenAllDocumentsModal(row)"
+                                        ng-show="row.sampleDocId || row.MasterDocumentID">
                                     Details <i class="fa fa-eye"></i>
                                 </button>
                             </td>
@@ -1109,20 +1111,7 @@
 
 
 
-        @*<div class="row" ng-show="p===1 || p===2">
 
-                <div class="btn-group pull-right" style=" margin-right: 70px;">
-
-                    <button type="submit" id="btnSubmit1" ng-if="MaterialInvitation.TechQuotationItemID!='' " ng-click=" Update()" class="btn btn-primary btn-flat">Quotation Update</button>
-                    <button type="submit" id="btnSubmit" ng-if="MaterialInvitation.TechQuotationItemID==''" ng-click=" Post()" class="btn btn-primary btn-flat">Quotation Save</button>
-
-
-
-                </div>
-
-
-
-            </div>*@
 
 
 
@@ -1136,8 +1125,8 @@
                 <!-- /.col -->
                 <div class="col-md-10">
 
-                    <div class="box-header with-border">
-                        <h4 class="box-title">Process Documents:</h4>
+                    <div class="box-header with-border" ng-show="lowestshowstatus == 1 || MaterialInvitation.SampleDocumentID">
+                        <h4 class="box-title">Attach Documents:</h4>
                     </div>
                     <div class="box-body no-padding">
                         <div class="row">
@@ -1148,10 +1137,10 @@
                                     <input type="file" id="FileUpload1" name="FileUpload1" multiple />
                                 </div>*@
 
-                            <div class="col-lg-6 ">
-                                <input type="file" id="FileUpload1" name="FileUpload1" multiple />
+                            <div class="col-lg-6 " ng-show="lowestshowstatus == 1">
+                                <input type="file" id="FileUpload1" name="FileUpload1" />
                             </div>
-                          
+
                             <div class="col-lg-6" style="margin-bottom:10px" ng-show="IsDownload">
                                 <div style="float:right;display:flex;align-items:center;gap:10px">
                                     <div style="font-weight:bold">Existing Document:</div>
@@ -1159,6 +1148,13 @@
                                     <button class="btn btn-sm btn-primary"
                                             ng-click="openFileViewer(MaterialInvitation.SampleDocumentID, FileExtension)">
                                         View & Download
+                                    </button>
+
+                                    <button class="btn btn-sm btn-danger"
+                                            ng-if="lowestshowstatus == 1"
+                                            ng-click="deleteAttachedDocument()"
+                                            style="margin-left:5px;">
+                                        <i class="fa fa-trash"></i> Delete
                                     </button>
                                     @*<a class="btn btn-sm btn-warning"
                                            ng-href="/VendorSelectionModule/TechnicalQuotation/DownloadDocument?documentID={{MaterialInvitation.SampleDocumentID}}&Ext={{FileExtension}}">
@@ -1171,13 +1167,13 @@
                         </div>
 
                     </div>
-               
+
                 </div>
-          
+
 
 
             </div>
-     
+
         </div>
     </div>
 
@@ -1331,113 +1327,62 @@
 
 
 
-    @*<div id="DetailViewModal" class="modal fade">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" ng-click="" aria-hidden="true">x</button>
-                        <h4 class="modal-title">Document Detail View</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-lg-6" style="margin-bottom:10px" ng-show="IsDownload2">
-                                <div style="float: right; display: flex;">
-                                    <div style="font-weight: bold; padding-right: 11px;">
-                                        Existing Media:
-                                    </div>
-                                    <div style="padding-right: 11px;" ng-show="FileExtension2!='.pdf'">{{DocumentID +"."+ FileExtension2 }}</div>
-                                    <a class="btn btn-sm btn-warning" ng-show="FileExtension2!='.pdf'" style="display: inline-block;" href="/VendorSelectionModule/TechnicalQuotation/DownloadDocument2?documentID={{DocumentID}}&Ext={{FileExtension2}}">Download</a>
-                                </div>
-
-                            </div>
-                        </div>
 
 
 
 
 
 
-
-                        <div class="row">
-                            <div class="col-lg-2">
-                                <h4><label>Thumbnail:</label></h4>
-                            </div>
-                            <div class="col-lg-10">
-                                <button class="btn btn-flat btn-sm btn-default" data-ng-click="ZoomIn()"> Zoom In</button>
-                                <button class="btn btn-flat btn-sm btn-default" data-ng-click="ZoomOut()"> Zoom Out</button>
-                                <button class="btn btn-flat btn-sm btn-default" data-ng-click="DownloadDocument()"> Download</button>
-                            </div>
-
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-2">
-                                <div id="dwtVerticalThumbnil" class="box-body"></div>
-                            </div>
-                            <div class="col-lg-10">
-                                <div id="dwtLargeViewer" class="box-body"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <div class="col-sm-12 col-md-12 col-lg-12">
-                            <div class="form-group">
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>*@
-
-
-
-
-
-    <div id="DetailViewModal" class="modal fade" tabindex="-1">
-        <div class="modal-dialog modal-lg" style="width:95%">
+    <div id="AllDocumentsViewModal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-lg" style="width:70%">
             <div class="modal-content">
-
                 <div class="modal-header">
-                    <button type="button"
-                            class="close"
-                            data-dismiss="modal">
-                        &times;
-                    </button>
-
-                    <h4 class="modal-title">
-                        Document Detail View
-                    </h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Documents</h4>
                 </div>
-
                 <div class="modal-body">
+                    <div ng-repeat="section in AllDocSections" style="margin-bottom:24px;">
+                        <h4>{{section.title}}</h4>
 
-                    <!-- PDF Viewer -->
-                    <div ng-if="!IsDownload2">
+                        <div ng-if="section.documents.length === 0" class="text-muted">
+                            No documents uploaded.
+                        </div>
 
-                        <iframe ng-src="{{DocViewerUrl2}}"
-                                width="100%"
-                                height="700"
-                                style="border:none">
-                        </iframe>
-
+                        <table class="table table-bordered table-striped" ng-if="section.documents.length > 0">
+                            <thead>
+                                <tr style="background:#f4f4f4;">
+                                    <th>File Name</th>
+                                    @*<th style="width:100px;text-align:center;">Ext</th>*@
+                                    <th style="width:220px;text-align:center;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="doc in section.documents">
+                                    <td style="vertical-align:middle;">
+                                        <i class="fa fa-file-text-o" style="margin-right:8px;color:#3c8dbc;"></i>
+                                        {{doc.fileName}}
+                                    </td>
+                                    @*<td style="text-align:center;vertical-align:middle;">
+                                            <span class="label label-info">{{doc.fileExtension}}</span>
+                                        </td>*@
+                                    <td style="text-align:center;vertical-align:middle;">
+                                        <button class="btn btn-primary btn-sm" ng-if="doc.canView"
+                                                ng-click="ViewDocumentFile(doc)">
+                                            <i class="fa fa-eye"></i> View
+                                        </button>
+                                        <button class="btn btn-warning btn-sm"
+                                                ng-click="DownloadDocumentFile(doc)">
+                                            <i class="fa fa-download"></i> Download
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-
-                    <!-- Download Section -->
-                    <div ng-if="IsDownload2">
-
-                        <h4>{{DocFileName2}}</h4>
-
-                        <br />
-
-                        <a class="btn btn-warning"
-                           ng-href="{{DocDownloadUrl2}}">
-                            Download File
-                        </a>
-
-                    </div>
-
                 </div>
-
+                <div class="modal-footer">
+                    <button class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
@@ -1446,7 +1391,57 @@
 
 
 
-    <div id="FileViewerModal" class="modal fade">
+    <div id="DocumentPreviewModal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-lg" style="width:80%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">{{PreviewDoc.fileName}}</h4>
+                </div>
+                <div class="modal-body">
+                    <div ng-if="PreviewDoc.isPdf">
+                        <iframe ng-src="{{PreviewTrustedUrl}}"
+                                width="100%"
+                                height="700"
+                                style="border:none">
+                        </iframe>
+                    </div>
+                    <div ng-if="PreviewDoc.isImage" style="text-align:center;">
+                        <img ng-src="{{PreviewDoc.viewUrl}}"
+                             style="max-width:100%;max-height:700px;" />
+                    </div>
+                    <div ng-if="PreviewDoc.isMp4" style="text-align:center;padding:40px 0;">
+                        <p class="text-muted">
+                            Not supported to preview, please download.
+                        </p>
+                    </div>
+                    <div ng-if="!PreviewDoc.isInlineRenderable && !PreviewDoc.isMp4" style="text-align:center;padding:40px 0;">
+                        <p class="text-muted">
+                            This file type ({{PreviewDoc.fileExtension}}) can't be previewed in the browser.
+                        </p>
+                        <a class="btn btn-primary" ng-href="{{PreviewDoc.viewUrl}}" target="_blank">
+                            <i class="fa fa-external-link"></i> Open
+                        </a>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-warning" ng-href="{{PreviewDoc.downloadUrl}}" ng-if="PreviewDoc.isMp4">
+                        <i class="fa fa-download"></i> Download
+                    </a>
+                    <button class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+    <!--<div id="FileViewerModal" class="modal fade">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
 
@@ -1459,35 +1454,30 @@
                     <h4 class="modal-title">{{ViewerFileName}}</h4>
                 </div>
 
-                <div class="modal-body" style="min-height:500px">
-
-                    <!-- PDF -->
-                    <div ng-if="ViewerType === 'pdf'">
-                        <iframe ng-src="{{ViewerUrl | trustAsResourceUrl}}"
-                                width="100%" height="600px" style="border:none">
-                        </iframe>
-                    </div>
-
-                    <!-- Image -->
-                    <div ng-if="ViewerType === 'image'" style="text-align:center">
-                        <img ng-src="{{ViewerUrl | trustAsResourceUrl}}"
-                             style="max-width:100%;max-height:600px" />
-                    </div>
-
-                    <!-- Video -->
-                    <div ng-if="ViewerType === 'video'">
-                        <video controls style="width:100%"
-                               ng-src="{{ViewerUrl | trustAsResourceUrl}}">
-                        </video>
-                    </div>
-
-                    <!-- Audio -->
-                    <div ng-if="ViewerType === 'audio'" style="padding:40px 0;text-align:center">
-                        <audio controls ng-src="{{ViewerUrl | trustAsResourceUrl}}"></audio>
-                    </div>
-
-                    <!-- Unsupported — download only -->
-                    <div ng-if="ViewerType === 'download'"
+                <div class="modal-body" style="min-height:500px">-->
+    <!-- PDF -->
+    <!--<div ng-if="ViewerType === 'pdf'">
+        <iframe ng-src="{{ViewerUrl | trustAsResourceUrl}}"
+                width="100%" height="600px" style="border:none">
+        </iframe>
+    </div>-->
+    <!-- Image -->
+    <!--<div ng-if="ViewerType === 'image'" style="text-align:center">
+        <img ng-src="{{ViewerUrl | trustAsResourceUrl}}"
+             style="max-width:100%;max-height:600px" />
+    </div>-->
+    <!-- Video -->
+    <!--<div ng-if="ViewerType === 'video'">
+        <video controls style="width:100%"
+               ng-src="{{ViewerUrl | trustAsResourceUrl}}">
+        </video>
+    </div>-->
+    <!-- Audio -->
+    <!--<div ng-if="ViewerType === 'audio'" style="padding:40px 0;text-align:center">
+        <audio controls ng-src="{{ViewerUrl | trustAsResourceUrl}}"></audio>
+    </div>-->
+    <!-- Unsupported — download only -->
+    <!--<div ng-if="ViewerType === 'download'"
                          style="padding:60px 0;text-align:center">
                         <p>This file type cannot be previewed in the browser.</p>
                         <a class="btn btn-warning" ng-href="{{ViewerUrl}}">Download {{ViewerFileName}}</a>
@@ -1505,9 +1495,52 @@
 
             </div>
         </div>
-    </div>
+    </div>-->
 
 
+
+    <!--<div id="FileViewerModal" class="modal fade">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal"
+                            ng-click="closeFileViewer()">
+                        ×
+                    </button>
+                    <h4 class="modal-title">{{ViewerFileName}}</h4>
+                </div>
+
+                <div class="modal-body" style="min-height:500px">-->
+
+                    <!-- PDF -->
+                    <!--<div ng-if="ViewerType === 'pdf'">
+                        <iframe ng-src="{{ViewerUrl | trustAsResourceUrl}}"
+                                width="100%" height="600px" style="border:none">
+                        </iframe>
+                    </div>-->
+
+                    <!-- Everything else — download only -->
+                    <!--<div ng-if="ViewerType !== 'pdf'"
+                         style="padding:60px 0;text-align:center">
+                        <p>This file type cannot be previewed in the browser.</p>
+                        <a class="btn btn-warning" ng-href="{{ViewerUrl}}">Download {{ViewerFileName}}</a>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <a class="btn btn-warning" ng-href="{{ViewerUrl}}">Download</a>
+                    <button class="btn btn-default" data-dismiss="modal"
+                            ng-click="closeFileViewer()">
+                        Close
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>-->
 
     <div class="modal fade" id="deleteConfirmModal" tabindex="-1">
         <div class="modal-dialog modal-sm">
@@ -1545,10 +1578,8 @@
         </div>
     </div>
 </div>
-@*<script type="text/javascript" src="~/Resources/dynamsoft.webtwain.intellisense.js"></script>
-    <script type="text/javascript" src="~/Resources/dynamsoft.webtwain.initiate.js"></script>
-    <script type="text/javascript" src="~/Resources/dynamsoft.webtwain.config.js"></script>
-    <script type="text/javascript" src="~/Resources/addon/dynamsoft.webtwain.addon.pdf.js"></script>*@
+
+
 
 
 
@@ -1596,7 +1627,7 @@
 
         }]);
 
-    app.controller('TechnicalQuotationCtrl', function ($scope, $http, $timeout,$sce) {
+    app.controller('TechnicalQuotationCtrl', function ($scope, $http, $timeout,$sce,$q) {
 
         $scope.myarray = [];
         $scope.myarray2 = [];
@@ -1866,159 +1897,7 @@
             PharmacopeialReference: "",
             AllPharmacopeialReference: ""// Added
         };
-        //$scope.TechnicalQuotation = {
-        //    // --- Identity / Meta ---
-
-        //    rowIndex: '',
-        //    TechQuotationItemID: '',
-        //    ItemName: "",
-        //    MoleculeName: "",
-        //    Manufacturer: "",
-        //    ManufacturerPart: "",
-        //    ManufactureAddress: "",
-        //    ManufacturerOrigin: "",
-        //    Supplier: "",
-        //    LocalPartner: "",
-
-        //    // --- Pricing ---
-        //    RDPrice: 0,
-        //    CommercialPrice: 0,
-        //    PricePer: 1,
-        //    PriceUnit: { Item_Code: "", Item_Name: "" },
-        //    Currency: { MasterDataID: "", MasterDataValue: "" },
-
-        //    // --- Order / Shelf / Storage ---
-        //    MinOrderQty: 0,
-        //    OrderQtyUnit: "",
-        //    CommercialPackSize: "",
-        //    MinPack: "",
-        //    ShelfLifeValue: 0,
-        //    ShelfLifeUnit: "Days",
-        //    StorageCondition: "",
-
-        //    // --- References / Notes ---
-        //    Reference: "",
-        //    Notes: "",
-        //    CASNO: "",
-        //    CatalogueNo: "",
-
-        //    // --- Production ---
-        //    CurrentStatus: "",
-        //    ProdCapacity: "",
-        //    ProductionFrequency: "",
-        //    ProductionLeadTimeValue: 0,
-        //    ProductionLeadTimeUnit: "Days",
-        //    RepresentativeSample: "",
-        //    RepresentativeSamplePackSize: "",
-
-        //    // --- Compliance / Qualification ---
-        //    ComplianceWith: "",
-        //    QualificationDocuments: "",
-        //    QualificationDocumentsOther: "",
-
-        //    // --- FAT / SAT / Assistance ---
-        //    FATAtManufacturerSite: "",
-        //    FATAtManufacturerSiteOther: "",
-        //    SATScope: "",
-        //    AssistanceAtSite: "",
-        //    AssistanceAtSiteOther: "",
-
-        //    // --- Utilities / Safety ---
-        //    UtilitiesRequirement: "",
-        //    SafetyFeatures: "",
-        //    EnergyEfficiencyFeatures: "",
-
-        //    // --- Servicing / Scope ---
-        //    SparesServicing: "",
-        //    ScopeConfirmation: "",
-        //    ScopeDeviationRemarks: "",
-
-        //    // --- Responsibility Matrix ---
-        //    Erection: "",
-        //    ErectionOther: "",
-        //    Installation: "",
-        //    InstallationOther: "",
-        //    Testing: "",
-        //    TestingOther: "",
-        //    Commissioning: "",
-        //    CommissioningOther: "",
-
-        //    // --- Regulatory ---
-        //    RegulatoryApproval: "",
-        //    RegulatoryApprovalOther: "",
-
-        //    // --- Misc ---
-        //    ColumnSpecification: "",
-
-        //    // --- p===2 specific fields ---
-        //    ModelVersion: "",
-        //    CountryOrigin: "",
-        //    YearOfManufacturing: "",
-        //    ProductLifeCycleValue: 0,
-        //    ProductLifeCycleUnit: "Days",
-        //    Capacity: "",
-        //    CapacityExtendable: "",
-        //    CapacityExtendableOther: "",
-        //    SampleDocumentID: "",
-        //    Techtype: "",
-        //    proposal: ""
-        //};
-
-
-
-        //$scope.TechnicalQuotation = {
-        //    rowIndex: '',
-        //    MoleculeName: "",
-        //    sampleAvailable: "",
-        //    otherSample: "",
-        //    CASNO: "",
-        //    RepresentativePackSize: "",
-        //    Manufacturer: "",
-        //    regulatory: "",
-        //    Supplier: "",
-        //    CurrentStatus: "",
-        //    ManufactureAddress: "",
-        //    ProdCapacity: "",
-        //    RDPrice: "",
-        //    Shelf: "",
-        //    CommercialPrice: "",
-        //    Condition: "",
-        //    OrderQty: "",
-        //    Specification: "",
-        //    OtherSpecification: "",
-        //    CommercialConsignment: "",
-        //    AvailPackSize: "",
-        //    MinPack: "",
-        //    Example: "",
-        //    TechQuotationItemID: "",
-        //    Currency: { MasterDataID: "", MasterDataValue: "" },
-        //    Reference: "",
-        //    Validation: "",
-        //    Training: "",
-        //    Prerequisite: "",
-        //    ManufacturerPart: "",
-        //    Installation: "",
-        //    Subcontractor: "",
-        //    ManufacturerOrigin: "",
-        //    Prerequisite: "",
-        //    Penalty: "",
-        //    Fat: "",
-        //    Calibration: "",
-        //    Document: "",
-        //    RNDPriceCur: { MasterDataID: "", MasterDataValue: "" },
-        //    ComPriceCur: { MasterDataID: "", MasterDataValue: "" },
-        //    Alldocuments: "",
-
-        //    OrderQtyUnit: { Item_Code: "", Item_Name: "" },
-        //    LocalPartner: "",
-        //    APIRegApproval: "",
-
-
-
-
-
-
-        //};
+      
 
         $scope.statusOptions = [
             { value: 'Commercialized', label: 'Commercialized' },
@@ -2217,62 +2096,35 @@
             var hasUploadedFiles = $("#FileUpload1").get(0).files.length > 0;
        
 
-            if (!$scope.MaterialInvitation.SampleDocumentID) {
+            if (!hasUploadedFiles) {
 
-                if (!hasUploadedFiles) {
+         
 
                     // No document attached, update quotation directly
                     SaveQuotation();
 
-                } else {
+            } else if (!$scope.MaterialInvitation.SampleDocumentID && hasUploadedFiles) {
 
                     // Save document first, then update quotation
                     $scope.SaveDocumentOnly(function () {
                         SaveQuotation();
                     });
                 }
-            }
+            
             else {
 
                 // Existing document, update document then quotation
-                $scope.UpdateDocument();
-
-                SaveQuotation();
+                $scope.UpdateDocument().then(function () {
+                    SaveQuotation();
+                }).catch(function () {
+                    // Upload failed — don't proceed to save the quotation on top of a failed upload
+                    $scope.loading = false;
+                });
 
             }
 
 
 
-
-
-
-
-
-
-
-
-            //$http.post('/VendorSelectionModule/TechnicalQuotation/SaveTechQuotwiseDetails',
-
-            //    { technicalQuotation: $scope.TechnicalQuotation }
-            //)
-            //    .success(function (response) {
-            //        $scope.response = response.respStatus.Message;
-
-            //        if ($scope.response === 'Data Updated Successfully') {
-            //            $scope.p = 0;
-            //            $scope.reset();
-            //            toastr.success($scope.response);
-
-            //        }
-            //        else {
-            //            toastr.error($scope.response);
-            //        }
-
-            //    });
-            //$scope.UpdateDocument();
-
-
-            //console.log($scope.TechnicalQuotation);
 
         }
 
@@ -2382,22 +2234,20 @@
 
 
 
-
-
-
-
         $scope.Post = function () {
-            var DocIDsCounter = 0;
 
+            if ($scope.loading) {
+                return; // already in-flight, ignore extra clicks
+            }
+
+            var DocIDsCounter = 0;
 
             if ($scope.TechnicalQuotation.Techtype === 'SPARES') {
                 var yearOfManufacturing = $('#YearOfManufacturing').val();
-
                 if (yearOfManufacturing) {
                     $scope.TechnicalQuotation.YearOfManufacturing =
                         $scope.formatDate(yearOfManufacturing);
                 }
-
                 if ($("#ItemName").val() == "") {
                     toastr.error("ItemName is required.");
                     return;
@@ -2406,16 +2256,11 @@
                     toastr.error("Manufacturer Name is required.");
                     return;
                 }
-
-
-
-
             }
             else {
                 if ($scope.TechnicalQuotation.PharmacopeialReference) {
                     $scope.TechnicalQuotation.AllPharmacopeialReference = $scope.TechnicalQuotation.PharmacopeialReference.join(',');
                 }
-
                 if ($("#MoleculeName").val() == "") {
                     toastr.error("MoleculeName is required.");
                     return;
@@ -2424,52 +2269,27 @@
                     toastr.error("Manufacturer Name is required.");
                     return;
                 }
-
-
-                $scope.loading = true;
             }
+
+            // Moved outside both branches so BOTH SPARES and non-SPARES materials
+            // correctly lock the button — previously only the non-SPARES branch set this.
+            $scope.loading = true;
+
             $timeout(function () {
                 $scope.TechnicalQuotation.rowIndex = $scope.MaterialInvitation.rowIndex;
-
-
-
                 $scope.TechnicalQuotation.Proposal = $scope.proposal;
                 $scope.TechnicalQuotation.techtype = $scope.techtype;
-
-
-
                 console.log('TechnicalQuotation:', $scope.TechnicalQuotation);
 
-                // Check if document already exists
-                //if (!$scope.MaterialInvitation.SampleDocumentID) {
-                //    console.log('No document ID, saving document first...');
-                //    // Document doesn't exist, save it first
-                //    $scope.SaveTechnicalDocumentAndSubmit();
-                //} else {
-                //    console.log('Document ID exists, updating and submitting...');
-                //    // Document exists, directly update and submit
-                //    $scope.UpdateDocument();
-                //    $scope.myarray.push($scope.MaterialInvitation);
-                //    $scope.myarray2.push($scope.TechnicalQuotation);
-                //    $scope.reset();
-                //    $scope.p = 0;
-                //    }
-
-
-
                 var hasUploadedFiles = $("#FileUpload1").get(0).files.length > 0;
-               
 
                 if (!$scope.TechnicalQuotation.SampleDocumentID) {
-
-                    // No document attached at all
                     if (!hasUploadedFiles) {
                         console.log('No documents found, submitting quotation directly...');
                         $scope.submit();
                         $scope.p = 0;
                         return;
                     }
-
                     console.log('Documents found, saving document first...');
                     $scope.SaveTechnicalDocumentAndSubmit();
                 }
@@ -2478,10 +2298,95 @@
                     $scope.submit();
                     $scope.p = 0;
                 }
-
-
             }, 0);
         };
+
+
+
+        //$scope.Post = function () {
+        //    var DocIDsCounter = 0;
+
+
+        //    if ($scope.TechnicalQuotation.Techtype === 'SPARES') {
+        //        var yearOfManufacturing = $('#YearOfManufacturing').val();
+
+        //        if (yearOfManufacturing) {
+        //            $scope.TechnicalQuotation.YearOfManufacturing =
+        //                $scope.formatDate(yearOfManufacturing);
+        //        }
+
+        //        if ($("#ItemName").val() == "") {
+        //            toastr.error("ItemName is required.");
+        //            return;
+        //        }
+        //        if ($("#ManufacturerName").val() == "") {
+        //            toastr.error("Manufacturer Name is required.");
+        //            return;
+        //        }
+
+
+
+
+        //    }
+        //    else {
+        //        if ($scope.TechnicalQuotation.PharmacopeialReference) {
+        //            $scope.TechnicalQuotation.AllPharmacopeialReference = $scope.TechnicalQuotation.PharmacopeialReference.join(',');
+        //        }
+
+        //        if ($("#MoleculeName").val() == "") {
+        //            toastr.error("MoleculeName is required.");
+        //            return;
+        //        }
+        //        if ($("#ManufacturerName").val() == "") {
+        //            toastr.error("Manufacturer Name is required.");
+        //            return;
+        //        }
+
+
+        //        $scope.loading = true;
+        //    }
+        //    $timeout(function () {
+        //        $scope.TechnicalQuotation.rowIndex = $scope.MaterialInvitation.rowIndex;
+
+
+
+        //        $scope.TechnicalQuotation.Proposal = $scope.proposal;
+        //        $scope.TechnicalQuotation.techtype = $scope.techtype;
+
+
+
+        //        console.log('TechnicalQuotation:', $scope.TechnicalQuotation);
+
+
+
+
+
+        //        var hasUploadedFiles = $("#FileUpload1").get(0).files.length > 0;
+
+
+        //        if (!$scope.TechnicalQuotation.SampleDocumentID) {
+
+        //            // No document attached at all
+        //            if (!hasUploadedFiles) {
+        //                console.log('No documents found, submitting quotation directly...');
+        //                $scope.submit();
+        //                $scope.p = 0;
+        //                return;
+        //            }
+
+        //            console.log('Documents found, saving document first...');
+        //            $scope.SaveTechnicalDocumentAndSubmit();
+        //        }
+        //        else {
+        //            console.log('Document ID exists, submitting directly...');
+        //            $scope.submit();
+        //            $scope.p = 0;
+        //        }
+
+
+        //    }, 0);
+        //};
+
 
 
         $scope.SaveTechnicalDocumentAndSubmit = function () {
@@ -2489,32 +2394,29 @@
             var files = fileUpload.files;
             var validFiles = [];
             var extensions = [];
-
             angular.forEach(files, function (file) {
                 validFiles.push(file);
                 extensions.push(file.name.split('.').pop().toLowerCase());
             });
-
             if (validFiles.length === 0) {
                 $scope.loading = false;
                 toastr.error("There are no documents.");
                 return;
             }
-
             $scope.BillReceiveModel.Extensions = extensions.join(',');
-
             $http.post('/VendorSelectionModule/TechnicalQuotation/AddDocumentInfo', {
                 _modelDocumentsInfo: $scope.BillReceiveModel
             }).then(function (response) {
-                if (response.data.ResponseCode !== "S201") return;
-
+                if (response.data.ResponseCode !== "S201") {
+                    toastr.error("Failed to save document information");
+                    $scope.loading = false; // was a silent dead-end — button stayed stuck disabled
+                    return;
+                }
                 var doc = response.data.DistinctID[0];
                 $scope.TechnicalQuotation.SampleDocumentID = doc.BillReceiveID;
                 $scope.myarray.push($scope.MaterialInvitation);
                 $scope.myarray2.push($scope.TechnicalQuotation);
-
                 var uploadCount = 0;
-
                 angular.forEach(validFiles, function (file) {
                     var fileData = new FormData();
                     fileData.append('serverIP', doc.ServerIP);
@@ -2525,7 +2427,6 @@
                     fileData.append('documentID', doc.DocumentID);
                     fileData.append('Ext', file.name.split('.').pop().toLowerCase());
                     fileData.append(file.name, file);
-
                     $.ajax({
                         url: '/VendorSelectionModule/TechnicalQuotation/UploadOtherFiles',
                         type: "POST",
@@ -2539,22 +2440,99 @@
                                 var $el = $('#FileUpload1');
                                 $el.wrap('<form>').closest('form').get(0).reset();
                                 $el.unwrap();
-                                $scope.submit();
+                                $scope.submit(); // submit() now owns resetting loading from here
                                 $scope.p = 0;
                             }
                         },
                         error: function (err) {
                             toastr.error("File upload failed");
                             console.error('Upload error:', err);
+                            $scope.loading = false; // was missing — button stayed stuck disabled
+                            $scope.$apply(); // $.ajax runs outside Angular's digest cycle
                         }
                     });
                 });
-
             }, function (error) {
                 console.error('Error sending document info', error);
                 toastr.error("Failed to save document information");
+                $scope.loading = false; // was missing — button stayed stuck disabled
             });
         };
+
+
+
+
+        //$scope.SaveTechnicalDocumentAndSubmit = function () {
+        //    var fileUpload = $("#FileUpload1").get(0);
+        //    var files = fileUpload.files;
+        //    var validFiles = [];
+        //    var extensions = [];
+
+        //    angular.forEach(files, function (file) {
+        //        validFiles.push(file);
+        //        extensions.push(file.name.split('.').pop().toLowerCase());
+        //    });
+
+        //    if (validFiles.length === 0) {
+        //        $scope.loading = false;
+        //        toastr.error("There are no documents.");
+        //        return;
+        //    }
+
+        //    $scope.BillReceiveModel.Extensions = extensions.join(',');
+
+        //    $http.post('/VendorSelectionModule/TechnicalQuotation/AddDocumentInfo', {
+        //        _modelDocumentsInfo: $scope.BillReceiveModel
+        //    }).then(function (response) {
+        //        if (response.data.ResponseCode !== "S201") return;
+
+        //        var doc = response.data.DistinctID[0];
+        //        $scope.TechnicalQuotation.SampleDocumentID = doc.BillReceiveID;
+        //        $scope.myarray.push($scope.MaterialInvitation);
+        //        $scope.myarray2.push($scope.TechnicalQuotation);
+
+        //        var uploadCount = 0;
+
+        //        angular.forEach(validFiles, function (file) {
+        //            var fileData = new FormData();
+        //            fileData.append('serverIP', doc.ServerIP);
+        //            fileData.append('ftpPort', doc.ServerPort);
+        //            fileData.append('ftpUserName', doc.FtpUserName);
+        //            fileData.append('ftpPassword', doc.FtpPassword);
+        //            fileData.append('serverURL', doc.FileServerUrl);
+        //            fileData.append('documentID', doc.DocumentID);
+        //            fileData.append('Ext', file.name.split('.').pop().toLowerCase());
+        //            fileData.append(file.name, file);
+
+        //            $.ajax({
+        //                url: '/VendorSelectionModule/TechnicalQuotation/UploadOtherFiles',
+        //                type: "POST",
+        //                contentType: false,
+        //                processData: false,
+        //                data: fileData,
+        //                success: function () {
+        //                    uploadCount++;
+        //                    if (uploadCount === validFiles.length) {
+        //                        toastr.success("Files uploaded successfully");
+        //                        var $el = $('#FileUpload1');
+        //                        $el.wrap('<form>').closest('form').get(0).reset();
+        //                        $el.unwrap();
+        //                        $scope.submit();
+        //                        $scope.p = 0;
+        //                    }
+        //                },
+        //                error: function (err) {
+        //                    toastr.error("File upload failed");
+        //                    console.error('Upload error:', err);
+        //                }
+        //            });
+        //        });
+
+        //    }, function (error) {
+        //        console.error('Error sending document info', error);
+        //        toastr.error("Failed to save document information");
+        //    });
+        //};
 
 
 
@@ -3248,33 +3226,34 @@
 
 
 
+
         //$scope.UpdateDocument = function () {
-        //    var fileUpload = $("#FileUpload1").get(0);
-        //    var files = fileUpload.files;
-        //    var validFiles = [];
-        //    var extensions = [];
+        //    var fileUpload = document.getElementById("FileUpload1");
 
-        //    angular.forEach(files, function (file) {
-        //        validFiles.push(file);
-        //        extensions.push(file.name.split('.').pop().toLowerCase());
-        //    });
-
-        //    if (validFiles.length === 0) {
-        //        toastr.warning("Please select a file to upload.");
+        //    if (!fileUpload.files || fileUpload.files.length === 0) {
+        //        toastr.warning("Please select a file.");
         //        return;
         //    }
 
-        //    var uploadCount = 0;
+        //    $scope.loading = true;
 
-        //    angular.forEach(validFiles, function (file) {
+        //    var validFiles = Array.from(fileUpload.files);
+        //    var extensions = validFiles.map(function (f) {
+        //        return f.name.split('.').pop().toLowerCase();
+        //    });
+        //    var uploadCount = 0;
+        //    var uploadErrors = 0;
+
+        //    angular.forEach(validFiles, function (file, idx) {
+        //        var ext = extensions[idx];
         //        var fileData = new FormData();
         //        fileData.append('serverIP', $scope.Server.ServerIP);
         //        fileData.append('ftpPort', $scope.Server.ServerPort);
         //        fileData.append('ftpUserName', $scope.Server.FtpUserName);
         //        fileData.append('ftpPassword', $scope.Server.FtpPassword);
         //        fileData.append('serverURL', $scope.Server.FileServerURL);
-        //        fileData.append('documentID', $scope.MaterialInvitation.SampleDocumentID);
-        //        fileData.append('Ext', file.name.split('.').pop().toLowerCase());
+        //        fileData.append('documentID', $scope.Server.DocumentID);
+        //        fileData.append('Ext', ext);
         //        fileData.append(file.name, file);
 
         //        $.ajax({
@@ -3283,61 +3262,80 @@
         //            contentType: false,
         //            processData: false,
         //            data: fileData,
-        //            success: function () {
+        //            success: function (result) {
         //                uploadCount++;
-        //                if (uploadCount === validFiles.length) {
-        //                    // Use exactly the extensions selected — no forced .pdf suffix
-        //                    $scope.Server.Extensions = extensions.join(',');
 
-        //                    $http.post('/VendorSelectionModule/TechnicalQuotation/UpdateExtensionByDocId', {
-        //                        DocumentID: $scope.MaterialInvitation.SampleDocumentID,
-        //                        Extension: $scope.Server.Extensions
-        //                    }).success(function (response) {
-        //                        if (response.respStatus.Message) {
+        //                // FIX: check upload truly succeeded before updating extension
+        //                if (result && result.ResponseCode !== "S201") {
+        //                    uploadErrors++;
+        //                }
+
+        //                if (uploadCount === validFiles.length) {
+        //                    if (uploadErrors > 0) {
+        //                        toastr.error("One or more files failed to upload.");
+        //                        $scope.loading = false;
+        //                        return;
+        //                    }
+
+        //                    // FIX: only call UpdateExtensionByDocId AFTER all files
+        //                    // are confirmed uploaded — eliminates the race condition
+        //                    $http.post(
+        //                        '/VendorSelectionModule/TechnicalQuotation/UpdateExtensionByDocId',
+        //                        {
+        //                            DocumentID: $scope.MaterialInvitation.SampleDocumentID,
+        //                            Extension: extensions.join(',')
+        //                        }
+        //                    ).then(function (response) {
+        //                        if (response.data &&
+        //                            response.data.respStatus &&
+        //                            response.data.respStatus.Message) {
+        //                            $scope.Server.Extensions = extensions.join(',');
+        //                            document.getElementById("FileUpload1").value = "";
         //                            toastr.success("Document Updated Successfully");
         //                        } else {
-        //                            toastr.error('Document Update Failed');
+        //                            toastr.error("Document Update Failed");
         //                        }
         //                        $scope.loading = false;
-        //                    }).error(function () {
+        //                    }).catch(function (err) {
+        //                        console.error(err);
+        //                        toastr.error("Failed to update document record");
         //                        $scope.loading = false;
         //                    });
-
-        //                    var $el = $('#FileUpload1');
-        //                    $el.wrap('<form>').closest('form').get(0).reset();
-        //                    $el.unwrap();
-        //                    toastr.success("Document Replaced Successfully");
         //                }
         //            },
-        //            error: function () {
-        //                toastr.error("Document Upload Failed");
-        //                $scope.loading = false;
+        //            error: function (err) {
+        //                uploadCount++;
+        //                uploadErrors++;
+        //                console.error('Upload error:', err);
+        //                if (uploadCount === validFiles.length) {
+        //                    toastr.error("Document Upload Failed");
+        //                    $scope.loading = false;
+        //                }
         //            }
         //        });
         //    });
         //};
 
 
-
         $scope.UpdateDocument = function () {
-            var fileUpload = document.getElementById("FileUpload1");
+            if ($scope.loading) {
+                return $q.reject('already-in-progress');
+            }
 
+            var fileUpload = document.getElementById("FileUpload1");
             if (!fileUpload.files || fileUpload.files.length === 0) {
                 toastr.warning("Please select a file.");
-                return;
+                return $q.reject('no-file');
             }
 
             $scope.loading = true;
-
             var validFiles = Array.from(fileUpload.files);
             var extensions = validFiles.map(function (f) {
                 return f.name.split('.').pop().toLowerCase();
             });
-            var uploadCount = 0;
-            var uploadErrors = 0;
 
-            angular.forEach(validFiles, function (file, idx) {
-                var ext = extensions[idx];
+            function uploadFile(file, ext) {
+                var deferred = $q.defer();
                 var fileData = new FormData();
                 fileData.append('serverIP', $scope.Server.ServerIP);
                 fileData.append('ftpPort', $scope.Server.ServerPort);
@@ -3353,64 +3351,63 @@
                     type: "POST",
                     contentType: false,
                     processData: false,
-                    data: fileData,
-                    success: function (result) {
-                        uploadCount++;
-
-                        // FIX: check upload truly succeeded before updating extension
-                        if (result && result.ResponseCode !== "S201") {
-                            uploadErrors++;
+                    data: fileData
+                }).done(function (result) {
+                    $timeout(function () {
+                        if (!result || result.ResponseCode !== "S201") {
+                            deferred.reject(result);
+                        } else {
+                            deferred.resolve(result);
                         }
-
-                        if (uploadCount === validFiles.length) {
-                            if (uploadErrors > 0) {
-                                toastr.error("One or more files failed to upload.");
-                                $scope.loading = false;
-                                return;
-                            }
-
-                            // FIX: only call UpdateExtensionByDocId AFTER all files
-                            // are confirmed uploaded — eliminates the race condition
-                            $http.post(
-                                '/VendorSelectionModule/TechnicalQuotation/UpdateExtensionByDocId',
-                                {
-                                    DocumentID: $scope.MaterialInvitation.SampleDocumentID,
-                                    Extension: extensions.join(',')
-                                }
-                            ).then(function (response) {
-                                if (response.data &&
-                                    response.data.respStatus &&
-                                    response.data.respStatus.Message) {
-                                    $scope.Server.Extensions = extensions.join(',');
-                                    document.getElementById("FileUpload1").value = "";
-                                    toastr.success("Document Updated Successfully");
-                                } else {
-                                    toastr.error("Document Update Failed");
-                                }
-                                $scope.loading = false;
-                            }).catch(function (err) {
-                                console.error(err);
-                                toastr.error("Failed to update document record");
-                                $scope.loading = false;
-                            });
-                        }
-                    },
-                    error: function (err) {
-                        uploadCount++;
-                        uploadErrors++;
-                        console.error('Upload error:', err);
-                        if (uploadCount === validFiles.length) {
-                            toastr.error("Document Upload Failed");
-                            $scope.loading = false;
-                        }
-                    }
+                    });
+                }).fail(function (err) {
+                    $timeout(function () {
+                        deferred.reject(err);
+                    });
                 });
-            });
+
+                return deferred.promise;
+            }
+
+            function uploadOne(index) {
+                if (index >= validFiles.length) {
+                    return $http.post('/VendorSelectionModule/TechnicalQuotation/UpdateExtensionByDocId', {
+                        DocumentID: $scope.MaterialInvitation.SampleDocumentID,
+                        Extension: extensions.join(',')
+                    }).then(function (response) {
+                        if (response.data && response.data.respStatus && response.data.respStatus.Message) {
+                            $scope.Server.Extensions = extensions.join(',');
+                            document.getElementById("FileUpload1").value = "";
+                            toastr.success("Document Updated Successfully");
+                        } else {
+                            toastr.error("Document Update Failed");
+                            return $q.reject("extension-update-failed");
+                        }
+                    }).catch(function (err) {
+                        console.error(err);
+                        toastr.error("Failed to update document record");
+                        return $q.reject(err);
+                    });
+                }
+
+                var file = validFiles[index];
+                var ext = extensions[index];
+                return uploadFile(file, ext).then(function () {
+                    return uploadOne(index + 1);
+                });
+            }
+
+            // IMPORTANT: return this promise so callers can chain after it finishes
+            return uploadOne(0)
+                .catch(function (err) {
+                    console.error('Upload error:', err);
+                    toastr.error("Document Upload Failed");
+                    return $q.reject(err);   // re-reject so $scope.Update knows it failed
+                })
+                .finally(function () {
+                    $scope.loading = false;
+                });
         };
-
-
-
-
 
 
 
@@ -3431,25 +3428,54 @@
 
 
 
+        //$scope.openFileViewer = function (documentID, ext) {
+        //    ext = (ext || '').replace(/^\./, '').toLowerCase();
+
+        //    var imageExts = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
+        //    var videoExts = ['mp4', 'webm', 'ogg'];
+        //    var audioExts = ['mp3', 'wav', 'ogg'];
+
+        //    if (ext === 'pdf') $scope.ViewerType = 'pdf';
+        //    else if (imageExts.indexOf(ext) !== -1) $scope.ViewerType = 'image';
+        //    else if (videoExts.indexOf(ext) !== -1) $scope.ViewerType = 'video';
+        //    else if (audioExts.indexOf(ext) !== -1) $scope.ViewerType = 'audio';
+        //    else $scope.ViewerType = 'download';
+
+        //    $scope.ViewerFileName = documentID + '.' + ext;
+        //    $scope.ViewerUrl = '/VendorSelectionModule/TechnicalQuotation/DownloadDocument'
+        //        + '?documentID=' + documentID
+        //        + '&Ext=' + ext;
+
+        //    $('#FileViewerModal').modal('show');
+        //};
+
         $scope.openFileViewer = function (documentID, ext) {
             ext = (ext || '').replace(/^\./, '').toLowerCase();
-
-            var imageExts = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
-            var videoExts = ['mp4', 'webm', 'ogg'];
-            var audioExts = ['mp3', 'wav', 'ogg'];
-
-            if (ext === 'pdf') $scope.ViewerType = 'pdf';
-            else if (imageExts.indexOf(ext) !== -1) $scope.ViewerType = 'image';
-            else if (videoExts.indexOf(ext) !== -1) $scope.ViewerType = 'video';
-            else if (audioExts.indexOf(ext) !== -1) $scope.ViewerType = 'audio';
-            else $scope.ViewerType = 'download';
-
-            $scope.ViewerFileName = documentID + '.' + ext;
-            $scope.ViewerUrl = '/VendorSelectionModule/TechnicalQuotation/DownloadDocument'
+            var baseUrl = '/VendorSelectionModule/TechnicalQuotation/DownloadDocument'
                 + '?documentID=' + documentID
                 + '&Ext=' + ext;
 
-            $('#FileViewerModal').modal('show');
+            $scope.PreviewDoc = {
+                fileName: documentID + '.' + ext,
+                fileExtension: ext,
+                isPdf: ext === 'pdf',
+                isImage: ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'].indexOf(ext) !== -1,
+                isVideo: ext === 'mp4',
+                isMp4: ext === 'mp4',
+                isInlineRenderable: ext === 'pdf'
+                    || ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'].indexOf(ext) !== -1
+                    || ext === 'mp4',
+                viewUrl: baseUrl,
+                downloadUrl: baseUrl + '&download=true'
+            };
+            if ($scope.PreviewDoc.isPdf) {
+                $scope.PreviewTrustedUrl = $sce.trustAsResourceUrl($scope.PreviewDoc.viewUrl);
+            }
+            $('#DocumentPreviewModal').modal('show');
+        };
+        $scope.closeDocumentPreview = function () {
+            $scope.PreviewDoc = null;
+            $scope.PreviewTrustedUrl = null;
         };
 
         $scope.closeFileViewer = function () {
@@ -3476,58 +3502,9 @@
 
 
 
-        /*  Dynamsoft.WebTwainEnv.RegisterEvent('OnWebTwainReady', Dynamsoft_OnReady);*/
-
-
-
-
-
 
         $scope.submit = function () {
-
-
-
-
-            //$http.post('/VendorSelectionModule/TechnicalQuotation/submittechnicalquotation',
-
-
-            //    {
-            //        TechnicalQuotationlist: $scope.TechnicalQuotation,
-            //        MaterialInvitationlist: $scope.simplifiedMaterialInvitation,
-
-            //        Quotation: $scope.QuotationList
-
-            //    })
-            //    .success(function (response) {
-
-            //        $scope.response = response.respStatus.Message;
-            //        if ($scope.response === 'Data Saved Successfully') {
-            //            $scope.reset();
-            //            toastr.success($scope.response);
-            //            $scope.toggleRefreshTable();
-            //            $scope.masterDataSetupGridData = [];  // base collection
-            //            $scope.GridDisplayCollection = [].concat($scope.masterDataSetupGridData);
-            //            $scope.myarray = [];
-            //            $scope.myarray2 = [];
-            //        }
-            //        else {
-            //            toastr.error($scope.response);
-            //        }
-
-
-            //        $scope.loading = false;
-
-
-            //    }).error(function () {
-            //        $scope.loading = false;
-
-
-
-            //    });
-
             $http.post('/VendorSelectionModule/TechnicalQuotation/submitquotation',
-
-
                 {
                     InvId: $scope.BillReceiveModel.InvitationID,
                     VendorID: $scope.BillReceiveModel.VendorID,
@@ -3535,15 +3512,13 @@
                     MaterialCode: $scope.BillReceiveModel.materialCode,
                     MaterialName: $scope.BillReceiveModel.materialName,
                     RFQUnit: $scope.BillReceiveModel.Unit
-
                 })
                 .success(function (response) {
                     $scope.flagToShow = false;
                     $scope.flagToShowMasterTbl = true;
                     $scope.QuotationList = response.QuotationList[0];
-
-
                     console.log($scope.TechnicalQuotation);
+
                     $http({
                         method: 'POST',
                         url: '/VendorSelectionModule/TechnicalQuotation/submittechnicalquotation',
@@ -3558,83 +3533,117 @@
                             console.log("Success:", response.data);
                             $scope.response = response.data.respStatus.Message;
                             if ($scope.response === 'Data Saved Successfully') {
-                                // Your success code
                                 $scope.reset();
                                 toastr.success($scope.response);
-                                /*   $scope.toggleRefreshTable();*/
-                                $scope.loading = false;
-                                $scope.masterDataSetupGridData = [];  // base collection
+                                $scope.masterDataSetupGridData = [];
                                 $scope.GridDisplayCollection = [].concat($scope.masterDataSetupGridData);
                                 $scope.myarray = [];
                                 $scope.myarray2 = [];
                                 $scope.InvWiseMaterial($scope.InvitationNumber);
+                                $scope.loading = false;
+                            }
+                            else {
+                                toastr.error($scope.response || 'Failed to save quotation');
+                                $scope.loading = false; // was missing — any non-success message left the button stuck
                             }
                         }, function (error) {
                             console.log("Error Status:", error.status);
                             console.log("Error Data:", error.data);
+                            toastr.error("Server error while submitting quotation"); // was missing — silent failure
+                            $scope.loading = false; // was missing — button stayed stuck disabled
                         });
 
-                    //$http.post('/VendorSelectionModule/TechnicalQuotation/submittechnicalquotation',
-
-
-                    //    {
-                    //        TechnicalQuotation: $scope.TechnicalQuotation,
-                    //        MaterialInvitationlist: $scope.simplifiedMaterialInvitation,
-
-                    //        Quotation: $scope.QuotationList
-
-                    //    })
-                    //    .success(function (response) {
-
-                    //        $scope.response = response.respStatus.Message;
-                    //        if ($scope.response === 'Data Saved Successfully') {
-                    //            $scope.reset();
-                    //            toastr.success($scope.response);
-                    //            /*   $scope.toggleRefreshTable();*/
-                    //            $scope.masterDataSetupGridData = [];  // base collection
-                    //            $scope.GridDisplayCollection = [].concat($scope.masterDataSetupGridData);
-                    //            $scope.myarray = [];
-                    //            $scope.myarray2 = [];
-                    //            $scope.InvWiseMaterial($scope.InvitationNumber);
-                    //        }
-                    //        else {
-                    //            toastr.error($scope.response);
-                    //        }
-
-
-                    //        $scope.loading = false;
-
-
-                    //    }).error(function () {
-                    //        $scope.loading = false;
-
-
-
-                    //    });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    $scope.loading = false;
+                    // removed: the stray "$scope.loading = false;" that used to sit here —
+                    // it fired synchronously right after issuing the inner $http request,
+                    // resetting the button almost instantly instead of waiting for it to resolve
                 }).error(function () {
                     $scope.loading = false;
-
-
-
                 });
+        };
 
-        }
+
+
+
+        //$scope.submit = function () {
+
+
+
+
+
+        //    $http.post('/VendorSelectionModule/TechnicalQuotation/submitquotation',
+
+
+        //        {
+        //            InvId: $scope.BillReceiveModel.InvitationID,
+        //            VendorID: $scope.BillReceiveModel.VendorID,
+        //            InvitationNumber: $scope.BillReceiveModel.invitationNumber,
+        //            MaterialCode: $scope.BillReceiveModel.materialCode,
+        //            MaterialName: $scope.BillReceiveModel.materialName,
+        //            RFQUnit: $scope.BillReceiveModel.Unit
+
+        //        })
+        //        .success(function (response) {
+        //            $scope.flagToShow = false;
+        //            $scope.flagToShowMasterTbl = true;
+        //            $scope.QuotationList = response.QuotationList[0];
+
+
+        //            console.log($scope.TechnicalQuotation);
+        //            $http({
+        //                method: 'POST',
+        //                url: '/VendorSelectionModule/TechnicalQuotation/submittechnicalquotation',
+        //                data: {
+        //                    TechnicalQuotation: $scope.TechnicalQuotation,
+        //                    MaterialInvitationlist: $scope.simplifiedMaterialInvitation,
+        //                    Quotation: $scope.QuotationList
+        //                },
+        //                headers: { 'Content-Type': 'application/json' }
+        //            })
+        //                .then(function (response) {
+        //                    console.log("Success:", response.data);
+        //                    $scope.response = response.data.respStatus.Message;
+        //                    if ($scope.response === 'Data Saved Successfully') {
+        //                        // Your success code
+        //                        $scope.reset();
+        //                        toastr.success($scope.response);
+        //                        /*   $scope.toggleRefreshTable();*/
+        //                        $scope.loading = false;
+        //                        $scope.masterDataSetupGridData = [];  // base collection
+        //                        $scope.GridDisplayCollection = [].concat($scope.masterDataSetupGridData);
+        //                        $scope.myarray = [];
+        //                        $scope.myarray2 = [];
+        //                        $scope.InvWiseMaterial($scope.InvitationNumber);
+        //                    }
+        //                }, function (error) {
+        //                    console.log("Error Status:", error.status);
+        //                    console.log("Error Data:", error.data);
+        //                });
+
+                
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //            $scope.loading = false;
+        //        }).error(function () {
+        //            $scope.loading = false;
+
+
+
+        //        });
+
+        //}
 
 
 
@@ -3649,8 +3658,8 @@
 
             $http.post('/VendorSelectionModule/TechnicalQuotation/GetAllQuotation')
                 .success(function (response) {
-                    $scope.flagToShow = false;
-                    $scope.flagToShowMasterTbl = false;
+                    //$scope.flagToShow = false;
+                    //$scope.flagToShowMasterTbl = false;
                     $scope.AllQuotation = response.AllQuotation;
 
                     $scope.GridDisplayCollectionQuotation = [].concat($scope.AllQuotation);
@@ -3676,44 +3685,14 @@
 
 
 
-        //$scope.toggleQuotationSelect = function (InvitationNumber, quotationNo) {
-
-        //    $scope.Quotation = quotationNo;
-        //    $scope.InvitationNumber = InvitationNumber;
-        //    $http.post('/VendorSelectionModule/TechnicalQuotation/QuotWiseMaterial',
-        //        { QuotationNo: quotationNo })
-        //        .success(function (response) {
-        //            $scope.flagToShow = false;
-        //            $scope.flagToShowMasterTbl = true;
-
-        //            $scope.MaterialList = response.AllQuotation;
-
-
-
-
-        //            $scope.GridDisplayCollection= [].concat($scope.MaterialList);
-
-
-        //            $scope.loading = false;
-        //        }).error(function () {
-        //            $scope.loading = false;
-        //            toastr.error('Data Loading Failed.');
-        //        });
-
-
-
-
-        //    $('#QuotationModal').modal('hide');
-
-
-        //}
-
+      
 
 
         $scope.toggleQuotationSelect = function (InvitationNumber, quotationNo, RFQDeadline) {
 
             $scope.RFQDeadline = RFQDeadline;
-
+            $scope.reset();
+            $scope.p = 0;
 
             var parts = $scope.RFQDeadline.split('/');
 
@@ -3763,13 +3742,6 @@
                 $scope.loading = false;
             });
         };
-
-
-
-        //$scope.isRowInArray2 = function (rowIndex) {
-        //    console.log($scope.myarray2);
-        //    return rowIndex;
-        //};
 
 
 
@@ -3887,27 +3859,7 @@
             $scope.FormatDigits(id, 13);
         };
 
-        //$scope.FormatDigits = function (txtVendor, lmt) {
-        //    if (!IsPositiveNumber($("#" + txtVendor).val())) {
-        //        $("#" + txtVendor).val('');
-        //    }
-        //    else if (isNaN($("#" + txtVendor).val())) {
-        //        $("#" + txtVendor).val('');
-        //    }
-        //    else {
-        //        var d = $("#" + txtVendor).val().split('.');
-        //        if ((d[0].length > (lmt - 0))) {
-        //            $("#" + txtVendor).val("");
-        //            $("#btnSaveDoc").prop("disabled", true);
-        //            return;
-        //        }
-        //        else {
-        //            $("#btnSaveDoc").prop("disabled", false);
-        //            $("#" + txtVendor).val(($("#" + txtVendor).val() - 0).toFixed(2));
-        //        }
-        //    }
 
-        //}
 
         $scope.FormatDigits = function (txtVendor, lmt) {
 
@@ -3950,27 +3902,7 @@
             $scope.FormatDigits2(id, 13);
         };
 
-        //$scope.FormatDigits2 = function (txtVendor, lmt) {
-        //    if (!IsPositiveNumber($("#" + txtVendor).val())) {
-        //        $("#" + txtVendor).val('');
-        //    }
-        //    else if (isNaN($("#" + txtVendor).val())) {
-        //        $("#" + txtVendor).val('');
-        //    }
-        //    else {
-        //        var d = $("#" + txtVendor).val().split('.');
-        //        if ((d[0].length > (lmt - 0))) {
-        //            $("#" + txtVendor).val("");
-        //            $("#btnSaveDoc").prop("disabled", true);
-        //            return;
-        //        }
-        //        else {
-        //            $("#btnSaveDoc").prop("disabled", false);
-        //            $("#" + txtVendor).val(($("#" + txtVendor).val() - 0).toFixed(3));
-        //        }
-        //    }
-
-        //}
+      
         $scope.FormatDigits2 = function (txtVendor, lmt) {
 
             var val = $("#" + txtVendor).val();
@@ -4010,95 +3942,6 @@
         $scope.fromDashboard = false;
 
 
-        //if (qrStr != "") {
-
-        //    $scope.fromDashboard = true;
-        //    var qrStrVariables = qrStr.split('&');
-        //    var qrStrone = qrStrVariables[0].split('=');
-        //    var info1 = qrStrone[1];
-        //    console.log(info1);
-
-        //    $scope.toggleInvitationSelect(info1);
-
-        //}
-
-        //    DWObject.SetViewMode(4, -1);
-        //    DWObject.PDFCompressionType = EnumDWT_PDFCompressionType.PDF_AUTO;
-        //    DWObject.JPEGQuality = 20;
-        //    DWObject.FitWindowType = 0;
-        //    DWObject.SelectionImageBorderColor = 0x691254;
-        //    DWObject.ShowPageNumber = true;
-        //    DWObject.IfAppendImage = true;
-        //  /*  DWObject.RegisterEvent('OnMouseDoubleClick', $scope.updateLargeViewer);*/
-        //    DWObject.RegisterEvent('OnImageAreaSelected', function (sImageIndex, left, top, right, bottom) {
-        //        DWObject.Erase(sImageIndex, left, top, right, bottom);
-        //    });
-
-        //    if (DWObject) {
-        //        var count = DWObject.SourceCount;
-        //        if (count == 0 && Dynamsoft.Lib.env.bMac) {
-        //            DWObject.CloseSourceManager();
-        //            DWObject.ImageCaptureDriverType = 0;
-        //            DWObject.OpenSourceManager();
-        //            count = DWObject.SourceCount;
-        //        }
-
-        //        for (var i = 0; i < count; i++)
-        //            document.getElementById("source").options.add(new Option(DWObject.GetSourceNameItems(i), i)); // Get Data Source names from Data Source Manager and put them in a drop-down box
-
-        //    }
-        //    DWObject.Addon.PDF.Download("../Resources/addon/Pdf.zip",  // specify the url of the add-on resource
-        //        function () { console.log('Successfully Downloaded PDF add-on'); }, // successful callback
-        //        function (errorCode, errorString) { alert(errorString); }  // failure callback and show error message
-        //    );
-        //};
-
-
-
-        /*  $scope.selectedFiles = []; */// Array to store selected files
-
-        // Function to handle file selection
-        //$scope.handleFileSelect = function (files) {
-        //    // Reset selected files array
-        //    $scope.selectedFiles = [];
-
-        //    // Iterate through selected files
-        //    angular.forEach(files, function (file) {
-        //        $scope.selectedFiles.push(file);
-        //    });
-        //};
-        //$scope.files = [];
-        //$scope.getFileDetails = function (e) {
-
-
-        //    $scope.$apply(function () {
-
-        //        // store the file object in an array.
-        //        for (var i = 0; i < e.files.length; i++) {
-        //            $scope.files.push(e.files[i])
-        //        }
-
-        //    });
-        //    console.log($scope.files);
-        //};
-
-        //var qrStr = window.location.search.substring(1);
-        //if (qrStr != "") {
-        //    var params = {};
-        //    $scope.fromDashboard = true;
-        //    qrStr.split('&').forEach(function (param) {
-        //        var keyValue = param.split('=');
-        //        params[keyValue[0]] = decodeURIComponent(keyValue[1]);
-        //    });
-
-        //    if (params.InvitationNumber && params.QuotationNo) {
-        //        // All 3 parameters exist → call Financial quotation select
-        //        $scope.toggleQuotationSelect(params.InvitationNumber, params.QuotationNo);
-        //    } else if (params.InvitationNumber) {
-        //        // Only InvitationNumber → call Invitation select
-        //        $scope.toggleInvitationSelect(params.InvitationNumber);
-        //    }
-        //}
 
 
 
@@ -4182,7 +4025,141 @@
                 }
             }
 
-        }
+        };
+
+
+
+
+         
+
+
+            (function () {
+                var ENDPOINTS = {
+                    byDocumentID: '/VendorSelectionModule/FinancialQuotation/GetDocumentsByDocumentID',
+                    view: '/VendorSelectionModule/FinancialQuotation/ViewDocument',
+                    download: '/VendorSelectionModule/FinancialQuotation/DownloadDocument'
+                };
+
+                function decorateDocuments(documents) {
+                    return (documents || []).map(function (doc) {
+                        var ext = (doc.FileExtension || '').toLowerCase();
+                        var isMp4 = ext === '.mp4' || ext === 'mp4';
+                        var isPdf = ext === '.pdf' || ext === 'pdf';
+                        var isImage = ['.jpg', 'jpg', '.jpeg', 'jpeg', '.png', 'png'].indexOf(ext) !== -1;
+                        return {
+                            documentID: doc.DocumentID,
+                            fileName: doc.FileOriginalName,
+                            fileExtension: ext,
+                            canView: !isMp4,
+                            isPdf: isPdf,
+                            isImage: isImage,
+                            // "inline-renderable" = the browser can actually display it in
+                            // an <iframe>/<img> (pdf, images). Everything else that isn't
+                            // mp4 still gets a View button, but View just opens/downloads
+                            // via whatever the OS has associated with that file type.
+                            isInlineRenderable: isPdf || isImage,
+                            viewUrl: ENDPOINTS.view + '?documentID=' + encodeURIComponent(doc.DocumentID),
+                            downloadUrl: ENDPOINTS.download + '?documentID=' + encodeURIComponent(doc.DocumentID) +
+                                '&fileName=' + encodeURIComponent(doc.FileOriginalName || 'Document')
+                        };
+                    });
+                }
+
+                function fetchGroup(documentID) {
+                    if (!documentID) {
+                        // No anchor id for this section on this row -> nothing to show,
+                        // skip the call entirely rather than hitting the server for nothing.
+                        return $q.when({ data: { success: true, documents: [] } });
+                    }
+                    return $http.post(ENDPOINTS.byDocumentID, { documentID: documentID });
+                }
+
+                $scope.OpenAllDocumentsModal = function (row) {
+                    $scope.loading = true;
+
+                    // row.MasterDocumentID and row.sampleDocId are each just one
+                    // DocumentID belonging to their respective group — the server
+                    // derives the rest (BillReceiveID/BillTrackingNo) from that alone.
+                    var masterPromise = fetchGroup(row.MasterDocumentID);
+                    var materialPromise = fetchGroup(row.sampleDocId);
+
+                    $q.all([masterPromise, materialPromise]).then(function (results) {
+                        var masterRes = results[0].data;
+                        var materialRes = results[1].data;
+
+                        $scope.AllDocSections = [
+                            {
+                                title: 'Overall Documents',
+                                documents: decorateDocuments(masterRes.success ? masterRes.documents : [])
+                            },
+                            {
+                                title: 'Material Documents',
+                                documents: decorateDocuments(materialRes.success ? materialRes.documents : [])
+                            }
+                        ];
+
+                        $scope.loading = false;
+                        $('#AllDocumentsViewModal').modal('show');
+                    }, function () {
+                        $scope.loading = false;
+                        toastr.error('Failed to load documents.');
+                    });
+                };
+
+                $scope.ViewDocumentFile = function (doc) {
+                    $scope.PreviewDoc = doc;
+                    // $sce.trustAsResourceUrl is required — Angular blocks binding
+                    // ng-src on an iframe to a same-origin-but-dynamic URL otherwise.
+                    $scope.PreviewTrustedUrl = $sce.trustAsResourceUrl(doc.viewUrl);
+                    $('#DocumentPreviewModal').modal('show');
+                };
+
+                $scope.DownloadDocumentFile = function (doc) {
+                    window.open(doc.downloadUrl, '_blank');
+                };
+            })();
+
+
+
+
+
+
+        $scope.deleteAttachedDocument = function () {
+            if (!confirm('Are you sure you want to delete the attached document?')) return;
+
+            $scope.loading = true;
+
+            $http.post('/VendorSelectionModule/TechnicalQuotation/DeleteDocument', {
+                documentID: $scope.MaterialInvitation.SampleDocumentID
+            })
+                .success(function (response) {
+                    $scope.loading = false;
+
+                    if (response.Success) {
+                        // Clear local references
+                        $scope.MaterialInvitation.SampleDocumentID = '';
+                        $scope.TechnicalQuotation.SampleDocumentID = '';
+                        $scope.IsDownload = false;
+                        $scope.Server.Extensions = '';
+
+                        // Reset file input so it doesn't re-submit the old file
+                        var $el = $('#FileUpload1');
+                        $el.wrap('<form>').closest('form').get(0).reset();
+                        $el.unwrap();
+
+                        toastr.success(response.respStatus.Message || 'Document deleted successfully');
+                    } else {
+                        toastr.error(response.respStatus.Message || 'Delete failed');
+                    }
+                })
+                .error(function () {
+                    $scope.loading = false;
+                    toastr.error('Error occurred while deleting the document');
+                });
+        };
+
+
+
 
 
     })

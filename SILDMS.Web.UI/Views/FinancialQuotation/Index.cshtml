@@ -43,50 +43,7 @@
         padding-right: 20px;
     }
 
-    /* .readonly-mode {
-                    pointer-events: none;
-                    opacity: 0.8;
-                }
-
-                    .readonly-mode button,
-                    .readonly-mode .btn {
-                        pointer-events: none;
-                    }*/
-
-    /*.readonly-mode {
-                    pointer-events: none;
-                    opacity: 0.8;
-                }*/
-
-    /* allow toggle headers */
-    /*.readonly-mode .allow-interaction {
-                        pointer-events: auto;
-                        cursor: pointer;
-                    }*/
-
-
-
-    /*
-                @@media (min-width: 768px) {
-        #FileUpload1 {
-            display: none !important;
-        }
-    }
-
-                @@media (max-width: 767px) {
-        #dwtHorizontalThumbnil,
-        #source,
-        #external-events .external-event.bg-yellow,  Scan button
-                #external-events .external-event.bg-aqua,  Load PDF
-                #external-events .external-event.bg-purple,  Load Blank PDF
-                #external-events .external-event.bg-maroon,  Load Another PDF
-                #external-events .external-event.bg-red,  Rotate
-                #external-events .external-event.bg-green,  Move Image
-                #collapseOne {
-            display: none !important;
-        }
-    }
-    */
+   
 
 
     .readonly-mode input,
@@ -101,38 +58,11 @@
         pointer-events: none;
     }
 
-    /*.view-only-wrapper input,
-                .view-only-wrapper select,
-                .view-only-wrapper textarea {
-                    pointer-events: none;
-                    background-color: #f8f9fa !important;
-                }*/
+
 
 </style>
 
 <div class="box box-primary box-body" ng-controller="FinancialQuotationCtrl">
-
-
-
-
-    @*<i class="fa fa-user"></i>
-            <h3 style="font-family: Verdana" class="box-title" ng-if="fromMenu">Purchase Requisition Wise Materials Assign from Menu</h3>
-            <h3 style="font-family: Verdana" class="box-title" ng-if="!fromMenu">Purchase Requisition Wise Materials Assign from Dashboard</h3>
-            <div class="box-tools pull-right">
-                <button type="button" id="btnRefresh" data-ng-click="toggleRefreshTable(row)" class="btn btn-warning btn-flat pull-right" ng-disabled="loading"><i class="fa fa-refresh"></i> Refresh</button>
-            </div>
-        </div>*@
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -272,23 +202,7 @@
                             <td class="col-lg-4 col-md-4 col-sm-4">{{row.materialName}}</td>
                             <td class="col-lg-2 col-md-2 col-sm-2" style="text-align:right">{{row.MaterialQuantity| number:3}}</td>
                             <td class="col-lg-1 col-md-1 col-sm-1" style="text-align:center">{{row.Unit}}</td>
-                            @*<td class="col-lg-1 col-md-1 col-sm-1 text-center">
-                                    <button type="button"
-                                            class="btn btn-info btn-table"
-                                            ng-click="AddDocument(row)"
-                                            ng-show="row.sampleDocId">
-                                        Details <i class="fa fa-eye"></i>
-                                    </button>
-                                </td>
-                                <td class="col-lg-1 col-md-1 col-sm-1 text-center">
-                                    <button type="button"
-                                            class="btn btn-info btn-table"
-                                            ng-click="MasterAddDocument(row)"
-                                            ng-show="row.MasterDocumentID">
-                                        Details <i class="fa fa-eye"></i>
-                                    </button>
-                                </td>*@
-
+                          
 
                             <td class="col-lg-1 col-md-1 col-sm-1 text-center">
                                 <button type="button"
@@ -299,27 +213,6 @@
                                 </button>
                             </td>
 
-
-                            @*<td class="col-lg-1 col-md-1 col-sm-1" style="text-align:center">{{row.Fintype}}</td>*@
-
-
-                            @*<td class="col-lg-2 col-md-2 col-sm-2" style="text-align:center">
-                                    <button ng-click="DetailItem(row, $index + 1)"
-                                            ng-class="{
-                                                      'btn btn-success btn-table': row.Action === 'A',
-                                                      'btn btn-warning btn-table': row.Action !== 'A'
-                                                      }">
-                                        {{ row.Action === 'A' ? 'Add' : 'Edit' }}
-                                    </button>
-                                    <button ng-if="row.FinanQuotationItemID"
-                                            ng-click="openDeleteModal(row)"
-                                            class="btn btn-danger btn-table"
-                                            style="margin-left:4px">
-                                        Delete
-                                    </button>
-
-
-                                </td>*@
 
 
                             <td class="col-lg-2 col-md-2 col-sm-2 text-center">
@@ -372,10 +265,7 @@
 
 
 
-                @*<div class="box-tools pull-right">
-                        <button type="button" id="btnRefresh" data-ng-click="fetchfromgoogle()" class="btn btn-warning btn-flat pull-right" ng-disabled="loading"><i class="fa fa-refresh"></i> Fetch from Google</button>
-                    </div>*@
-
+             
 
             </div>
         </div>
@@ -1396,16 +1286,16 @@
                 <!-- /.col -->
                 <div class="col-md-10">
 
-                    <div class="box-header with-border">
-                        <h4 class="box-title">Process Documents:</h4>
+                    <div class="box-header with-border" ng-show="lowestshowstatus == 1 || MaterialInvitation.SampleDocumentID">
+                        <h4 class="box-title">Attach Documents:</h4>
                     </div>
                     <div class="box-body no-padding">
                         <div class="row">
                         </div>
                         <div class="row" @*ng-show="isMobile"*@>
-                            <div class="col-lg-6">
+                            <div class="col-lg-6" ng-show="lowestshowstatus == 1">
 
-                                <input type="file" id="FileUpload1" name="FileUpload1" multiple />
+                                <input type="file" id="FileUpload1" name="FileUpload1"  />
                             </div>
 
                             <div class="col-lg-6" style="margin-bottom:10px" ng-show="IsDownload">
@@ -1416,10 +1306,18 @@
                                             ng-click="openFileViewer(MaterialInvitation.SampleDocumentID, FileExtension)">
                                         View & Download
                                     </button>
+
+                                    <button class="btn btn-sm btn-danger"
+                                            ng-if="lowestshowstatus == 1"
+                                            ng-click="deleteAttachedDocument()"
+                                            style="margin-left:5px;">
+                                        <i class="fa fa-trash"></i> Delete
+                                    </button>
+
                                     @*<a class="btn btn-sm btn-warning"
-                                           ng-href="/VendorSelectionModule/TechnicalQuotation/DownloadDocument?documentID={{MaterialInvitation.SampleDocumentID}}&Ext={{FileExtension}}">
-                                            Download
-                                        </a>*@
+           ng-href="/VendorSelectionModule/TechnicalQuotation/DownloadDocument?documentID={{MaterialInvitation.SampleDocumentID}}&Ext={{FileExtension}}">
+            Download
+        </a>*@
                                 </div>
                             </div>
 
@@ -1651,53 +1549,7 @@
 
 
 
-    <!--<div id="DetailViewModal" class="modal fade" tabindex="-1">
-        <div class="modal-dialog modal-lg" style="width:95%">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <button type="button"
-                            class="close"
-                            data-dismiss="modal">
-                        &times;
-                    </button>
-
-                    <h4 class="modal-title">
-                        Document Detail View
-                    </h4>
-                </div>
-
-                <div class="modal-body">-->
-    <!-- PDF Viewer -->
-    <!--<div ng-if="!IsDownload2">
-
-        <iframe ng-src="{{DocViewerUrl2}}"
-                width="100%"
-                height="700"
-                style="border:none">
-        </iframe>
-
-    </div>-->
-    <!-- Download Section -->
-    <!--<div ng-if="IsDownload2">
-
-                        <h4>{{DocFileName2}}</h4>
-
-                        <br />
-
-                        <a class="btn btn-warning"
-                           ng-href="{{DocDownloadUrl2}}">
-                            Download File
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </div>
-        </div>
-    </div>-->
-
+   
     <div class="modal fade" id="deleteConfirmModal" tabindex="-1">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
@@ -1752,7 +1604,7 @@
                             <thead>
                                 <tr style="background:#f4f4f4;">
                                     <th>File Name</th>
-                                    <th style="width:100px;text-align:center;">Ext</th>
+                                    @*<th style="width:100px;text-align:center;">Ext</th>*@
                                     <th style="width:220px;text-align:center;">Actions</th>
                                 </tr>
                             </thead>
@@ -1762,9 +1614,9 @@
                                         <i class="fa fa-file-text-o" style="margin-right:8px;color:#3c8dbc;"></i>
                                         {{doc.fileName}}
                                     </td>
-                                    <td style="text-align:center;vertical-align:middle;">
+                                    @*<td style="text-align:center;vertical-align:middle;">
                                         <span class="label label-info">{{doc.fileExtension}}</span>
-                                    </td>
+                                    </td>*@
                                     <td style="text-align:center;vertical-align:middle;">
                                         <button class="btn btn-primary btn-sm" ng-if="doc.canView"
                                                 ng-click="ViewDocumentFile(doc)">
@@ -1806,30 +1658,31 @@
                                 style="border:none">
                         </iframe>
                     </div>
-
                     <div ng-if="PreviewDoc.isImage" style="text-align:center;">
                         <img ng-src="{{PreviewDoc.viewUrl}}"
                              style="max-width:100%;max-height:700px;" />
                     </div>
-
-                    <div ng-if="!PreviewDoc.isInlineRenderable" style="text-align:center;padding:40px 0;">
+                    <div ng-if="PreviewDoc.isMp4" style="text-align:center;padding:40px 0;">
+                        <p class="text-muted">
+                            Not supported to preview, please download.
+                        </p>
+                    </div>
+                    <div ng-if="!PreviewDoc.isInlineRenderable && !PreviewDoc.isMp4" style="text-align:center;padding:40px 0;">
                         <p class="text-muted">
                             This file type ({{PreviewDoc.fileExtension}}) can't be previewed in the browser.
                         </p>
                         <a class="btn btn-primary" ng-href="{{PreviewDoc.viewUrl}}" target="_blank">
                             <i class="fa fa-external-link"></i> Open
                         </a>
-                        <a class="btn btn-warning" ng-href="{{PreviewDoc.downloadUrl}}">
-                            <i class="fa fa-download"></i> Download
-                        </a>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <a class="btn btn-warning" ng-href="{{PreviewDoc.downloadUrl}}" ng-if="PreviewDoc.isInlineRenderable">
+                    <a class="btn btn-warning" ng-href="{{PreviewDoc.downloadUrl}}">
                         <i class="fa fa-download"></i> Download
                     </a>
                     <button class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
+
             </div>
         </div>
     </div>
@@ -1849,10 +1702,7 @@
         </div>
     </div>
 </div>
-@*<script type="text/javascript" src="~/Resources/dynamsoft.webtwain.intellisense.js"></script>
-    <script type="text/javascript" src="~/Resources/dynamsoft.webtwain.initiate.js"></script>
-    <script type="text/javascript" src="~/Resources/dynamsoft.webtwain.config.js"></script>
-    <script type="text/javascript" src="~/Resources/addon/dynamsoft.webtwain.addon.pdf.js"></script>*@
+
 
 
 
@@ -2017,23 +1867,6 @@
 
 
 
-        //$scope.FinancialQuotationDetail = {
-        //    rowIndex: '',
-        //    FinanQuotationItemID: "",
-        //    ProposeQty: "",
-        //    Unit: { Item_Code: "", Item_Name: "" },
-        //    UnitPrice: "",
-        //    Currency: { MasterDataID: "", MasterDataValue: "" },
-        //    TotalPrice: "",
-        //    VatAmount: "",
-        //    TaxAmount: "",
-        //    GrossPrice: "",
-        //    DiscountPrice: "",
-        //    NetPrice: "",
-        //    QuotValidDate: "",
-        //    ExpecDeliDate: "",
-        //    ProposalType: ""
-        //};
 
 
         $scope.FinancialQuotationDetail = {
@@ -2535,14 +2368,7 @@
 
 
 
-
-
-
-
-
-
-
-            $scope.loading = true; // intent to show loader
+         /*   $scope.loading = true;*/ // intent to show loader
 
             // 🔥 FORCE Angular to render BEFORE heavy work
             $timeout(function () {
@@ -2562,27 +2388,32 @@
                 var hasUploadedFiles = $("#FileUpload1").get(0).files.length > 0;
 
 
-                if (!$scope.MaterialInvitation.SampleDocumentID) {
 
-                    if (!hasUploadedFiles) {
+                if (!hasUploadedFiles) {
 
-                        // No document attached, update quotation directly
+
+
+                    // No document attached, update quotation directly
+                    SaveQuotation();
+
+                } else if (!$scope.MaterialInvitation.SampleDocumentID && hasUploadedFiles) {
+
+                    // Save document first, then update quotation
+                    $scope.SaveDocumentOnly(function () {
                         SaveQuotation();
-
-                    } else {
-
-                        // Save document first, then update quotation
-                        $scope.SaveDocumentOnly(function () {
-                            SaveQuotation();
-                        });
-                    }
+                    });
                 }
+
                 else {
 
                     // Existing document, update document then quotation
-                    $scope.UpdateDocument();
+                    $scope.UpdateDocument().then(function () {
+                        SaveQuotation();
+                    }).catch(function () {
+                        // Upload failed — don't proceed to save the quotation on top of a failed upload
+                        $scope.loading = false;
+                    });
 
-                    SaveQuotation();
                 }
 
             }, 0); // 👈 zero-delay repaint hook
@@ -2694,36 +2525,107 @@
 
 
 
+        //$scope.SaveDocumentAndSubmit = function () {
+        //    var fileUpload = $("#FileUpload1").get(0);
+        //    var files = fileUpload.files;
+        //    var validFiles = [];
+        //    var extensions = [];
+
+        //    angular.forEach(files, function (file) {
+        //        validFiles.push(file);
+        //        extensions.push(file.name.split('.').pop().toLowerCase());
+        //    });
+
+        //    if (validFiles.length === 0) {
+        //        $scope.loading = false;
+        //        toastr.error("There are no documents.");
+        //        return;
+        //    }
+
+        //    // Use exactly the extensions selected — no forced .pdf suffix
+        //    $scope.BillReceiveModel.Extensions = extensions.join(',');
+
+        //    $http.post('/VendorSelectionModule/FinancialQuotation/AddDocumentInfo', {
+        //        _modelDocumentsInfo: $scope.BillReceiveModel
+        //    }).then(function (response) {
+        //        if (response.data.ResponseCode !== "S201") return;
+
+        //        var doc = response.data.DistinctID[0];
+        //        $scope.FinancialQuotationDetail.SampleDocumentID = doc.BillReceiveID;
+
+        //        var uploadCount = 0;
+
+        //        angular.forEach(validFiles, function (file) {
+        //            var fileData = new FormData();
+        //            fileData.append('serverIP', doc.ServerIP);
+        //            fileData.append('ftpPort', doc.ServerPort);
+        //            fileData.append('ftpUserName', doc.FtpUserName);
+        //            fileData.append('ftpPassword', doc.FtpPassword);
+        //            fileData.append('serverURL', doc.FileServerUrl);
+        //            fileData.append('documentID', doc.DocumentID);
+        //            fileData.append('Ext', file.name.split('.').pop().toLowerCase());
+        //            fileData.append(file.name, file);
+
+        //            $.ajax({
+        //                url: '/VendorSelectionModule/FinancialQuotation/UploadOtherFiles',
+        //                type: "POST",
+        //                contentType: false,
+        //                processData: false,
+        //                data: fileData,
+        //                success: function () {
+        //                    uploadCount++;
+        //                    if (uploadCount === validFiles.length) {
+        //                        toastr.success("Files uploaded successfully");
+        //                        var $el = $('#FileUpload1');
+        //                        $el.wrap('<form>').closest('form').get(0).reset();
+        //                        $el.unwrap();
+        //                        $scope.submit();
+        //                        $scope.p = 0;
+        //                    }
+        //                },
+        //                error: function (err) {
+        //                    toastr.error("File upload failed");
+        //                    console.error('Upload error:', err);
+        //                }
+        //            });
+        //        });
+        //    }, function (error) {
+        //        console.error('Error sending document info', error);
+        //        toastr.error("Failed to save document information");
+        //    });
+        //};
+
+
+
+
+
         $scope.SaveDocumentAndSubmit = function () {
             var fileUpload = $("#FileUpload1").get(0);
             var files = fileUpload.files;
             var validFiles = [];
             var extensions = [];
-
             angular.forEach(files, function (file) {
                 validFiles.push(file);
                 extensions.push(file.name.split('.').pop().toLowerCase());
             });
-
             if (validFiles.length === 0) {
                 $scope.loading = false;
                 toastr.error("There are no documents.");
                 return;
             }
 
-            // Use exactly the extensions selected — no forced .pdf suffix
             $scope.BillReceiveModel.Extensions = extensions.join(',');
-
             $http.post('/VendorSelectionModule/FinancialQuotation/AddDocumentInfo', {
                 _modelDocumentsInfo: $scope.BillReceiveModel
             }).then(function (response) {
-                if (response.data.ResponseCode !== "S201") return;
-
+                if (response.data.ResponseCode !== "S201") {
+                    toastr.error("Failed to save document information");
+                    $scope.loading = false; // was a silent dead-end before — button stayed stuck disabled
+                    return;
+                }
                 var doc = response.data.DistinctID[0];
                 $scope.FinancialQuotationDetail.SampleDocumentID = doc.BillReceiveID;
-
                 var uploadCount = 0;
-
                 angular.forEach(validFiles, function (file) {
                     var fileData = new FormData();
                     fileData.append('serverIP', doc.ServerIP);
@@ -2734,7 +2636,6 @@
                     fileData.append('documentID', doc.DocumentID);
                     fileData.append('Ext', file.name.split('.').pop().toLowerCase());
                     fileData.append(file.name, file);
-
                     $.ajax({
                         url: '/VendorSelectionModule/FinancialQuotation/UploadOtherFiles',
                         type: "POST",
@@ -2748,43 +2649,54 @@
                                 var $el = $('#FileUpload1');
                                 $el.wrap('<form>').closest('form').get(0).reset();
                                 $el.unwrap();
-                                $scope.submit();
+                                $scope.submit(); // submit() now owns resetting loading from here on
                                 $scope.p = 0;
                             }
                         },
                         error: function (err) {
                             toastr.error("File upload failed");
                             console.error('Upload error:', err);
+                            $scope.loading = false; // was missing — button stayed stuck disabled on upload failure
+                            $scope.$apply(); // $.ajax runs outside Angular's digest, so force a UI refresh
                         }
                     });
                 });
             }, function (error) {
                 console.error('Error sending document info', error);
                 toastr.error("Failed to save document information");
+                $scope.loading = false; // was missing — button stayed stuck disabled
             });
         };
 
 
 
-        $scope.UpdateDocument = function () {
-            var fileUpload = document.getElementById("FileUpload1");
 
+
+
+
+
+
+
+
+        $scope.UpdateDocument = function () {
+            if ($scope.loading) {
+                return $q.reject('already-in-progress');
+            }
+
+            var fileUpload = document.getElementById("FileUpload1");
             if (!fileUpload.files || fileUpload.files.length === 0) {
                 toastr.warning("Please select a file.");
-                return;
+                return $q.reject('no-file');
             }
 
             $scope.loading = true;
-
             var validFiles = Array.from(fileUpload.files);
             var extensions = validFiles.map(function (f) {
                 return f.name.split('.').pop().toLowerCase();
             });
-            var uploadCount = 0;
-            var uploadErrors = 0;
 
-            angular.forEach(validFiles, function (file, idx) {
-                var ext = extensions[idx];
+            function uploadFile(file, ext) {
+                var deferred = $q.defer();
                 var fileData = new FormData();
                 fileData.append('serverIP', $scope.Server.ServerIP);
                 fileData.append('ftpPort', $scope.Server.ServerPort);
@@ -2800,60 +2712,67 @@
                     type: "POST",
                     contentType: false,
                     processData: false,
-                    data: fileData,
-                    success: function (result) {
-                        uploadCount++;
-
-                        // FIX: check upload truly succeeded before updating extension
-                        if (result && result.ResponseCode !== "S201") {
-                            uploadErrors++;
+                    data: fileData
+                }).done(function (result) {
+                    $timeout(function () {
+                        if (!result || result.ResponseCode !== "S201") {
+                            deferred.reject(result);
+                        } else {
+                            deferred.resolve(result);
                         }
-
-                        if (uploadCount === validFiles.length) {
-                            if (uploadErrors > 0) {
-                                toastr.error("One or more files failed to upload.");
-                                $scope.loading = false;
-                                return;
-                            }
-
-                            // FIX: only call UpdateExtensionByDocId AFTER all files
-                            // are confirmed uploaded — eliminates the race condition
-                            $http.post(
-                                '/VendorSelectionModule/FinancialQuotation/UpdateExtensionByDocId',
-                                {
-                                    DocumentID: $scope.MaterialInvitation.SampleDocumentID,
-                                    Extension: extensions.join(',')
-                                }
-                            ).then(function (response) {
-                                if (response.data &&
-                                    response.data.respStatus &&
-                                    response.data.respStatus.Message) {
-                                    $scope.Server.Extensions = extensions.join(',');
-                                    document.getElementById("FileUpload1").value = "";
-                                    toastr.success("Document Updated Successfully");
-                                } else {
-                                    toastr.error("Document Update Failed");
-                                }
-                                $scope.loading = false;
-                            }).catch(function (err) {
-                                console.error(err);
-                                toastr.error("Failed to update document record");
-                                $scope.loading = false;
-                            });
-                        }
-                    },
-                    error: function (err) {
-                        uploadCount++;
-                        uploadErrors++;
-                        console.error('Upload error:', err);
-                        if (uploadCount === validFiles.length) {
-                            toastr.error("Document Upload Failed");
-                            $scope.loading = false;
-                        }
-                    }
+                    });
+                }).fail(function (err) {
+                    $timeout(function () {
+                        deferred.reject(err);
+                    });
                 });
-            });
+
+                return deferred.promise;
+            }
+
+            function uploadOne(index) {
+                if (index >= validFiles.length) {
+                    return $http.post('/VendorSelectionModule/FinancialQuotation/UpdateExtensionByDocId', {
+                        DocumentID: $scope.MaterialInvitation.SampleDocumentID,
+                        Extension: extensions.join(',')
+                    }).then(function (response) {
+                        if (response.data && response.data.respStatus && response.data.respStatus.Message) {
+                            $scope.Server.Extensions = extensions.join(',');
+                            document.getElementById("FileUpload1").value = "";
+                            toastr.success("Document Updated Successfully");
+                        } else {
+                            toastr.error("Document Update Failed");
+                            return $q.reject("extension-update-failed");
+                        }
+                    }).catch(function (err) {
+                        console.error(err);
+                        toastr.error("Failed to update document record");
+                        return $q.reject(err);
+                    });
+                }
+
+                var file = validFiles[index];
+                var ext = extensions[index];
+                return uploadFile(file, ext).then(function () {
+                    return uploadOne(index + 1);
+                });
+            }
+
+            // IMPORTANT: return this promise so callers can chain after it finishes
+            return uploadOne(0)
+                .catch(function (err) {
+                    console.error('Upload error:', err);
+                    toastr.error("Document Upload Failed");
+                    return $q.reject(err);   // re-reject so $scope.Update knows it failed
+                })
+                .finally(function () {
+                    $scope.loading = false;
+                });
         };
+
+
+
+
 
         $scope.docshow = function () {
 
@@ -2874,23 +2793,31 @@
 
         $scope.openFileViewer = function (documentID, ext) {
             ext = (ext || '').replace(/^\./, '').toLowerCase();
-
-            var imageExts = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
-            var videoExts = ['mp4', 'webm', 'ogg'];
-            var audioExts = ['mp3', 'wav', 'ogg'];
-
-            if (ext === 'pdf') $scope.ViewerType = 'pdf';
-            else if (imageExts.indexOf(ext) !== -1) $scope.ViewerType = 'image';
-            else if (videoExts.indexOf(ext) !== -1) $scope.ViewerType = 'video';
-            else if (audioExts.indexOf(ext) !== -1) $scope.ViewerType = 'audio';
-            else $scope.ViewerType = 'download';
-
-            $scope.ViewerFileName = documentID + '.' + ext;
-            $scope.ViewerUrl = '/VendorSelectionModule/TechnicalQuotation/DownloadDocument'
+            var baseUrl = '/VendorSelectionModule/TechnicalQuotation/DownloadDocument'
                 + '?documentID=' + documentID
                 + '&Ext=' + ext;
 
-            $('#FileViewerModal').modal('show');
+            $scope.PreviewDoc = {
+                fileName: documentID + '.' + ext,
+                fileExtension: ext,
+                isPdf: ext === 'pdf',
+                isImage: ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'].indexOf(ext) !== -1,
+                isVideo: ext === 'mp4',
+                isMp4: ext === 'mp4',
+                isInlineRenderable: ext === 'pdf'
+                    || ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'].indexOf(ext) !== -1
+                    || ext === 'mp4',
+                viewUrl: baseUrl,
+                downloadUrl: baseUrl + '&download=true'
+            };
+            if ($scope.PreviewDoc.isPdf) {
+                $scope.PreviewTrustedUrl = $sce.trustAsResourceUrl($scope.PreviewDoc.viewUrl);
+            }
+            $('#DocumentPreviewModal').modal('show');
+        };
+        $scope.closeDocumentPreview = function () {
+            $scope.PreviewDoc = null;
+            $scope.PreviewTrustedUrl = null;
         };
 
         $scope.closeFileViewer = function () {
@@ -2898,6 +2825,7 @@
             $scope.ViewerUrl = null;
             $scope.ViewerType = null;
         };
+
 
 
 
@@ -2922,55 +2850,6 @@
                     $scope.loading = false;
                     toastr.error('Data Loading Failed.');
                 });
-        };
-
-
-
-
-
-
-
-
-        $scope.showEditModal = function (row, document) {
-
-            $scope.ServerIP = document.ServerIP;
-            $scope.FileServerURL = document.FileServerURL;
-            $scope.DocumentID = document.DocumentID;
-            $scope.ServerPort = document.FtpPort;
-            $scope.FtpUserName = document.FtpUserName;
-            $scope.FtpPassword = document.FtpPassword;
-            $scope.DownloadedFileName = row.MaterialName;
-            $scope.DownloadedFileCode = row.MaterialCode;
-
-            var ext = (document.FileExtension || '')
-                .split(',')[0]
-                .replace('.', '')
-                .toLowerCase();
-
-            $scope.FileExtension2 = ext;
-
-            var viewUrl =
-                '/VendorSelectionModule/FinancialQuotation/DownloadDocumentfromMat'
-                + '?documentID=' + encodeURIComponent(document.DocumentID)
-                + '&serverIP=' + encodeURIComponent(document.ServerIP)
-                + '&serverURL=' + encodeURIComponent(document.FileServerURL)
-                + '&ftpPort=' + encodeURIComponent(document.FtpPort)
-                + '&ftpUserName=' + encodeURIComponent(document.FtpUserName)
-                + '&ftpPassword=' + encodeURIComponent(document.FtpPassword);
-
-            if (ext === "pdf") {
-
-                $scope.IsDownload2 = false;
-                $scope.DocViewerUrl2 = $sce.trustAsResourceUrl(viewUrl);
-
-            } else {
-
-                $scope.IsDownload2 = true;
-                $scope.DocDownloadUrl2 = viewUrl;
-                $scope.DocFileName2 = document.DocumentID + "." + ext;
-            }
-
-            $("#DetailViewModal").modal("show");
         };
 
 
@@ -3158,15 +3037,7 @@
                 console.log('DeliveryTimeline:', $scope.FinancialQuotationDetail.DeliveryTimeline);
                 console.log('FinancialQuotationDetail:', $scope.FinancialQuotationDetail);
 
-                // Check if document already exists
-                //if (!$scope.FinancialQuotationDetail.SampleDocumentID) {
-                //    console.log('No document ID, saving document first...');
-                //    $scope.SaveDocumentAndSubmit();
-                //} else {
-                //    console.log('Document ID exists, submitting directly...');
-                //    $scope.submit();
-                //    $scope.p = 0;
-                //}
+             
 
 
                 var hasUploadedFiles = $("#FileUpload1").get(0).files.length > 0;
@@ -3342,6 +3213,8 @@
                 InvitationID: ""
             };
 
+
+            $scope.IsDownload = false;
 
         }
 
@@ -3872,16 +3745,10 @@
 
 
 
-
-
-
         $scope.submit = function () {
-
 
             if ($scope.proposal === 'FINANCIAL') {
                 $http.post('/VendorSelectionModule/TechnicalQuotation/submitquotation',
-
-
                     {
                         InvId: $scope.BillReceiveModel.InvitationID,
                         VendorID: $scope.BillReceiveModel.VendorID,
@@ -3889,23 +3756,18 @@
                         MaterialCode: $scope.BillReceiveModel.materialCode,
                         MaterialName: $scope.BillReceiveModel.materialName,
                         RFQUnit: $scope.BillReceiveModel.Unit
-
                     })
                     .success(function (response) {
                         $scope.flagToShow = false;
                         $scope.flagToShowMasterTbl = true;
                         $scope.QuotationList = response.QuotationList[0];
 
-
                         $http.post('/VendorSelectionModule/FinancialQuotation/submitfinancialquotation',
-
-
                             {
                                 FinancialQuotationlist: $scope.FinancialQuotationDetail,
                                 MaterialInvitationlist: $scope.simplifiedMaterialInvitation,
                                 ProposalType: $scope.proposal,
                                 Quotation: $scope.QuotationList
-
                             })
                             .success(function (response) {
 
@@ -3914,75 +3776,46 @@
 
                                     toastr.success($scope.response);
 
-                                    // Delay the rest of the operations
                                     $timeout(function () {
 
                                         $scope.reset();
 
-                                        $scope.masterDataSetupGridData = [];  // base collection
+                                        $scope.masterDataSetupGridData = [];
                                         $scope.GridDisplayCollection = [].concat($scope.masterDataSetupGridData);
                                         $scope.loading = false;
                                         $scope.myarray = [];
                                         $scope.myarray2 = [];
 
-                                        // Refresh or load data after reset
                                         $scope.InvWiseMaterial($scope.InvitationNumber);
 
                                     }, 2000);
-                                    // 2000 milliseconds = 2 seconds
+                                    // loading stays true until the $timeout above resets it
                                 }
                                 else {
                                     toastr.error($scope.response);
+                                    $scope.loading = false; // real failure — allow retry
                                 }
-
-
-                                $scope.loading = false;
-
 
                             }).error(function () {
                                 $scope.loading = false;
-
-
-
                             });
 
-
-
-
-
-
-
-
-
-
-
-
                         $scope.GridDisplayCollection = [].concat($scope.MaterialList);
-
-
-                        $scope.loading = false;
+                        // removed: the stray "$scope.loading = false;" that used to sit here —
+                        // it fired synchronously right after issuing the inner request, resetting
+                        // the button almost instantly instead of waiting for that request to finish
                     }).error(function () {
                         $scope.loading = false;
-
-
-
                     });
             }
             else {
 
-
-
                 $http.post('/VendorSelectionModule/FinancialQuotation/submitfinancialquotation',
-
-
                     {
                         FinancialQuotationlist: $scope.FinancialQuotationDetail,
                         MaterialInvitationlist: $scope.simplifiedMaterialInvitation,
                         ProposalType: $scope.proposal,
                         Quotation: ""
-
-
-
                     })
                     .success(function (response) {
 
@@ -3993,52 +3826,186 @@
 
                                 $scope.reset();
 
-                                $scope.masterDataSetupGridData = [];  // base collection
+                                $scope.masterDataSetupGridData = [];
                                 $scope.GridDisplayCollection = [].concat($scope.masterDataSetupGridData);
                                 $scope.loading = false;
                                 $scope.myarray = [];
                                 $scope.myarray2 = [];
 
-                                // Refresh or load data after reset
                                 $scope.InvWiseMaterial($scope.InvitationNumber);
 
                             }, 2000);
+                            // loading stays true until the $timeout above resets it
                         }
                         else {
                             toastr.error($scope.response);
+                            $scope.loading = false; // real failure — allow retry
                         }
-
-
-                        $scope.loading = false;
-
 
                     }).error(function () {
                         $scope.loading = false;
-
-
-
                     });
 
-
-
-
-
-
-
-
-
-
-
-
                 $scope.GridDisplayCollection = [].concat($scope.MaterialList);
-
-
-
-
-
             }
+        };
 
-        }
+
+        //$scope.submit = function () {
+
+
+        //    if ($scope.proposal === 'FINANCIAL') {
+        //        $http.post('/VendorSelectionModule/TechnicalQuotation/submitquotation',
+
+
+        //            {
+        //                InvId: $scope.BillReceiveModel.InvitationID,
+        //                VendorID: $scope.BillReceiveModel.VendorID,
+        //                InvitationNumber: $scope.BillReceiveModel.invitationNumber,
+        //                MaterialCode: $scope.BillReceiveModel.materialCode,
+        //                MaterialName: $scope.BillReceiveModel.materialName,
+        //                RFQUnit: $scope.BillReceiveModel.Unit
+
+        //            })
+        //            .success(function (response) {
+        //                $scope.flagToShow = false;
+        //                $scope.flagToShowMasterTbl = true;
+        //                $scope.QuotationList = response.QuotationList[0];
+
+
+        //                $http.post('/VendorSelectionModule/FinancialQuotation/submitfinancialquotation',
+
+
+        //                    {
+        //                        FinancialQuotationlist: $scope.FinancialQuotationDetail,
+        //                        MaterialInvitationlist: $scope.simplifiedMaterialInvitation,
+        //                        ProposalType: $scope.proposal,
+        //                        Quotation: $scope.QuotationList
+
+        //                    })
+        //                    .success(function (response) {
+
+        //                        $scope.response = response.respStatus.Message;
+        //                        if ($scope.response === 'Data Saved Successfully') {
+
+        //                            toastr.success($scope.response);
+
+        //                            // Delay the rest of the operations
+        //                            $timeout(function () {
+
+        //                                $scope.reset();
+
+        //                                $scope.masterDataSetupGridData = [];  // base collection
+        //                                $scope.GridDisplayCollection = [].concat($scope.masterDataSetupGridData);
+        //                                $scope.loading = false;
+        //                                $scope.myarray = [];
+        //                                $scope.myarray2 = [];
+
+        //                                // Refresh or load data after reset
+        //                                $scope.InvWiseMaterial($scope.InvitationNumber);
+
+        //                            }, 2000);
+        //                            // 2000 milliseconds = 2 seconds
+        //                        }
+        //                        else {
+        //                            toastr.error($scope.response);
+        //                        }
+
+
+        //                        $scope.loading = false;
+
+
+        //                    }).error(function () {
+        //                        $scope.loading = false;
+
+
+
+        //                    });
+
+
+
+
+
+
+
+
+
+
+
+
+        //                $scope.GridDisplayCollection = [].concat($scope.MaterialList);
+
+
+        //                $scope.loading = false;
+        //            }).error(function () {
+        //                $scope.loading = false;
+
+
+
+        //            });
+        //    }
+        //    else {
+
+
+
+        //        $http.post('/VendorSelectionModule/FinancialQuotation/submitfinancialquotation',
+
+
+        //            {
+        //                FinancialQuotationlist: $scope.FinancialQuotationDetail,
+        //                MaterialInvitationlist: $scope.simplifiedMaterialInvitation,
+        //                ProposalType: $scope.proposal,
+        //                Quotation: ""
+
+
+
+        //            })
+        //            .success(function (response) {
+
+        //                $scope.response = response.respStatus.Message;
+        //                if ($scope.response === 'Data Saved Successfully') {
+        //                    toastr.success($scope.response);
+        //                    $timeout(function () {
+
+        //                        $scope.reset();
+
+        //                        $scope.masterDataSetupGridData = [];  // base collection
+        //                        $scope.GridDisplayCollection = [].concat($scope.masterDataSetupGridData);
+        //                        $scope.loading = false;
+        //                        $scope.myarray = [];
+        //                        $scope.myarray2 = [];
+
+        //                        // Refresh or load data after reset
+        //                        $scope.InvWiseMaterial($scope.InvitationNumber);
+
+        //                    }, 2000);
+        //                }
+        //                else {
+        //                    toastr.error($scope.response);
+        //                }
+
+
+        //                $scope.loading = false;
+
+
+        //            }).error(function () {
+        //                $scope.loading = false;
+
+
+
+        //            });
+
+
+
+        //        $scope.GridDisplayCollection = [].concat($scope.MaterialList);
+
+
+
+
+
+        //    }
+
+        //}
 
 
 
@@ -4053,8 +4020,8 @@
 
             $http.post('/VendorSelectionModule/FinancialQuotation/GetAllQuotation')
                 .success(function (response) {
-                    $scope.flagToShow = false;
-                    $scope.flagToShowMasterTbl = false;
+                    //$scope.flagToShow = false;
+                    //$scope.flagToShowMasterTbl = false;
                     $scope.AllQuotation = response.AllQuotation;
 
                     $scope.GridDisplayCollectionQuotation = [].concat($scope.AllQuotation);
@@ -4083,8 +4050,9 @@
         $scope.toggleQuotationSelect = function (InvitationNumber, quotationNo, RFQDeadline) {
 
             $scope.RFQDeadline = RFQDeadline;
-
-
+            
+            $scope.reset();
+            $scope.p = 0;
             var parts = $scope.RFQDeadline.split('/');
 
             // dd/MM/yyyy
@@ -4149,35 +4117,6 @@
 
 
         };
-
-
-
-
-
-
-
-        $scope.AddDocument = function (row) {
-
-
-            $http.post('/VendorSelectionModule/TechnicalQuotation/GetMaterialDocStatus', {
-                MaterialCode: row.materialName,
-                BiddingID: row.BiddingID,
-                VendorCode: row.BiddingItemVendorID
-
-            })
-                .success(function (response) {
-
-
-                    $scope.showEditModal(row, response.document);
-
-                }
-
-                )
-        };
-
-
-
-
 
 
 
@@ -4511,6 +4450,42 @@
             };
         })();
 
+
+
+
+        $scope.deleteAttachedDocument = function () {
+            if (!confirm('Are you sure you want to delete the attached document?')) return;
+
+            $scope.loading = true;
+
+            $http.post('/VendorSelectionModule/FinancialQuotation/DeleteDocument', {
+                documentID: $scope.MaterialInvitation.SampleDocumentID
+            })
+                .success(function (response) {
+                    $scope.loading = false;
+
+                    if (response.Success) {
+                        // Clear local references
+                        $scope.MaterialInvitation.SampleDocumentID = '';
+                        $scope.FinancialQuotationDetail.SampleDocumentID = '';
+                        $scope.IsDownload = false;
+                        $scope.Server.Extensions = '';
+
+                        // Reset file input so it doesn't re-submit the old file
+                        var $el = $('#FileUpload1');
+                        $el.wrap('<form>').closest('form').get(0).reset();
+                        $el.unwrap();
+
+                        toastr.success(response.respStatus.Message || 'Document deleted successfully');
+                    } else {
+                        toastr.error(response.respStatus.Message || 'Delete failed');
+                    }
+                })
+                .error(function () {
+                    $scope.loading = false;
+                    toastr.error('Error occurred while deleting the document');
+                });
+        };
 
 
 

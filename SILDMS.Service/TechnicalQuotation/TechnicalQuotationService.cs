@@ -165,6 +165,15 @@ namespace SILDMS.Service.TechnicalQuotation
                 ? new ValidationResult(_errorNumber, _localizationService.GetResource(_errorNumber))
                 : ValidationResult.Success;
         }
+
+        public ValidationResult DeleteDocumentService(string documentID)
+        {
+            _technicalQuotationData.DeleteDocumenDataService(documentID, out _errorNumber);
+
+            return _errorNumber.Length > 0
+                ? new ValidationResult(_errorNumber, _localizationService.GetResource(_errorNumber))
+                : ValidationResult.Success;
+        }
     }
 }
 

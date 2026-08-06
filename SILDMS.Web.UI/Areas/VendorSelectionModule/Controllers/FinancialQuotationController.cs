@@ -243,54 +243,141 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
         }
 
 
-        [Authorize]
-        public async Task<dynamic> GetMaterialDocStatus(string MaterialCode)
-        {
-            var document = new DSM_Documents();
-            bool docStatus = true;
-            await Task.Run(() => _financialQuotationService.GetMaterialDocStatus(out document, out docStatus, MaterialCode));
-            return Json(new { document, docStatus, Msg = "" }, JsonRequestBehavior.AllowGet);
-        }
+       
 
 
         public async Task<dynamic> UploadOtherFiles(string serverIP, string ftpPort, string ftpUserName, string ftpPassword, string serverURL, string documentID, string Ext)
         {
-            HttpFileCollectionBase files = Request.Files;
-            HttpPostedFileBase file = files[0];
-
-            var safeFileName = documentID.Replace("/", "_");
-
             try
             {
-                FtpWebRequest ftp = (FtpWebRequest)FtpWebRequest.Create("ftp://" + serverIP + "/" + serverURL + "/" + safeFileName + "." + Ext);
-                ftp.Credentials = new NetworkCredential(ftpUserName, ftpPassword);
-                ftp.Proxy = null;
-                ftp.KeepAlive = true;
-                ftp.UseBinary = true;
-                ftp.Method = WebRequestMethods.Ftp.UploadFile;
-                Stream ftpstream = ftp.GetRequestStream();
+                HttpFileCollectionBase files = Request.Files;
+                if (files == null || files.Count == 0)
+                    return Json(new { ResponseCode = "E400", Message = "No file received" }, JsonRequestBehavior.AllowGet);
 
-                byte[] data;
-                using (Stream inputStream = file.InputStream)
+                if (string.IsNullOrWhiteSpace(serverIP) || string.IsNullOrWhiteSpace(documentID) || string.IsNullOrWhiteSpace(Ext))
+                    return Json(new { ResponseCode = "E400", Message = "Missing required parameters" }, JsonRequestBehavior.AllowGet);
+
+                HttpPostedFileBase file = files[0];
+                string safeFileName = documentID.Replace("/", "_");
+
+                int port = 21;
+                int parsedPort;
+                if (!string.IsNullOrWhiteSpace(ftpPort) && int.TryParse(ftpPort, out parsedPort))
                 {
-                    MemoryStream memoryStream = inputStream as MemoryStream;
-                    if (memoryStream == null)
-                    {
-                        memoryStream = new MemoryStream();
-                        inputStream.CopyTo(memoryStream);
-                    }
-
-                    data = memoryStream.ToArray();
+                    port = parsedPort;
                 }
 
-                await ftpstream.WriteAsync(data, 0, data.Length);
-                ftpstream.Close();
+                string baseFolderUrl = "ftp://" + serverIP + ":" + port + "/" + serverURL + "/";
 
-                return new HttpStatusCodeResult(200, "OK!");
+                // --- Step 1: list the folder and find ANY existing file for this documentID, whatever its extension ---
+                List<string> existingFileNames = new List<string>();
+                try
+                {
+                    FtpWebRequest listReq = (FtpWebRequest)FtpWebRequest.Create(baseFolderUrl);
+                    listReq.Credentials = new NetworkCredential(ftpUserName, ftpPassword);
+                    listReq.Proxy = null;
+                    listReq.KeepAlive = false;
+                    listReq.UsePassive = true;
+                    listReq.Method = WebRequestMethods.Ftp.ListDirectory;
+
+                    using (FtpWebResponse listResp = (FtpWebResponse)await Task.Run(() => listReq.GetResponse()))
+                    using (Stream listStream = listResp.GetResponseStream())
+                    using (StreamReader reader = new StreamReader(listStream))
+                    {
+                        string line;
+                        while ((line = await reader.ReadLineAsync()) != null)
+                        {
+                            line = line.Trim();
+                            // match "safeFileName.anything"
+                            if (line.StartsWith(safeFileName + ".", StringComparison.OrdinalIgnoreCase))
+                            {
+                                existingFileNames.Add(line);
+                            }
+                        }
+                    }
+                }
+                catch (WebException)
+                {
+                    // folder listing failed or is empty — treat as "nothing to delete" and continue
+                }
+
+                // --- Step 2: delete every matching old file so we never leave an orphan behind ---
+                foreach (string oldFileName in existingFileNames)
+                {
+                    try
+                    {
+                        FtpWebRequest delReq = (FtpWebRequest)FtpWebRequest.Create(baseFolderUrl + oldFileName);
+                        delReq.Credentials = new NetworkCredential(ftpUserName, ftpPassword);
+                        delReq.Proxy = null;
+                        delReq.KeepAlive = false;
+                        delReq.UsePassive = true;
+                        delReq.Method = WebRequestMethods.Ftp.DeleteFile;
+
+                        using (FtpWebResponse delResp = (FtpWebResponse)await Task.Run(() => delReq.GetResponse()))
+                        {
+                            // deleted
+                        }
+                    }
+                    catch (WebException)
+                    {
+                        // ignore — file may have already been removed, or name had a race condition
+                    }
+                }
+
+                // --- Step 3: upload the new file fresh ---
+                string ftpUrl = baseFolderUrl + safeFileName + "." + Ext;
+
+                FtpWebRequest ftp = (FtpWebRequest)FtpWebRequest.Create(ftpUrl);
+                ftp.Credentials = new NetworkCredential(ftpUserName, ftpPassword);
+                ftp.Proxy = null;
+                ftp.KeepAlive = false;
+                ftp.UseBinary = true;
+                ftp.UsePassive = true;
+                ftp.Method = WebRequestMethods.Ftp.UploadFile;
+                ftp.Timeout = 30000;
+                ftp.ReadWriteTimeout = 300000;
+                ftp.ServicePoint.ConnectionLimit = 20;
+
+                using (Stream ftpStream = await Task.Run(() => ftp.GetRequestStream()))
+                using (Stream inputStream = file.InputStream)
+                {
+                    await inputStream.CopyToAsync(ftpStream);
+                }
+
+                using (FtpWebResponse response = (FtpWebResponse)await Task.Run(() => ftp.GetResponse()))
+                {
+                    if (response.StatusCode != FtpStatusCode.ClosingData &&
+                        response.StatusCode != FtpStatusCode.FileActionOK)
+                    {
+                        string msg = "FTP upload not confirmed: " + response.StatusCode + " - " + response.StatusDescription;
+                        System.Diagnostics.Trace.TraceError("UploadOtherFiles: " + msg);
+                        return Json(new { ResponseCode = "E500", Message = msg }, JsonRequestBehavior.AllowGet);
+                    }
+                }
+
+                return Json(new { ResponseCode = "S201", Message = "OK" }, JsonRequestBehavior.AllowGet);
             }
-            catch (Exception)
+            catch (WebException wex)
             {
-                return new HttpStatusCodeResult(500, "OK!");
+                string detail;
+                FtpWebResponse ftpResp = wex.Response as FtpWebResponse;
+                if (ftpResp != null)
+                {
+                    detail = "FTP status " + ftpResp.StatusCode + " - " + ftpResp.StatusDescription;
+                    ftpResp.Close();
+                }
+                else
+                {
+                    detail = "Connection error (" + wex.Status + "): " + wex.Message;
+                }
+
+                System.Diagnostics.Trace.TraceError("UploadOtherFiles WebException: " + detail);
+                return Json(new { ResponseCode = "E500", Message = detail }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Trace.TraceError("UploadOtherFiles error: " + ex);
+                return Json(new { ResponseCode = "E500", Message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -322,108 +409,30 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
 
 
 
-        public FileResult DownloadDocumentfromMat(
-        string documentID,
-        string serverIP,
-        string serverURL,
-        string ftpPort,
-        string ftpUserName,
-        string ftpPassword)
-        {
-            string safeDocumentID = documentID.Replace("/", "_");
-
-            string fullUrl =
-                "ftp://" + serverIP +
-                "/" + serverURL +
-                "/" + safeDocumentID + ".pdf";
-
-            byte[] fileData;
-
-            using (WebClient request = new WebClient())
-            {
-                request.Credentials =
-                    new NetworkCredential(
-                        ftpUserName,
-                        ftpPassword);
-
-                fileData = request.DownloadData(fullUrl);
-            }
-
-            Response.Clear();
-
-            Response.Buffer = true;
-
-            Response.ContentType = "application/pdf";
-
-            Response.AddHeader(
-                "Content-Disposition",
-                "inline; filename=" + safeDocumentID + ".pdf");
-
-            return File(fileData, "application/pdf");
-        }
-
-
+        [HttpPost]
         [Authorize]
         public async Task<dynamic> UpdateExtensionByDocId(string DocumentID, string Extension)
         {
-
             string ID = "";
+
+            // NOTE: use whichever service you have injected 
+            // (_financialQuotationService or _technicalQuotationService)
             await Task.Run(() => _financialQuotationService.UpdateExtensionByDocIdService(DocumentID, Extension, out ID));
 
-            if (ID != "")
+            if (!string.IsNullOrEmpty(ID))
             {
                 respStatus.Message = "Data Updated Successfully";
-                return Json(new
-                {
-                    respStatus,
-                    Msg = ""
-                }, JsonRequestBehavior.AllowGet);
+                return Json(new { respStatus, Msg = "" }, JsonRequestBehavior.AllowGet);
             }
             else
             {
                 respStatus.Message = "Error Found";
-                return Json(new
-                {
-                    respStatus,
-                    Msg = ""
-                }, JsonRequestBehavior.AllowGet);
+                return Json(new { respStatus, Msg = "" }, JsonRequestBehavior.AllowGet);
             }
         }
 
 
-        public async Task<FileResult> DownloadDocument2(string documentID, string Ext)
-        {
 
-            var document = new DSM_Documents();
-            bool docStatus = true;
-            await Task.Run(() => _financialQuotationService.GetMaterialDocStatus(out document, out docStatus, documentID));
-
-            string userName = document.FtpUserName;
-            string password = document.FtpPassword;
-            string serverIP = document.ServerIP;
-            string serverURL = document.FileServerURL;
-            using (WebClient request = new WebClient())
-            {
-                if (Ext == "")
-                {
-                    Ext = "pdf";
-                }
-
-                request.Credentials = new NetworkCredential(userName, password);
-
-                string fullUrl = "ftp://" + serverIP + "/" + serverURL + "/" + documentID + "." + Ext;
-                byte[] fileData = request.DownloadData(fullUrl);
-
-                var cd = new System.Net.Mime.ContentDisposition
-                {
-                    FileName = documentID + "." + Ext,
-                    Inline = false,
-                };
-
-                Response.AppendHeader("Content-Disposition", cd.ToString());
-                return File(fileData, "application / " + Ext);
-            }
-        }
 
         [Authorize]
         public async Task<dynamic> Itemlist()
@@ -573,5 +582,170 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
             }
         }
 
+
+
+        [HttpPost]
+        [Authorize]
+        public async Task<dynamic> DeleteDocument(string documentID)
+        {
+            bool isDeleted = false;
+
+            if (string.IsNullOrWhiteSpace(documentID))
+            {
+                respStatus.Message = "Missing document id.";
+                return Json(new { Success = false, respStatus }, JsonRequestBehavior.AllowGet);
+            }
+
+            var existing = new Server();
+            var lookup = _financialQuotationService.FetchServerDetailsService(documentID, out existing);
+            if (lookup != ValidationResult.Success || existing == null)
+            {
+                respStatus.Message = "Document not found.";
+                return Json(new { Success = false, respStatus }, JsonRequestBehavior.AllowGet);
+            }
+
+            // 1. Delete from DB first
+
+            var result = _financialQuotationService.DeleteDocumentService(existing.DocumentID);
+           
+
+            if (result.ErrorCode!="S201")
+            {
+                respStatus.Message = "Database delete failed.";
+                return Json(new { Success = false, respStatus }, JsonRequestBehavior.AllowGet);
+            }
+
+            // 2. Best-effort FTP cleanup (same naming logic used in UploadOtherFiles)
+            if (!string.IsNullOrWhiteSpace(existing.Extensions))
+            {
+                var safeFileName = existing.DocumentID.Replace("/", "_");
+                var exts = existing.Extensions.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (var ext in exts)
+                {
+                    var cleanExt = ext.Trim();
+                    if (!cleanExt.StartsWith(".")) cleanExt = "." + cleanExt;
+
+                    string ftpUri = $"ftp://{existing.ServerIP}/{existing.FileServerURL}/{safeFileName}{cleanExt}";
+                    await DeleteFromFtp(ftpUri, existing.FtpUserName, existing.FtpPassword);
+                }
+            }
+
+            respStatus.Message = "Document Deleted Successfully";
+            return Json(new { Success = true, respStatus }, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+        private async Task<bool> DeleteFromFtp(string uri, string user, string pass)
+        {
+            try
+            {
+                var req = (FtpWebRequest)FtpWebRequest.Create(uri);
+                req.Credentials = new NetworkCredential(user, pass);
+                req.Method = WebRequestMethods.Ftp.DeleteFile;
+                using (var resp = (FtpWebResponse)await req.GetResponseAsync())
+                {
+                    return resp.StatusCode == FtpStatusCode.FileActionOK;
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Trace.TraceError("FTP delete failed: " + ex);
+                return false;
+            }
+        }
+
+
+
+
     }
 }
+
+
+
+//[Authorize]
+//public async Task<dynamic> GetMaterialDocStatus(string MaterialCode)
+//{
+//    var document = new DSM_Documents();
+//    bool docStatus = true;
+//    await Task.Run(() => _financialQuotationService.GetMaterialDocStatus(out document, out docStatus, MaterialCode));
+//    return Json(new { document, docStatus, Msg = "" }, JsonRequestBehavior.AllowGet);
+//}
+
+
+
+//public FileResult DownloadDocumentfromMat(
+//string documentID,
+//string serverIP,
+//string serverURL,
+//string ftpPort,
+//string ftpUserName,
+//string ftpPassword)
+//{
+//    string safeDocumentID = documentID.Replace("/", "_");
+
+//    string fullUrl =
+//        "ftp://" + serverIP +
+//        "/" + serverURL +
+//        "/" + safeDocumentID + ".pdf";
+
+//    byte[] fileData;
+
+//    using (WebClient request = new WebClient())
+//    {
+//        request.Credentials =
+//            new NetworkCredential(
+//                ftpUserName,
+//                ftpPassword);
+
+//        fileData = request.DownloadData(fullUrl);
+//    }
+
+//    Response.Clear();
+
+//    Response.Buffer = true;
+
+//    Response.ContentType = "application/pdf";
+
+//    Response.AddHeader(
+//        "Content-Disposition",
+//        "inline; filename=" + safeDocumentID + ".pdf");
+
+//    return File(fileData, "application/pdf");
+//}
+
+//public async Task<FileResult> DownloadDocument2(string documentID, string Ext)
+//{
+
+//    var document = new DSM_Documents();
+//    bool docStatus = true;
+//    await Task.Run(() => _financialQuotationService.GetMaterialDocStatus(out document, out docStatus, documentID));
+
+//    string userName = document.FtpUserName;
+//    string password = document.FtpPassword;
+//    string serverIP = document.ServerIP;
+//    string serverURL = document.FileServerURL;
+//    using (WebClient request = new WebClient())
+//    {
+//        if (Ext == "")
+//        {
+//            Ext = "pdf";
+//        }
+
+//        request.Credentials = new NetworkCredential(userName, password);
+
+//        string fullUrl = "ftp://" + serverIP + "/" + serverURL + "/" + documentID + "." + Ext;
+//        byte[] fileData = request.DownloadData(fullUrl);
+
+//        var cd = new System.Net.Mime.ContentDisposition
+//        {
+//            FileName = documentID + "." + Ext,
+//            Inline = false,
+//        };
+
+//        Response.AppendHeader("Content-Disposition", cd.ToString());
+//        return File(fileData, "application / " + Ext);
+//    }
+//}
+

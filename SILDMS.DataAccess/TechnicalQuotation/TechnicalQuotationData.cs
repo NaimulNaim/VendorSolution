@@ -143,6 +143,7 @@ namespace SILDMS.DataAccess.TechnicalQuotation
                             ProductLifeCycleValue = reader.GetString("ProductLifeCycleValue"),
                             ProductLifeCycleUnit = reader.GetString("ProductLifeCycleUnit"),
                             sampleDocId = reader.GetString("DocumentID"),
+                            MasterDocumentID = reader.GetString("MasterDocumentID"),
                             InvitationSendPerson = reader.GetString("InvitationSendPerson"),
                             Action = "A"
 
@@ -1316,5 +1317,24 @@ namespace SILDMS.DataAccess.TechnicalQuotation
             return isDeleted;
         }
 
+        public bool DeleteDocumenDataService(string documentID, out string errorNumber)
+        {
+            errorNumber = string.Empty;
+            var factory = new DatabaseProviderFactory();
+            var db = factory.CreateDefault() as SqlDatabase;
+            using (var dbCommandWrapper = db.GetStoredProcCommand("VCMS_DeleteDocumentForVendorInvitationTech"))
+            {
+                db.AddInParameter(dbCommandWrapper, "@DocumentID", SqlDbType.VarChar, documentID);
+                db.AddInParameter(dbCommandWrapper, "@ModifiedBy", SqlDbType.VarChar, "");
+                db.AddOutParameter(dbCommandWrapper, spStatusParam, DbType.String, 10);
+                dbCommandWrapper.CommandTimeout = 300;
+
+                db.ExecuteNonQuery(dbCommandWrapper);
+
+                if (!db.GetParameterValue(dbCommandWrapper, spStatusParam).IsNullOrZero())
+                    errorNumber = db.GetParameterValue(dbCommandWrapper, spStatusParam).PrefixErrorCode();
+            }
+            return errorNumber.Length == 0;
+        }
     }
 }
