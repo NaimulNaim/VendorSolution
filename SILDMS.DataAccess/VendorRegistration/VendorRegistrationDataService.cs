@@ -517,12 +517,16 @@ namespace SILDMS.DataAccess.VendorRegistration
                             MetaValue = reader.GetString("MetaValue"),
                             Remarks = reader.GetString("Remarks"),
                             FileServerUrl = reader.GetString("FileServerUrl"),
-                            ServerIP = reader.GetString("ServerIP"),
-                            ServerPort = reader.GetString("ServerPort"),
-                            FtpUserName = reader.GetString("FtpUserName"),
-                            FtpPassword = reader.GetString("FtpPassword"),
+                            //ServerIP = reader.GetString("ServerIP"),
+                            //ServerPort = reader.GetString("ServerPort"),
+                            //FtpUserName = reader.GetString("FtpUserName"),
+                            //FtpPassword = reader.GetString("FtpPassword"),
                             BoothName = reader.GetString("BoothName"),
-                            ReceivedBy = reader.GetString("ReceivedBy")
+                            ReceivedBy = reader.GetString("ReceivedBy"),
+                            ServerIP = "",
+                            ServerPort = "",
+                            FtpUserName = "",
+                            FtpPassword = "",
                         }).ToList();
                     }
                 }

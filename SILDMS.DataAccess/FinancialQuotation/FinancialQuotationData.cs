@@ -112,6 +112,7 @@ namespace SILDMS.DataAccess.FinancialQuotation
                             Fintype = reader.GetString("Fintype"),
                             Proposal = reader.GetString("Proposal"),
                             InvitationSendPerson = reader.GetString("InvitationSendPerson"),
+                            ContactNumber = reader.GetString("ContactNumber"),
 
                             QuotationID = dt1.Columns.Contains("QuotationID") && !reader.IsNull("QuotationID")
                        ? Convert.ToInt64(reader["QuotationID"])
@@ -259,10 +260,14 @@ namespace SILDMS.DataAccess.FinancialQuotation
                             MetaValue = reader.GetString("MetaValue"),
                             Remarks = reader.GetString("Remarks"),
                             FileServerUrl = reader.GetString("FileServerUrl"),
-                            ServerIP = reader.GetString("ServerIP"),
-                            ServerPort = reader.GetString("ServerPort"),
-                            FtpUserName = reader.GetString("FtpUserName"),
-                            FtpPassword = reader.GetString("FtpPassword"),
+                            //ServerIP = reader.GetString("ServerIP"),
+                            //ServerPort = reader.GetString("ServerPort"),
+                            //FtpUserName = reader.GetString("FtpUserName"),
+                            //FtpPassword = reader.GetString("FtpPassword"),
+                            ServerIP = "",
+                            ServerPort = "",
+                            FtpUserName = "",
+                            FtpPassword = "",
                             BoothName = reader.GetString("BoothName"),
                             ReceivedBy = reader.GetString("ReceivedBy"),
                             NumberOfMissingDocuments = reader.GetInt32("NumberOfMissingDocuments")
@@ -653,6 +658,7 @@ namespace SILDMS.DataAccess.FinancialQuotation
                             SampleDocumentID = reader.GetString("SampleDocId"),
                             LowestNetUnitPrice = reader.GetString("LowestNetUnitPrice"),
                             InvitationSendPerson = reader.GetString("InvitationSendPerson"),
+                            ContactNumber = reader.GetString("ContactNumber"),
                             Action = "E",
 
 
@@ -858,11 +864,17 @@ namespace SILDMS.DataAccess.FinancialQuotation
                         {
 
 
-                            ServerIP = reader.GetString("ServerIP"),
-                            ServerPort = reader.GetString("FtpPort"),
+                            //ServerIP = reader.GetString("ServerIP"),
+                            //ServerPort = reader.GetString("FtpPort"),
+                            //FileServerURL = reader.GetString("FileServerURL"),
+                            //FtpUserName = reader.GetString("FtpUserName"),
+                            //FtpPassword = reader.GetString("FtpPassword"),
+
+                            ServerIP = "",
+                            ServerPort = "",
+                            FtpUserName = "",
+                            FtpPassword = "",
                             FileServerURL = reader.GetString("FileServerURL"),
-                            FtpUserName = reader.GetString("FtpUserName"),
-                            FtpPassword = reader.GetString("FtpPassword"),
                             Extensions = reader.GetString("FileExtension"),
                             DocumentID= reader.GetString("DocumentID"),
 
@@ -1113,11 +1125,15 @@ namespace SILDMS.DataAccess.FinancialQuotation
                             DocumentID = reader.GetString("DocumentID"),
                             DocPropertyName = reader.GetString("DocPropertyName"),
                             FileServerURL = reader.GetString("FileServerURL"),
-                            ServerIP = reader.GetString("ServerIP"),
-                            FtpPort = reader.GetString("FtpPort"),
-                            FtpUserName = reader.GetString("FtpUserName"),
-                            FtpPassword = reader.GetString("FtpPassword"),
+                            //ServerIP = reader.GetString("ServerIP"),
+                            //FtpPort = reader.GetString("FtpPort"),
+                            //FtpUserName = reader.GetString("FtpUserName"),
+                            //FtpPassword = reader.GetString("FtpPassword"),
                             FileExtension = reader.GetString("FileExtension"),
+                            ServerIP = "",
+                            FtpPort = "",
+                            FtpUserName = "",
+                            FtpPassword = "",
 
                         }).FirstOrDefault();
                     }
@@ -1275,12 +1291,17 @@ namespace SILDMS.DataAccess.FinancialQuotation
                         FileExtension = reader.GetString("FileExtension"),
                         FileServerUrl = reader.GetString("FileServerUrl"),
                         ServerID = reader.GetString("ServerID"),
-                        ServerIP = reader.GetString("ServerIP"),
-                        ServerPort = reader.GetString("ServerPort"),
-                        FtpUserName = reader.GetString("FtpUserName"),
-                        FtpPassword = reader.GetString("FtpPassword"),
+                        //ServerIP = reader.GetString("ServerIP"),
+                        //ServerPort = reader.GetString("ServerPort"),
+                        //FtpUserName = reader.GetString("FtpUserName"),
+                        //FtpPassword = reader.GetString("FtpPassword"),
                         DocPropertyName = reader.GetString("DocPropertyName"),
-                        BiddingItemVendorId = reader.GetString("BiddingItemVendorId")
+                        BiddingItemVendorId = reader.GetString("BiddingItemVendorId"),
+                        ServerIP = "",
+                        ServerPort = "",
+                        FtpUserName = "",
+                        FtpPassword = "",
+
                     }).ToList();
                 }
             }
@@ -1311,10 +1332,14 @@ namespace SILDMS.DataAccess.FinancialQuotation
                         FileExtension = row.Field<string>("FileExtension"),
                         FileServerUrl = row.Field<string>("FileServerUrl"),
                         ServerID = row.Field<string>("ServerID"),
-                        ServerIP = row.Field<string>("ServerIP"),
-                        ServerPort = row.Field<string>("ServerPort"),
-                        FtpUserName = row.Field<string>("FtpUserName"),
-                        FtpPassword = row.Field<string>("FtpPassword"),
+                        //ServerIP = row.Field<string>("ServerIP"),
+                        //ServerPort = row.Field<string>("ServerPort"),
+                        //FtpUserName = row.Field<string>("FtpUserName"),
+                        //FtpPassword = row.Field<string>("FtpPassword"),
+                        ServerIP = "",
+                        ServerPort = "",
+                        FtpUserName = "",
+                        FtpPassword = "",
 
                     };
                 }

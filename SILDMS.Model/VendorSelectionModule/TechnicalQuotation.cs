@@ -606,6 +606,7 @@ namespace SILDMS.Model.VendorSelectionModule
         public string LowestNetUnitPrice { get; set; }
         public string InvitationSendPerson { get; set; }
         public string MasterDocumentID { get; set; }
+        public string ContactNumber { get; set; }
     }
 
 

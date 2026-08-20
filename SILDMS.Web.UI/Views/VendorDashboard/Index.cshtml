@@ -729,7 +729,18 @@
                     <h3 class="modal-title">
                         RFQ - {{InvitationNumber}}
                     </h3>
-                    <h4>Contact Person - {{InvitationSendingPerson}}</h4>
+                    @*<h4>Contact Person - {{InvitationSendingPerson}}</h4>
+        <h4>Contact Number - {{ContactNumber}}</h4>*@
+
+                <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                    <h4 style="margin:10px 0;">
+                        Contact Person - {{InvitationSendingPerson}}
+                    </h4>
+
+                    <h4 style="margin:10px 0;">
+                        Contact Number - {{ContactNumber}}
+                    </h4>
+                </div>
                 </div>
                 <div class="modal-body">
 
@@ -905,6 +916,7 @@
                     $scope.MaterialList = response.InvMaterialList;
 
                     $scope.InvitationSendingPerson = $scope.MaterialList[0].InvitationSendPerson;
+                    $scope.ContactNumber = $scope.MaterialList[0].ContactNumber;
 
                     $scope.GridDisplayCollection = [].concat($scope.MaterialList);
                     $scope.loading = false;
@@ -917,6 +929,7 @@
                 .success(function (response) {
                     $scope.MaterialList = response.InvMaterialList;
                     $scope.InvitationSendingPerson=$scope.MaterialList[0].InvitationSendPerson;
+                    $scope.ContactNumber = $scope.MaterialList[0].ContactNumber;
                     $scope.GridDisplayCollection = [].concat($scope.MaterialList);
                     $scope.loading = false;
                 }).error(function () { $scope.loading = false; toastr.error('Data Loading Failed.'); });

@@ -51,14 +51,18 @@ namespace SILDMS.DataAccess.VendorRegistrationUpdate
                     DocPropertyID = reader.GetString("DocPropertyID"),
                     FileServerURL = reader.GetString("FileServerURL"),
                     ServerID = reader.GetString("ServerID"),
-                    ServerIP = reader.GetString("ServerIP"),
-                    FtpPort = reader.GetString("FtpPort"),
-                    FtpUserName = reader.GetString("FtpUserName"),
-                    FtpPassword = reader.GetString("FtpPassword"),
+                    //ServerIP = reader.GetString("ServerIP"),
+                    //FtpPort = reader.GetString("FtpPort"),
+                    //FtpUserName = reader.GetString("FtpUserName"),
+                    //FtpPassword = reader.GetString("FtpPassword"),
                     DocPropertyName = reader.GetString("DocPropertyName"),
                     DocClassification = reader.GetString("DocClassification"),
                     //IdentificationAttribute = reader.GetString("IdentificationAttribute"),
-                    MetaValue = reader.GetString("MetaValue")
+                    MetaValue = reader.GetString("MetaValue"),
+                    ServerIP = "",
+                    FtpPort = "",
+                    FtpUserName = "",
+                    FtpPassword = "",
 
                 }).ToList();
             }

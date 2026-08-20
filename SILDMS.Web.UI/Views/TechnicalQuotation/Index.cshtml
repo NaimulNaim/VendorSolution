@@ -158,6 +158,22 @@
             </div>
 
         </div>
+
+        <div class="row">
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <label for="ContactNumber">Contact Number </label>
+                </div>
+            </div>
+            <div class="col-lg-3" style="padding-left:15px;">
+                <div class="form-group">
+                    <input id="ContactNumber" name="ContactNumber" ng-model="ContactNumber" readonly class="form-control" autofocus />
+
+                </div>
+            </div>
+
+        </div>
+
         <div class="row">
             <div class="col-lg-2" ng-if="Quotation">
                 <div class="form-group">
@@ -169,8 +185,8 @@
                     <input id="QuotationNumber" name="QuotationNumber" type="text" data-ng-model="Quotation" class="form-control"
                            placeholder="Quotation Number" ng-readonly="true" />
                     @*<div ng-show="masterDataFrm.$submitted || masterDataFrm.UDCode.$touched">
-                            <span ng-show="masterDataFrm.UDCode.$error.required" class="label label-danger">Please enter UD Code</span>
-                        </div>*@
+                        <span ng-show="masterDataFrm.UDCode.$error.required" class="label label-danger">Please enter UD Code</span>
+                    </div>*@
                 </div>
             </div>
 
@@ -2545,6 +2561,7 @@
                     $scope.flagToShowMasterTbl = true;
                     $scope.MaterialList = response.InvMaterialList;
                     $scope.InvitationSendingPerson = $scope.MaterialList[0].InvitationSendPerson;
+                    $scope.ContactNumber = $scope.MaterialList[0].ContactNumber;
 
                     $scope.GridDisplayCollection = [].concat($scope.MaterialList);
 
@@ -3428,27 +3445,6 @@
 
 
 
-        //$scope.openFileViewer = function (documentID, ext) {
-        //    ext = (ext || '').replace(/^\./, '').toLowerCase();
-
-        //    var imageExts = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
-        //    var videoExts = ['mp4', 'webm', 'ogg'];
-        //    var audioExts = ['mp3', 'wav', 'ogg'];
-
-        //    if (ext === 'pdf') $scope.ViewerType = 'pdf';
-        //    else if (imageExts.indexOf(ext) !== -1) $scope.ViewerType = 'image';
-        //    else if (videoExts.indexOf(ext) !== -1) $scope.ViewerType = 'video';
-        //    else if (audioExts.indexOf(ext) !== -1) $scope.ViewerType = 'audio';
-        //    else $scope.ViewerType = 'download';
-
-        //    $scope.ViewerFileName = documentID + '.' + ext;
-        //    $scope.ViewerUrl = '/VendorSelectionModule/TechnicalQuotation/DownloadDocument'
-        //        + '?documentID=' + documentID
-        //        + '&Ext=' + ext;
-
-        //    $('#FileViewerModal').modal('show');
-        //};
-
         $scope.openFileViewer = function (documentID, ext) {
             ext = (ext || '').replace(/^\./, '').toLowerCase();
             var baseUrl = '/VendorSelectionModule/TechnicalQuotation/DownloadDocument'
@@ -3564,89 +3560,6 @@
 
 
 
-        //$scope.submit = function () {
-
-
-
-
-
-        //    $http.post('/VendorSelectionModule/TechnicalQuotation/submitquotation',
-
-
-        //        {
-        //            InvId: $scope.BillReceiveModel.InvitationID,
-        //            VendorID: $scope.BillReceiveModel.VendorID,
-        //            InvitationNumber: $scope.BillReceiveModel.invitationNumber,
-        //            MaterialCode: $scope.BillReceiveModel.materialCode,
-        //            MaterialName: $scope.BillReceiveModel.materialName,
-        //            RFQUnit: $scope.BillReceiveModel.Unit
-
-        //        })
-        //        .success(function (response) {
-        //            $scope.flagToShow = false;
-        //            $scope.flagToShowMasterTbl = true;
-        //            $scope.QuotationList = response.QuotationList[0];
-
-
-        //            console.log($scope.TechnicalQuotation);
-        //            $http({
-        //                method: 'POST',
-        //                url: '/VendorSelectionModule/TechnicalQuotation/submittechnicalquotation',
-        //                data: {
-        //                    TechnicalQuotation: $scope.TechnicalQuotation,
-        //                    MaterialInvitationlist: $scope.simplifiedMaterialInvitation,
-        //                    Quotation: $scope.QuotationList
-        //                },
-        //                headers: { 'Content-Type': 'application/json' }
-        //            })
-        //                .then(function (response) {
-        //                    console.log("Success:", response.data);
-        //                    $scope.response = response.data.respStatus.Message;
-        //                    if ($scope.response === 'Data Saved Successfully') {
-        //                        // Your success code
-        //                        $scope.reset();
-        //                        toastr.success($scope.response);
-        //                        /*   $scope.toggleRefreshTable();*/
-        //                        $scope.loading = false;
-        //                        $scope.masterDataSetupGridData = [];  // base collection
-        //                        $scope.GridDisplayCollection = [].concat($scope.masterDataSetupGridData);
-        //                        $scope.myarray = [];
-        //                        $scope.myarray2 = [];
-        //                        $scope.InvWiseMaterial($scope.InvitationNumber);
-        //                    }
-        //                }, function (error) {
-        //                    console.log("Error Status:", error.status);
-        //                    console.log("Error Data:", error.data);
-        //                });
-
-                
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //            $scope.loading = false;
-        //        }).error(function () {
-        //            $scope.loading = false;
-
-
-
-        //        });
-
-        //}
-
-
-
 
 
 
@@ -3725,6 +3638,7 @@
     
                 $scope.MaterialList = data;
                 $scope.InvitationSendingPerson = $scope.MaterialList[0].InvitationSendPerson;
+                $scope.ContactNumber = $scope.MaterialList[0].ContactNumber;
                 $scope.GridDisplayCollection = [].concat(data);
 
                 // Flags for UI

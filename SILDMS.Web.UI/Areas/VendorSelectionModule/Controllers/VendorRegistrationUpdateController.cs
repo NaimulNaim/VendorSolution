@@ -68,6 +68,14 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
             string fileServerURL,
             string vendorId, string ext)
         {
+
+            serverIP = System.Configuration.ConfigurationManager.AppSettings["ServerIP"];
+            ftpPort = System.Configuration.ConfigurationManager.AppSettings["ServerPort"];
+            ftpUserName = System.Configuration.ConfigurationManager.AppSettings["FtpUserName"];
+            ftpPassword = System.Configuration.ConfigurationManager.AppSettings["FtpPassword"];
+
+
+
             try
             {
 

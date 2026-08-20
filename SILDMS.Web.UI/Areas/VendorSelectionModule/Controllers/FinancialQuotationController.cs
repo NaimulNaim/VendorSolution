@@ -248,6 +248,12 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
 
         public async Task<dynamic> UploadOtherFiles(string serverIP, string ftpPort, string ftpUserName, string ftpPassword, string serverURL, string documentID, string Ext)
         {
+
+            serverIP = System.Configuration.ConfigurationManager.AppSettings["ServerIP"];
+            ftpPort = System.Configuration.ConfigurationManager.AppSettings["ServerPort"];
+            ftpUserName = System.Configuration.ConfigurationManager.AppSettings["FtpUserName"];
+            ftpPassword = System.Configuration.ConfigurationManager.AppSettings["FtpPassword"];
+
             try
             {
                 HttpFileCollectionBase files = Request.Files;
@@ -513,6 +519,12 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
         [HttpGet]
         public async Task<ActionResult> ViewDocument(string documentID)
         {
+
+
+           string serverIP = System.Configuration.ConfigurationManager.AppSettings["ServerIP"];
+            string ftpPort = System.Configuration.ConfigurationManager.AppSettings["ServerPort"];
+            string ftpUserName = System.Configuration.ConfigurationManager.AppSettings["FtpUserName"];
+            string ftpPassword = System.Configuration.ConfigurationManager.AppSettings["FtpPassword"];
             MaterialDocumentInfo existing;
             var lookup = _financialQuotationService.GetDocumentByIdService(documentID, out existing);
             if (lookup != ValidationResult.Success || existing == null)
@@ -525,8 +537,8 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
 
             // TODO: ownership check goes here.
 
-            string ftpUri = $"ftp://{existing.ServerIP}/{existing.FileServerUrl}/{existing.DocumentID}{existing.FileExtension}";
-            byte[] bytes = await DownloadFromFtp(ftpUri, existing.FtpUserName, existing.FtpPassword);
+            string ftpUri = $"ftp://{serverIP}/{existing.FileServerUrl}/{existing.DocumentID}{existing.FileExtension}";
+            byte[] bytes = await DownloadFromFtp(ftpUri, ftpUserName, ftpPassword);
             if (bytes == null) return new HttpStatusCodeResult(500, "Failed to load document.");
 
             string mimeType;
@@ -540,6 +552,11 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
         [HttpGet]
         public async Task<ActionResult> DownloadDocument(string documentID, string materialName)
         {
+            string serverIP = System.Configuration.ConfigurationManager.AppSettings["ServerIP"];
+            string ftpPort = System.Configuration.ConfigurationManager.AppSettings["ServerPort"];
+            string ftpUserName = System.Configuration.ConfigurationManager.AppSettings["FtpUserName"];
+            string ftpPassword = System.Configuration.ConfigurationManager.AppSettings["FtpPassword"];
+
             MaterialDocumentInfo existing;
             var lookup = _financialQuotationService.GetDocumentByIdService(documentID, out existing);
             if (lookup != ValidationResult.Success || existing == null)
@@ -547,8 +564,8 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
 
             // TODO: ownership check goes here — return new HttpStatusCodeResult(403) if it fails.
 
-            string ftpUri = $"ftp://{existing.ServerIP}/{existing.FileServerUrl}/{existing.DocumentID}{existing.FileExtension}";
-            byte[] bytes = await DownloadFromFtp(ftpUri, existing.FtpUserName, existing.FtpPassword);
+            string ftpUri = $"ftp://{serverIP}/{existing.FileServerUrl}/{existing.DocumentID}{existing.FileExtension}";
+            byte[] bytes = await DownloadFromFtp(ftpUri, ftpUserName, ftpPassword);
             if (bytes == null) return new HttpStatusCodeResult(500, "Download failed");
 
             var invalid = Path.GetInvalidFileNameChars();
@@ -590,6 +607,11 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
         {
             bool isDeleted = false;
 
+            string serverIP = System.Configuration.ConfigurationManager.AppSettings["ServerIP"];
+            string ftpPort = System.Configuration.ConfigurationManager.AppSettings["ServerPort"];
+            string ftpUserName = System.Configuration.ConfigurationManager.AppSettings["FtpUserName"];
+            string ftpPassword = System.Configuration.ConfigurationManager.AppSettings["FtpPassword"];
+
             if (string.IsNullOrWhiteSpace(documentID))
             {
                 respStatus.Message = "Missing document id.";
@@ -626,8 +648,8 @@ namespace SILDMS.Web.UI.Areas.VendorSelectionModule.Controllers
                     var cleanExt = ext.Trim();
                     if (!cleanExt.StartsWith(".")) cleanExt = "." + cleanExt;
 
-                    string ftpUri = $"ftp://{existing.ServerIP}/{existing.FileServerURL}/{safeFileName}{cleanExt}";
-                    await DeleteFromFtp(ftpUri, existing.FtpUserName, existing.FtpPassword);
+                    string ftpUri = $"ftp://{serverIP}/{existing.FileServerURL}/{safeFileName}{cleanExt}";
+                    await DeleteFromFtp(ftpUri, ftpUserName, ftpPassword);
                 }
             }
 

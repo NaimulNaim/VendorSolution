@@ -133,6 +133,21 @@
         </div>
 
         <div class="row">
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <label for="ContactNumber">Contact Number </label>
+                </div>
+            </div>
+            <div class="col-lg-3" style="padding-left:15px;">
+                <div class="form-group">
+                    <input id="ContactNumber" name="ContactNumber" ng-model="ContactNumber" readonly class="form-control" autofocus />
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
             <div class="col-lg-2" ng-if="Quotation">
                 <div class="form-group">
                     <label for="QuotationNumber">Quotation No </label>
@@ -143,8 +158,8 @@
                     <input id="QuotationNumber" name="QuotationNumber" type="text" data-ng-model="Quotation" class="form-control"
                            placeholder="Quotation No" ng-readonly="true" />
                     @*<div ng-show="masterDataFrm.$submitted || masterDataFrm.UDCode.$touched">
-                            <span ng-show="masterDataFrm.UDCode.$error.required" class="label label-danger">Please enter UD Code</span>
-                        </div>*@
+                        <span ng-show="masterDataFrm.UDCode.$error.required" class="label label-danger">Please enter UD Code</span>
+                    </div>*@
                 </div>
             </div>
             <div class="col-lg-4"></div>
@@ -158,8 +173,8 @@
                     <input id="LowestPriceNo" name="LowestPriceNo" type="text" data-ng-model="lowestPrice" class="form-control text-right"
                            placeholder="LowestPrice No" ng-readonly="true" />
                     @*<div ng-show="masterDataFrm.$submitted || masterDataFrm.UDCode.$touched">
-                            <span ng-show="masterDataFrm.UDCode.$error.required" class="label label-danger">Please enter UD Code</span>
-                        </div>*@
+                        <span ng-show="masterDataFrm.UDCode.$error.required" class="label label-danger">Please enter UD Code</span>
+                    </div>*@
                 </div>
             </div>
 
@@ -3084,6 +3099,7 @@
                     $scope.flagToShowMasterTbl = true;
                     $scope.MaterialList = response.InvMaterialList;
                     $scope.InvitationSendingPerson = $scope.MaterialList[0].InvitationSendPerson;
+                    $scope.ContactNumber = $scope.MaterialList[0].ContactNumber;
                     $scope.GridDisplayCollection = [].concat($scope.MaterialList);
                     if ($scope.MaterialList.length <= 0) {
                         $scope.flagToShow = true;
@@ -4082,6 +4098,7 @@
                     $scope.MaterialList = response.AllQuotation;
 
                     $scope.InvitationSendingPerson = $scope.MaterialList[0].InvitationSendPerson;
+                    $scope.ContactNumber = $scope.MaterialList[0].ContactNumber;
                     $scope.lowestPrice = $scope.MaterialList[0].LowestNetUnitPrice;
 
                     $scope.GridDisplayCollection = [].concat($scope.MaterialList);
